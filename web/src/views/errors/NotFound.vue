@@ -1,6 +1,6 @@
 <template>
     <div class="w-full">
-        <p>This is Home</p>
+        <p>Sorry, this page isn't available.</p>
     </div>
 </template>
 
@@ -8,10 +8,10 @@
 import { onMounted, defineComponent } from 'vue'
 
 export default defineComponent({
-    name: 'Home',
+    name: 'Chat',
     setup() {
         onMounted(() => {
-            // console.log('Mounted Home')
+            // console.log('Mounted Chat')
         })
 
         return {}

@@ -1,6 +1,6 @@
 <template>
     <div class="w-full">
-        <p>This is Home</p>
+        <p>This is Explore</p>
     </div>
 </template>
 
@@ -8,10 +8,10 @@
 import { onMounted, defineComponent } from 'vue'
 
 export default defineComponent({
-    name: 'Home',
+    name: 'Explore',
     setup() {
         onMounted(() => {
-            // console.log('Mounted Home')
+            // console.log('Mounted Explore')
         })
 
         return {}

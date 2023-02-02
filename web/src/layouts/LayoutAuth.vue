@@ -1,6 +1,7 @@
 <template>
-    <div class="w-full">
-        <p>This is Home</p>
+    <div
+        class="min-h-screen bg-white">
+        <RouterView/>
     </div>
 </template>
 
@@ -8,10 +9,10 @@
 import { onMounted, defineComponent } from 'vue'
 
 export default defineComponent({
-    name: 'Home',
+    name: 'LayoutAuth',
     setup() {
         onMounted(() => {
-            // console.log('Mounted Home')
+            // console.log('Mounted LayoutAuth')
         })
 
         return {}
