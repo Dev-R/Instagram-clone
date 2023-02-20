@@ -1,9 +1,9 @@
 <template>
-    <div class="bg-gray-900">
+    <div class="bg-black">
         <section class="container max-w-full mx-auto text-center">
-            <div class="grid grid-cols-12">
+            <div class="pt-5 grid grid-cols-12">
                 <!-- Left bar: Navigation -->
-                <div class="col-span-2 p-4 bg-black md:block hidden space-y-12 relative h-screen sticky top-0 border-r border-gray-900">
+                <div class="col-span-2 bg-black md:block hidden space-y-12 relative h-screen sticky top-0 border-r border-gray-900">
                     <!-- A -->
                     <div class="flex flex-col space-y-4 flex-nowrap sticky top-0">
                         <!-- A -->
@@ -150,7 +150,7 @@
                 </div>
 
                 <!-- Center: Posts -->
-                <div class="lg:col-span-6 lg:flex md:col-span-10 col-span-12 p-4 bg-black">
+                <div class="lg:col-span-6 lg:flex md:col-span-10 col-span-12 bg-black">
                     <div class="lg:w-96 lg:invisible">
 
                     </div>
@@ -269,14 +269,39 @@
                 </div>
 
                 <!-- Right bar: Suggestions -->
-                <div class="col-span-4 p-4 bg-black lg:block hidden">
+                <div class="col-span-4 bg-black lg:block hidden w-80">
                     <div class="flex flex-col space-y-4 flex-nowrap top-0 w-80">
                         <!-- A -->
-                        <div class="p-4 rounded-lg flex items-center justify-center bg-indigo-500 shadow-lg">
-                            <img src="http://via.placeholder.com/287x29">
+                        <div class="rounded-lg flex items-center space-x-2">
+                            <div class="flex-inital">
+                                <img src="http://via.placeholder.com/56x56" class="w-14 h-14 rounded-full">
+                            </div>
+                            <div class="flex-inital ">
+                                <span class="font-sans text-sm font-semibold text-white">
+                                    hot_souce_56
+                                </span>
+                            </div>
+                            <div class="flex-inital grow grid">
+                                <span class="font-sans text-xs text-sky-500 justify-self-end">
+                                    Switch
+                                </span>
+                            </div>
                         </div>
-                        <!-- B -->
-                        <div class="p-4 rounded-lg flex justify-start flex-col justify-start justify-center bg-gray-500 shadow-lg  space-y-4">
+                        <!-- B.1 -->
+                        <div class="rounded-lg flex items-center space-x-2">
+                            <div class="flex-inital">
+                                <span class="font-sans text-sm font-semibold text-gray-400">
+                                    Suggestions for you
+                                </span>
+                            </div>
+                            <div class="flex-inital grow grid">
+                                <span class="font-sans text-xs text-white justify-self-end">
+                                    See All
+                                </span>
+                            </div>
+                        </div>
+                        <!-- B.2 -->
+                        <div class="flex flex-col space-y-4">
                             <div class="p-4 rounded-lg flex items-center justify-center bg-indigo-500 shadow-lg space-x-2">
                                 <img src="http://via.placeholder.com/26x26">
                                 <span>1</span>
