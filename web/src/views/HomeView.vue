@@ -155,7 +155,7 @@
                     <div class="flex flex-col space-y-4 flex-nowrap lg:w-[470px] justify-self-end lg:mr-[64px]">
 
                         <!-- Stories -->
-                        <div class="md:h-[85px] md:w-[470px] flex snap-x overflow-x-auto space-x-2">
+                        <div class="md:h-[85px] md:w-[470px] flex snap-x space-x-2 justify-evenly">
 
 
                             <div class="w-[66px] h-[66px] flex flex-col items-center">
@@ -204,7 +204,7 @@
                                 </span>
                             </div>
 
-                            <div class="w-[66px] h-[66px] flex flex-col items-center">
+                            <!-- <div class="w-[66px] h-[66px] flex flex-col items-center">
                                 <div class="bg-gradient-to-tr from-yellow-400  to-pink-500 p-[0.20rem] rounded-full">
                                     <span class="block rounded-full">
                                         <img class="rounded-full" src="https://loremflickr.com/201/200/bottle">
@@ -225,7 +225,7 @@
                                 <span class="text-white text-xs">
                                     Mustaffa
                                 </span>
-                            </div>
+                            </div> -->
 
 
 
