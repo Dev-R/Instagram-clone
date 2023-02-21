@@ -152,11 +152,84 @@
                 <!-- Center: Posts -->
                 <div class="lg:col-span-6 lg:grid md:col-span-10 col-span-12 bg-black">
  
-                    <div class="flex flex-col space-y-4 flex-nowrap lg:w-[28rem] justify-self-end lg:mr-[64px]">
+                    <div class="flex flex-col space-y-4 flex-nowrap lg:w-[470px] justify-self-end lg:mr-[64px]">
 
                         <!-- Stories -->
-                        <div class="p-4 rounded-lg flex items-center justify-center bg-indigo-500 shadow-lg">
-                            <img src="http://via.placeholder.com/287x29">
+                        <div class="md:h-[85px] md:w-[470px] flex snap-x overflow-x-auto space-x-2">
+
+
+                            <div class="w-[66px] h-[66px] flex flex-col items-center">
+                                <div class="bg-gradient-to-tr from-yellow-400  to-pink-500 p-[0.20rem] rounded-full">
+                                    <span class="block rounded-full">
+                                        <img class="rounded-full" src="https://loremflickr.com/201/200/cat">
+                                    </span>
+                                </div>
+                                <span class="text-white text-xs">
+                                    RabiRx
+                                </span>
+                            </div>
+                            
+                            <div class="w-[66px] h-[66px] flex flex-col items-center">
+                                <div class="bg-gradient-to-tr from-yellow-400  to-pink-500 p-[0.20rem] rounded-full">
+                                    <span class="block rounded-full">
+                                        <img class="rounded-full" src="https://loremflickr.com/201/200/dog">
+                                    </span>
+                                </div>
+                                <span class="text-white text-xs">
+                                    Mohaed
+                                </span>
+                            </div>
+
+
+                            <div class="w-[66px] h-[66px] flex flex-col items-center">
+                                <div class="bg-gradient-to-tr from-yellow-400  to-pink-500 p-[0.20rem] rounded-full">
+                                    <span class="block rounded-full">
+                                        <img class="rounded-full" src="https://loremflickr.com/201/200/car">
+                                    </span>
+                                </div>
+                                <span class="text-white text-xs">
+                                    Alex
+                                </span>
+                            </div>
+
+
+                            <div class="w-[66px] h-[66px] flex flex-col items-center">
+                                <div class="bg-gradient-to-tr from-yellow-400  to-pink-500 p-[0.20rem] rounded-full">
+                                    <span class="block rounded-full">
+                                        <img class="rounded-full" src="https://loremflickr.com/201/200/snow">
+                                    </span>
+                                </div>
+                                <span class="text-white text-xs">
+                                    iiSaloomz
+                                </span>
+                            </div>
+
+                            <div class="w-[66px] h-[66px] flex flex-col items-center">
+                                <div class="bg-gradient-to-tr from-yellow-400  to-pink-500 p-[0.20rem] rounded-full">
+                                    <span class="block rounded-full">
+                                        <img class="rounded-full" src="https://loremflickr.com/201/200/bottle">
+                                    </span>
+                                </div>
+                                <span class="text-white text-xs">
+                                    TalalAz
+                                </span>
+                            </div>
+
+
+                            <div class="w-[66px] h-[66px] flex flex-col items-center">
+                                <div class="bg-gradient-to-tr from-yellow-400  to-pink-500 p-[0.20rem] rounded-full">
+                                    <span class="block rounded-full">
+                                        <img class="rounded-full" src="https://loremflickr.com/201/200/mouse">
+                                    </span>
+                                </div>
+                                <span class="text-white text-xs">
+                                    Mustaffa
+                                </span>
+                            </div>
+
+
+
+
                         </div>
 
                         <!-- Posters -->
@@ -336,9 +409,8 @@ export default defineComponent({
 })
 </script>
 
-<!-- 
-   A : 2 
-   B : 8
-   C : 2
 
--->
+
+<style>
+
+</style>
