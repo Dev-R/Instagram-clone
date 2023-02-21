@@ -150,17 +150,16 @@
                 </div>
 
                 <!-- Center: Posts -->
-                <div class="lg:col-span-6 lg:flex md:col-span-10 col-span-12 bg-black">
-                    <div class="lg:w-96 lg:invisible">
+                <div class="lg:col-span-6 lg:grid md:col-span-10 col-span-12 bg-black">
+ 
+                    <div class="flex flex-col space-y-4 flex-nowrap lg:w-[28rem] justify-self-end lg:mr-[64px]">
 
-                    </div>
-                    <div>
-
-                    </div>
-                    <div class="mx-auto  flex flex-col space-y-4 flex-nowrap lg:w-[28rem]">
+                        <!-- Stories -->
                         <div class="p-4 rounded-lg flex items-center justify-center bg-indigo-500 shadow-lg">
                             <img src="http://via.placeholder.com/287x29">
                         </div>
+
+                        <!-- Posters -->
                         <div class="p-4 rounded-lg flex justify-start flex-col justify-start justify-center bg-gray-500 shadow-lg  space-y-4">
                             <div class="p-4 rounded-lg flex items-center justify-center bg-indigo-500 shadow-lg space-x-2">
                                 <img src="http://via.placeholder.com/26x26">
@@ -194,76 +193,7 @@
                             <div class="p-4 rounded-lg flex items-center justify-center bg-indigo-500 shadow-lg space-x-2">
                                 <img src="http://via.placeholder.com/26x26">
                                 <span>8</span>
-                            </div>
-
-                            <div class="p-4 rounded-lg flex items-center justify-center bg-indigo-500 shadow-lg space-x-2">
-                                <img src="http://via.placeholder.com/26x26">
-                                <span>1</span>
-                            </div>
-                            <div class="p-4 rounded-lg flex items-center justify-center bg-indigo-500 shadow-lg space-x-2">
-                                <img src="http://via.placeholder.com/26x26">
-                                <span>2</span>
-                            </div>
-                            <div class="p-4 rounded-lg flex items-center justify-center bg-indigo-500 shadow-lg space-x-2">
-                                <img src="http://via.placeholder.com/26x26">
-                                <span>3</span>
-                            </div>
-                            <div class="p-4 rounded-lg flex items-center justify-center bg-indigo-500 shadow-lg space-x-2">
-                                <img src="http://via.placeholder.com/26x26">
-                                <span>4</span>
-                            </div>
-
-                            <div class="p-4 rounded-lg flex items-center justify-center bg-indigo-500 shadow-lg space-x-2">
-                                <img src="http://via.placeholder.com/26x26">
-                                <span>5</span>
-                            </div>
-                            <div class="p-4 rounded-lg flex items-center justify-center bg-indigo-500 shadow-lg space-x-2">
-                                <img src="http://via.placeholder.com/26x26">
-                                <span>6</span>
-                            </div>
-                            <div class="p-4 rounded-lg flex items-center justify-center bg-indigo-500 shadow-lg space-x-2">
-                                <img src="http://via.placeholder.com/26x26">
-                                <span>7</span>
-                            </div>
-                            <div class="p-4 rounded-lg flex items-center justify-center bg-indigo-500 shadow-lg space-x-2">
-                                <img src="http://via.placeholder.com/26x26">
-                                <span>8</span>
-                            </div>
-
-                            <div class="p-4 rounded-lg flex items-center justify-center bg-indigo-500 shadow-lg space-x-2">
-                                <img src="http://via.placeholder.com/26x26">
-                                <span>1</span>
-                            </div>
-                            <div class="p-4 rounded-lg flex items-center justify-center bg-indigo-500 shadow-lg space-x-2">
-                                <img src="http://via.placeholder.com/26x26">
-                                <span>2</span>
-                            </div>
-                            <div class="p-4 rounded-lg flex items-center justify-center bg-indigo-500 shadow-lg space-x-2">
-                                <img src="http://via.placeholder.com/26x26">
-                                <span>3</span>
-                            </div>
-                            <div class="p-4 rounded-lg flex items-center justify-center bg-indigo-500 shadow-lg space-x-2">
-                                <img src="http://via.placeholder.com/26x26">
-                                <span>4</span>
-                            </div>
-
-                            <div class="p-4 rounded-lg flex items-center justify-center bg-indigo-500 shadow-lg space-x-2">
-                                <img src="http://via.placeholder.com/26x26">
-                                <span>5</span>
-                            </div>
-                            <div class="p-4 rounded-lg flex items-center justify-center bg-indigo-500 shadow-lg space-x-2">
-                                <img src="http://via.placeholder.com/26x26">
-                                <span>6</span>
-                            </div>
-                            <div class="p-4 rounded-lg flex items-center justify-center bg-indigo-500 shadow-lg space-x-2">
-                                <img src="http://via.placeholder.com/26x26">
-                                <span>7</span>
-                            </div>
-                            <div class="p-4 rounded-lg flex items-center justify-center bg-indigo-500 shadow-lg space-x-2">
-                                <img src="http://via.placeholder.com/26x26">
-                                <span>8</span>
-                            </div>
-                            
+                            </div>        
                         </div>
                     </div>
                 </div>
@@ -271,10 +201,11 @@
                 <!-- Right bar: Suggestions -->
                 <div class="col-span-4 bg-black lg:block hidden w-80">
                     <div class="flex flex-col space-y-4 flex-nowrap top-0 w-80">
+                        
                         <!-- A -->
                         <div class="rounded-lg flex items-center space-x-2">
                             <div class="flex-inital">
-                                <img src="http://via.placeholder.com/56x56" class="w-14 h-14 rounded-full">
+                                <img src="https://loremflickr.com/56/56" class="w-14 h-14 rounded-full">
                             </div>
                             <div class="flex-inital ">
                                 <span class="font-sans text-sm font-semibold text-white">
@@ -287,6 +218,7 @@
                                 </span>
                             </div>
                         </div>
+
                         <!-- B.1 -->
                         <div class="rounded-lg flex items-center space-x-2">
                             <div class="flex-inital">
@@ -300,28 +232,86 @@
                                 </span>
                             </div>
                         </div>
+
                         <!-- B.2 -->
-                        <div class="flex flex-col space-y-4">
-                            <div class="p-4 rounded-lg flex items-center justify-center bg-indigo-500 shadow-lg space-x-2">
-                                <img src="http://via.placeholder.com/26x26">
-                                <span>1</span>
+                        <div class="flex flex-col">
+
+                            <div class="rounded-lg flex items-center space-x-2 w-80 h-12">
+                                <div class="flex-inital">
+                                    <img src="https://loremflickr.com/32/32/cat" class="w-8 h-8 rounded-full">
+                                </div>
+                                <div class="flex flex-inital flex-col">
+                                    <span class="font-sans text-sm font-semibold text-white self-start">
+                                        CS50
+                                    </span>
+                                    <span class="font-sans text-xs font-semibold text-gray-400 self-start">
+                                        Followed by brianyu28 + 2 more
+                                    </span>
+                                </div>
+                                <div class="flex-inital grow grid">
+                                    <span class="font-sans text-xs text-sky-500 justify-self-end">
+                                        Follow
+                                    </span>
+                                </div>
                             </div>
-                            <div class="p-4 rounded-lg flex items-center justify-center bg-indigo-500 shadow-lg space-x-2">
-                                <img src="http://via.placeholder.com/26x26">
-                                <span>2</span>
+
+                            <div class="rounded-lg flex items-center space-x-2 w-80 h-12">
+                                <div class="flex-inital">
+                                    <img src="https://loremflickr.com/32/32/dog" class="w-8 h-8 rounded-full">
+                                </div>
+                                <div class="flex flex-inital flex-col">
+                                    <span class="font-sans text-sm font-semibold text-white self-start">
+                                        yasir.qadhi
+                                    </span>
+                                    <span class="font-sans text-xs font-semibold text-gray-400 self-start">
+                                        Popular
+                                    </span>
+                                </div>
+                                <div class="flex-inital grow grid">
+                                    <span class="font-sans text-xs text-sky-500 justify-self-end">
+                                        Follow
+                                    </span>
+                                </div>
                             </div>
-                            <div class="p-4 rounded-lg flex items-center justify-center bg-indigo-500 shadow-lg space-x-2">
-                                <img src="http://via.placeholder.com/26x26">
-                                <span>3</span>
+
+                            <div class="rounded-lg flex items-center space-x-2 w-80 h-12">
+                                <div class="flex-inital">
+                                    <img src="https://loremflickr.com/32/32/cat" class="w-8 h-8 rounded-full">
+                                </div>
+                                <div class="flex flex-inital flex-col">
+                                    <span class="font-sans text-sm font-semibold text-white self-start">
+                                        drhaifaayounis
+                                    </span>
+                                    <span class="font-sans text-xs font-semibold text-gray-400 self-start">
+                                        Followed by imamomarsuleiman
+                                    </span>
+                                </div>
+                                <div class="flex-inital grow grid">
+                                    <span class="font-sans text-xs text-sky-500 justify-self-end">
+                                        Follow
+                                    </span>
+                                </div>
                             </div>
-                            <div class="p-4 rounded-lg flex items-center justify-center bg-indigo-500 shadow-lg space-x-2">
-                                <img src="http://via.placeholder.com/26x26">
-                                <span>4</span>
-                            </div>
+                            
                         </div>
                         <!-- C -->
-                        <div class="p-4 rounded-lg flex items-center justify-center bg-indigo-500 shadow-lg">
-                            X
+                        <div class="flex list-disc space-x-4 font-sans text-xs font-semibold text-gray-500 self-start flex-wrap">
+                            <li class="list-none">About</li>
+                            <li>Help</li>
+                            <li>Press</li>
+                            <li>API</li>
+                            <li>Jobs</li>
+                            <li>Privacy</li>
+                            <li>Terms</li>
+                            <li>Locations</li>
+                            <li>Language</li>
+                        </div>
+
+                        <!-- D -->
+                        <div class="flex font-sans text-xs font-semibold text-gray-500 self-start">
+                            <span>
+                                © 2023 INSTAGRAM FROM META
+                            </span>
                         </div>
                     </div>
                 </div>
