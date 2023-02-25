@@ -1,13 +1,15 @@
-/** Interface for a single image in a post */
-export interface PostImage {
-    /** Image index in the carousel */
+/** Interface for a single media in a post */
+export interface PostMedia {
+    /** Media index in the carousel */
     index: number
-    /** Image URL */
-    imageUrl: string
-    /** Image width in pixels */
+    /** Media type i.e: video or image */
+    type: 'video' | 'image'
+    /** Media URL */
+    mediaUrl: string
+    /** Media width in pixels */
     width?: number
-    /** Image height in pixels */
+    /** Media height in pixels */
     height?: number
-    /** image Title/name */
+    /** Media Title/name */
     title?: string
   }
