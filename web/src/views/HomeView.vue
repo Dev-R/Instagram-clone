@@ -275,7 +275,9 @@
                                 </div>
                                 <!-- 2 -->
                                 <div class="md:max-h-[585px] p-1">
-                                    <img src="https://loremflickr.com/1024/1280" class="rounded">
+                                    <!-- <img src="https://loremflickr.com/1024/1280" class="rounded"> -->
+                                    <PostImageCarousel 
+                                    :images="images"/>
                                 </div>
                                 <!-- 3 -->
                                 <div class="flex justify-between">
@@ -314,7 +316,7 @@
                                 </div>
 
                                 <!-- 6 -->
-                                <div class="grid grid-cols-12 border-b border-slate-800">
+                                <div class="grid grid-cols-12 border-b border-slate-800 p-2">
                                     <span class="col-span-10">
                                         <textarea  rows="1" class="focus:outline-none resize-none block w-full text-sm bg-black text-white" placeholder="Add a comment..."></textarea>
                                     </span>
@@ -394,7 +396,7 @@
                                 </div>
 
                                 <!-- 6 -->
-                                <div class="grid grid-cols-12 border-b border-slate-800">
+                                <div class="grid grid-cols-12 border-b border-slate-800 p-2">
                                     <span class="col-span-10">
                                         <textarea  rows="1" class="focus:outline-none resize-none block w-full text-sm bg-black text-white" placeholder="Add a comment..."></textarea>
                                     </span>
@@ -474,7 +476,7 @@
                                 </div>
 
                                 <!-- 6 -->
-                                <div class="grid grid-cols-12 border-b border-slate-800">
+                                <div class="grid grid-cols-12 border-b border-slate-800 p-2">
                                     <span class="col-span-10">
                                         <textarea  rows="1" class="focus:outline-none resize-none block w-full text-sm bg-black text-white" placeholder="Add a comment..."></textarea>
                                     </span>
@@ -618,7 +620,7 @@
 
 <script lang="ts">
 import { onMounted, defineComponent } from 'vue'
-
+import PostImageCarousel from '@/components/basics/PostImageCarousel.vue'
 export default defineComponent({
     name: 'Home',
     setup() {
@@ -626,7 +628,46 @@ export default defineComponent({
             // console.log('Mounted Home')
         })
 
-        return {}
+        const images = [
+            {
+                index: 0,
+                imageUrl:
+                    "https://loremflickr.com/1024/1280/cat",
+                title: "Legendary A"
+            },
+            {
+                index: 1,
+                imageUrl:
+                    "https://loremflickr.com/1024/1280/dog",
+                title: "Legendary B"
+            },
+            {
+                index: 2,
+                imageUrl:
+                    "https://loremflickr.com/1024/1280/car",
+                title: "Legendary C"
+            },
+            {
+                index: 3,
+                imageUrl:
+                    "https://loremflickr.com/1024/1280/bird",
+                title: "Legendary D"
+            },
+            {
+                index: 4,
+                imageUrl:
+                    "https://loremflickr.com/1024/1280/family",
+                title: "Legendary E"
+            }
+        ];
+
+
+        return {
+            images
+        }
+    },
+    components: {
+        PostImageCarousel
     }
 })
 </script>
