@@ -303,12 +303,6 @@ export default defineComponent({
             videoElements.value[index] = event.target as HTMLVideoElement
         }
 
-        /**
-         * A computed property that returns true if the video is playing.
-         */
-        const playing = computed(() => {
-            return !isVideoPlaying.value;
-        });
 
         /**
          * Emit on next signal to listener
@@ -344,7 +338,6 @@ export default defineComponent({
             pauseVideo,
             appendToVideoElements,
             videoElements,
-            playing,
             currentIndex, 
             prevIndex, 
             nextIndex, 
