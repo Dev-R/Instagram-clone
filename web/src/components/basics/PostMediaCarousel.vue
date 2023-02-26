@@ -1,7 +1,9 @@
 <template>
 	<div class="relative">
+        
 		<!-- Carousel wrapper -->
 		<div class="relative overflow-hidden rounded-lg md:min-h-[585px] min-h-[410px]">
+
 			<div
 				v-for="media in medias"
 				:key="`carousel-media-${media.index}`"
@@ -17,6 +19,7 @@
 						prevIndex != media.index &&
 						currentIndex != media.index
 				}">
+
 				<span
 					class="absolute text-2xl 
                     font-semibold  text-white -translate-x-1/2 
@@ -54,9 +57,9 @@
                     v-if="media.type === 'video' && media.index in videoElements"
                     id="data-carousel-mute"
                     type="button"
-                    class="absolute top-64 right-0 z-30 
+                    class="absolute bottom-0 right-0 z-40 
                     flex items-center justify-center
-                    h-full cursor-pointer group 
+                    cursor-pointer group 
                     focus:outline-none"
                     @click="toggleVideoMute(media.index)">
                     <span
@@ -99,51 +102,51 @@
                     </span>
                 </button>
 
+                <!-- Slider controls -->
+
+                <!-- Previous Button -->
+                <button
+                    id="data-carousel-prev"
+                    type="button"
+                    class="absolute top-0 left-0 z-30 
+                    flex items-center justify-center
+                    h-full px-4  cursor-pointer group 
+                    focus:outline-none"
+                    @click="moveToPrevMedia()">
+                    <span
+                        class="inline-flex items-center justify-center
+                        w-8 h-8 rounded-full sm:w-10 sm:h-10 
+                        group-focus:outline-none">
+                        <i class="pr-6 fa-solid fa-circle-chevron-left text-2xl text-gray-300"></i>
+
+                        <span class="hidden">
+                            Previous
+                        </span>
+                    </span>
+                </button>
+
+                <!-- Next Button -->
+                <button
+                    id="data-carousel-next"
+                    type="button"
+                    class="absolute top-0 right-0 z-30 
+                    flex items-center justify-center
+                    h-full px-4  cursor-pointer group 
+                    focus:outline-none"
+                    @click="moveToNextMedia()">
+                    <span
+                        class="inline-flex items-center justify-center
+                        w-8 h-8 rounded-full sm:w-10 sm:h-10 
+                        group-focus:outline-none">
+                        <i class="pl-6 fa-solid fa-circle-chevron-right text-2xl text-gray-300"></i>
+
+                        <span class="hidden">Next</span>
+                    </span>
+                </button>
 
 			</div>
+            
 		</div>
-		<!-- Slider controls -->
-
-        <!-- Previous Button -->
-		<button
-			id="data-carousel-prev"
-			type="button"
-			class="absolute bottom-24 left-0 z-30 
-            flex items-center justify-center
-            h-96 px-4  cursor-pointer group 
-            focus:outline-none"
-			@click="moveToPrevMedia()">
-			<span
-                class="inline-flex items-center justify-center
-                 w-8 h-8 rounded-full sm:w-10 sm:h-10 
-                 group-focus:outline-none">
-				<i class="pr-6 fa-solid fa-circle-chevron-left text-2xl text-gray-300"></i>
-
-				<span class="hidden">
-					Previous
-				</span>
-			</span>
-		</button>
-
-        <!-- Next Button -->
-		<button
-			id="data-carousel-next"
-			type="button"
-			class="absolute bottom-24 right-0 z-30 
-            flex items-center justify-center
-            h-96 px-4  cursor-pointer group 
-            focus:outline-none"
-			@click="moveToNextMedia()">
-			<span
-				class="inline-flex items-center justify-center
-                 w-8 h-8 rounded-full sm:w-10 sm:h-10 
-                 group-focus:outline-none">
-				<i class="pl-6 fa-solid fa-circle-chevron-right text-2xl text-gray-300"></i>
-
-				<span class="hidden">Next</span>
-			</span>
-		</button>
-
 
 	</div>
     <!-- media Slideshow -->
