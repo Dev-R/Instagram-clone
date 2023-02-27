@@ -1,15 +1,19 @@
 <template>
     <div class="flex flex-col space-y-4 pt-2">
 
-        <!-- Header: username | daysSinceUpload | options-->
+        <!-- Header-->
         <div class="flex rounded-lg space-x--1 justify-between">
-            <!-- 1 -->
+            <!-- 1: username | daysSinceUpload | options -->
             <div class="flex space-x-2">
 
-                <img src="http://via.placeholder.com/32x32" class="cursor-pointer h-8 w-8 rounded-full shadow-lg">
+                <img 
+                    :src="postItem.profilePictureUrl" 
+                    class="cursor-pointer h-8 w-8 rounded-full 
+                    shadow-lg">
+                    
                 <div class="flex pt-1">
                     <div class="cursor-pointer font-sans text-sm font-semibold text-white">
-                        imamomarsuleiman
+                        {{ postItem.userName }}
                         <i class="fa-solid fa-circle-check"></i>
                     </div>
 
@@ -18,7 +22,7 @@
                     </div>
 
                     <div class="font-sans text-sm font-semibold text-gray-500">
-                        1d
+                        {{ postItem.createdAt }}
                     </div>
                 </div>
 
@@ -29,18 +33,22 @@
             </div>
 
         </div>
-        <!-- 2 -->
+        <!-- 2: Medias -->
         <div class="md:max-h-[585px] p-1">
             <!-- <img src="https://loremflickr.com/1024/1280" class="rounded"> -->
-            <PostMediaCarousel :medias="postMedias" />
+            <PostMediaCarousel :medias="postItem.carouselMedia" />
         </div>
-        <!-- 3 -->
+        <!-- 3: Actions -->
         <div class="flex justify-between">
 
             <div class="flex space-x-4">
 
                 <span class="cursor-pointer hover:scale-90">
-                    <SVGLoader :icon="'like'" />
+                    <SVGLoader 
+                        v-if="postItem.hasLiked" :icon="'like'"/>
+                    
+                    <SVGLoader 
+                        v-else :icon="'un-like'"/>
                 </span>
 
                 <span class="cursor-pointer hover:scale-90">
@@ -59,20 +67,25 @@
 
         </div>
 
-        <!-- 4 -->
+        <!-- 4: Likes -->
         <div class="cursor-pointer font-sans text-sm font-semibold text-white self-start">
-            23,489 likes
+            {{ postItem.likeCount }} likes
         </div>
 
-        <!-- 5 -->
+        <!-- 5: Caption -->
         <div class="font-sans text-sm text-white flex-col">
             <!-- <span class="font-semibold">imamomarsuleiman</span> -->
             <p class="text-sm text-left indent-8 break-all ">
-                Dispiceremque ob nouavit. Aptaveras perebamque conferebant et fugitivi muliebrique attrectareque, pro e
-                tenueratqueerati</p>
+                {{ postItem.caption }}
+            </p>
+            <p
+                v-if="postItem.commentCount > 0" 
+                class="text-md text-left text-gray-400 cursor-pointer">
+                View all {{ postItem.profilePictureUrl }} comments
+            </p>
         </div>
 
-        <!-- 6 -->
+        <!-- 6: Comments -->
         <div class="grid grid-cols-12 border-b border-slate-800 p-2">
             <span class="col-span-10">
                 <textarea rows="1" class="focus:outline-none resize-none block w-full text-sm bg-black text-white"
@@ -89,7 +102,11 @@
 
 <script lang="ts">
 import { onMounted, defineComponent } from 'vue'
-import type { PostMedia } from '@/common/models/Post.model'
+
+import SVGLoader from "@/components/basics/SVGLoader.vue"
+import PostMediaCarousel from '@/components/basics/PostMediaCarousel.vue'
+import type { PostCard } from '@/common/models/post.model'
+
 export default defineComponent({
     name: 'PostCard',
     setup() {
@@ -97,20 +114,19 @@ export default defineComponent({
             // console.log('Mounted PostCard')
         })
 
-        return {}
+        return {
+
+        }
     },
     props: {
-        postData: {
-            type: Object as () => {
-                username: string,
-                medias: PostMedia[]
-            },
+        postItem: {
+            type: Object as () => PostCard,
             required: true,
         },
-        postMedias: {
-            type: Object as () => PostMedia[],
-            required: true,
-        }
+    },
+    components: {
+        SVGLoader,
+        PostMediaCarousel,
     }
 })
 </script>
