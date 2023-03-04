@@ -15,13 +15,16 @@ export interface PostMedia {
     height?: number
     /** Media Title/name */
     title?: string
-  }
+}
 
 
 /**
  * Interface for a single post card
  */
 export interface PostCard {
+    /** A unique identifier for the post card */
+    id: string
+
     /** Array of media in post carousel */
     carouselMedia: PostMedia[]
   
@@ -45,29 +48,32 @@ export interface PostCard {
   
     /** Total number of comments on the post */
     commentCount: number
+
+    /** An array of comments on the post */
+    comments?: PostComment[]
   }
   
 /**
- * Interface for Story Carousel model
+ * Interface for Story Carousel modal
  */
 export interface StoryCarousel {
     // /** The user who created the story carousel */
-    // user: User,
+    // user: User
 
     /** User's user name */
-    userName: string,
+    userName: string
   
     /** URL of the user's profile picture */
-    profilePictureUrl: string,
+    profilePictureUrl: string
 
     /** The time when the story carousel expires */
-    expiringAt: string,
+    expiringAt: string
     
     /** Whether the user has seen the story carousel or not */
-    seen: boolean,
+    seen: boolean
     
     /** The list of media items in the story carousel */
-    items: PostMedia[],
+    items: PostMedia[]
     
     /** The total number of media items in the story carouse */
     mediaCount: number
@@ -75,25 +81,54 @@ export interface StoryCarousel {
 
 
 /**
- * Interface for a suggestion card.
+ * Interface for suggestion card
  */
 export interface SuggestionCard {
 
     /** Username of the user being suggested. */
-    userName: string,
+    userName: string
 
     /** URL of the user's profile picture being suggested. */
-    profilePictureUrl: string,
+    profilePictureUrl: string
 
     /** Information about the user that is being suggested to follow. */
     suggested: {
         /** Username of the user that is being suggested to follow. */
-        userName: string,
+        userName: string
 
         /** URL of the user's profile picture that is being suggested to follow. */
-        profilePictureUrl: string,
+        profilePictureUrl: string
 
         /** Username of the user that follows the suggested user. */
-        followedBy: string,
+        followedBy: string
     }[]
+}
+
+/**
+ * Interface for a single post comment
+ */
+export interface PostComment {
+  /** Comment username */
+  userName: string
+
+  /** Comment user picture URL */
+  profilePictureUrl: string
+
+  /** Comment content */
+  content: string
+
+  /** Unix timestamp representing when the comment was posted */
+  createdAt: string | number
+}
+
+
+/**
+ * Interface representing the Post Comment Modal component props
+ */
+export interface PostCommentModal {
+  /** Flag to toggle the visibility of the modal */
+  isToggled : boolean
+
+  /** The post associated with the comment modal */
+  post: PostCard
 }
