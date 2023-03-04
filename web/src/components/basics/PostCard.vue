@@ -36,7 +36,7 @@
         <!-- 2: Medias -->
         <div class="md:max-h-[585px] p-1">
             <!-- <img src="https://loremflickr.com/1024/1280" class="rounded"> -->
-            <PostMediaCarousel :medias="postItem.carouselMedia" />
+            <MediaCarousel :medias="postItem.carouselMedia"/>
         </div>
         <!-- 3: Actions -->
         <div class="flex justify-between">
@@ -51,7 +51,9 @@
                         v-else :icon="'un-like'"/>
                 </span>
 
-                <span class="cursor-pointer hover:scale-90">
+                <span 
+                    @click="onOpenCommentModal(postItem.id)"
+                    class="cursor-pointer hover:scale-90">
                     <SVGLoader :icon="'comment'" />
                 </span>
 
@@ -69,7 +71,7 @@
 
         <!-- 4: Likes -->
         <div class="cursor-pointer font-sans text-sm font-semibold text-white self-start">
-            {{ postItem.likeCount }} likes
+            {{ findNumberOfLikes }}
         </div>
 
         <!-- 5: Caption -->
@@ -80,43 +82,77 @@
             </p>
             <p
                 v-if="postItem.commentCount > 0" 
-                class="text-md text-left text-gray-400 cursor-pointer">
-                View all {{ postItem.profilePictureUrl }} comments
+                @click="onOpenCommentModal(postItem.id)"
+                class="text-md text-left 
+                text-gray-400 cursor-pointer">
+                View all {{ postItem.commentCount }} comments
             </p>
         </div>
 
-        <!-- 6: Comments -->
+        <!-- 6: Comment Form -->
         <div class="grid grid-cols-12 border-b border-slate-800 p-2">
             <span class="col-span-10">
-                <textarea rows="1" class="focus:outline-none resize-none block w-full text-sm bg-black text-white"
+                <textarea 
+                    rows="1"
+                    class="focus:outline-none resize-none 
+                    block w-full text-sm bg-black text-gray-600"
                     placeholder="Add a comment..."></textarea>
             </span>
-            <span class="font-sans text-xs text-sky-500 justify-self-end cursor-pointer hover:text-white h-6">
+            <span 
+                class="font-sans text-xs text-sky-500 
+                justify-self-end cursor-pointer 
+                hover:text-white h-6">
                 Post
             </span>
-            <span class="text-gray-600 justify-self-end cursor-pointer fa-regular fa-face-smile w-3 h-3">
+            <span 
+                class="text-gray-600 justify-self-end 
+                cursor-pointer fa-regular fa-face-smile 
+                w-3 h-3">
             </span>
         </div>
+
     </div>
 </template>
 
 <script lang="ts">
-import { onMounted, defineComponent } from 'vue'
+import { defineComponent, ref, computed } from 'vue'
 
 import SVGLoader from "@/components/basics/SVGLoader.vue"
-import PostMediaCarousel from '@/components/basics/PostMediaCarousel.vue'
+import MediaCarousel from '@/components/basics/MediaCarousel.vue'
 import type { PostCard } from '@/common/models/post.model'
 
 export default defineComponent({
     name: 'PostCard',
-    setup() {
-        onMounted(() => {
-            // console.log('Mounted PostCard')
+    setup(props, context) {
+
+        // Checkers
+        const isCommentModalOpen = ref(false);
+
+        // Computed
+        const findNumberOfLikes = computed(() => {
+            return props.postItem.likeCount >= 1 ? `${props.postItem.likeCount}Likes` : 'Be the first to like this' 
         })
 
+        /**
+         * Emit signal when comment modal button is clicked
+         * @event comment-unliked
+         * @param {string} postId - The ID of the post
+         */
+        const onOpenCommentModal = (postId: string) => {
+            isCommentModalOpen.value = true;
+            console.log("Emitting signal:", postId)
+            context.emit('onOpenCommentModal', postId);
+        };
+        
         return {
-
+            isCommentModalOpen,
+            onOpenCommentModal,
+            findNumberOfLikes
         }
+    },
+    components: {
+        SVGLoader,
+        MediaCarousel,
     },
     props: {
         postItem: {
@@ -124,9 +160,8 @@ export default defineComponent({
             required: true,
         },
     },
-    components: {
-        SVGLoader,
-        PostMediaCarousel,
-    }
+    emits: [
+        'onOpenCommentModal'
+    ]
 })
 </script>
