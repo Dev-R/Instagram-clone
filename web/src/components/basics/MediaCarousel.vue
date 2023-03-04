@@ -1,157 +1,176 @@
 <template>
-	<div class="relative">
-        
-		<!-- Carousel wrapper -->
-		<div class="relative overflow-hidden rounded-lg md:min-h-[585px] min-h-[410px]">
+    <div class="relative h-full">
 
-			<div
-				v-for="media in medias"
-				:key="`carousel-media-${media.index}`"
-				:id="`carousel-item-${media.index}`"
-				class="duration-300 ease-in-out absolute 
-                inset-0 transition-all transform"
-				:class="{
-					'translate-x-0 z-20': currentIndex === media.index,
-					'-translate-x-full z-10': prevIndex === media.index,
-					'translate-x-full z-10': nextIndex === media.index,
-					hidden:
-						nextIndex != media.index &&
-						prevIndex != media.index &&
-						currentIndex != media.index
-				}">
+        <!-- Carousel wrapper -->
+        <div :class="style" class="relative overflow-hidden h-full md:min-h-[585px] min-h-[410px]">
 
-				<span
-					class="absolute text-2xl 
+            <div
+                v-for="media in medias" 
+                :key="`carousel-media-${media.index}`" 
+                :id="`carousel-item-${media.index}`" 
+                class="duration-300 ease-in-out absolute 
+                inset-0 transition-all transform" 
+                :class="{
+                    'translate-x-0 z-20': currentIndex === media.index,
+                    '-translate-x-full z-10': prevIndex === media.index && medias.length > 1,
+                    'translate-x-full z-10': nextIndex === media.index,
+                    hidden:
+                        nextIndex != media.index &&
+                        prevIndex != media.index &&
+                        currentIndex != media.index
+                    }">
+
+                <span 
+                    class="absolute text-2xl 
                     font-semibold  text-white -translate-x-1/2 
                     -translate-y-1/2 top-1/2 left-1/2 
                     sm:text-3xl dark:text-gray-800">
-					{{ media.title }}
-				</span>
-                
-				<img
-                    v-if="media.type === 'image'"
-					:src="media.mediaUrl"
-					class="absolute block w-full -translate-x-1/2 
-                    -translate-y-1/2 top-1/2 left-1/2"
-					:alt="media.title"/>
-                   
+                    {{ media.title }}
+                </span>
+
+                <img
+                    v-if="media.type === 'image'" 
+                    :src="media.mediaUrl" 
+                    class="absolute block w-full -translate-x-1/2 
+                    -translate-y-1/2 top-1/2 left-1/2" 
+                    :alt="media.title" />
+
                 <video
-                    v-else
-                    @load=""
-                    @canplay="appendToVideoElements(media.index, $event)"
-                    :muted="isVideoMuted"
-					class="absolute block w-full -translate-x-1/2 
-                    -translate-y-1/2 top-1/2 left-1/2"
-					:alt="media.title">
-                    <source 
-                        :src="media.mediaUrl" 
-                        type="video/mp4">
+                    v-else @load="" 
+                    @canplay="appendToVideoElements(media.index, $event)" 
+                    :muted="isVideoMuted" 
+                    class="absolute block w-full 
+                    -translate-x-1/2 -translate-y-1/2 top-1/2 
+                    left-1/2" 
+                    :alt="media.title">
+                    <source :src="media.mediaUrl" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
-                
+
 
                 <!-- Video controls -->
 
                 <!-- Mute Button -->
-                <button
-                    v-if="media.type === 'video' && media.index in videoElements"
-                    id="data-carousel-mute"
+                <button 
+                    v-if="media.type === 'video' && media.index in videoElements" 
+                    id="data-carousel-mute" 
                     type="button"
                     class="absolute bottom-0 right-0 z-40 
                     flex items-center justify-center
                     cursor-pointer group 
-                    focus:outline-none"
+                    focus:outline-none" 
                     @click="toggleVideoMute(media.index)">
-                    <span
+
+                    <span 
                         class="inline-flex items-center justify-center
                         rounded-full sm:w-6 sm:h-6
                         group-focus:outline-none bg-gray-600">
 
                         <i 
-                            class="fa-solid
-                            text-sm text-gray-300"
-                            :class="{
-                                'fa-volume-high' :  !isVideoMuted,
-                                'fa-volume-xmark' : isVideoMuted ,
-                            }">
-                            </i>
+                        class="fa-solid
+                        text-sm text-gray-300" 
+                        :class="{
+                            'fa-volume-high': !isVideoMuted,
+                            'fa-volume-xmark': isVideoMuted,
+                        }">
+                        </i>
+
                     </span>
                 </button>
 
                 <!-- Play Button -->
-                <button
-                    v-if="media.type === 'video' && media.index in videoElements"
-                    id="data-carousel-next"
+                <button 
+                    v-if="media.type === 'video' && media.index in videoElements" 
+                    id="data-carousel-next" 
                     type="button"
-                    class="absolute top-0 right-1/2 left-1/2 z-30 
+                    class="absolute top-0 right-1/2 
+                    left-1/2 z-30 
                     flex items-center justify-center
                     h-full cursor-pointer group 
                     focus:outline-none"
                     v-on="{ click: isVideoPlaying ? () => pauseVideo(media.index) : () => playVideo(media.index) }">
-                    <span
-                        class="inline-flex items-center justify-center
-                        rounded-full sm:w-12 sm:h-12
+
+                    <span 
+                        class="inline-flex items-center 
+                        justify-center rounded-full sm:w-12 sm:h-12
                         group-focus:outline-none">
                         <i 
                             class="fa-solid
-                            text-6xl text-gray-300"
+                            text-6xl text-gray-300" 
                             :class="{
-                                'fa-play' :  !isVideoPlaying,
+                                'fa-play': !isVideoPlaying,
                             }">
-                            </i>
+                        </i>
                     </span>
+
                 </button>
 
                 <!-- Slider controls -->
 
                 <!-- Previous Button -->
-                <button
-                    id="data-carousel-prev"
-                    type="button"
+                <button 
+                    v-if="medias.length > 1" 
+                    id="data-carousel-prev" 
+                    type="button" 
                     class="absolute top-0 left-0 z-30 
                     flex items-center justify-center
                     h-full px-4  cursor-pointer group 
-                    focus:outline-none"
+                    focus:outline-none" 
                     @click="moveToPrevMedia()">
-                    <span
-                        class="inline-flex items-center justify-center
-                        w-8 h-8 rounded-full sm:w-10 sm:h-10 
-                        group-focus:outline-none">
-                        <i class="pr-6 fa-solid fa-circle-chevron-left text-2xl text-gray-300"></i>
+
+                    <span 
+                        class="inline-flex items-center 
+                        justify-center w-8 h-8 rounded-full 
+                        sm:w-10 sm:h-10 group-focus:outline-none">
+                        <i 
+                            class="pr-6 fa-solid fa-circle-chevron-left
+                            text-2xl text-gray-300">
+                        </i>
 
                         <span class="hidden">
                             Previous
                         </span>
+
                     </span>
+
                 </button>
 
                 <!-- Next Button -->
                 <button
-                    id="data-carousel-next"
-                    type="button"
-                    class="absolute top-0 right-0 z-30 
-                    flex items-center justify-center
-                    h-full px-4  cursor-pointer group 
-                    focus:outline-none"
-                    @click="moveToNextMedia()">
-                    <span
-                        class="inline-flex items-center justify-center
-                        w-8 h-8 rounded-full sm:w-10 sm:h-10 
-                        group-focus:outline-none">
-                        <i class="pl-6 fa-solid fa-circle-chevron-right text-2xl text-gray-300"></i>
+                        v-if="medias.length > 1" 
+                        id="data-carousel-next" 
+                        type="button" class="absolute top-0 right-0 z-30
+                        flex items-center justify-center
+                        h-full px-4 cursor-pointer group 
+                        focus:outline-none" 
+                        @click="moveToNextMedia()">
 
-                        <span class="hidden">Next</span>
+                    <span 
+                        class="inline-flex items-center 
+                        justify-center w-8 h-8 rounded-full 
+                        sm:w-10 sm:h-10 group-focus:outline-none">
+
+                        <i 
+                            class="pl-6 fa-solid fa-circle-chevron-right 
+                            text-2xl text-gray-300">
+                        </i>
+
+                        <span class="hidden">
+                            Next
+
+                        </span>
+                        
                     </span>
                 </button>
 
-			</div>
-            
-		</div>
+            </div>
 
-	</div>
+        </div>
+
+    </div>
     <!-- media Slideshow -->
 
-	<!-- <ul
+    <!-- <ul
 		class="flex flex-row mt-4 place-content-center gap-x-5"
 		name="media-display-list">
 		<div
@@ -170,18 +189,17 @@
 			<img class="max-w-full h-auto" :src="media.mediaUrl"/>
 		</div>
 	</ul> -->
-
 </template>
 
 
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, computed } from 'vue'
+import { defineComponent, ref, onMounted } from 'vue'
 import type { PostMedia } from '@/common/models/post.model'
-export default defineComponent({
-    name: 'PostMediaCarousel',
-    setup(props, context) {
 
+export default defineComponent({
+    name: 'MediaCarousel',
+    setup(props, context) {
         // Carousel handlers
         let currentIndex = ref<number>(0) // Store the current active item index
         let nextIndex = ref<number>(props.medias[0].index + 1) // Calculate the index of the next item
@@ -268,8 +286,7 @@ export default defineComponent({
          * Mutes or unmutes the video with the specified index.
          * @param index The index of the video element to mute or unmute.
          */
-         const toggleVideoMute = (index: number) => {
-            console.log(`Toggling mute for video ${index}.`)
+        const toggleVideoMute = (index: number) => {
             const video = videoElements.value[index]
             isVideoMuted.value = !video.muted
         }
@@ -281,7 +298,7 @@ export default defineComponent({
         const pauseVideo = (index: number) => {
             const target = videoElements.value[index] as HTMLVideoElement
             target.pause()
-            isVideoPlaying.value = !target.paused 
+            isVideoPlaying.value = !target.paused
         }
 
         /**
@@ -291,9 +308,9 @@ export default defineComponent({
         const playVideo = (index: number) => {
             const target = videoElements.value[index] as HTMLVideoElement
             target.play()
-            isVideoPlaying.value = !target.paused 
+            isVideoPlaying.value = !target.paused
         }
-        
+
 
         /**
          * Append an HTMLVideoElement instance to the videoElements array
@@ -332,25 +349,25 @@ export default defineComponent({
             if (autoNextTimeInterval.value != 0) setTimeout(autoTimedNextMedia, timeBeforeFirstCall.value)
         })
 
-        return { 
-            moveToNextMedia, 
-            moveToPrevMedia, 
-            resetCarouseIndexes, 
-            toggleVideoMute, 
+        return {
+            moveToNextMedia,
+            moveToPrevMedia,
+            resetCarouseIndexes,
+            toggleVideoMute,
             playVideo,
             pauseVideo,
             appendToVideoElements,
             videoElements,
-            currentIndex, 
-            prevIndex, 
-            nextIndex, 
+            currentIndex,
+            prevIndex,
+            nextIndex,
             isVideoMuted,
             isVideoPlaying
         }
     },
     props: {
         medias: {
-            type: Object as () => PostMedia[],
+            type: Array as () => PostMedia[],
             required: true
         },
         autoNextTimeInterval: {
@@ -358,6 +375,11 @@ export default defineComponent({
             required: false,
             default: 0
         },
+        style: {
+            type: String,
+            required: false,
+            default: ''
+        }
     },
     emits: [
         'onNext',
