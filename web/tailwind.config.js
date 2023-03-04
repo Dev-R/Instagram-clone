@@ -9,7 +9,10 @@ module.exports = {
       colors: {
         slate: {
           1000 : '#121212'
-        }
+        },
+        slate: {
+          1100 : '#262626'
+        },
       }
     },
   },
