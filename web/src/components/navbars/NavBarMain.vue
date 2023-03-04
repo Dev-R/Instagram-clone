@@ -6,9 +6,13 @@
             xl:justify-start justify-center">
 
             <!-- Large Icon -->
-            <SVGLoader :icon="'instagram-large'"/>
-            <!-- Small Icon -->
-            <SVGLoader :icon="'instagram-small'"/>
+            <div class="hidden md:block">
+                <SVGLoader :icon="'instagram-large'"/>
+            </div>
+            <div class="block md:hidden">
+                <!-- Small Icon -->
+                <SVGLoader :icon="'instagram-small'"/>
+            </div>
 
         </div>
         <!-- B -->
