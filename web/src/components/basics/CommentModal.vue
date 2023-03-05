@@ -1,6 +1,8 @@
 <template>
     <div
-        class="md:ml-12 fixed top-0 left-0 right-0 z-50 w-full sm:p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full"
+        class="md:ml-12 fixed top-0 left-0 right-0 z-50 
+        w-full sm:p-4 overflow-x-hidden overflow-y-auto 
+        md:inset-0 h-modal md:h-full"
         :class="{ 'hidden': !postComment.isToggled }">
         
 
@@ -105,7 +107,10 @@
                             <!-- 2: comment form for screens < 640px -->
 
                             <div class="block sm:hidden"> 
-                                <div class="flex justify-between border-b border-t border-slate-700 bg-slate-1100 p-2.5 space-x-4">
+                                <div 
+                                    class="flex justify-between border-b 
+                                    border-t border-slate-700 
+                                    bg-slate-1100 p-2.5 space-x-4">
 
                                         <div class="flex">
                                             <img 
@@ -115,8 +120,17 @@
 
 
                                         <div class="flex w-full relative">
-                                            <input type="text" id="first_name" class="bg-black border border-slate-800 text-gray-900 text-sm rounded-full w-full p-3" placeholder="Add a comment...">
-                                            <div class="absolute inset-y-0 right-5 flex items-center pl-3 pointer-events-none font-semibold text-sky-600">
+                                            <input 
+                                                type="text" 
+                                                id="comment-form" 
+                                                class="bg-black border border-slate-800
+                                                text-gray-900 text-sm rounded-full 
+                                                w-full p-3" 
+                                                placeholder="Add a comment...">
+                                            <div 
+                                                class="absolute inset-y-0 right-5 
+                                                flex items-center pl-3 pointer-events-none 
+                                                font-semibold text-sky-600">
                                                 Post
                                             </div>
                                         </div>
