@@ -1,5 +1,7 @@
 <template>
-    <i v-html="svg" />
+    <span :class="class">
+        <i v-html="svg"/>
+    </span>
 </template>
 
 <script lang="ts" setup>
@@ -19,6 +21,10 @@ const props = defineProps({
         type: String,
         default: '',
     },
+    class: {
+        type: String,
+        default: ''
+    }
 })
 
 // Construct the file path for the icon
