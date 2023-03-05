@@ -48,7 +48,7 @@
                         v-if="postItem.hasLiked" :icon="'like'"/>
                     
                     <SVGLoader 
-                        v-else :icon="'un-like'"/>
+                        v-else :icon="'unlike'"/>
                 </span>
 
                 <span 
@@ -130,7 +130,7 @@ export default defineComponent({
 
         // Computed
         const findNumberOfLikes = computed(() => {
-            return props.postItem.likeCount >= 1 ? `${props.postItem.likeCount}Likes` : 'Be the first to like this' 
+            return props.postItem.likeCount >= 1 ? `${props.postItem.likeCount} Likes` : 'Be the first to like this' 
         })
 
         /**
