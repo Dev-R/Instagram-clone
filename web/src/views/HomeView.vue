@@ -61,6 +61,9 @@
                 isToggled: commentModalInfo.isToggled,
                 post : postItems[commentModalInfo.postId],
             }"/>
+
+        <!-- Mobile Navbar -->
+        <NavBarMobile />
     </div>
 </template>
 
@@ -72,6 +75,7 @@ import PostCard from '@/components/basics/PostCard.vue'
 import type { PostMedia } from '@/common/models/post.model'
 import SVGLoader from "@/components/basics/SVGLoader.vue"
 import NavBarMain from '@/components/navbars/NavBarMain.vue'
+import NavBarMobile from '@/components/navbars/NavBarMobile.vue'
 import SuggestionCard from '@/components/basics/SuggestionCard.vue'
 import StoryCarousel from '@/components/basics/StoryCarousel.vue'
 import CommentModal from '@/components/basics/CommentModal.vue'
@@ -257,7 +261,8 @@ export default defineComponent({
         NavBarMain,
         SuggestionCard,
         StoryCarousel,
-        CommentModal
+        CommentModal,
+        NavBarMobile
 }
 })
 </script>
