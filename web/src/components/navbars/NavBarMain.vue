@@ -6,10 +6,10 @@
             xl:justify-start justify-center">
 
             <!-- Large Icon -->
-            <div class="hidden md:block">
+            <div class="xl:block hidden">
                 <SVGLoader :icon="'instagram-large'"/>
             </div>
-            <div class="block md:hidden">
+            <div class="xl:hidden block">
                 <!-- Small Icon -->
                 <SVGLoader :icon="'instagram-small'"/>
             </div>
