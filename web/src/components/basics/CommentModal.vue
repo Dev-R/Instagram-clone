@@ -63,12 +63,11 @@
                         sm:pt-2 lg:col-span-3 col-span-7 z-100
                         sm:border-l border-slate-800 sm:p-2">
 
+                        <!-- 1: username | daysSinceUpload | options for screens > 640px -->
                         <div class="flex flex-col sm:space-x-1 justify-between sm:p-2">
 
-
-                            <!-- 1: username | daysSinceUpload | options for screens > 640px -->
                             <div class="sm:block hidden">
-                                <div class="flex justify-between border-b border-slate-800">
+                                <div class="flex justify-between border-b border-slate-800 p-3">
                                     <div class="flex space-x-2">
 
                                         <img 
@@ -144,7 +143,7 @@
                                         class="cursor-pointer h-8 w-8 rounded-full shadow-lg">                                  
                                     </div>
 
-                                    <!-- Comment usernam and content -->
+                                    <!-- Comment username and content -->
                                     <div class="col-span-9 flex flex-col">
                                         <p 
                                         class="text-ellipsis overflow-hidden font-sans 
