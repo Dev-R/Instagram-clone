@@ -95,11 +95,25 @@ export default defineComponent({
                 index: 0,
                 type: 'image',
                 mediaUrl:
-                    "https://loremflickr.com/1024/1280/car",
+                    "https://loremflickr.com/1024/1280/cat",
                 title: "Legendary A"
             },
             {
                 index: 1,
+                type: 'image',
+                mediaUrl:
+                    "https://loremflickr.com/1024/1280/nature",
+                title: "Legendary A"
+            },
+            {
+                index: 2,
+                type: 'image',
+                mediaUrl:
+                    "https://loremflickr.com/1024/1280/bird",
+                title: "Legendary A"
+            },
+            {
+                index: 3,
                 type: 'video',
                 mediaUrl:
                     "https://joy1.videvo.net/videvo_files/video/free/2014-12/large_watermarked/Metal_Wind_Chimes_at_Sunset_preview.mp4",
@@ -113,11 +127,25 @@ export default defineComponent({
                 index: 0,
                 type: 'image',
                 mediaUrl:
-                    "https://loremflickr.com/1024/1280/bird",
+                    "https://loremflickr.com/1024/1280/sky",
                 title: "Legendary A"
             },
             {
                 index: 1,
+                type: 'image',
+                mediaUrl:
+                    "https://loremflickr.com/1024/1280/love",
+                title: "Legendary A"
+            },
+            {
+                index: 2,
+                type: 'image',
+                mediaUrl:
+                    "https://loremflickr.com/1024/1280/happy",
+                title: "Legendary A"
+            },
+            {
+                index: 3,
                 type: 'video',
                 mediaUrl:
                     "https://joy1.videvo.net/videvo_files/video/free/2014-12/large_watermarked/Metal_Wind_Chimes_at_Sunset_preview.mp4",
@@ -182,7 +210,7 @@ export default defineComponent({
             // Adding a new post with random data
             {
                 id: '3',
-                userName: 'Mona',
+                userName: 'Rick',
                 createdAt: '10 hours',
                 likeCount: 210,
                 hasLiked: false,
