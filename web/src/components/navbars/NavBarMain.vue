@@ -23,7 +23,10 @@
                 flex space-x-4 hover:bg-slate-1000 hover:delay-100 
                 hover:delay-100 p-3 xl:justify-start justify-center">
                 
-                <SVGLoader :icon="'home'"/>
+                <SVGLoader 
+                    :icon="'home'" 
+                    :class="'group-hover:scale-110'"/>
+                
                 <span class="xl:block hidden font-sans text-md font-bold text-white">
                     Home
                 </span>
@@ -36,7 +39,10 @@
                 hover:delay-100 p-3 xl:justify-start 
                 justify-center">
 
-                <SVGLoader :icon="'search'"/>
+                <SVGLoader 
+                    :icon="'search'" 
+                    :class="'group-hover:scale-110'"/>
+
                 <span class="xl:block hidden font-sans text-md font-normal text-white">
                     Search
                 </span>
@@ -48,7 +54,10 @@
                 flex space-x-4 hover:bg-slate-1000 hover:delay-100
                     p-3 xl:justify-start justify-center">
 
-                    <SVGLoader :icon="'explore'"/>
+                <SVGLoader 
+                    :icon="'explore'" 
+                    :class="'group-hover:scale-110'"/>
+
                 <span class="xl:block hidden font-sans text-md font-normal text-white">
                     Explore
                 </span>
@@ -61,7 +70,10 @@
                 hover:delay-100 p-3 xl:justify-start 
                 justify-center">
 
-                <SVGLoader :icon="'reels'"/>
+                <SVGLoader 
+                    :icon="'reels'" 
+                    :class="'group-hover:scale-110'"/>
+
                 <span class="xl:block hidden font-sans text-md font-normal text-white">
                     Reels
                 </span>
@@ -74,7 +86,10 @@
                 hover:delay-100 p-3 xl:justify-start 
                 justify-center">
 
-                <SVGLoader :icon="'direct'"/>
+                <SVGLoader 
+                    :icon="'direct'" 
+                    :class="'group-hover:scale-110'"/>
+
                 <span class="xl:block hidden font-sans text-md font-normal text-white">
                     Messages
                 </span>
@@ -86,7 +101,10 @@
                 flex space-x-4 hover:bg-slate-1000 hover:delay-100 
                 p-3 xl:justify-start justify-center">
 
-                <SVGLoader :icon="'notifications'"/>
+                <SVGLoader 
+                    :icon="'notifications'" 
+                    :class="'group-hover:scale-110'"/>
+
                 <span class="xl:block hidden font-sans text-md font-normal text-white">
                     Notifications
                 </span>
@@ -98,7 +116,10 @@
                 flex space-x-4 hover:bg-slate-1000 hover:delay-100 
                 p-3 xl:justify-start justify-center">
 
-                <SVGLoader :icon="'create'"/>
+                <SVGLoader 
+                    :icon="'create'" 
+                    :class="'group-hover:scale-110'"/>
+
                 <span class="xl:block hidden font-sans text-md font-light text-white">
                     Create
                 </span>
@@ -110,7 +131,7 @@
                 flex space-x-4 hover:bg-slate-1000 hover:delay-100 
                 p-3 xl:justify-start justify-center">
 
-                <img src="http://via.placeholder.com/26x26" class="w-6 h-6 rounded-full shadow-lg">
+                <img src="http://via.placeholder.com/26x26" class="w-6 h-6 rounded-full shadow-lg group-hover:scale-110">
                 <span class="xl:block hidden font-sans text-md font-light text-white">
                     Profile
                 </span>
