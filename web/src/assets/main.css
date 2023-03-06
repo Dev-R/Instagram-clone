@@ -1,6 +1,7 @@
 /* Comment out, to prevent CSS clashing with default vue project settings... */
 @import './base.css'; 
 @import './icons.css';
+@import './carousel.css';
 
 @tailwind base;
 @tailwind components;
