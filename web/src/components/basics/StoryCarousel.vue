@@ -1,40 +1,46 @@
 <template>
-    <div class="w-[66px] h-[66px] flex flex-col items-center">
+    <div class="max-w-md mx-auto bg-transparent shadow-xl min-w-0 ">
+        <div class="overflow-x-auto flex space-x-6  scrollbar-thin scrollbar-thumb-gray-900 scrollbar-track-gray-100">
+            <li 
+                class="flex flex-none flex-col items-center space-y-1"
+                v-for="(reel, index) of reels" 
+                @click="loadStory(reel.id)"
+                :key="index">
 
-        <div
-            v-for="(reel, index) of reels"
-            :key="index">
-
-            <div
-                class="bg-gradient-to-tr from-yellow-400 
-                to-pink-500 p-[0.20rem] rounded-full">
-                <span class="block rounded-full">
-                    <img 
-                        class="rounded-full" 
-                        :src="reel.profilePictureUrl">
-                </span>
-            </div>
-
-            <span class="text-white text-xs">
-                {{ reel.userName }}
-            </span>
-
+                <div class="bg-gradient-to-tr from-yellow-400 to-fuchsia-600 p-1 rounded-full">
+                    <a href="#" class="block bg-white rounded-full relative">
+                        <img 
+                            class="w-16 h-16 rounded-full object-cover"
+                            :src="reel.profilePictureUrl"/>
+                    </a>
+                </div>
+                <a href="#" class="text-xs text-white font-semibold">{{ reel.userName }}</a>
+            </li>
         </div>
-
     </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+
 import type { StoryCarousel } from '@/common/models/post.model'
 
 export default defineComponent({
     name: 'StoryCarousel',
     setup(reels) {
+
+        // Services
+        const router = useRouter()
+
+        const loadStory = (id: string | number) => {
+            console.log("ID:", id)
+            router.push({ name: 'stories', params: { reels_id: id } })
+        }
         onMounted(() => {
         })
 
-        return {}
+        return { loadStory }
     },
     props: {
         reels: {
