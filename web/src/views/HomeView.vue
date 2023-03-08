@@ -17,7 +17,7 @@
                 <!-- Center: Posts -->
                 <div 
                     class="lg:col-span-6 lg:grid md:col-span-6 
-                    md:col-start-4 md:mt-3 md:p-0 
+                    md:col-start-4 md:mt-8 md:p-0
                     col-span-12 bg-black p-2">
  
                     <div 
@@ -26,7 +26,7 @@
                         justify-self-end lg:mr-[64px]">
 
                         <!-- Stories -->
-                        <div class="mb-6 flex snap-x space-x-2 justify-evenly">
+                        <div class="mb-6 relative rounded-xl overflow-auto">
                             <StoryCarousel :reels="reels"/>
                         </div>
 
@@ -45,7 +45,7 @@
 
                 <!-- Right bar: Suggestions -->
                 <div 
-                    class="col-span-4 bg-black md:mt-5
+                    class="col-span-4 bg-black md:mt-8
                     lg:block hidden w-80">
                 
                     <SuggestionCard 
@@ -72,13 +72,14 @@ import { defineComponent, ref } from 'vue'
 
 import MediaCarousel from '@/components/basics/MediaCarousel.vue'
 import PostCard from '@/components/basics/PostCard.vue'
-import type { PostMedia } from '@/common/models/post.model'
 import SVGLoader from "@/components/basics/SVGLoader.vue"
 import NavBarMain from '@/components/navbars/NavBarMain.vue'
 import NavBarMobile from '@/components/navbars/NavBarMobile.vue'
 import SuggestionCard from '@/components/basics/SuggestionCard.vue'
 import StoryCarousel from '@/components/basics/StoryCarousel.vue'
 import CommentModal from '@/components/basics/CommentModal.vue'
+
+import type { PostMedia } from '@/common/models/post.model'
 
 export default defineComponent({
     name: 'Home',
@@ -238,13 +239,69 @@ export default defineComponent({
 
 
         const reels = [{
-            userName: 'Rabee',
-            profilePictureUrl: 'http://via.placeholder.com/32x32',
+            id: 1 ,
+            userName: 'Noura',
+            profilePictureUrl: 'https://loremflickr.com/32/32/woman',
             expiringAt: '',
             seen: false,
             items: mediasArraySampleA,
             mediaCount: mediasArraySampleA.length
-        }]
+        },
+        {
+            id: 2 ,
+            userName: 'Rabee',
+            profilePictureUrl: 'https://loremflickr.com/32/32/man',
+            expiringAt: '',
+            seen: false,
+            items: mediasArraySampleA,
+            mediaCount: mediasArraySampleA.length
+        },
+        {
+            id: 3 ,
+            userName: 'Sloom',
+            profilePictureUrl: 'https://loremflickr.com/32/32/boy',
+            expiringAt: '',
+            seen: false,
+            items: mediasArraySampleA,
+            mediaCount: mediasArraySampleA.length
+        },
+        {
+            id: 4 ,
+            userName: 'Mohammed',
+            profilePictureUrl: 'https://loremflickr.com/32/32/sky',
+            expiringAt: '',
+            seen: false,
+            items: mediasArraySampleA,
+            mediaCount: mediasArraySampleA.length
+        },
+        {
+            id: 5 ,
+            userName: 'Rabee',
+            profilePictureUrl: 'https://loremflickr.com/32/32/man',
+            expiringAt: '',
+            seen: false,
+            items: mediasArraySampleA,
+            mediaCount: mediasArraySampleA.length
+        },
+        {
+            id: 6 ,
+            userName: 'Sloom',
+            profilePictureUrl: 'https://loremflickr.com/32/32/boy',
+            expiringAt: '',
+            seen: false,
+            items: mediasArraySampleA,
+            mediaCount: mediasArraySampleA.length
+        },
+        {
+            id: 7 ,
+            userName: 'Mohammed',
+            profilePictureUrl: 'https://loremflickr.com/32/32/sky',
+            expiringAt: '',
+            seen: false,
+            items: mediasArraySampleA,
+            mediaCount: mediasArraySampleA.length
+        }
+    ]
 
         return {
             postItems,
