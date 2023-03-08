@@ -57,8 +57,8 @@ export interface PostCard {
  * Interface for Story Carousel modal
  */
 export interface StoryCarousel {
-    // /** The user who created the story carousel */
-    // user: User
+    /** Story UUID */
+    id: number
 
     /** User's user name */
     userName: string
