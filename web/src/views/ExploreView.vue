@@ -1,10 +1,25 @@
 <template>
-  <div class="container max-w-full bg-red space-y-5">
-<CommentModal :post-comment="{
-                isToggled: false,
-                post : postItems[0],
-                }"/>
-  </div>
+    <div class="container max-w-full h-full bg-[#1a1a1a] space-y-5 p-5">
+        <Carousel3d 
+            :controls-visible="true"
+            :height="870"
+            :width="490"
+            :space="650"
+            :perspective="0"
+            :display="'5'">
+            <Slide
+                v-for="(media, i) in mediasArraySampleB" 
+                :index="i">
+                <img :src="media.mediaUrl">
+                <!-- <video
+                    class="min-h-[870px]" 
+                    :autoplay="true"
+                    :muted="true"> 
+                    <source :src="media.mediaUrl" type="video/mp4">
+                </video> -->
+            </Slide>
+        </Carousel3d>
+    </div>
 </template>
 
 <script lang="ts">
@@ -15,41 +30,58 @@ import type { PostMedia } from '@/common/models/post.model'
 import SVGLoader from "@/components/basics/SVGLoader.vue"
 import CommentModal from '@/components/basics/CommentModal.vue'
 
+// @ts-ignore
+import { Carousel3d, Slide } from 'vue3-carousel-3d'
 
 export default defineComponent({
-  name: "Explore",
-  setup() {
+    name: "Explore",
+    setup() {
 
-      // Checkers
+        // Checkers
 
-      const isToggled = ref<boolean>(true) 
+        const screenSize = window
+        
+        const isToggled = ref<boolean>(true)
 
-      const toggleModel = () => isToggled.value = !isToggled.value
-
-      const mediasArraySampleA: PostMedia[] = [
-            {
-                index: 0,
-                type: 'image',
-                mediaUrl:
-                    "https://loremflickr.com/1024/1280/car",
-                title: "Legendary A"
-            },
-            {
-                index: 1,
-                type: 'video',
-                mediaUrl:
-                    "https://joy1.videvo.net/videvo_files/video/free/2014-12/large_watermarked/Metal_Wind_Chimes_at_Sunset_preview.mp4",
-                title: "Legendary B"
-            },
-        ]
-
+        const toggleModel = () => isToggled.value = !isToggled.value
 
         const mediasArraySampleB: PostMedia[] = [
             {
                 index: 0,
                 type: 'image',
                 mediaUrl:
-                    "https://loremflickr.com/1024/1280/bird",
+                    "https://loremflickr.com/490/870/sky",
+                title: "Legendary A"
+            },
+            {
+                index: 1,
+                type: 'image',
+                mediaUrl:
+                    "https://loremflickr.com/490/870/love",
+                title: "Legendary A"
+            },
+            {
+                index: 2,
+                type: 'image',
+                mediaUrl:
+                    "https://loremflickr.com/490/870/cat",
+                title: "Legendary A"
+            },
+            {
+                index: 3,
+                type: 'image',
+                mediaUrl:
+                    "https://loremflickr.com/490/870/dog",
+                title: "Legendary A"
+            },
+        ]
+
+        const mediasArraySampleA: PostMedia[] = [
+            {
+                index: 0,
+                type: 'image',
+                mediaUrl:
+                    "https://loremflickr.com/490/870/car",
                 title: "Legendary A"
             },
             {
@@ -61,12 +93,13 @@ export default defineComponent({
             },
         ]
 
+
         const mediasArraySampleC: PostMedia[] = [
             {
                 index: 0,
                 type: 'image',
                 mediaUrl:
-                    "https://loremflickr.com/1024/1280/bird",
+                    "https://loremflickr.com/490/870/bird",
                 title: "Legendary D"
             },
         ]
@@ -76,7 +109,7 @@ export default defineComponent({
                 index: 0,
                 type: 'image',
                 mediaUrl:
-                    "https://loremflickr.com/1024/1280/life",
+                    "https://loremflickr.com/490/870/life",
                 title: "Legendary D"
             },
         ]
@@ -128,8 +161,8 @@ export default defineComponent({
                 profilePictureUrl: 'https://loremflickr.com/32/32/woman'
             }
         ]
-        
-        
+
+
         const suggested = {
             userName: 'Rabee',
             profilePictureUrl: 'http://via.placeholder.com/32x32',
@@ -150,18 +183,20 @@ export default defineComponent({
             mediaCount: mediasArraySampleA.length
         }]
 
-      onMounted(() => {
-          // console.log('Mounted Explore')
-      })
-      return { postItems, isToggled, toggleModel }
-  },
-  components: { MediaCarousel, SVGLoader, CommentModal }
+        onMounted(() => {
+            // console.log('Mounted Explore')
+        })
+        return { postItems, isToggled, toggleModel, mediasArraySampleB, screenSize }
+    },
+    components: {
+        MediaCarousel,
+        SVGLoader,
+        CommentModal,
+        Carousel3d,
+        Slide
+    }
 })
 </script>
 
 <style>
-.outter-scrolling::-webkit-scrollbar{
-width: 0;
-scrollbar-width: none;
-}
 </style>
