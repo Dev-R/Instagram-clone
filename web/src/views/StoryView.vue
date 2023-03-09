@@ -1,13 +1,15 @@
 <template>
     <div class="container max-w-full h-screen bg-[#1a1a1a] space-y-5 p-2">
         <Carousel3d 
-            
+            :autoplay="true"
             :controls-visible="true"
             :height="870"
             :width="490"
             :space="800"
+            :autoplay-timeout="2000"
             :inverse-scaling="1200" 
             :perspective="0"
+            @after-slide-change="onAfterSlideChange"
             :display="'5'">
             <Slide
                 v-for="(reel, i) in reels" 
@@ -15,7 +17,7 @@
                 <figure class="relative max-w transition-all duration-300">
                     <!-- Progress Bar -->
                     <figcaption class="absolute inset-x-3 top-2 w-11/12 bg-gray-400 rounded-full h-0.5">
-                        <div class="bg-gray-200 h-0.5 rounded-full" style="width: 45%"></div>
+                        <div class="bg-gray-200 h-0.5 rounded-full" :style="{ 'width': progressBar + '%' }"></div>
                     </figcaption>
 
                     <!-- Info Bar -->
@@ -84,7 +86,6 @@
                             class="bg-transparent border border-gray-300 text-gray-900 text-sm rounded-full
                             focus:border-blue-500 block w-full p-2.5" 
                             placeholder="John">
-                        
                         <SVGLoader :icon="'like'" :class="'self-center'"/>
                         <SVGLoader :icon="'direct'" :class="'self-center'"/> 
                     </figcaption>
@@ -96,23 +97,34 @@
 </template>
 
 <script lang="ts">
-import { onMounted, defineComponent, ref } from 'vue';
+import { onMounted, defineComponent, ref, watch, computed } from 'vue'
 
 // @ts-ignore
-import { Carousel3d, Slide } from 'vue3-carousel-3d';
+import { Carousel3d, Slide } from 'vue3-carousel-3d'
 
-import MediaCarousel from '@/components/basics/MediaCarousel.vue';
-import SVGLoader from "@/components/basics/SVGLoader.vue";
-import CommentModal from '@/components/basics/CommentModal.vue';
-import type { PostMedia } from '@/common/models/post.model';
+import MediaCarousel from '@/components/basics/MediaCarousel.vue'
+import SVGLoader from "@/components/basics/SVGLoader.vue"
+import CommentModal from '@/components/basics/CommentModal.vue'
+import type { PostMedia } from '@/common/models/post.model'
 
 export default defineComponent({
     name: "Story",
     setup() {
 
+        // Constants
+        const TIMER_VALUE = 10
+        const PROGRESS_INITAL_VALUE = 0
+
+        // Settings
+        const timerCount = ref(TIMER_VALUE)
+        const progressCount = ref(PROGRESS_INITAL_VALUE)
+        const isTimerEnabled = ref(false)
+
+
         // Checkers
         const screenSize = window
         const isToggled = ref<boolean>(true)
+
 
         // Video handlers
         const isVideoMuted = ref<boolean>(true) // Check if video is currently muted or not
@@ -121,19 +133,57 @@ export default defineComponent({
          * An array of HTMLVideoElement instances.
          * Each element in the array corresponds to a video element on the page.
          */
-         const videoElements = ref<HTMLVideoElement[]>([])
+        const videoElements = ref<HTMLVideoElement[]>([])
 
+        const onAfterSlideChange = (index: number) => {
+            progressCount.value = 0
+            timerCount.value = TIMER_VALUE
+            console.log('@onAfterSlideChange Callback Triggered', 'Slide Index ' + index)
+        
+        }
+            //  Watchers
+        watch(
+            isTimerEnabled,
+            (value) => {
+                if (value) {
+                    setTimeout(() => {
+                        timerCount.value--
+                    }, 1000)
+                }
+                console.log('A: ', timerCount.value, value)
+            }
+        )
+
+        watch(
+            timerCount,
+            (value) => {
+                if (value > 0 && isTimerEnabled.value) {
+                    setTimeout(() => {
+                        timerCount.value--
+                        progressCount.value++
+                    }, 1000)
+                }
+                console.log('B: ', timerCount.value, value)
+
+            },
+            { immediate: true }
+        )
+
+        // Computed property for progressBar percentage
+        const progressBar = computed(() => {
+            console.log("Progress Bar:", progressCount.value / TIMER_VALUE * 100)
+            return progressCount.value / TIMER_VALUE * 100 // Assumes the default value of timerCount is 30
+        })
 
         /**
          * Mutes or unmutes the video with the specified index.
          * @param index The index of the video element to mute or unmute.
          */
-         const toggleVideoMute = (index: number) => {
+        const toggleVideoMute = (index: number) => {
             const video = videoElements.value[index]
             isVideoMuted.value = !video.muted
         }
 
-        
         /**
          * Append an HTMLVideoElement instance to the videoElements array
          * called only once on each video element.
@@ -141,7 +191,7 @@ export default defineComponent({
          * @param index The index of the HTMLVideoElement instance in the videoElements array.
          * @param event The HTMLVideoElement to be saved.
          */
-         const appendToVideoElements = (index: number, event: Event) => {
+        const appendToVideoElements = (index: number, event: Event) => {
             videoElements.value[index] = event.target as HTMLVideoElement
         }
 
@@ -278,7 +328,7 @@ export default defineComponent({
 
 
         const reels = [{
-            id: 1 ,
+            id: 1,
             userName: 'Noura',
             profilePictureUrl: 'https://loremflickr.com/32/32/woman',
             expiringAt: '',
@@ -287,7 +337,7 @@ export default defineComponent({
             mediaCount: mediasArraySampleA.length
         },
         {
-            id: 2 ,
+            id: 2,
             userName: 'Rabee',
             profilePictureUrl: 'https://loremflickr.com/32/32/man',
             expiringAt: '',
@@ -296,7 +346,7 @@ export default defineComponent({
             mediaCount: mediasArraySampleA.length
         },
         {
-            id: 3 ,
+            id: 3,
             userName: 'Sloom',
             profilePictureUrl: 'https://loremflickr.com/32/32/boy',
             expiringAt: '',
@@ -305,7 +355,7 @@ export default defineComponent({
             mediaCount: mediasArraySampleA.length
         },
         {
-            id: 4 ,
+            id: 4,
             userName: 'Mohammed',
             profilePictureUrl: 'https://loremflickr.com/32/32/sky',
             expiringAt: '',
@@ -314,7 +364,7 @@ export default defineComponent({
             mediaCount: mediasArraySampleA.length
         },
         {
-            id: 5 ,
+            id: 5,
             userName: 'Rabee',
             profilePictureUrl: 'https://loremflickr.com/32/32/man',
             expiringAt: '',
@@ -323,7 +373,7 @@ export default defineComponent({
             mediaCount: mediasArraySampleA.length
         },
         {
-            id: 6 ,
+            id: 6,
             userName: 'Sloom',
             profilePictureUrl: 'https://loremflickr.com/32/32/boy',
             expiringAt: '',
@@ -332,7 +382,7 @@ export default defineComponent({
             mediaCount: mediasArraySampleA.length
         },
         {
-            id: 7 ,
+            id: 7,
             userName: 'Mohammed',
             profilePictureUrl: 'https://loremflickr.com/32/32/sky',
             expiringAt: '',
@@ -340,12 +390,13 @@ export default defineComponent({
             items: mediasArraySampleB,
             mediaCount: mediasArraySampleA.length
         }
-    ]
+        ]
 
         onMounted(() => {
             // console.log('Mounted Explore')
+            isTimerEnabled.value = true
         })
-        return { postItems, isToggled, toggleModel, reels, screenSize , isVideoMuted, isVideoPlaying, toggleVideoMute, appendToVideoElements}
+        return { postItems, isToggled, toggleModel, reels, screenSize, isVideoMuted, isVideoPlaying, toggleVideoMute, appendToVideoElements, progressBar, onAfterSlideChange, TIMER_VALUE}
     },
     components: {
         MediaCarousel,
@@ -356,6 +407,7 @@ export default defineComponent({
     }
 })
 </script>
+
 
 <style>
 </style>
