@@ -1,7 +1,9 @@
 <template>
     <div class="container max-w-full h-screen bg-[#1a1a1a] space-y-5 p-2">
         <Carousel3d 
-            :autoplay="true"
+            ref="carousel"
+            :startIndex="0"
+            :autoplay="false"
             :controls-visible="true"
             :height="870"
             :width="490"
@@ -9,19 +11,32 @@
             :autoplay-timeout="2000"
             :inverse-scaling="1200" 
             :perspective="0"
+            :clickable="false"
             @after-slide-change="onAfterSlideChange"
             :display="'5'">
             <Slide
-                v-for="(reel, i) in reels" 
-                :index="i">
+                v-for="(reel, slideIndex) in reels"
+                @click="onSlideJump(slideIndex)" 
+                :index="slideIndex">
                 <figure class="relative max-w transition-all duration-300">
                     <!-- Progress Bar -->
-                    <figcaption class="absolute inset-x-3 top-2 w-11/12 bg-gray-400 rounded-full h-0.5">
-                        <div class="bg-gray-200 h-0.5 rounded-full" :style="{ 'width': progressBar + '%' }"></div>
+                    <figcaption 
+                        v-if="currentSlideIndex === slideIndex"
+                        class="absolute inset-x-3 
+                        top-2 w-11/12 bg-gray-400 
+                        rounded-full h-0.5">
+                            <div 
+                                class="bg-gray-200 h-0.5 
+                                rounded-full" 
+                                :style="{ 'width': progressBar + '%' }">
+                            </div>
                     </figcaption>
 
                     <!-- Info Bar -->
-                    <figcaption class="absolute py-2 text-lg top-5 flex flex-nowrap w-auto">
+                    <figcaption 
+                        class="absolute py-2 
+                        text-lg top-5 flex 
+                        flex-nowrap w-auto">
                         <div class="p-1 rounded-full">
                             <span class="block bg-white rounded-full relative">
                                 <img 
@@ -32,7 +47,7 @@
 
                         <div class="text-sm text-white self-center space-x-1">
                             <span>
-                                Rabee
+                                {{ reel.userName }}
                             </span>
 
                             <i class="fa-solid fa-circle-check">
@@ -95,318 +110,211 @@
         </Carousel3d>
     </div>
 </template>
+<!-- 
+    1- Make timer count for X seconds, then -> print (Next slide) ✔
+        A- Convert current time progress into percentage ✔
+        B- Make progress bar appear in current index only ✔
+    2- Insteading of printing next slide, go to next slide
+        A- Make watch that reset index, when reached end ✔
+        B- Handle on jump situation
 
-<script lang="ts">
-import { onMounted, defineComponent, ref, watch, computed } from 'vue'
-
-// @ts-ignore
-import { Carousel3d, Slide } from 'vue3-carousel-3d'
-
-import MediaCarousel from '@/components/basics/MediaCarousel.vue'
-import SVGLoader from "@/components/basics/SVGLoader.vue"
-import CommentModal from '@/components/basics/CommentModal.vue'
-import type { PostMedia } from '@/common/models/post.model'
-
-export default defineComponent({
-    name: "Story",
-    setup() {
-
-        // Constants
-        const TIMER_VALUE = 10
-        const PROGRESS_INITAL_VALUE = 0
-
-        // Settings
-        const timerCount = ref(TIMER_VALUE)
-        const progressCount = ref(PROGRESS_INITAL_VALUE)
-        const isTimerEnabled = ref(false)
-
-
-        // Checkers
-        const screenSize = window
-        const isToggled = ref<boolean>(true)
-
-
-        // Video handlers
-        const isVideoMuted = ref<boolean>(true) // Check if video is currently muted or not
-        const isVideoPlaying = ref<boolean>(false) // Check if video is playing or not
-        /**
-         * An array of HTMLVideoElement instances.
-         * Each element in the array corresponds to a video element on the page.
-         */
-        const videoElements = ref<HTMLVideoElement[]>([])
-
-        const onAfterSlideChange = (index: number) => {
-            progressCount.value = 0
-            timerCount.value = TIMER_VALUE
-            console.log('@onAfterSlideChange Callback Triggered', 'Slide Index ' + index)
-        
-        }
-            //  Watchers
-        watch(
-            isTimerEnabled,
-            (value) => {
-                if (value) {
-                    setTimeout(() => {
-                        timerCount.value--
-                    }, 1000)
-                }
-                console.log('A: ', timerCount.value, value)
-            }
-        )
-
-        watch(
-            timerCount,
-            (value) => {
-                if (value > 0 && isTimerEnabled.value) {
-                    setTimeout(() => {
-                        timerCount.value--
-                        progressCount.value++
-                    }, 1000)
-                }
-                console.log('B: ', timerCount.value, value)
-
-            },
-            { immediate: true }
-        )
-
-        // Computed property for progressBar percentage
-        const progressBar = computed(() => {
-            console.log("Progress Bar:", progressCount.value / TIMER_VALUE * 100)
-            return progressCount.value / TIMER_VALUE * 100 // Assumes the default value of timerCount is 30
-        })
-
-        /**
-         * Mutes or unmutes the video with the specified index.
-         * @param index The index of the video element to mute or unmute.
-         */
-        const toggleVideoMute = (index: number) => {
-            const video = videoElements.value[index]
-            isVideoMuted.value = !video.muted
-        }
-
-        /**
-         * Append an HTMLVideoElement instance to the videoElements array
-         * called only once on each video element.
-         * 
-         * @param index The index of the HTMLVideoElement instance in the videoElements array.
-         * @param event The HTMLVideoElement to be saved.
-         */
-        const appendToVideoElements = (index: number, event: Event) => {
-            videoElements.value[index] = event.target as HTMLVideoElement
-        }
-
-
-        const toggleModel = () => isToggled.value = !isToggled.value
-
-        const mediasArraySampleB: PostMedia[] = [
-            {
-                index: 0,
-                type: 'image',
-                mediaUrl:
-                    "https://loremflickr.com/490/870/sky",
-                title: "Legendary A"
+    -->
+    <script lang="ts">
+    import { onMounted, defineComponent, ref, watch, computed } from 'vue'
+    
+    // @ts-ignore
+    import { Carousel3d, Slide } from 'vue3-carousel-3d'
+    
+    import MediaCarousel from '@/components/basics/MediaCarousel.vue'
+    import SVGLoader from '@/components/basics/SVGLoader.vue'
+    import CommentModal from '@/components/basics/CommentModal.vue'
+    import type { PostMedia } from '@/common/models/post.model'
+    
+    
+    export default defineComponent({
+        name: "StoryView",
+        setup() {
+    
+            // TO-DO: Fix story skip bug
+            const mediasArraySampleB: PostMedia[] = [
+                {
+                    index: 0,
+                    type: 'image',
+                    mediaUrl:
+                        "https://loremflickr.com/490/870/sky",
+                    title: "Legendary A"
+                },
+                {
+                    index: 1,
+                    type: 'image',
+                    mediaUrl:
+                        "https://loremflickr.com/490/870/love",
+                    title: "Legendary A"
+                },
+                {
+                    index: 2,
+                    type: 'image',
+                    mediaUrl:
+                        "https://loremflickr.com/490/870/cat",
+                    title: "Legendary A"
+                },
+                {
+                    index: 3,
+                    type: 'image',
+                    mediaUrl:
+                        "https://loremflickr.com/490/870/dog",
+                    title: "Legendary A"
+                },
+            ]
+    
+            const mediasArraySampleA: PostMedia[] = [
+                {
+                    index: 0,
+                    type: 'image',
+                    mediaUrl:
+                        "https://loremflickr.com/490/870/car",
+                    title: "Legendary A"
+                },
+                {
+                    index: 1,
+                    type: 'video',
+                    mediaUrl:
+                        "https://joy1.videvo.net/videvo_files/video/free/2014-12/large_watermarked/Metal_Wind_Chimes_at_Sunset_preview.mp4",
+                    title: "Legendary B"
+                },
+            ]
+    
+            const reels = [{
+                id: 1,
+                userName: 'Noura',
+                profilePictureUrl: 'https://loremflickr.com/32/32/woman',
+                expiringAt: '',
+                seen: false,
+                items: mediasArraySampleA,
+                mediaCount: mediasArraySampleA.length
             },
             {
-                index: 1,
-                type: 'image',
-                mediaUrl:
-                    "https://loremflickr.com/490/870/love",
-                title: "Legendary A"
-            },
-            {
-                index: 2,
-                type: 'image',
-                mediaUrl:
-                    "https://loremflickr.com/490/870/cat",
-                title: "Legendary A"
-            },
-            {
-                index: 3,
-                type: 'image',
-                mediaUrl:
-                    "https://loremflickr.com/490/870/dog",
-                title: "Legendary A"
-            },
-        ]
-
-        const mediasArraySampleA: PostMedia[] = [
-            {
-                index: 0,
-                type: 'image',
-                mediaUrl:
-                    "https://loremflickr.com/490/870/car",
-                title: "Legendary A"
-            },
-            {
-                index: 1,
-                type: 'video',
-                mediaUrl:
-                    "https://joy1.videvo.net/videvo_files/video/free/2014-12/large_watermarked/Metal_Wind_Chimes_at_Sunset_preview.mp4",
-                title: "Legendary B"
-            },
-        ]
-
-
-        const mediasArraySampleC: PostMedia[] = [
-            {
-                index: 0,
-                type: 'image',
-                mediaUrl:
-                    "https://loremflickr.com/490/870/bird",
-                title: "Legendary D"
-            },
-        ]
-
-        const mediasArraySampleD: PostMedia[] = [
-            {
-                index: 0,
-                type: 'image',
-                mediaUrl:
-                    "https://loremflickr.com/490/870/life",
-                title: "Legendary D"
-            },
-        ]
-
-        const postItems = [
-            {
-                id: '0',
+                id: 2,
                 userName: 'Rabee',
-                createdAt: '2 days',
-                likeCount: 0,
-                hasLiked: true,
-                caption: ' Sh. @abdullah_oduro and I getting that Saturday morning work in the gym and talking over @yaqeeninstitute Quran 30 ',
-                carouselMedia: mediasArraySampleA,
-                commentCount: 0,
-                profilePictureUrl: 'https://loremflickr.com/32/32/bird'
+                profilePictureUrl: 'https://loremflickr.com/32/32/man',
+                expiringAt: '',
+                seen: false,
+                items: mediasArraySampleB,
+                mediaCount: mediasArraySampleA.length
             },
-            {
-                id: '1',
-                userName: 'Sara',
-                createdAt: '1 day',
-                likeCount: 1500,
-                hasLiked: false,
-                caption: 'Be like a tree. Stay grounded. Connect with your roots. Turn over a new leaf. Bend before you break. Enjoy your unique natural beauty. Keep growing.',
-                carouselMedia: mediasArraySampleB,
-                commentCount: 5,
-                profilePictureUrl: 'https://loremflickr.com/32/32/girl'
-            },
-            {
-                id: '2',
-                userName: 'Ali',
-                createdAt: '5 hours',
-                likeCount: 630,
-                hasLiked: true,
-                caption: 'Stay positive, work hard, and make it happen.',
-                carouselMedia: mediasArraySampleC,
-                commentCount: 3,
-                profilePictureUrl: 'https://loremflickr.com/32/32/boy'
-            },
-            // Adding a new post with random data
-            {
-                id: '3',
-                userName: 'Mona',
-                createdAt: '10 hours',
-                likeCount: 210,
-                hasLiked: false,
-                caption: 'Chase your dreams, but always know the road that will lead you home again.',
-                carouselMedia: mediasArraySampleD,
-                commentCount: 2,
-                profilePictureUrl: 'https://loremflickr.com/32/32/woman'
+            ]
+    
+            // Constants, bad practice. TODO: Move constants into their own files
+            const TIMER_VALUE = 10 // 10
+            const PROGRESS_INITIAL_VALUE = 0
+            const INITIAL_SLIDE_INDEX = 0
+            const MAX_REELS_INDEX = reels.length - 1
+    
+            // Data
+            const timerCount = ref(TIMER_VALUE)
+            const progressCount = ref(PROGRESS_INITIAL_VALUE)
+            const currentSlideIndex = ref(INITIAL_SLIDE_INDEX)
+            const carousel = ref<InstanceType<typeof Carousel3d>>()
+    
+            // Checkers
+            const isToggled = ref<boolean>(false)
+            const isTimerEnabled = ref(false)
+
+            // Methods 
+            const toggleModel = () => {
+                isToggled.value = !isToggled.value
             }
-        ]
+    
+            const resetToInitialValues = () => {
+                progressCount.value = 0
+                timerCount.value = TIMER_VALUE
+            }
+    
+            const startTimer = () => {
+                setTimeout(() => {
+                    timerCount.value--
+                    progressCount.value++
+                }, 1000)
+            }
+    
+            const completeTimer = () => {
+                if (isTimerEnabled.value) {
+                    progressCount.value++
+                    currentSlideIndex.value++
+                }
+            }
+    
+            // Watchers
+            watch(isTimerEnabled, (timerEnabled: boolean) => {
+                    if (timerEnabled) {
+                        setTimeout(() => {
+                            timerCount.value--
+                            progressCount.value++
+                        }, 1000)
+                    }
+                }
+            )
+    
+            watch(currentSlideIndex, (newIndex: number) => {
+                if (newIndex > MAX_REELS_INDEX) {
+                    currentSlideIndex.value = 0
+                    newIndex = 0
+                }
+                carousel.value.goSlide(newIndex)
+            })
+    
+            watch(timerCount, (newTime: number) => {
+                    if (newTime > 0 && isTimerEnabled.value) {
+                        startTimer()
+                    }
+                    else{
+                        completeTimer()
+                    }
+                },
+                { immediate: true }
+            )
 
-
-        const suggested = {
-            userName: 'Rabee',
-            profilePictureUrl: 'http://via.placeholder.com/32x32',
-            suggested: [{
-                userName: 'Rabee',
-                profilePictureUrl: 'http://via.placeholder.com/32x32',
-                followedBy: 'imamomarsuleiman + 1 more'
-            }]
+            // Event Listeners
+            const onSlideJump = (slideIndex: number) => {
+                if(slideIndex != currentSlideIndex.value) {
+                    carousel.value.goSlide(slideIndex)
+                    currentSlideIndex.value = slideIndex
+                    resetToInitialValues()
+                }
+            }
+    
+            // Computed Properties
+            const progressBar = computed(() => {
+                return progressCount.value < TIMER_VALUE
+                    ? (progressCount.value / TIMER_VALUE) * 100
+                    : 100
+            })
+    
+            onMounted(() => {
+                isTimerEnabled.value = true
+            })
+    
+            return {
+                isToggled,
+                currentSlideIndex,
+                reels,
+                progressBar,
+                carousel,
+                TIMER_VALUE,
+                toggleModel,
+                onAfterSlideChange: resetToInitialValues,
+                onSlideJump
+            }
+        },
+        components: {
+            MediaCarousel,
+            SVGLoader,
+            CommentModal,
+            Carousel3d,
+            Slide
         }
-
-
-        const reels = [{
-            id: 1,
-            userName: 'Noura',
-            profilePictureUrl: 'https://loremflickr.com/32/32/woman',
-            expiringAt: '',
-            seen: false,
-            items: mediasArraySampleA,
-            mediaCount: mediasArraySampleA.length
-        },
-        {
-            id: 2,
-            userName: 'Rabee',
-            profilePictureUrl: 'https://loremflickr.com/32/32/man',
-            expiringAt: '',
-            seen: false,
-            items: mediasArraySampleB,
-            mediaCount: mediasArraySampleA.length
-        },
-        {
-            id: 3,
-            userName: 'Sloom',
-            profilePictureUrl: 'https://loremflickr.com/32/32/boy',
-            expiringAt: '',
-            seen: false,
-            items: mediasArraySampleC,
-            mediaCount: mediasArraySampleA.length
-        },
-        {
-            id: 4,
-            userName: 'Mohammed',
-            profilePictureUrl: 'https://loremflickr.com/32/32/sky',
-            expiringAt: '',
-            seen: false,
-            items: mediasArraySampleA,
-            mediaCount: mediasArraySampleA.length
-        },
-        {
-            id: 5,
-            userName: 'Rabee',
-            profilePictureUrl: 'https://loremflickr.com/32/32/man',
-            expiringAt: '',
-            seen: false,
-            items: mediasArraySampleB,
-            mediaCount: mediasArraySampleA.length
-        },
-        {
-            id: 6,
-            userName: 'Sloom',
-            profilePictureUrl: 'https://loremflickr.com/32/32/boy',
-            expiringAt: '',
-            seen: false,
-            items: mediasArraySampleC,
-            mediaCount: mediasArraySampleA.length
-        },
-        {
-            id: 7,
-            userName: 'Mohammed',
-            profilePictureUrl: 'https://loremflickr.com/32/32/sky',
-            expiringAt: '',
-            seen: false,
-            items: mediasArraySampleB,
-            mediaCount: mediasArraySampleA.length
-        }
-        ]
-
-        onMounted(() => {
-            // console.log('Mounted Explore')
-            isTimerEnabled.value = true
-        })
-        return { postItems, isToggled, toggleModel, reels, screenSize, isVideoMuted, isVideoPlaying, toggleVideoMute, appendToVideoElements, progressBar, onAfterSlideChange, TIMER_VALUE}
-    },
-    components: {
-        MediaCarousel,
-        SVGLoader,
-        CommentModal,
-        Carousel3d,
-        Slide
-    }
-})
-</script>
+    })
+    </script>
 
 
 <style>
