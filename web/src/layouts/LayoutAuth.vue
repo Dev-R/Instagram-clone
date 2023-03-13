@@ -1,8 +1,11 @@
 <template>
-    <div
-        class="min-h-screen bg-white">
-        <RouterView/>
-    </div>
+	<div class="h-screen bg-black">
+		<div class="grid grid-cols-6">
+			<div class="col-start-3 col-span-2 p-5">
+				<RouterView />
+			</div>
+		</div>
+	</div>
 </template>
 
 <script lang="ts">
