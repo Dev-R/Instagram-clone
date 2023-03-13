@@ -59,8 +59,7 @@
                                     {{ reel.userName }}
                                 </span>
 
-                                <i class="fa-solid fa-circle-check">
-                                </i>
+                                <i class="fa-solid fa-circle-check"></i>
                                 
                                 <span>
                                     3h
@@ -113,90 +112,45 @@
                                 class="z-50 bg-transparent border border-gray-300 text-gray-900 text-sm rounded-full
                                 focus:border-blue-500 block w-full p-2.5" 
                                 placeholder="John">
+
                             <SVGLoader :icon="'like'" :class="'self-center hover:cursor-pointer'"/>
+
                             <SVGLoader :icon="'direct'" :class="'self-center hover:cursor-pointer'"/> 
+
                         </figcaption>
 
                     </figure>
+
                 </Slide>
             </Carousel3d>
+
             <div class="absolute top-0 right-6 z-50 hover:cursor-pointer">
                 <SVGLoader :icon="'cross-large'"  @click="onModalClosed()"/>
             </div>
+
             <div class="absolute top-0 left-6 z-50">
                 <SVGLoader :icon="'instagram-large'" />
             </div>
+
         </div>
     </div>
 </template>
 
 <script lang="ts">
-import { onMounted, defineComponent, ref, watch, computed } from 'vue'
-import { useRouter } from 'vue-router'
+import { onMounted, defineComponent, ref, watch, computed } from 'vue';
+import { useRouter } from 'vue-router';
 
 // @ts-ignore
-import { Carousel3d, Slide } from 'vue3-carousel-3d'
+import { Carousel3d, Slide } from 'vue3-carousel-3d';
 
-
-import MediaCarousel from '@/components/basics/MediaCarousel.vue'
-import SVGLoader from '@/components/basics/SVGLoader.vue'
-import CommentModal from '@/components/basics/CommentModal.vue'
-import type { PostMedia } from '@/common/models/post.model'
-
-
+import MediaCarousel from '@/components/basics/MediaCarousel.vue';
+import SVGLoader from '@/components/basics/SVGLoader.vue';
+import CommentModal from '@/components/basics/CommentModal.vue';
 
 export default defineComponent({
     name: "StoryView",
     setup() {
 
-        // TO-DO: Fix story skip bug
-        const mediasArraySampleB: PostMedia[] = [
-            {
-                index: 0,
-                type: 'image',
-                mediaUrl:
-                    "https://loremflickr.com/490/870/sky",
-                title: "Legendary A"
-            },
-            {
-                index: 1,
-                type: 'image',
-                mediaUrl:
-                    "https://loremflickr.com/490/870/love",
-                title: "Legendary A"
-            },
-            {
-                index: 2,
-                type: 'image',
-                mediaUrl:
-                    "https://loremflickr.com/490/870/cat",
-                title: "Legendary A"
-            },
-            {
-                index: 3,
-                type: 'image',
-                mediaUrl:
-                    "https://loremflickr.com/490/870/dog",
-                title: "Legendary A"
-            },
-        ]
-
-        const mediasArraySampleA: PostMedia[] = [
-            {
-                index: 0,
-                type: 'image',
-                mediaUrl:
-                    "https://loremflickr.com/490/870/car",
-                title: "Legendary A"
-            },
-            {
-                index: 1,
-                type: 'video',
-                mediaUrl:
-                    "https://joy1.videvo.net/videvo_files/video/free/2014-12/large_watermarked/Metal_Wind_Chimes_at_Sunset_preview.mp4",
-                title: "Legendary B"
-            },
-        ]
 
         const reels = [{
             id: 1,
@@ -204,35 +158,14 @@ export default defineComponent({
             profilePictureUrl: 'https://loremflickr.com/32/32/woman',
             expiringAt: '',
             seen: false,
-            items: mediasArraySampleA,
-            mediaCount: mediasArraySampleA.length
-        },
-        {
-            id: 2,
-            userName: 'Rabee',
-            profilePictureUrl: 'https://loremflickr.com/32/32/man',
-            expiringAt: '',
-            seen: false,
-            items: mediasArraySampleB,
-            mediaCount: mediasArraySampleA.length
-        },
-        {
-            id: 3,
-            userName: 'Rabee',
-            profilePictureUrl: 'https://loremflickr.com/32/32/man',
-            expiringAt: '',
-            seen: false,
-            items: mediasArraySampleB,
-            mediaCount: mediasArraySampleA.length
-        },
-        {
-            id: 4,
-            userName: 'Rabee',
-            profilePictureUrl: 'https://loremflickr.com/32/32/man',
-            expiringAt: '',
-            seen: false,
-            items: mediasArraySampleB,
-            mediaCount: mediasArraySampleA.length
+            items: [{
+                index: 0,
+                type: 'image',
+                mediaUrl:
+                    "https://loremflickr.com/490/870/car",
+                title: "Legendary A"
+            },],
+            mediaCount: 1
         },
         ]
 
@@ -293,7 +226,7 @@ export default defineComponent({
             }
         }
         )
-
+        
         watch(currentSlideIndex, (newIndex: number) => {
             if (newIndex > MAX_REELS_INDEX) {
                 currentSlideIndex.value = 0
@@ -366,6 +299,7 @@ export default defineComponent({
     }
 })
 </script>
+
 
 <style>
 </style>

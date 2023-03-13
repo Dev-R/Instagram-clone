@@ -70,21 +70,21 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 
-import MediaCarousel from '@/components/basics/MediaCarousel.vue'
-import PostCard from '@/components/basics/PostCard.vue'
-import SVGLoader from "@/components/basics/SVGLoader.vue"
-import NavBarMain from '@/components/navbars/NavBarMain.vue'
-import NavBarMobile from '@/components/navbars/NavBarMobile.vue'
-import SuggestionCard from '@/components/basics/SuggestionCard.vue'
-import StoryCarousel from '@/components/basics/StoryCarousel.vue'
-import CommentModal from '@/components/basics/CommentModal.vue'
+import MediaCarousel from '@/components/basics/MediaCarousel.vue';
+import PostCard from '@/components/basics/PostCard.vue';
+import SVGLoader from '@/components/basics/SVGLoader.vue';
+import NavBarMain from '@/components/navbars/NavBarMain.vue';
+import NavBarMobile from '@/components/navbars/NavBarMobile.vue';
+import SuggestionCard from '@/components/basics/SuggestionCard.vue';
+import StoryCarousel from '@/components/basics/StoryCarousel.vue';
+import CommentModal from '@/components/basics/CommentModal.vue';
 
-import type { PostMedia } from '@/common/models/post.model'
+import type { PostMedia } from '@/common/models/post.model';
 
 export default defineComponent({
     name: 'Home',
     setup() {
-        
+
 
         const commentModalInfo = ref({
             isToggled: false,
@@ -93,7 +93,7 @@ export default defineComponent({
 
         const triggerCommentModal = (id: number | undefined) => {
             console.log('triggerCommentModal:', id)
-            commentModalInfo.value = {'isToggled': !commentModalInfo.value.isToggled , postId: id ? id : 0}
+            commentModalInfo.value = { 'isToggled': !commentModalInfo.value.isToggled, postId: id ? id : 0 }
         }
         const mediasArraySampleA: PostMedia[] = [
             {
@@ -109,23 +109,8 @@ export default defineComponent({
                 mediaUrl:
                     "https://loremflickr.com/1024/1280/nature",
                 title: "Legendary A"
-            },
-            {
-                index: 2,
-                type: 'image',
-                mediaUrl:
-                    "https://loremflickr.com/1024/1280/bird",
-                title: "Legendary A"
-            },
-            {
-                index: 3,
-                type: 'video',
-                mediaUrl:
-                    "https://joy1.videvo.net/videvo_files/video/free/2014-12/large_watermarked/Metal_Wind_Chimes_at_Sunset_preview.mp4",
-                title: "Legendary B"
-            },
+            }
         ]
-
 
         const mediasArraySampleB: PostMedia[] = [
             {
@@ -141,41 +126,7 @@ export default defineComponent({
                 mediaUrl:
                     "https://loremflickr.com/1024/1280/love",
                 title: "Legendary A"
-            },
-            {
-                index: 2,
-                type: 'image',
-                mediaUrl:
-                    "https://loremflickr.com/1024/1280/happy",
-                title: "Legendary A"
-            },
-            {
-                index: 3,
-                type: 'video',
-                mediaUrl:
-                    "https://joy1.videvo.net/videvo_files/video/free/2014-12/large_watermarked/Metal_Wind_Chimes_at_Sunset_preview.mp4",
-                title: "Legendary B"
-            },
-        ]
-
-        const mediasArraySampleC: PostMedia[] = [
-            {
-                index: 0,
-                type: 'image',
-                mediaUrl:
-                    "https://loremflickr.com/1024/1280/bird",
-                title: "Legendary D"
-            },
-        ]
-
-        const mediasArraySampleD: PostMedia[] = [
-            {
-                index: 0,
-                type: 'image',
-                mediaUrl:
-                    "https://loremflickr.com/1024/1280/life",
-                title: "Legendary D"
-            },
+            }
         ]
 
         const postItems = [
@@ -200,33 +151,9 @@ export default defineComponent({
                 carouselMedia: mediasArraySampleB,
                 commentCount: 5,
                 profilePictureUrl: 'https://loremflickr.com/32/32/girl'
-            },
-            {
-                id: '2',
-                userName: 'Ali',
-                createdAt: '5 hours',
-                likeCount: 10,
-                hasLiked: true,
-                caption: 'Stay positive, work hard, and make it happen.',
-                carouselMedia: mediasArraySampleC,
-                commentCount: 3,
-                profilePictureUrl: 'https://loremflickr.com/32/32/boy'
-            },
-            // Adding a new post with random data
-            {
-                id: '3',
-                userName: 'Rick',
-                createdAt: '10 hours',
-                likeCount: 210,
-                hasLiked: false,
-                caption: 'Chase your dreams, but always know the road that will lead you home again.',
-                carouselMedia: mediasArraySampleD,
-                commentCount: 2,
-                profilePictureUrl: 'https://loremflickr.com/32/32/woman'
             }
         ]
-        
-        
+
         const suggested = {
             userName: 'Rabee',
             profilePictureUrl: 'http://via.placeholder.com/32x32',
@@ -237,71 +164,25 @@ export default defineComponent({
             }]
         }
 
-
         const reels = [{
-            id: 1 ,
+            id: 1,
             userName: 'Noura',
-            profilePictureUrl: 'https://loremflickr.com/32/32/woman',
+            profilePictureUrl: 'https://loremflickr.com/1024/1280/woman',
             expiringAt: '',
             seen: false,
             items: mediasArraySampleA,
             mediaCount: mediasArraySampleA.length
         },
         {
-            id: 2 ,
+            id: 2,
             userName: 'Rabee',
-            profilePictureUrl: 'https://loremflickr.com/32/32/man',
-            expiringAt: '',
-            seen: false,
-            items: mediasArraySampleA,
-            mediaCount: mediasArraySampleA.length
-        },
-        {
-            id: 3 ,
-            userName: 'Sloom',
-            profilePictureUrl: 'https://loremflickr.com/32/32/boy',
-            expiringAt: '',
-            seen: false,
-            items: mediasArraySampleA,
-            mediaCount: mediasArraySampleA.length
-        },
-        {
-            id: 4 ,
-            userName: 'Mohammed',
-            profilePictureUrl: 'https://loremflickr.com/32/32/sky',
-            expiringAt: '',
-            seen: false,
-            items: mediasArraySampleA,
-            mediaCount: mediasArraySampleA.length
-        },
-        {
-            id: 5 ,
-            userName: 'Rabee',
-            profilePictureUrl: 'https://loremflickr.com/32/32/man',
-            expiringAt: '',
-            seen: false,
-            items: mediasArraySampleA,
-            mediaCount: mediasArraySampleA.length
-        },
-        {
-            id: 6 ,
-            userName: 'Sloom',
-            profilePictureUrl: 'https://loremflickr.com/32/32/boy',
-            expiringAt: '',
-            seen: false,
-            items: mediasArraySampleA,
-            mediaCount: mediasArraySampleA.length
-        },
-        {
-            id: 7 ,
-            userName: 'Mohammed',
-            profilePictureUrl: 'https://loremflickr.com/32/32/sky',
+            profilePictureUrl: 'https://loremflickr.com/1024/1280/man',
             expiringAt: '',
             seen: false,
             items: mediasArraySampleA,
             mediaCount: mediasArraySampleA.length
         }
-    ]
+        ]
 
         return {
             postItems,
@@ -320,9 +201,10 @@ export default defineComponent({
         StoryCarousel,
         CommentModal,
         NavBarMobile
-}
+    }
 })
 </script>
+
 
 
 
