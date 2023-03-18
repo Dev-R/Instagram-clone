@@ -1,7 +1,7 @@
 <template>
     <div class="bg-black">
         <section 
-            class="container max-w-full mx-auto text-center"
+            class="container max-w-full mx-auto text-center h-screen  scrollbar scrollbar-thumb-gray-900"
             :class="{ 'brightness-50': commentModalInfo.isToggled }">
             <div class=" grid grid-cols-12">
                 <!-- Left bar: Navigation -->
@@ -14,8 +14,8 @@
                 </div>
                 <!-- Center -->
                 <div 
-                    class="lg:col-span-8 lg:grid md:col-span-6 
-                    md:col-start-4 md:mt-8 md:p-0
+                    class="lg:col-span-8 lg:grid md:col-span-6  scrollbar scrollbar-thumb-gray-900
+                    md:ml-5 lg:ml-0 md:col-start-2 md:mt-8 md:p-0
                     col-span-12 p-2">
                     
                     <div 
@@ -28,132 +28,192 @@
                             <div>
                                 <img 
                                     src="https://loremflickr.com/1024/1280/black" 
-                                    class="md:w-36 md:h-36 rounded-full">
+                                    class="md:w-36 md:h-36 h-20 w-20 rounded-full">
                             </div>
 
                             <!-- Profile data -->
-                            <div class="pl-20 bg-black flex flex-col space-y-6">
-                                <div class="flex space-x-4 items-center">
+                            <div class="md:pl-20 bg-black flex flex-col space-y-6">
+                                <div class="md:flex md:flex-row flex-col md:space-x-4 space-y-3 items-center">
                                     <!-- User name -->
-                                    <div class="font-sans text-xl font-normal text-white">
+                                    <div class="md:pl-0 pl-6 font-sans text-xl font-normal text-white text-left">
                                         hot_souce_56
                                     </div>
 
                                     <!-- Options -->
-                                    <div>
+                                    <div class="md:pl-0 pl-6">
                                         <button 
                                             type="button" 
                                             class="text-gray-900 bg-white hover:bg-gray-100 
-                                            border border-gray-200 font-semibold 
-                                            rounded-lg text-sm p-1.5 px-3">
+                                            border border-gray-200 font-semibold w-auto
+                                            rounded-lg text-sm md:p-1.5 md:px-5 md:py-1.5 px-20 py-1.5  md:w-auto  ">
+
                                             Edit Profile
                                         </button>
                                     </div>
                                     <!-- Logged-in user Options -->
                                     <div>
-                                        <SVGLoader :icon="'profile-options'" />
+                                        <SVGLoader :icon="'profile-options'" :class="'md:block hidden'"/>
                                     </div>
                                 </div>
                                 <!-- Profile Info -->
-                                <div class="flex space-x-10">
-                                    <!-- Number of posts -->
+                                <div class="md:block hidden">
+                                    <div class="flex space-x-10">
+                                        <!-- Number of posts -->
+                                        <div class="font-sans text-md font-normal text-white">
+                                            <span class="font-sans text-md font-bold text-white">
+                                                2
+                                            </span>
+                                            posts
+                                        </div>
+                                        <!-- Number of followers -->
                                     <div class="font-sans text-md font-normal text-white">
-                                        <span class="font-sans text-md font-bold text-white">
-                                            2
-                                        </span>
-                                        posts
-                                    </div>
-                                    <!-- Number of followers -->
-                                   <div class="font-sans text-md font-normal text-white">
-                                        <span class="font-sans text-md font-bold text-white">
-                                            8
-                                        </span>
-                                        followers
-                                    </div>
-                                    <!-- Number of following -->
-                                    <div class="font-sans text-md font-normal text-white">
-                                        <span class="font-sans text-md font-bold text-white">47</span>
-                                        following
-                                    </div>
+                                            <span class="font-sans text-md font-bold text-white">
+                                                8
+                                            </span>
+                                            followers
+                                        </div>
+                                        <!-- Number of following -->
+                                        <div class="font-sans text-md font-normal text-white">
+                                            <span class="font-sans text-md font-bold text-white">47</span>
+                                            following
+                                        </div>
 
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <div 
+                            class="text-center border-t md:hidden block
+                            border-slate-1100 mt-2">
+                            <ul class="flex space-x-14 flex-wrap justify-around pt-3 pl-4 pr-4">
+                                <!-- Posts Tab -->
+
+                                <div class="flex flex-col">
+                                    <span class="text-sm subpixel-antialiase text-white">
+                                            85
+                                    </span>
+                                    <span class="text-sm subpixel-antialiase text-gray-400">
+                                            post
+                                    </span>
+                                </div>
+
+                                <div class="flex flex-col">
+                                    <span class="text-sm subpixel-antialiase text-white">
+                                            84
+                                    </span>
+                                    <span class="text-sm subpixel-antialiase text-gray-400">
+                                            followers
+                                    </span>
+                                </div>
+
+                                <div class="flex flex-col">
+                                    <span class="text-sm subpixel-antialiase text-white">
+                                            545
+                                    </span>
+                                    <span class="text-sm subpixel-antialiase text-gray-400">
+                                            following
+                                    </span>
+                                </div>
+
+                            </ul>
+                        </div>
                         <!-- Tab bar -->
-                        <div>
-                            <div 
-                                class="text-center border-t
-                                border-slate-1100">
-                                <ul class="flex space-x-14 flex-wrap -mb-px justify-center">
+                        <div 
+                            class="text-center border-t
+                            border-slate-1100">
+                            <ul class="flex space-x-14 flex-wrap -mb-px md:justify-center justify-between px-6">
 
-                                    <!-- Posts Tab -->
-                                    <li 
-                                        @click="navBarTabSwitcher('profile-posts')"
-                                        class="hover:cursor-pointer">
-                                        <div 
-                                            class="flex items-center space-x-2
-                                            inline-block py-4 p-1 border-t-2 border-gray-300 
-                                            hover:border-gray-300"
-                                            :class="{
-                                                'border-transparent text-gray-200' : currentActiveTab != 'profile-posts',
-                                                'text-white' : currentActiveTab === 'profile-posts'
-                                            }">
-                                            <SVGLoader :icon="'profile-posts'" />
-                                            
-                                            <span class="text-xs ">
-                                                POSTS
-                                            </span>
+                                <!-- Posts Tab -->
+                                <li 
+                                    @click="navBarTabSwitcher('profile-posts')"
+                                    class="hover:cursor-pointer">
+                                    <div 
+                                        class="flex items-center space-x-2
+                                        inline-block py-4 p-1 border-t-2 border-gray-300 
+                                        hover:border-gray-300"
+                                        :class="{
+                                            'border-transparent text-gray-200' : currentActiveTab != 'profile-posts',
+                                            'text-white' : currentActiveTab === 'profile-posts'
+                                        }">
+                                        <SVGLoader :icon="'profile-posts-large'" :class="'md:block hidden'"/>
+                                        <SVGLoader :icon="'profile-posts-small'" :class="'md:hidden block'"/>
 
-                                        </div>
-                                    </li>
-                                    <!-- Profile Saved Tab -->
-                                    <li 
-                                        @click="navBarTabSwitcher('profile-saved')"
-                                        class="hover:cursor-pointer">
-                                        <div 
-                                            class="flex items-center space-x-2
-                                            inline-block py-4 p-1 border-t-2 border-gray-300 
-                                            hover:border-gray-300 hover:text-gray-300"
-                                            :class="{
-                                                'border-transparent text-gray-300' : currentActiveTab != 'profile-saved',
-                                                'text-white font-bold' : currentActiveTab === 'profile-saved'
-                                            }">
+                                        <span class="text-xs subpixel-antialiased hidden md:block">
+                                            POSTS
+                                        </span>
 
-                                            <SVGLoader :icon="'profile-saved'" />
+                                    </div>
+                                </li>
+                                <!-- Peeds Tab -->
+                                <li 
+                                    @click="navBarTabSwitcher('profile-peed')"
+                                    class="hover:cursor-pointe md:hidden block">
+                                    <div 
+                                        class="flex items-center space-x-2
+                                        inline-block py-4 p-1 border-t-2 border-gray-300 
+                                        hover:border-gray-300"
+                                        :class="{
+                                            'border-transparent text-gray-200' : currentActiveTab != 'profile-peed',
+                                            'text-white' : currentActiveTab === 'profile-peed'
+                                        }">
+                                        <SVGLoader :icon="'profile-peed-small'" :class="'md:hidden block'"/>
 
-                                            <span class="text-xs subpixel-antialiased ">
-                                                SAVED
-                                            </span>
-                                        </div>
-                                    </li>
-                                    <!-- Profile Tagged -->
-                                    <li 
-                                        @click="navBarTabSwitcher('profile-tagged')"
-                                        class="hover:cursor-pointer">
-                                        <div 
-                                            class="flex items-center space-x-2
-                                            inline-block py-4 p-1 border-t-2 border-gray-300 
-                                            hover:border-gray-300 hover:text-gray-300"
-                                            :class="{
-                                                'border-transparent text-gray-300' : currentActiveTab != 'profile-tagged',
-                                                'text-white' : currentActiveTab === 'profile-tagged'
-                                            }">
+                                        <span class="text-xs subpixel-antialiased hidden md:block">
+                                            Peeds
+                                        </span>
 
-                                            <SVGLoader :icon="'profile-tagged'" />
+                                    </div>
+                                </li>
 
-                                            <span class="text-xs subpixel-antialiased ">
-                                                TAGGED
-                                            </span>
-                        
-                                        </div>
-                                    </li>
+                                <!-- Profile Saved Tab -->
+                                <li 
+                                    @click="navBarTabSwitcher('profile-saved')"
+                                    class="hover:cursor-pointer">
+                                    <div 
+                                        class="flex items-center space-x-2
+                                        inline-block py-4 p-1 border-t-2 border-gray-300 
+                                        hover:border-gray-300 hover:text-gray-300"
+                                        :class="{
+                                            'border-transparent text-gray-300' : currentActiveTab != 'profile-saved',
+                                            'text-white font-bold' : currentActiveTab === 'profile-saved'
+                                        }">
 
-                                </ul>
-                            </div>
+                                        <SVGLoader :icon="'profile-saved-large'" :class="'md:block hidden'"/>
+                                        <SVGLoader :icon="'profile-saved-small'" :class="'md:hidden block'"/>
+
+                                        <span class="text-xs subpixel-antialiased hidden md:block">
+                                            SAVED
+                                        </span>
+                                    </div>
+                                </li>
+                                <!-- Profile Tagged -->
+                                <li 
+                                    @click="navBarTabSwitcher('profile-tagged')"
+                                    class="hover:cursor-pointer">
+                                    <div 
+                                        class="flex items-center space-x-2
+                                        inline-block py-4 p-1 border-t-2 border-gray-300 
+                                        hover:border-gray-300 hover:text-gray-300"
+                                        :class="{
+                                            'border-transparent text-gray-300' : currentActiveTab != 'profile-tagged',
+                                            'text-white' : currentActiveTab === 'profile-tagged'
+                                        }">
+
+                                        <SVGLoader :icon="'profile-tagged-large'" :class="'md:block hidden'"/>
+                                        <SVGLoader :icon="'profile-tagged-small'" :class="'md:hidden block bg-greem-500'"/>
+
+                                        <span class="text-xs subpixel-antialiased hidden md:block">
+                                            TAGGED
+                                        </span>
+                    
+                                    </div>
+                                </li>
+
+                            </ul>
                         </div>
 
                         <!-- Empty Section Messages -->
-                        <div class="flex flex-col space-y-2 self-center pt-14">
+                        <!-- <div class="flex flex-col space-y-2 self-center pt-14 h-screen">
                             <i 
                                 class="text-slate-1100 text-6xl pb-2"
                                 :class="emptyTabBarBodyMessage.icon"></i>
@@ -172,6 +232,63 @@
                                 </span>
                             </div>
                             <i class="fa-regular fa-bookmark"></i>
+                        </div> -->
+                        
+                        <!-- Image Rendering Sectio -->
+                        <div 
+                            v-if="currentActiveTab === 'profile-posts'"
+                            class="flex flex-wrap">
+                            
+                            <div class="h-fit w-fit basis-1/3 p-0.5 relative hover:brightness-75 group">
+                                <div class="flex absolute space-x-4 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 md:group-hover:visible invisible">
+                                    <div class="flex font-bold text-white text-md">
+                                        <i class="fa-solid fa-heart"></i>
+                                        535K
+                                    </div>
+                                    <div class="flex font-bold text-white text-md">
+                                        <i class="fa-solid fa-comment"></i>
+                                        <span>4,3354</span>
+                                    </div>
+                                </div>
+                                <img src="https://loremflickr.com/1024/1280/cat">
+                            </div>
+
+                            <div class="h-fit w-fit basis-1/3 p-0.5">
+                                <img src="https://loremflickr.com/1024/1280/dog">
+                            </div>
+
+                            <div class="h-fit w-fit basis-1/3 p-0.5">
+                                <img src="https://loremflickr.com/1024/1280/car">
+                            </div>
+
+                            <div class="h-fit w-fit basis-1/3 p-0.5">
+                                <img src="https://loremflickr.com/1024/1280/fish">
+                            </div>
+
+                            <div class="h-fit w-fit basis-1/3 p-0.5">
+                                <img src="https://loremflickr.com/1024/1280/love">
+                            </div>
+
+                            <div class="h-fit w-fit basis-1/3 p-0.5">
+                                <img src="https://loremflickr.com/1024/1280/life">
+                            </div>
+
+                            <div class="h-fit w-fit basis-1/3 p-0.5">
+                                <img src="https://loremflickr.com/1024/1280/education">
+                            </div>
+
+                            <div class="h-fit w-fit basis-1/3 p-0.5">
+                                <img src="https://loremflickr.com/1024/1280/book">
+                            </div>
+
+                            <div class="h-fit w-fit basis-1/3 p-0.5">
+                                <img src="https://loremflickr.com/1024/1280/sky">
+                            </div>
+
+
+                        </div>
+                        <div class="p-5 text-sm subpixel-antialiase text-white md:block hidden">
+                            © 2023 PhotoFlow
                         </div>
 
                     </div>
@@ -203,7 +320,7 @@ import CommentModal from '@/components/basics/CommentModal.vue'
 
 import type { PostMedia } from '@/common/models/post.model'
 
-type navBarTabs = 'profile-posts' | 'profile-tagged' | 'profile-saved'
+type navBarTabs = 'profile-posts' | 'profile-tagged' | 'profile-saved' | 'profile-peed'
 
 export default defineComponent({
     name: 'Profile',
@@ -246,6 +363,7 @@ export default defineComponent({
         const emptyTabBarBodyMessage = computed(() => {
             switch (currentActiveTab.value) {
                 case 'profile-posts':
+                case 'profile-peed':
                     return {
                         icon: 'fa-solid fa-photo-film',
                         top: 'Share Photos',
