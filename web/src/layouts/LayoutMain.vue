@@ -1,12 +1,21 @@
 <template>
     <div
         class="min-h-screen min-w-screen bg-black">
-        <RouterView/>
+        <TopNavBar />
+        <RouterView />
+        <!-- Mobile Navbar -->
+        <NavBarMobile />
     </div>
 </template>
 
 <script lang="ts">
-import { onMounted, defineComponent } from 'vue'
+import { onMounted, defineComponent } from 'vue';
+
+import NavBarMobile from '@/components/navbars/NavBarMobile.vue';
+import SVGLoader from '@/components/basics/SVGLoader.vue';
+import TopNavBar from '@/components/navbars/TopNavBar.vue';
+
+
 
 export default defineComponent({
     name: 'LayoutMain',
@@ -16,6 +25,11 @@ export default defineComponent({
         })
 
         return {}
-    }
+    },
+    components: {
+    NavBarMobile,
+    SVGLoader,
+    TopNavBar
+}
 })
 </script>
