@@ -19,8 +19,8 @@
                     col-span-12 p-2">
                     
                     <div 
-                        class="md:w-[950px] flex flex-col 
-                        space-y-4 flex-nowrap 
+                        class="md:w-[950px] flex flex-col
+                        space-y-4 flex-nowrap md:pt-0 pt-2
                         justify-self-end lg:mr--[64px]">            
                         <!-- Profile Info -->
                         <div class="flex md:space-x-14 md:pl-14 md:pb-8">
@@ -239,54 +239,42 @@
                             v-if="currentActiveTab === 'profile-posts'"
                             class="flex flex-wrap">
                             
-                            <div class="h-fit w-fit basis-1/3 p-0.5 relative hover:brightness-75 group">
-                                <div class="flex absolute space-x-4 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 md:group-hover:visible invisible">
-                                    <div class="flex font-bold text-white text-md">
-                                        <i class="fa-solid fa-heart"></i>
-                                        535K
+
+                            <div 
+                                v-for="(post, index) of postItems"
+                                @click="triggerCommentModal(index)"
+                                class="h-fit w-fit basis-1/3 p-0.5 
+                                relative hover:brightness-75 group 
+                                hover:cursor-pointer">
+                                <div 
+                                    class="flex absolute space-x-4 top-1/2 
+                                    left-1/2 transform -translate-x-1/2 -translate-y-1/2 
+                                    md:group-hover:visible invisible">
+                                    <div 
+                                        class="flex font-bold text-white 
+                                        text-md space-x-1">
+                                        <i class="fa-solid fa-heart mt-1"></i>
+
+                                        <span>
+                                            {{ post.likeCount }}
+                                        </span>
                                     </div>
-                                    <div class="flex font-bold text-white text-md">
-                                        <i class="fa-solid fa-comment"></i>
-                                        <span>4,3354</span>
+
+                                    <div class="flex font-bold text-white text-md space-x-1">
+                                        <i class="fa-solid fa-comment mt-1"></i>
+
+                                        <span>
+                                            {{ post.commentCount }}
+                                        </span>
                                     </div>
+
                                 </div>
-                                <img src="https://loremflickr.com/1024/1280/cat">
-                            </div>
 
-                            <div class="h-fit w-fit basis-1/3 p-0.5">
-                                <img src="https://loremflickr.com/1024/1280/dog">
+                                <img :src="post.carouselMedia[0]?.mediaUrl">
                             </div>
-
-                            <div class="h-fit w-fit basis-1/3 p-0.5">
-                                <img src="https://loremflickr.com/1024/1280/car">
-                            </div>
-
-                            <div class="h-fit w-fit basis-1/3 p-0.5">
-                                <img src="https://loremflickr.com/1024/1280/fish">
-                            </div>
-
-                            <div class="h-fit w-fit basis-1/3 p-0.5">
-                                <img src="https://loremflickr.com/1024/1280/love">
-                            </div>
-
-                            <div class="h-fit w-fit basis-1/3 p-0.5">
-                                <img src="https://loremflickr.com/1024/1280/life">
-                            </div>
-
-                            <div class="h-fit w-fit basis-1/3 p-0.5">
-                                <img src="https://loremflickr.com/1024/1280/education">
-                            </div>
-
-                            <div class="h-fit w-fit basis-1/3 p-0.5">
-                                <img src="https://loremflickr.com/1024/1280/book">
-                            </div>
-
-                            <div class="h-fit w-fit basis-1/3 p-0.5">
-                                <img src="https://loremflickr.com/1024/1280/sky">
-                            </div>
-
 
                         </div>
+
                         <div class="p-5 text-sm subpixel-antialiase text-white md:block hidden">
                             © 2023 PhotoFlow
                         </div>
@@ -305,8 +293,6 @@
                 post : postItems[commentModalInfo.postId],
             }"/>
 
-        <!-- Mobile Navbar -->
-        <NavBarMobile />
     </div>
 </template>
 
@@ -315,7 +301,6 @@ import { defineComponent, ref, computed } from 'vue'
 
 import SVGLoader from '@/components/basics/SVGLoader.vue'
 import NavBarMain from '@/components/navbars/NavBarMain.vue'
-import NavBarMobile from '@/components/navbars/NavBarMobile.vue'
 import CommentModal from '@/components/basics/CommentModal.vue'
 
 import type { PostMedia } from '@/common/models/post.model'
@@ -323,7 +308,7 @@ import type { PostMedia } from '@/common/models/post.model'
 type navBarTabs = 'profile-posts' | 'profile-tagged' | 'profile-saved' | 'profile-peed'
 
 export default defineComponent({
-    name: 'Profile',
+    name: 'ProfileView',
     setup() {
 
         // Selectors
@@ -332,11 +317,19 @@ export default defineComponent({
             isToggled: false,
             postId: 0
         })
+        // Checkers
+        const isCommentModalOpen = ref(false)
+
+        // Computed
+        // const findNumberOfLikes = computed(() => {
+        //     return postItem.likeCount >= 1 ? `${postItem.likeCount} Likes` : 'Be the first to like this' 
+        // })
 
         const triggerCommentModal = (id: number | undefined) => {
             console.log('triggerCommentModal:', id)
             commentModalInfo.value = { 'isToggled': !commentModalInfo.value.isToggled, postId: id ? id : 0 }
         }
+
         const mediasArraySampleA: PostMedia[] = [
             {
                 index: 0,
@@ -354,12 +347,39 @@ export default defineComponent({
             }
         ]
 
+        const mediasArraySampleB: PostMedia[] = [
+            {
+                index: 0,
+                type: 'image',
+                mediaUrl:
+                    "https://loremflickr.com/1024/1280/holiday",
+                title: "Legendary B"
+            },
+            {
+                index: 1,
+                type: 'image',
+                mediaUrl:
+                    "https://loremflickr.com/1024/1280/life",
+                title: "Legendary B"
+            }
+        ]
+
         // Handlers
         const navBarTabSwitcher = (currentTab: navBarTabs) => {
             console.log("Current Tab:", currentTab, currentTab === 'profile-posts')
             currentActiveTab.value = currentTab
         }
 
+        /**
+         * Emit signal when comment modal button is clicked
+         * @event comment-unliked
+         * @param {string} postId - The ID of the post
+         */
+         const onOpenCommentModal = (postId: string) => {
+            isCommentModalOpen.value = true;
+            console.log("Emitting signal:", postId)
+        };
+        
         const emptyTabBarBodyMessage = computed(() => {
             switch (currentActiveTab.value) {
                 case 'profile-posts':
@@ -394,23 +414,57 @@ export default defineComponent({
                 id: '0',
                 userName: 'Rabee',
                 createdAt: 'February 24',
-                likeCount: 0,
+                likeCount: 2456,
                 hasLiked: true,
                 caption: ' Sh. @abdullah_oduro and I getting that Saturday morning work in the gym and talking over @yaqeeninstitute Quran 30 ',
                 carouselMedia: mediasArraySampleA,
-                commentCount: 0,
+                commentCount: 2456,
                 profilePictureUrl: 'https://loremflickr.com/32/32/bird'
             },
             {
                 id: '1',
                 userName: 'Sara',
                 createdAt: 'February 24',
-                likeCount: 10,
+                likeCount: 152,
+                hasLiked: false,
+                caption: 'Be like a tree. Stay grounded. Connect with your roots. Turn over a new leaf. Bend before you break. Enjoy your unique natural beauty. Keep growing.',
+                carouselMedia: mediasArraySampleB,
+                commentCount: 152,
+                profilePictureUrl: 'https://loremflickr.com/32/32/girl'
+            },
+            {
+                id: '3',
+                userName: 'Sara',
+                createdAt: 'February 24',
+                likeCount: 152,
                 hasLiked: false,
                 caption: 'Be like a tree. Stay grounded. Connect with your roots. Turn over a new leaf. Bend before you break. Enjoy your unique natural beauty. Keep growing.',
                 carouselMedia: mediasArraySampleA,
-                commentCount: 5,
-                profilePictureUrl: 'https://loremflickr.com/32/32/girl'
+                commentCount: 152,
+                profilePictureUrl: 'https://loremflickr.com/32/32/sky'
+            }
+            ,
+            {
+                id: '4',
+                userName: 'Sara',
+                createdAt: 'February 24',
+                likeCount: 152,
+                hasLiked: false,
+                caption: 'Be like a tree. Stay grounded. Connect with your roots. Turn over a new leaf. Bend before you break. Enjoy your unique natural beauty. Keep growing.',
+                carouselMedia: mediasArraySampleB,
+                commentCount: 152,
+                profilePictureUrl: 'https://loremflickr.com/32/32/drink'
+            },
+            {
+                id: '5',
+                userName: 'Sara',
+                createdAt: 'February 24',
+                likeCount: 152,
+                hasLiked: false,
+                caption: 'Be like a tree. Stay grounded. Connect with your roots. Turn over a new leaf. Bend before you break. Enjoy your unique natural beauty. Keep growing.',
+                carouselMedia: mediasArraySampleA,
+                commentCount: 152,
+                profilePictureUrl: 'https://loremflickr.com/32/32/space'
             }
         ]
 
@@ -428,7 +482,6 @@ export default defineComponent({
         SVGLoader,
         NavBarMain,
         CommentModal,
-        NavBarMobile
     }
 })
 </script>
