@@ -1,5 +1,5 @@
 <template>
-    <div class="max-w-md mx-auto bg-transparent shadow-xl min-w-0 ">
+    <div class="max-w-md mx-auto bg-transparent shadow-xl min-w-0 p-1.5">
         <div 
             class="overflow-x-auto flex space-x-6 
             scrollbar-thin scrollbar-thumb-gray-900 
@@ -15,7 +15,7 @@
                     to-fuchsia-600 p-1 rounded-full">
                     <a href="#" class="block bg-white rounded-full relative">
                         <img 
-                            class="w-16 h-16 rounded-full object-cover"
+                            class="md:w-16 md:h-16 h-14 w-14 rounded-full object-cover"
                             :src="reel.profilePictureUrl"/>
                     </a>
 
