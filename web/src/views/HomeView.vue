@@ -3,7 +3,7 @@
         <section 
             class="container max-w-full mx-auto text-center"
             :class="{ 'brightness-50': commentModalInfo.isToggled }">
-            <div class="pt-5 grid grid-cols-12">
+            <div class="md:pt-5 grid grid-cols-12">
                 <!-- Left bar: Navigation -->
                 <div 
                     class="xl:col-span-2 col-span-1 bg-black 
@@ -17,8 +17,8 @@
                 <!-- Center: Posts -->
                 <div 
                     class="lg:col-span-6 lg:grid md:col-span-6 
-                    md:col-start-4 md:mt-8 md:p-0
-                    col-span-12 bg-black p-2">
+                    md:col-start-4 md:mt-8
+                    col-span-12 bg-black">
  
                     <div 
                         class="md:w-[470px] flex flex-col 
@@ -26,12 +26,15 @@
                         justify-self-end lg:mr-[64px]">
 
                         <!-- Stories -->
-                        <div class="mb-6 relative rounded-xl overflow-auto">
+                        <div 
+                            class="mb-6 relative md:rounded-xl md:bg-current 
+                            overflow-auto md:border-current border-gray-800 
+                            bg-slate-1000 border-t border-b">
                             <StoryCarousel :reels="reels"/>
                         </div>
 
                         <!-- Posters -->
-                        <div class="flex flex-col space-y-8">
+                        <div class="flex flex-col space-y-8 md:p-0 md:p-0">
                             <PostCard 
                                 v-for="(item, index) of postItems"
                                 @on-open-comment-modal="triggerCommentModal"
@@ -62,8 +65,6 @@
                 post : postItems[commentModalInfo.postId],
             }"/>
 
-        <!-- Mobile Navbar -->
-        <NavBarMobile />
     </div>
 </template>
 
@@ -74,15 +75,14 @@ import MediaCarousel from '@/components/basics/MediaCarousel.vue';
 import PostCard from '@/components/basics/PostCard.vue';
 import SVGLoader from '@/components/basics/SVGLoader.vue';
 import NavBarMain from '@/components/navbars/NavBarMain.vue';
-import NavBarMobile from '@/components/navbars/NavBarMobile.vue';
 import SuggestionCard from '@/components/basics/SuggestionCard.vue';
 import StoryCarousel from '@/components/basics/StoryCarousel.vue';
 import CommentModal from '@/components/basics/CommentModal.vue';
 
-import type { PostMedia } from '@/common/models/post.model';
+import type { PostMedia } from '@/common/models/Post.model';
 
 export default defineComponent({
-    name: 'Home',
+    name: 'HomeView',
     setup() {
 
 
@@ -199,8 +199,7 @@ export default defineComponent({
         NavBarMain,
         SuggestionCard,
         StoryCarousel,
-        CommentModal,
-        NavBarMobile
+        CommentModal
     }
 })
 </script>
