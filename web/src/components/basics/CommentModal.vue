@@ -302,10 +302,11 @@
 </template>
 
 <script lang="ts">
-import type { PostCommentModal } from '@/common/models/post.model'
-import { defineComponent, onMounted, computed } from 'vue'
-import SVGLoader from '@/components/basics/SVGLoader.vue'
-import MediaCarousel from './MediaCarousel.vue'
+import { defineComponent, onMounted, computed } from 'vue';
+
+import type { PostCommentModal } from '@/common/models/Post.model';
+import SVGLoader from '@/components/basics/SVGLoader.vue';
+import MediaCarousel from './MediaCarousel.vue';
 
 
 export default defineComponent({
