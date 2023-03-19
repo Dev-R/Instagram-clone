@@ -19,7 +19,7 @@
                 flex space-x-4 hover:bg-slate-1000 hover:delay-100
                     p-3 xl:justify-start justify-center">
                 <SVGLoader 
-                    :icon="'explore'" 
+                    :icon="'mobile-explore'" 
                     :class="'group-hover:scale-110'"/>
             </div>
 
@@ -33,14 +33,6 @@
                     :class="'group-hover:scale-110'"/>
             </div>
 
-            <div 
-                class="group cursor-pointer rounded-full 
-                flex space-x-4 hover:bg-slate-1000 hover:delay-100 
-                p-3 xl:justify-start justify-center">
-                <SVGLoader 
-                    :icon="'create'" 
-                    :class="'group-hover:scale-110'"/>
-            </div>
 
             <div 
                 class="group cursor-pointer rounded-full 
