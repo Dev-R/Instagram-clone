@@ -1,8 +1,9 @@
 <template>
     <div class="bg-black">
         <section 
+            v-if="!modalInfo.isToggled"
             class="container max-w-full mx-auto text-center h-screen  scrollbar scrollbar-thumb-gray-900"
-            :class="{ 'brightness-50': commentModalInfo.isToggled }">
+            :class="{ 'brightness-50': modalInfo.isToggled }">
             <div class=" grid grid-cols-12">
                 <!-- Left bar: Navigation -->
                 <div 
@@ -66,14 +67,14 @@
                                             posts
                                         </div>
                                         <!-- Number of followers -->
-                                    <div class="font-sans text-md font-normal text-white">
+                                    <div class="font-sans text-md font-normal text-white hover:cursor-pointer">
                                             <span class="font-sans text-md font-bold text-white">
                                                 8
                                             </span>
                                             followers
                                         </div>
                                         <!-- Number of following -->
-                                        <div class="font-sans text-md font-normal text-white">
+                                        <div class="font-sans text-md font-normal text-white hover:cursor-pointer">
                                             <span class="font-sans text-md font-bold text-white">47</span>
                                             following
                                         </div>
@@ -285,27 +286,37 @@
                 
             </div>
         </section>
+        <div 
+            v-else-if="modalInfo.name === 'profile-modal'"
+            class="md:w-[470px] justify-self-end p-2">
+            <PostCard
+                :post-item="postItems[modalInfo.postId]"/>
+        </div>
         <!-- Comment Modal -->
         <CommentModal
+            v-else
             @on-modal-closed="triggerCommentModal" 
             :post-comment="{
-                isToggled: commentModalInfo.isToggled,
-                post : postItems[commentModalInfo.postId],
+                isToggled: modalInfo.isToggled,
+                post : postItems[modalInfo.postId],
             }"/>
 
     </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from 'vue'
+import { defineComponent, ref, computed, onMounted, onUnmounted } from 'vue'
+import type { ComputedRef } from 'vue'
 
 import SVGLoader from '@/components/basics/SVGLoader.vue'
+import PostCard from '@/components/basics/PostCard.vue'
 import NavBarMain from '@/components/navbars/NavBarMain.vue'
 import CommentModal from '@/components/basics/CommentModal.vue'
 
-import type { PostMedia } from '@/common/models/post.model'
+import type { PostMedia } from '@/common/models/Post.model'
 
 type navBarTabs = 'profile-posts' | 'profile-tagged' | 'profile-saved' | 'profile-peed'
+type modalName = 'profile-modal' | 'comment-modal'
 
 export default defineComponent({
     name: 'ProfileView',
@@ -313,12 +324,15 @@ export default defineComponent({
 
         // Selectors
         const currentActiveTab = ref<navBarTabs>('profile-posts') // Select profile-posts as default active tab
-        const commentModalInfo = ref({
+
+        const modalInfo = ref({
+            name: '',
             isToggled: false,
             postId: 0
         })
         // Checkers
         const isCommentModalOpen = ref(false)
+        let windowWidth = ref(window.innerWidth) // Current windo width
 
         // Computed
         // const findNumberOfLikes = computed(() => {
@@ -326,8 +340,17 @@ export default defineComponent({
         // })
 
         const triggerCommentModal = (id: number | undefined) => {
+            const { width, type } = useBreakpoints()
+            
+            console.log(" width, type", width.value, type.value)
+
             console.log('triggerCommentModal:', id)
-            commentModalInfo.value = { 'isToggled': !commentModalInfo.value.isToggled, postId: id ? id : 0 }
+
+
+            const modalName = type.value === 'xs' ? 'profile-modal' : 'comment-modal' // If screen size > 768 open comment Modal else open Profile Modal
+
+            modalInfo.value = {'name': modalName , 'isToggled': !modalInfo.value.isToggled, postId: id ? id : 0 }
+            // commentModalInfo.value = { 'isToggled': !commentModalInfo.value.isToggled, postId: id ? id : 0 }
         }
 
         const mediasArraySampleA: PostMedia[] = [
@@ -375,11 +398,12 @@ export default defineComponent({
          * @event comment-unliked
          * @param {string} postId - The ID of the post
          */
-         const onOpenCommentModal = (postId: string) => {
-            isCommentModalOpen.value = true;
+        const onOpenCommentModal = (postId: string) => {
+            isCommentModalOpen.value = true
             console.log("Emitting signal:", postId)
-        };
-        
+        }
+
+
         const emptyTabBarBodyMessage = computed(() => {
             switch (currentActiveTab.value) {
                 case 'profile-posts':
@@ -408,6 +432,33 @@ export default defineComponent({
                     return {}
             }
         })
+
+        /**
+         * A Vue composition function that provides reactive properties for the current window width
+         * and breakpoint type (xs, md, lg). The breakpoint values are based on commonly used
+         * device widths.
+         *
+         * @returns an object with the following properties:
+         * - width: a reactive property with the current window width
+         * - type: a reactive property with the current breakpoint type (xs, md, lg)
+         */
+        function useBreakpoints(): { width: ComputedRef<number>; type: ComputedRef<"xs" | "md" | "lg" | null> } {
+
+            const type = computed(() => {
+                if (windowWidth.value < 550) return 'xs'
+                if (windowWidth.value >= 550 && windowWidth.value < 1200) return 'md'
+                if (windowWidth.value >= 1200) return 'lg'
+                return null // This is an unreachable line, simply to keep eslint happy.
+            })
+
+            const width = computed(() => windowWidth.value)
+
+            return { width, type }
+        }
+        
+        const onWidthChange = () => windowWidth.value = window.innerWidth
+        onMounted(() => window.addEventListener('resize', onWidthChange))
+        onUnmounted(() => window.removeEventListener('resize', onWidthChange))
 
         const postItems = [
             {
@@ -471,17 +522,18 @@ export default defineComponent({
 
         return {
             postItems,
-            commentModalInfo,
+            modalInfo,
             currentActiveTab,
             triggerCommentModal,
             navBarTabSwitcher,
-            emptyTabBarBodyMessage
+            emptyTabBarBodyMessage,
         }
     },
     components: {
         SVGLoader,
         NavBarMain,
         CommentModal,
+        PostCard
     }
 })
 </script>
