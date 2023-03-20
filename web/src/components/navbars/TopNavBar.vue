@@ -85,7 +85,7 @@ export default defineComponent({
 
          const onPageBack= () => {
             setTimeout(() => {
-                router.push({ path: '/' })
+                router.back()
             }, 1000)
         }
 
