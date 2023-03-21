@@ -1,9 +1,9 @@
 <template>
-    <div class="bg-black">
+    <div class="bg-black relative">
         <section 
             v-if="!modalInfo.isToggled"
             class="container max-w-full mx-auto text-center h-screen  scrollbar scrollbar-thumb-gray-900"
-            :class="{ 'brightness-50': modalInfo.isToggled }">
+            :class="{ 'brightness-50': modalInfo.isToggled || smallModal.isToggled }">
             <div class=" grid grid-cols-12">
                 <!-- Left bar: Navigation -->
                 <div 
@@ -67,14 +67,18 @@
                                             posts
                                         </div>
                                         <!-- Number of followers -->
-                                    <div class="font-sans text-md font-normal text-white hover:cursor-pointer">
+                                    <div 
+                                         @click="triggerFollowOrFollowingModal('Followers')"
+                                        class="font-sans text-md font-normal text-white hover:cursor-pointer">
                                             <span class="font-sans text-md font-bold text-white">
                                                 8
                                             </span>
                                             followers
                                         </div>
                                         <!-- Number of following -->
-                                        <div class="font-sans text-md font-normal text-white hover:cursor-pointer">
+                                        <div 
+                                            @click="triggerFollowOrFollowingModal('Following')"
+                                            class="font-sans text-md font-normal text-white hover:cursor-pointer">
                                             <span class="font-sans text-md font-bold text-white">47</span>
                                             following
                                         </div>
@@ -294,12 +298,18 @@
         </div>
         <!-- Comment Modal -->
         <CommentModal
-            v-else
+            v-else-if="modalInfo.name === 'comment-modal'"
             @on-modal-closed="triggerCommentModal" 
             :post-comment="{
                 isToggled: modalInfo.isToggled,
                 post : postItems[modalInfo.postId],
             }"/>
+        
+        <!-- Followers/ Following Modal -->
+        <smallModal 
+            @on-modal-closed="triggerFollowOrFollowingModal"
+            :title="smallModal.title" 
+            :items="smallModal.items" :is-toggled="smallModal.isToggled" />
 
     </div>
 </template>
@@ -313,10 +323,11 @@ import PostCard from '@/components/basics/PostCard.vue'
 import NavBarMain from '@/components/navbars/NavBarMain.vue'
 import CommentModal from '@/components/basics/CommentModal.vue'
 
-import type { PostMedia } from '@/common/models/Post.model'
+import type { PostMedia, SuggestionCard } from '@/common/models/Post.model'
+import smallModal from '@/components/basics/smallModal.vue'
 
 type navBarTabs = 'profile-posts' | 'profile-tagged' | 'profile-saved' | 'profile-peed'
-type modalName = 'profile-modal' | 'comment-modal'
+type modalName = 'profile-modal' | 'comment-modal' | 'other-modal'
 
 export default defineComponent({
     name: 'ProfileView',
@@ -329,6 +340,12 @@ export default defineComponent({
             name: '',
             isToggled: false,
             postId: 0
+        })
+
+        const smallModal = ref({
+            title: '',
+            items: [] as any,
+            isToggled: false
         })
         // Checkers
         const isCommentModalOpen = ref(false)
@@ -349,9 +366,15 @@ export default defineComponent({
 
             const modalName = type.value === 'xs' ? 'profile-modal' : 'comment-modal' // If screen size > 768 open comment Modal else open Profile Modal
 
-            modalInfo.value = {'name': modalName , 'isToggled': !modalInfo.value.isToggled, postId: id ? id : 0 }
+            modalInfo.value = {name: modalName , isToggled: !modalInfo.value.isToggled, postId: id ? id : 0 }
             // commentModalInfo.value = { 'isToggled': !commentModalInfo.value.isToggled, postId: id ? id : 0 }
         }
+
+
+        const triggerFollowOrFollowingModal = (title: string | undefined) => {
+            smallModal.value = {title: title ? title : '', isToggled: !smallModal.value.isToggled, items: suggested}
+        } 
+
 
         const mediasArraySampleA: PostMedia[] = [
             {
@@ -483,58 +506,137 @@ export default defineComponent({
                 commentCount: 152,
                 profilePictureUrl: 'https://loremflickr.com/32/32/girl'
             },
+        ]
+        const suggested = [
             {
-                id: '3',
-                userName: 'Sara',
-                createdAt: 'February 24',
-                likeCount: 152,
-                hasLiked: false,
-                caption: 'Be like a tree. Stay grounded. Connect with your roots. Turn over a new leaf. Bend before you break. Enjoy your unique natural beauty. Keep growing.',
-                carouselMedia: mediasArraySampleA,
-                commentCount: 152,
-                profilePictureUrl: 'https://loremflickr.com/32/32/sky'
-            }
-            ,
-            {
-                id: '4',
-                userName: 'Sara',
-                createdAt: 'February 24',
-                likeCount: 152,
-                hasLiked: false,
-                caption: 'Be like a tree. Stay grounded. Connect with your roots. Turn over a new leaf. Bend before you break. Enjoy your unique natural beauty. Keep growing.',
-                carouselMedia: mediasArraySampleB,
-                commentCount: 152,
-                profilePictureUrl: 'https://loremflickr.com/32/32/drink'
+                userName: 'Rabee',
+                profilePictureUrl: 'https://loremflickr.com/1024/1080/bird',
+                suggested: [{
+                    userName: 'Rabee',
+                    profilePictureUrl: 'https://loremflickr.com/1024/1080/bird',
+                    followedBy: 'imamomarsuleiman + 1 more'
+                }]
             },
             {
-                id: '5',
-                userName: 'Sara',
-                createdAt: 'February 24',
-                likeCount: 152,
-                hasLiked: false,
-                caption: 'Be like a tree. Stay grounded. Connect with your roots. Turn over a new leaf. Bend before you break. Enjoy your unique natural beauty. Keep growing.',
-                carouselMedia: mediasArraySampleA,
-                commentCount: 152,
-                profilePictureUrl: 'https://loremflickr.com/32/32/space'
+                userName: 'Adil',
+                profilePictureUrl: 'https://loremflickr.com/1024/1080/cat',
+                suggested: [{
+                    userName: 'Rabee',
+                    profilePictureUrl: 'https://loremflickr.com/1024/1080/dog',
+                    followedBy: 'imamomarsuleiman + 1 more'
+                }]
+            },
+            {
+                userName: 'Ahmed',
+                profilePictureUrl: 'https://loremflickr.com/1024/1080/death',
+                suggested: [{
+                    userName: 'Rabee',
+                    profilePictureUrl: 'http://via.placeholder.com/32x32',
+                    followedBy: 'imamomarsuleiman + 1 more'
+                }]
+            },
+            {
+                userName: 'Rabee',
+                profilePictureUrl: 'https://loremflickr.com/1024/1080/bird',
+                suggested: [{
+                    userName: 'Rabee',
+                    profilePictureUrl: 'https://loremflickr.com/1024/1080/bird',
+                    followedBy: 'imamomarsuleiman + 1 more'
+                }]
+            },
+            {
+                userName: 'Adil',
+                profilePictureUrl: 'https://loremflickr.com/1024/1080/cat',
+                suggested: [{
+                    userName: 'Rabee',
+                    profilePictureUrl: 'https://loremflickr.com/1024/1080/dog',
+                    followedBy: 'imamomarsuleiman + 1 more'
+                }]
+            },
+            {
+                userName: 'Ahmed',
+                profilePictureUrl: 'https://loremflickr.com/1024/1080/death',
+                suggested: [{
+                    userName: 'Rabee',
+                    profilePictureUrl: 'http://via.placeholder.com/32x32',
+                    followedBy: 'imamomarsuleiman + 1 more'
+                }]
+            },
+            {
+                userName: 'Rabee',
+                profilePictureUrl: 'https://loremflickr.com/1024/1080/bird',
+                suggested: [{
+                    userName: 'Rabee',
+                    profilePictureUrl: 'https://loremflickr.com/1024/1080/bird',
+                    followedBy: 'imamomarsuleiman + 1 more'
+                }]
+            },
+            {
+                userName: 'Adil',
+                profilePictureUrl: 'https://loremflickr.com/1024/1080/cat',
+                suggested: [{
+                    userName: 'Rabee',
+                    profilePictureUrl: 'https://loremflickr.com/1024/1080/dog',
+                    followedBy: 'imamomarsuleiman + 1 more'
+                }]
+            },
+            {
+                userName: 'Ahmed',
+                profilePictureUrl: 'https://loremflickr.com/1024/1080/death',
+                suggested: [{
+                    userName: 'Rabee',
+                    profilePictureUrl: 'http://via.placeholder.com/32x32',
+                    followedBy: 'imamomarsuleiman + 1 more'
+                }]
+            },
+            {
+                userName: 'Rabee',
+                profilePictureUrl: 'https://loremflickr.com/1024/1080/bird',
+                suggested: [{
+                    userName: 'Rabee',
+                    profilePictureUrl: 'https://loremflickr.com/1024/1080/bird',
+                    followedBy: 'imamomarsuleiman + 1 more'
+                }]
+            },
+            {
+                userName: 'Adil',
+                profilePictureUrl: 'https://loremflickr.com/1024/1080/cat',
+                suggested: [{
+                    userName: 'Rabee',
+                    profilePictureUrl: 'https://loremflickr.com/1024/1080/dog',
+                    followedBy: 'imamomarsuleiman + 1 more'
+                }]
+            },
+            {
+                userName: 'Ahmed',
+                profilePictureUrl: 'https://loremflickr.com/1024/1080/death',
+                suggested: [{
+                    userName: 'Rabee',
+                    profilePictureUrl: 'http://via.placeholder.com/32x32',
+                    followedBy: 'imamomarsuleiman + 1 more'
+                }]
             }
-        ]
-
+    ]
 
         return {
+            suggested,
             postItems,
             modalInfo,
+            smallModal,
             currentActiveTab,
             triggerCommentModal,
             navBarTabSwitcher,
+            triggerFollowOrFollowingModal,
             emptyTabBarBodyMessage,
         }
     },
     components: {
-        SVGLoader,
-        NavBarMain,
-        CommentModal,
-        PostCard
-    }
+    SVGLoader,
+    NavBarMain,
+    CommentModal,
+    PostCard,
+    smallModal
+}
 })
 </script>
 

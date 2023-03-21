@@ -1,0 +1,48 @@
+<template>
+    <div class="flex flex-inital flex-row text-center space-x-1">
+        <img 
+            :src="profileImage" 
+            class="w-8 h-8 rounded-full">
+        
+        <div class="flex pt-2 space-x-2">
+            <span class="font-sans text-sm font-semibold text-white self-start">
+                <slot name="user-name"></slot>
+            </span>
+            <span class="font-sans text-sm font-semibold text-white self-start">
+                ·
+            </span>
+            <span class="font-sans text-xs text-sky-500 pt-1">
+                <slot name="action-name"></slot>
+            </span>
+        </div>
+
+    </div>
+
+    <button 
+        type="button" 
+        class="flex-inital self-end text-gray-900 
+        border border-gray-200 font-semibold 
+        bg-white hover:bg-gray-100 rounded-lg 
+        text-sm p-1.5 px-6 py-1.5">
+            <slot name="button-name"></slot>
+    </button>
+    
+</template>
+
+<script lang="ts">
+import { defineComponent, onMounted } from 'vue'
+
+
+export default defineComponent({
+    name: 'smallCard',
+    setup(prop) {
+        onMounted(() => {
+        })
+
+        return { }
+    },
+    props: {
+        profileImage: { type: String }
+    }
+})
+</script>

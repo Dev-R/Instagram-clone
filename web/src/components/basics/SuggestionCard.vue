@@ -98,7 +98,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted } from 'vue'
-import type { SuggestionCard } from '@/common/models/post.model'
+import type { SuggestionCard } from '@/common/models/Post.model'
 
 export default defineComponent({
     name: 'SuggestionCard',

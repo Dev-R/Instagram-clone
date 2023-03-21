@@ -1,7 +1,8 @@
 <template>
-    <div class="container w-[470px] p-2">
-        <PostCard 
-            :post-item="postItem"/>
+    <div class="container max-w-full h-full bg-[#1a1a1a] space-y-5 p-5">
+
+<!-- Small Modal -->
+        <smallModalVue title="Follow" :items="suggested"  />
     </div>
 </template>
 
@@ -9,6 +10,8 @@
 import { onMounted, defineComponent } from 'vue'
 import PostCard from '@/components/basics/PostCard.vue';
 import type { PostMedia } from '@/common/models/Post.model';
+import SVGLoader from '@/components/basics/SVGLoader.vue'
+import smallModalVue from '@/components/basics/smallModal.vue'
 
 
 export default defineComponent({
@@ -48,6 +51,15 @@ export default defineComponent({
                 title: "Legendary A"
             }
         ]
+        const suggested = [{
+            userName: 'Rabee',
+            profilePictureUrl: 'http://via.placeholder.com/32x32',
+            suggested: [{
+                userName: 'Rabee',
+                profilePictureUrl: 'http://via.placeholder.com/32x32',
+                followedBy: 'imamomarsuleiman + 1 more'
+            }]
+        }]
 
         const postItem = {
             id: '0',
@@ -66,11 +78,14 @@ export default defineComponent({
         })
 
         return {
-            postItem
+            postItem,
+            suggested
         }
     },
     components: {
-        PostCard
-    }
+    PostCard,
+    SVGLoader,
+    smallModalVue
+}
 })
 </script>
