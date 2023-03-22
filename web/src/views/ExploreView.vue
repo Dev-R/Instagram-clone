@@ -1,91 +1,86 @@
 <template>
-    <div class="container max-w-full h-full bg-[#1a1a1a] space-y-5 p-5">
+    <div 
+        class="rounded-lg shadow w-4/5 md:pt-0 md:z-0  z-50 
+        lg:h-auto h-4/5 md:w-[742px] bg-slate-1100 absolute 
+        top-1/2 left-1/2 transform -translate-x-1/2 
+        -translate-y-1/2"
+        :class="{ 'hidden': isToggled }">
 
-<!-- Small Modal -->
-        <smallModalVue title="Follow" :items="suggested"  />
+        
+        <div class="space-y-6 rounded-full pb-2">
+                <div class="flex flex-col lg:h-[750px]">
+                    <!-- Header -->
+                    <div class="flex border-b border-gray-700 justify-center p-2 hover:cursor-pointer">
+                        <span class="font-sans text-sm font-semibold text-white">
+                            Create new post 
+                        </span>
+                    </div>
+                    <!-- Body -->
+                    <div class="flex flex-col m-auto space-y-4 h-screen">
+
+                        <SVGLoader :icon="'media-modal'" :class="'mx-auto'"/>
+
+                        <span class="font-sans text-lg font-normal text-white mx-auto">
+                            Drag photos and videos here
+                        </span>
+
+                        <button  
+                            type="button" 
+                            class="text-white bg-[#0095f6] hover:bg-sky-700
+                            font-semibold w-auto mx-auto rounded-lg text-xs 
+                            md:p-1.5 md:px-3 md:py-1.5 px-3 py-1 md:w-auto">
+                            Select from computer>
+                        </button>
+                    </div>
+                </div>
+        </div>
+        
+    </div>
+    <!-- Modal Header -->
+    <div class="md:block hidden pt-3">
+        <div class="md:mr-12 flex items-center justify-between cursor-pointer">
+            <span class="ml-auto inline-flex text-white">
+                <SVGLoader :icon="'cross'" @click="onModalClosed()" />
+            </span>
+        </div>
     </div>
 </template>
 
 <script lang="ts">
-import { onMounted, defineComponent } from 'vue'
-import PostCard from '@/components/basics/PostCard.vue';
-import type { PostMedia } from '@/common/models/Post.model';
-import SVGLoader from '@/components/basics/SVGLoader.vue'
-import smallModalVue from '@/components/basics/smallModal.vue'
+import { defineComponent, onMounted } from 'vue';
 
+import SmallCard from '@/components/basics/smallCard.vue';
+import SVGLoader from '@/components/basics/SVGLoader.vue';
 
 export default defineComponent({
-    name: 'Explore',
-    setup() {
+    name: "photoModal",
+    setup(prop, context) {
 
-        const mediasArraySampleA: PostMedia[] = [
-            {
-                index: 0,
-                type: 'image',
-                mediaUrl:
-                    "https://loremflickr.com/1024/1280/cat",
-                title: "Legendary A"
-            },
-            {
-                index: 1,
-                type: 'image',
-                mediaUrl:
-                    "https://loremflickr.com/1024/1280/nature",
-                title: "Legendary A"
-            }
-        ]
-
-        const mediasArraySampleB: PostMedia[] = [
-            {
-                index: 0,
-                type: 'image',
-                mediaUrl:
-                    "https://loremflickr.com/1024/1280/sky",
-                title: "Legendary A"
-            },
-            {
-                index: 1,
-                type: 'image',
-                mediaUrl:
-                    "https://loremflickr.com/1024/1280/love",
-                title: "Legendary A"
-            }
-        ]
-        const suggested = [{
-            userName: 'Rabee',
-            profilePictureUrl: 'http://via.placeholder.com/32x32',
-            suggested: [{
-                userName: 'Rabee',
-                profilePictureUrl: 'http://via.placeholder.com/32x32',
-                followedBy: 'imamomarsuleiman + 1 more'
-            }]
-        }]
-
-        const postItem = {
-            id: '0',
-            userName: 'Rabee',
-            createdAt: '',
-            likeCount: 0,
-            hasLiked: true,
-            caption: ' Sh. @abdullah_oduro and I getting that Saturday morning work in the gym and talking over @yaqeeninstitute Quran 30 ',
-            carouselMedia: mediasArraySampleA,
-            commentCount: 0,
-            profilePictureUrl: 'https://loremflickr.com/32/32/bird'
-        }
-
+      /**
+       * Emit signal when the modal is closed
+       * @event modal-closed
+       */
+       const onModalClosed = () => {
+          context.emit('onModalClosed')
+      }
         onMounted(() => {
-            // console.log('Mounted Explore')
-        })
-
+        });
         return {
-            postItem,
-            suggested
+            onModalClosed
+        };
+    },
+    props: {
+        isToggled: {
+            type: Boolean,
+            required: true
         }
     },
-    components: {
-    PostCard,
-    SVGLoader,
-    smallModalVue
-}
+    components: { 
+        SmallCard, 
+        SVGLoader 
+    },
+    emits: [
+      'onModalClosed',
+  ]
 })
 </script>
