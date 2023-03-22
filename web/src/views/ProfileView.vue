@@ -1,9 +1,9 @@
 <template>
     <div class="bg-black relative">
         <section 
-            v-if="!modalInfo.isToggled"
+            v-if="!commentModal.isToggled"
             class="container max-w-full mx-auto text-center h-screen  scrollbar scrollbar-thumb-gray-900"
-            :class="{ 'brightness-50 pointer-events-none': modalInfo.isToggled || smallModal.isToggled }">
+            :class="{ 'brightness-50 pointer-events-none': commentModal.isToggled || smallModal.isToggled }">
             <div class=" grid grid-cols-12">
                 <!-- Left bar: Navigation -->
                 <div 
@@ -16,11 +16,11 @@
                 <!-- Center -->
                 <div 
                     class="lg:col-span-8 lg:grid md:col-span-6  scrollbar scrollbar-thumb-gray-900
-                    md:ml-5 lg:ml-0 md:col-start-2 md:mt-8 md:p-0
+                    md:ml-5 lg:ml-0 md:col-start-2 md:mt-8 md:p-0 
                     col-span-12 p-2">
                     
                     <div 
-                        class="md:w-[950px] flex flex-col
+                        class="md:w-[935px] flex flex-col
                         space-y-4 flex-nowrap md:pt-0 pt-2
                         justify-self-end lg:mr--[64px]">            
                         <!-- Profile Info -->
@@ -36,7 +36,7 @@
                             <div class="md:pl-20 bg-black flex flex-col space-y-6">
                                 <div class="md:flex md:flex-row flex-col md:space-x-4 space-y-3 items-center">
                                     <!-- User name -->
-                                    <div class="md:pl-0 pl-6 font-sans text-xl font-normal text-white text-left">
+                                    <div class="md:pl-0 pl-6 font-sans text-lg font-normal text-white text-left md:mt-4">
                                         hot_souce_56
                                     </div>
 
@@ -46,40 +46,44 @@
                                             type="button" 
                                             class="text-gray-900 bg-white hover:bg-gray-100 
                                             border border-gray-200 font-semibold w-auto
-                                            rounded-lg text-sm md:p-1.5 md:px-5 md:py-1.5 px-20 py-1.5  md:w-auto  ">
-
+                                            rounded-lg text-xs md:p-1.5 md:px-3 md:py-1.5 px-20 py-1 md:w-auto  ">
                                             Edit Profile
                                         </button>
                                     </div>
                                     <!-- Logged-in user Options -->
                                     <div>
-                                        <SVGLoader :icon="'profile-options'" :class="'md:block hidden'"/>
+                                        <SVGLoader 
+                                            @click="triggerSmallModal('setting-modal', 'Followers')"
+                                            :icon="'profile-options'" 
+                                            :class="'md:block hidden hover:cursor-pointer'"/>
                                     </div>
                                 </div>
                                 <!-- Profile Info: Desktop -->
                                 <div class="md:block hidden">
                                     <div class="flex space-x-10">
                                         <!-- Number of posts -->
-                                        <div class="font-sans text-md font-normal text-white">
-                                            <span class="font-sans text-md font-bold text-white">
+                                        <div class="font-sans text-sm font-normal text-white">
+                                            <span class="font-sans text-sm font-bold text-white">
                                                 2
                                             </span>
                                             posts
                                         </div>
                                         <!-- Number of followers -->
                                     <div 
-                                         @click="triggerFollowOrFollowingModal('Followers')"
-                                        class="font-sans text-md font-normal text-white hover:cursor-pointer">
-                                            <span class="font-sans text-md font-bold text-white">
+                                         @click="triggerSmallModal('follow-modal', 'Followers')"
+                                        class="font-sans text-sm font-normal text-white hover:cursor-pointer">
+                                        <span class="font-sans text-sm font-bold text-white">
                                                 8
                                             </span>
                                             followers
                                         </div>
                                         <!-- Number of following -->
                                         <div 
-                                            @click="triggerFollowOrFollowingModal('Following')"
-                                            class="font-sans text-md font-normal text-white hover:cursor-pointer">
-                                            <span class="font-sans text-md font-bold text-white">47</span>
+                                            @click="triggerSmallModal('follow-modal', 'Following')"
+                                            class="font-sans text-sm font-normal text-white hover:cursor-pointer">
+                                            <span class="font-sans text-sm font-bold text-white">
+                                                47
+                                            </span>
                                             following
                                         </div>
 
@@ -104,7 +108,7 @@
                                 </div>
 
                                 <div 
-                                    @click="triggerFollowOrFollowingModal('Followers')"
+                                @click="triggerSmallModal('follow-modal', 'Followers')"
                                     class="flex flex-col hover:cursor-pointer">
 
                                         <span class="text-sm subpixel-antialiase text-white">
@@ -118,7 +122,7 @@
                                 </div>
 
                                 <div 
-                                    @click="triggerFollowOrFollowingModal('Following')"
+                                @click="triggerSmallModal('follow-modal', 'Following')"
                                     class="flex flex-col hover:cursor-pointer">
                                     <span class="text-sm subpixel-antialiase text-white">
                                             545
@@ -247,12 +251,11 @@
                             <i class="fa-regular fa-bookmark"></i>
                         </div> -->
                         
-                        <!-- Image Rendering Sectio -->
+                        <!-- Image Rendering Section -->
                         <div 
                             v-if="currentActiveTab === 'profile-posts'"
                             class="flex flex-wrap">
                             
-
                             <div 
                                 v-for="(post, index) of postItems"
                                 @click="triggerCommentModal(index)"
@@ -299,25 +302,31 @@
             </div>
         </section>
         <div 
-            v-else-if="modalInfo.name === 'profile-modal'"
+            v-else-if="commentModal.name === 'profile-modal'"
             class="md:w-[470px] justify-self-end p-2">
             <PostCard
-                :post-item="postItems[modalInfo.postId]"/>
+                :post-item="postItems[commentModal.postId]"/>
         </div>
         <!-- Comment Modal -->
         <CommentModal
-            v-else-if="modalInfo.name === 'comment-modal'"
+            v-else-if="commentModal.name === 'comment-modal'"
             @on-modal-closed="triggerCommentModal" 
             :post-comment="{
-                isToggled: modalInfo.isToggled,
-                post : postItems[modalInfo.postId],
+                isToggled: commentModal.isToggled,
+                post : postItems[commentModal.postId],
             }"/>
         
         <!-- Followers/ Following Modal -->
         <smallModal 
-            @on-modal-closed="triggerFollowOrFollowingModal"
+
+            @on-modal-closed="triggerSmallModal"
             :title="smallModal.title" 
-            :items="smallModal.items" :is-toggled="smallModal.isToggled" />
+            :items="smallModal.items" :is-toggled="smallModal.isToggled && smallModal.name === 'follow-modal'" />
+
+        <!-- Quick Setting Modal -->
+        <settingModal
+            @on-modal-closed="triggerSmallModal"
+            :is-toggled="smallModal.isToggled && smallModal.name === 'setting-modal'"/>
 
     </div>
 </template>
@@ -332,10 +341,13 @@ import NavBarMain from '@/components/navbars/NavBarMain.vue'
 import CommentModal from '@/components/basics/CommentModal.vue'
 
 import type { PostMedia, SuggestionCard } from '@/common/models/Post.model'
+
 import smallModal from '@/components/basics/smallModal.vue'
+import settingModal from '@/components/basics/settingModal.vue'
 
 type navBarTabs = 'profile-posts' | 'profile-tagged' | 'profile-saved' | 'profile-peed'
-type modalName = 'profile-modal' | 'comment-modal' | 'other-modal'
+type commentModalName = 'profile-modal' | 'comment-modal' | 'other-modal'
+
 
 export default defineComponent({
     name: 'ProfileView',
@@ -344,13 +356,14 @@ export default defineComponent({
         // Selectors
         const currentActiveTab = ref<navBarTabs>('profile-posts') // Select profile-posts as default active tab
 
-        const modalInfo = ref({
-            name: '',
+        const commentModal = ref({
+            name: '' as commentModalName,
             isToggled: false,
             postId: 0
         })
 
         const smallModal = ref({
+            name: '' ,
             title: '',
             items: [] as any,
             isToggled: false
@@ -374,13 +387,14 @@ export default defineComponent({
 
             const modalName = type.value === 'xs' ? 'profile-modal' : 'comment-modal' // If screen size > 768 open comment Modal else open Profile Modal
 
-            modalInfo.value = {name: modalName , isToggled: !modalInfo.value.isToggled, postId: id ? id : 0 }
-            // commentModalInfo.value = { 'isToggled': !commentModalInfo.value.isToggled, postId: id ? id : 0 }
+            commentModal.value = {name: modalName , isToggled: !commentModal.value.isToggled, postId: id ? id : 0 }
+            // commentcommentModal.value = { 'isToggled': !commentcommentModal.value.isToggled, postId: id ? id : 0 }
         }
 
 
-        const triggerFollowOrFollowingModal = (title: string | undefined) => {
-            smallModal.value = {title: title ? title : '', isToggled: !smallModal.value.isToggled, items: suggested}
+        const triggerSmallModal = (name: string | undefined, title: string | undefined) => {
+
+            smallModal.value = {name: name ? name : '', title: title ? title : '', isToggled: !smallModal.value.isToggled, items: suggested}
         } 
 
 
@@ -640,12 +654,12 @@ export default defineComponent({
         return {
             suggested,
             postItems,
-            modalInfo,
+            commentModal,
             smallModal,
             currentActiveTab,
             triggerCommentModal,
             navBarTabSwitcher,
-            triggerFollowOrFollowingModal,
+            triggerSmallModal,
             emptyTabBarBodyMessage,
         }
     },
@@ -654,7 +668,8 @@ export default defineComponent({
     NavBarMain,
     CommentModal,
     PostCard,
-    smallModal
+    smallModal,
+    settingModal
 }
 })
 </script>
