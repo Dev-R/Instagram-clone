@@ -1,7 +1,7 @@
 <template>
     <div 
-        class="bg-white rounded-lg shadow w-full h-1/3 
-        lg:h-auto md:w-[400px] bg-[#262626] absolute 
+        class="bg-black rounded-lg shadow h-5/6 w-full md:pt-0 md:z-0 pt-5 z-50 
+        lg:h-auto md:w-[400px] md:bg-slate-1100 absolute 
         top-1/3 left-1/2 transform -translate-x-1/2 
         -translate-y-1/2"
         :class="{ 'hidden': !isToggled }">
@@ -26,7 +26,7 @@
         <!-- Modal body -->
         <div class="p-6 space-y-6">
                 <div 
-                    class="flex flex-col space-y-5 max-h-80 overflow-y-scroll scrollbar">
+                    class="flex flex-col space-y-5 lg:max-h-80 max-h-full overflow-y-scroll scrollbar">
 
                     <div 
                         v-for="item of items"
