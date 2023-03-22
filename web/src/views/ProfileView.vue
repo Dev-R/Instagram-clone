@@ -3,7 +3,7 @@
         <section 
             v-if="!modalInfo.isToggled"
             class="container max-w-full mx-auto text-center h-screen  scrollbar scrollbar-thumb-gray-900"
-            :class="{ 'brightness-50': modalInfo.isToggled || smallModal.isToggled }">
+            :class="{ 'brightness-50 pointer-events-none': modalInfo.isToggled || smallModal.isToggled }">
             <div class=" grid grid-cols-12">
                 <!-- Left bar: Navigation -->
                 <div 
@@ -56,7 +56,7 @@
                                         <SVGLoader :icon="'profile-options'" :class="'md:block hidden'"/>
                                     </div>
                                 </div>
-                                <!-- Profile Info -->
+                                <!-- Profile Info: Desktop -->
                                 <div class="md:block hidden">
                                     <div class="flex space-x-10">
                                         <!-- Number of posts -->
@@ -87,13 +87,14 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- Profile Info: Mobile -->
                         <div 
                             class="text-center border-t md:hidden block
                             border-slate-1100 mt-2">
                             <ul class="flex space-x-14 flex-wrap justify-around pt-3 pl-4 pr-4">
                                 <!-- Posts Tab -->
 
-                                <div class="flex flex-col">
+                                <div class="flex flex-col hover:cursor-pointer">
                                     <span class="text-sm subpixel-antialiase text-white">
                                             85
                                     </span>
@@ -102,16 +103,23 @@
                                     </span>
                                 </div>
 
-                                <div class="flex flex-col">
-                                    <span class="text-sm subpixel-antialiase text-white">
-                                            84
-                                    </span>
-                                    <span class="text-sm subpixel-antialiase text-gray-400">
-                                            followers
-                                    </span>
+                                <div 
+                                    @click="triggerFollowOrFollowingModal('Followers')"
+                                    class="flex flex-col hover:cursor-pointer">
+
+                                        <span class="text-sm subpixel-antialiase text-white">
+                                                84
+                                        </span>
+
+                                        <span class="text-sm subpixel-antialiase text-gray-400">
+                                                followers
+                                        </span>
+                                        
                                 </div>
 
-                                <div class="flex flex-col">
+                                <div 
+                                    @click="triggerFollowOrFollowingModal('Following')"
+                                    class="flex flex-col hover:cursor-pointer">
                                     <span class="text-sm subpixel-antialiase text-white">
                                             545
                                     </span>
@@ -497,6 +505,17 @@ export default defineComponent({
             },
             {
                 id: '1',
+                userName: 'Sara',
+                createdAt: 'February 24',
+                likeCount: 152,
+                hasLiked: false,
+                caption: 'Be like a tree. Stay grounded. Connect with your roots. Turn over a new leaf. Bend before you break. Enjoy your unique natural beauty. Keep growing.',
+                carouselMedia: mediasArraySampleB,
+                commentCount: 152,
+                profilePictureUrl: 'https://loremflickr.com/32/32/girl'
+            },
+            {
+                id: '3',
                 userName: 'Sara',
                 createdAt: 'February 24',
                 likeCount: 152,
