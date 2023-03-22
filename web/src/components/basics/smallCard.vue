@@ -4,7 +4,7 @@
             :src="profileImage" 
             class="w-8 h-8 rounded-full">
         
-        <div class="flex pt-2 space-x-2">
+        <div class="flex pl-1.5 pt-2 space-x-2">
             <span class="font-sans text-sm font-semibold text-white self-start">
                 <slot name="user-name"></slot>
             </span>
