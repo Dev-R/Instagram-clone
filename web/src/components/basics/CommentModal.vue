@@ -203,13 +203,13 @@
 
                                 <div
                                     v-else
-                                    class="flex flex-col place-self-center ">
+                                    class="flex flex-col place-self-center space-y-2">
                                     <span
                                         class="font-sans text-2xl text-white font-bold mx-auto">
                                         No comments yet.
                                     </span>
                                     <span
-                                        class="font-sans text-md text-white font-light">
+                                        class="font-sans text-sm self-center text-white font-normal">
                                         Start the conversation.
                                     </span>
                                 </div>
