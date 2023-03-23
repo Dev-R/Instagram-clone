@@ -30,7 +30,7 @@
 import { defineComponent, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 
-import type { StoryCarousel } from '@/common/models/post.model'
+import type { StoryCarousel } from '@/common/models/Post.model'
 
 export default defineComponent({
     name: 'StoryCarousel',
