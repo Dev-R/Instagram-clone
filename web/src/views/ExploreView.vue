@@ -111,11 +111,12 @@
                             </div>
 
                         </div>
+                        <!-- Filters tab -->
                         <div
                             class="flex flex-wrap sm:pl-1.5 pt-3 
                             h-fit md:w-80 justify-around"
                             :class="{
-                                'hidden': modalHeaderName === 'Create new post',
+                                'hidden': modalHeaderName === 'Create new post' || currentActiveFilterTab != 'filters-tab',
                                 'invisible': currentActiveFilterTab != 'filters-tab'
                             }">
                             <!-- TODO: Optimize and convert into for loop- -->
@@ -229,6 +230,46 @@
                             </div>
 
 
+                        </div>
+                        <!-- Adjustments tab -->
+                        <div 
+                            class="flex flex-col space-y-4"
+                            :class="{
+                                'hidden': modalHeaderName === 'Create new post' || currentActiveFilterTab != 'adjustments-tab',
+                                // 'invisible': currentActiveFilterTab != 'filters-tab'
+                            }">
+                            <div class="p-3 py-2">
+                                <label 
+                                    for="disabled-range" 
+                                    class="block mb-2 text-md font-medium text-white">
+                                    Brightness
+                                </label>
+                                <input id="disabled-range" type="range" value="50" class="md:w-72 h-0.5 bg-gray-200 rounded-lg appearance-none cursor-pointer bg-white">
+                            </div>
+                            <div class="p-3 pt-0">
+                                <label 
+                                    for="disabled-range" 
+                                    class="block mb-2 text-md font-medium text-white">
+                                    Contrast
+                                </label>
+                                <input id="disabled-range" type="range" value="50" class="md:w-72 h-0.5 bg-gray-200 rounded-lg appearance-none cursor-pointer bg-white">
+                            </div>
+                            <div class="p-3 pt-0">
+                                <label 
+                                    for="disabled-range" 
+                                    class="block mb-2 text-md font-medium text-white">
+                                    Saturation
+                                </label>
+                                <input id="disabled-range" type="range" value="50" class="md:w-72 h-0.5 bg-gray-200 rounded-lg appearance-none cursor-pointer bg-white">
+                            </div>
+                            <div class="p-3 pt-0">
+                                <label 
+                                    for="disabled-range" 
+                                    class="block mb-2 text-md font-medium text-white">
+                                    Temperature
+                                </label>
+                                <input id="disabled-range" type="range" value="50" class="md:w-72 h-0.5 bg-gray-200 rounded-lg appearance-none cursor-pointer bg-white">
+                            </div>
                         </div>
                     </div>
                 </div>
