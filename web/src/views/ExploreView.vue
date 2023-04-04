@@ -2,16 +2,14 @@
     <div 
         id="photo-modal"
         class="rounded-lg shadow overflow-hidden lg:pt-0 lg:z-0 z-50 
-        lg:h-auto bg-slate-1100 absolute  lg:w-screen w-4/5 h-3/5 max-h-[348px] sm:max-h-fit
+        lg:h-auto bg-slate-1100 absolute  lg:w-screen w-4/5 h-3/5 max-h-md sm:max-h-fit md:max-w-none max-w-md 
         top-1/2 left-1/2 transform -translate-x-1/2 
         -translate-y-1/2"
         :class="{ 
             'hidden': isToggled,
-            'lg:max-w-[750px]' : currentModalStage === 'uploading-post' || currentModalStage === 'create-post',
-            'lg:max-w-[1024px]' : currentModalStage === 'edit-post' || currentModalStage === 'upload-post'
+            'lg:max-w-[750px]' : nonEditStages.includes(currentModalStage),
+            'lg:max-w-[1024px]' : editStages.includes(currentModalStage)
         }">
-
-        
         <div class="rounded-full">
                 <!-- Header -->
                 <div 
@@ -25,9 +23,9 @@
                         TODO: Remove lazy solution, add css
                         v-if="isFileUploaded && isFileValid"> -->
                     <span
-                        v-if="isFileUploaded && isFileValid && currentModalStage != 'uploading-post'">
+                        v-if="editStages.includes(currentModalStage)"
+                        @click="updateModalStage(currentModalStage === 'edit-post-adjustments' ? 'create-post' : 'edit-post-adjustments')">
                         <SVGLoader
-                        @click="clearPreviewImage"
                         :icon="'media-back-arrow'"/>
                     </span>
                     <span v-else>
@@ -35,22 +33,21 @@
                     
                     <span class="font-sans md:text-md font-semibold text-white">
                         {{ modalHeaderName }}
-                        {{ currentModalStage }}
                     </span>
                     <!-- 
                         TODO: Remove lazy solution, add css
                         v-if="isFileUploaded && isFileValid"> -->
                     <span 
-                        v-if="isFileUploaded && isFileValid && currentModalStage === 'edit-post'"
-                        @click="updateModalStage('upload-post')"
+                        v-if="isFileUploaded && isFileValid && currentModalStage === 'edit-post-adjustments'"
+                        @click="updateModalStage('edit-post-comment')"
                         class="font-sans text-sm font-semibold text-sky-500 
                         justify-self-end cursor-pointer pt-1
                         hover:text-white">
                         Next
                     </span>
                     <span 
-                        v-else-if="currentModalStage === 'upload-post'"
-                        @click="updateModalStage('uploading-post')"
+                        v-else-if="currentModalStage === 'edit-post-comment'"
+                        @click="updateModalStage('sharing-post')"
                         class="font-sans text-sm font-semibold text-sky-500 
                         justify-self-end cursor-pointer pt-1
                         hover:text-white">
@@ -64,7 +61,7 @@
                     flex-col lg:h-[750px]">
                     <!-- Body -->
                     <div 
-                        class="flex relative grid sm:w-4/5 sm:p-0 grow"
+                        class="flex relative grid sm:w-4/5 sm:p-0 grow lg:translate-y-0 sm:translate-y-1/2"
                         :class="{ 
                             'p-12': !previewImage,
                             }">
@@ -76,7 +73,7 @@
                                 class="flex flex-col place-self-center space-y-4">
                                 <SVGLoader :icon="'media-modal'" :class="'mx-auto'"/>
 
-                                <span class="font-sans lg:text-xl text-lg text-white md:font-semibold mx-auto">
+                                <span class="font-sans lg:text-xl sm:text-lg text-md text-white md:font-semibold mx-auto">
                                     Drag photos and videos here
                                 </span>
                                 <button  
@@ -97,27 +94,23 @@
 
                             <!-- Uploaded Image Preview -->
                             <img
-                                id="theImage"
-                                v-else-if="previewImage && currentModalStage != 'uploading-post'"
+                                v-else-if="previewImage && editStages.includes(currentModalStage)"
                                 :src="previewImage"
-                                :style="{
-                                    filter: `${ imageBrightness } ${ imageContrast } ${ imageSaturation }`
-                                }"
+                                :style="isFilterApplied ? { filter: `${ imageBrightness } ${ imageContrast } ${ imageSaturation }` } : undefined"
                                 :class="[imageFilter]"
-                                class="absolute block md:h-full w-full -translate-x-1/2  
+                                class="absolute block lg:h-full md:h-[585.6px] h-lg w-full -translate-x-1/2 
                                 md:-translate-y-1/2 top-1/2 left-1/2"/>
 
                             <!-- Loading Progress -->
-                            <!-- <div v-else-if="currentModalStage === 'uploading-post'">
+                            <div v-else-if="currentModalStage === 'sharing-post'">
                                 <img
-                                    id="theImage"
                                     src="https://static.cdninstagram.com/rsrc.php/v3/yY/r/uCPMn4bWLAh.gif"
                                     class="absolute block md:h-24 md:w-24 w-full -translate-x-1/2  
                                     md:-translate-y-1/2 top-1/2 left-1/2"/>
-                            </div> -->
+                            </div>
                             
                             <!-- Loading Completed Successfully -->
-                            <div v-else 
+                            <div v-else-if="currentModalStage === 'post-shared'"
                                 class="flex flex-col -translate-x-1/2 space-y-2
                                  absolute lg:-translate-y-1/2  translate-y-1/2 top-1/2 left-1/2">
                                 <img
@@ -132,7 +125,7 @@
                     <div
                         class="md:block hidden">                                               
                         <div 
-                            v-if="currentModalStage === 'edit-post'"
+                            v-if="currentModalStage === 'edit-post-adjustments'"
                             class="flex justify-between border-b border-slate-500"
                             :class="modalHeaderName != 'Edit' ? 'hidden' : ''">
 
@@ -161,7 +154,7 @@
                             class="flex flex-wrap sm:pl-1.5 pt-3 
                             h-fit md:w-80 justify-around"
                             :class="{
-                                'hidden': currentModalStage != 'edit-post' || currentActiveFilterTab != 'filters-tab',
+                                'hidden': currentModalStage != 'edit-post-adjustments' || currentActiveFilterTab != 'filters-tab',
                                 'invisible': currentActiveFilterTab != 'filters-tab'
                             }">
                             <!-- TODO: Optimize and convert into for loop- -->
@@ -280,7 +273,7 @@
                         <div 
                             class="flex flex-col space-y-4 md:w-80"
                             :class="{
-                                'hidden': currentModalStage != 'edit-post' || currentActiveFilterTab != 'adjustments-tab',
+                                'hidden': currentModalStage != 'edit-post-adjustments' || currentActiveFilterTab != 'adjustments-tab',
                                 // 'invisible': currentActiveFilterTab != 'filters-tab'
                             }">
                             <div class="p-3 py-2 space-y-5">
@@ -298,7 +291,7 @@
                                         rounded-lg appearance-none cursor-pointer bg-white"/>
 
                                     <span class="text-xs font-medium text-white">
-                                        {{ currentImageAdjustments.brightness }}
+                                        {{ currentImageAdjustments.brightness === 'Normal'  ? 50 : currentImageAdjustments.brightness }}
                                     </span>
 
                                 </div>
@@ -320,7 +313,7 @@
                                         rounded-lg appearance-none cursor-pointer bg-white"/>
 
                                     <span class="text-xs font-medium text-white">
-                                        {{ currentImageAdjustments.contrast }}
+                                        {{ currentImageAdjustments.contrast === 'Normal'  ? 50 : currentImageAdjustments.contrast }}
                                     </span>
 
                                 </div>
@@ -342,7 +335,7 @@
                                         rounded-lg appearance-none cursor-pointer bg-white"/>
 
                                     <span class="text-xs font-medium text-white">
-                                        {{ currentImageAdjustments.saturation }}
+                                        {{ currentImageAdjustments.saturation === 'Normal'  ? 50 : currentImageAdjustments.saturation }}
                                     </span>
 
                                 </div>
@@ -351,12 +344,12 @@
 
                         </div>
 
-                        <!-- Last tab -->
+                        <!-- Last tab: Comments -->
                         <div 
                         
                             class="flex flex-col space-y-4 md:w-80 p-4"
                             :class="{
-                                'hidden': currentModalStage != 'upload-post' 
+                                'hidden': currentModalStage != 'edit-post-comment' 
                                 // 'invisible': currentActiveFilterTab != 'filters-tab'
                             }">
                             <!-- Mini User Profile -->
@@ -381,6 +374,7 @@
                             <!-- Text Area -->
                             <div class="flex flex-col space-y-2">
                                 <textarea 
+                                    v-model="formRef.caption"
                                     rows="8"
                                     maxlength="2200"
                                     class="focus:outline-none resize-none 
@@ -392,12 +386,13 @@
                                         <SVGLoader :icon="'profile-post-emoji'" />
                                     </div>
                                     <span class="text-[#636363] text-xs">
-                                        0/2,200
+                                       {{ characterCount }}/2,200
                                     </span>
                                 </div>
                                 <div class="flex justify-between">
                                     <div>
                                         <textarea 
+                                            v-model="formRef.location"
                                             rows="1"
                                             maxlength="50"
                                             class="focus:outline-none resize-none 
@@ -427,10 +422,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, computed } from 'vue'
+import { defineComponent, onMounted, ref, computed, watch } from 'vue'
 
 import SmallCard from '@/components/basics/smallCard.vue'
 import SVGLoader from '@/components/basics/SVGLoader.vue'
+
+type modalStages = 'create-post' | 'edit-post-adjustments' | 'edit-post-comment' | 'sharing-post' | 'post-shared' | 'post-failed'
 
 export default defineComponent({
     name: "photoModal",
@@ -445,20 +442,32 @@ export default defineComponent({
             filterValue: ''
         })
         const currentActiveFilterTab = ref('filters-tab')
-        const currentModalStage = ref('create-post')
+        const currentModalStage = ref<modalStages>('create-post')
 
         const currentImageAdjustments = ref({
-            brightness: '',
-            contrast: '',
-            saturation: ''
+            brightness: 0 as number | string,
+            contrast: 0 as number | string,
+            saturation: 0 as number | string
         })
+
+        const formRef = ref({
+            caption: '',
+            location: ''
+        })
+
+        // Stages tracking
+        const editStages = ['edit-post-adjustments', 'edit-post-comment']
+        const nonEditStages = ['create-post', 'sharing-post', 'post-shared', 'post-failed']
+
 
         // Flags for tracking upload status
         const isFileUploaded = ref<boolean>(false)
         const isFileValid = ref<boolean>(false)
+        const isFilterApplied = ref<boolean>(false)
 
 
         const filterTabSwitcher = (currentTab: string) => {
+            // resetImageAdjustments() // Remove manuel adjustments 
             console.log("Current Tab:", currentTab)
             currentActiveFilterTab.value = currentTab
         }
@@ -523,7 +532,7 @@ export default defineComponent({
                 ]
         }
 
-        const updateModalStage = (stage: string) => {
+        const updateModalStage = (stage: modalStages) => {
             currentModalStage.value = stage
         }
 
@@ -544,14 +553,54 @@ export default defineComponent({
             }
             isFileValid.value = true
             isFileUploaded.value = true
-            updateModalStage('edit-post')
+            updateModalStage('edit-post-adjustments')
             console.log("File uploaded", file)
         }
 
+        // Watchers
+
+        watch(currentModalStage, () => {
+            if (currentModalStage.value === 'sharing-post') {
+                console.log("updateSharingStatus ...")
+                setTimeout(() => {
+                    currentModalStage.value = 'post-shared'
+                    console.log("Done")
+                }, 5000)
+            }
+        })
+
+        watch(currentImageAdjustments.value, () => {
+            if (!isFilterApplied.value) {
+                isFilterApplied.value = true
+            }
+        })
+
+        watch(activePreviewImageFilter.value, () => {
+            if (isFilterApplied.value) {
+                isFilterApplied.value = false
+            }
+        })
+
         // Computed
 
+        const characterCount = computed(() => {
+            return formRef.value.caption ? formRef.value.caption.length : 0
+        })
+
         const modalHeaderName = computed(() => {
-            return previewImage.value ? 'Edit' : 'Create new post'
+            switch (currentModalStage.value) {
+                case 'create-post':
+                    return 'Create new post'
+                case 'edit-post-adjustments':
+                case 'edit-post-comment':
+                    return 'Edit'
+                case 'sharing-post':
+                    return 'Sharing'
+                case 'post-shared':
+                    return 'Post Shared'
+                default:
+                    return {}
+            }
         })
 
         const imageFilter = computed(() => {
@@ -600,7 +649,12 @@ export default defineComponent({
             imageBrightness,
             imageFilter,
             currentModalStage,
-            updateModalStage
+            updateModalStage,
+            editStages,
+            nonEditStages,
+            formRef,
+            characterCount,
+            isFilterApplied
         }
     },
     props: {
@@ -618,7 +672,6 @@ export default defineComponent({
     ]
 })
 </script>
-
 
 
 <style>
