@@ -1,5 +1,6 @@
 <template>
     <div 
+        v-if="!hiddenRoutes.includes(routeName)"
         class="flex flex-col space-x-2 justify-around 
         border-t border-gray-700 sticky top-0 md:hidden 
         block z-50 bg-black border-gray-800 border-t border-b">
@@ -22,13 +23,11 @@
     
                 <span v-else>
                     <SVGLoader 
-                        
                         :icon="'instagram-large'" 
                         :class="'group-hover:scale-110'"/>
                 </span>
 
             </div>
-
             
             <div 
                 v-if="routeName === 'home'"
@@ -61,7 +60,9 @@
                 absolute top-1/2 left-1/2 transform 
                 -translate-x-1/2 -translate-y-1/2 ml-12
                 text-white">
-                    More
+                    <span class="capitalize">
+                        {{ routeName }}
+                    </span>
             </div>
             
 
@@ -82,6 +83,8 @@ export default defineComponent({
         const route = useRoute()
         const router = useRouter()
 
+        // inVisible Routes
+        const hiddenRoutes = ['explore']
 
          const onPageBack= () => {
             setTimeout(() => {
@@ -91,7 +94,7 @@ export default defineComponent({
 
         // Computed
         const routeName = computed(()=> {
-            return route.name
+            return route.name ? route.name.toString() : ''
         })
 
         onMounted(() => {
@@ -101,6 +104,7 @@ export default defineComponent({
 
         return {
             routeName,
+            hiddenRoutes,
             onPageBack
         }
     },
