@@ -24,7 +24,7 @@
                     <!-- TODO: OZ -->
                     <span
                         v-if="editStages.includes(currentModalStage)"
-                        @click="updateModalStage(currentModalStage === 'edit-post-adjustments' ? 'create-post' : 'edit-post-adjustments')">
+                        @click="updateModalStage(returnButtonAction)">
                         <SVGLoader
                             :icon="'media-back-arrow'"/>
                     </span>
@@ -62,7 +62,6 @@
                 <div 
                     class="relative flex sm:flex-row 
                     flex-col lg:h-[750px]">
-
                     <!-- Body -->
                     <div 
                         class="flex relative grid grow sm:w-4/5 
@@ -107,11 +106,11 @@
                             <img
                                 v-else-if="previewImage && editStages.includes(currentModalStage)"
                                 :src="previewImage"
-                                :style="isFilterApplied ? { filter: `${ imageBrightness } ${ imageContrast } ${ imageSaturation }` } : undefined"
+                                :style="!isFilterApplied ? filterStyle : '' "
                                 :class="[imageFilter]"
                                 class="absolute block top-1/2 left-1/2 
                                 -translate-x-1/2 md:-translate-y-1/2
-                                lg:h-full md:h-[585.6px] h-lg w-full"/>
+                                lg:h-full md:h-[500.6px] h-lg w-full"/>
 
                             <!-- Loading Progress -->
                             <div 
@@ -176,7 +175,7 @@
                             class="flex flex-wrap sm:pl-1.5 pt-3 
                             h-fit md:w-80 justify-around"
                             :class="{
-                                'hidden': currentModalStage != 'edit-post-adjustments' || currentActiveFilterTab != 'filters-tab',
+                                'hidden': !isFiltersTabActive,
                                 'invisible': currentActiveFilterTab != 'filters-tab'}">
 
                                 <!-- Use v-for directive to loop through the filters array -->
@@ -190,7 +189,7 @@
 
                                     <div
                                         :class="{
-                                            'border-2 border-sky-500 rounded': activePreviewImageFilter.filterName === filter.filterName
+                                            'border-2 border-sky-500 rounded': activeImageFilter.filterName === filter.filterName
                                         }">
 
                                         <img
@@ -202,7 +201,7 @@
 
                                     <span
                                         class="font-sans text-center text-xs"
-                                        :class="activePreviewImageFilter.filterName === filter.filterName ? 'text-sky-500' : 'text-gray-500'">
+                                        :class="activeImageFilter.filterName === filter.filterName ? 'text-sky-500' : 'text-gray-500'">
 
                                         {{ filter.displayName }}
                                         
@@ -217,11 +216,11 @@
                         <div 
                             class="flex flex-col space-y-4 md:w-80"
                             :class="{
-                                'hidden': currentModalStage != 'edit-post-adjustments' || currentActiveFilterTab != 'adjustments-tab',
+                                'hidden': !isAdjustmentsTabActive,
                             }">
 
                             <div
-                                v-for="adjustment in adjustments" 
+                                v-for="adjustment in currentImageAdjustments" 
                                 :key="adjustment.label" 
                                 class="p-3 py-2 space-y-5">
                                 
@@ -235,12 +234,12 @@
                                     <input
                                         type="range"
                                         max="99"
-                                        v-model="adjustment.value"
+                                        v-model="adjustment.level"
                                         class="self-center lg:w-64 w-auto h-0.5 bg-gray-200 
                                         rounded-lg appearance-none cursor-pointer bg-white"/>
 
                                     <span class="text-xs font-medium text-white">
-                                        {{ adjustment.value === 'Normal' ? 50 : adjustment.value }}
+                                        {{ adjustment.level === 'Normal' ? 50 : adjustment.level }}
                                     </span>
 
                                 </div>
@@ -281,7 +280,7 @@
                             <div class="flex flex-col space-y-2">
 
                                 <textarea 
-                                    v-model="formRef.caption"
+                                    v-model="Imageform.caption"
                                     rows="8"
                                     maxlength="2200"
                                     class="block w-full text-md bg-slate-1100 
@@ -305,7 +304,7 @@
                                 <div class="flex justify-between">
 
                                     <textarea 
-                                        v-model="formRef.location"
+                                        v-model="Imageform.location"
                                         rows="1"
                                         maxlength="50"
                                         class="block w-full text-md bg-slate-1100 
@@ -376,7 +375,7 @@
                         pt-1 hover:delay-100 hover:text-white"
                         :class="{'invisible': currentModalStage === 'sharing-post'}">
 
-                        {{ currentModalStage === 'create-post' ? 'Next' : 'Share' }}
+                        {{ smallModalButtonName }}
                     </span>
                     
                 </div>
@@ -401,7 +400,7 @@
             <!-- Image Preview -->
             <img
                 src="https://loremflickr.com/1024/1080/cat"
-                :style="isFilterApplied ? { filter: `${ imageBrightness } ${ imageContrast } ${ imageSaturation }` } : undefined"
+                :style="!isFilterApplied ? filterStyle : '' "
                 :class="[imageFilter]"
                 class="basis-2/4"/>
 
@@ -417,7 +416,7 @@
 
                     <span
                         class="font-sans text-center text-xs pt-1"
-                        :class="activePreviewImageFilter.filterName === filter.filterName ? 'text-sky-500' : 'text-gray-500'">
+                        :class="activeImageFilter.filterName === filter.filterName ? 'text-sky-500' : 'text-gray-500'">
 
                         {{ filter.displayName }}
                         
@@ -451,7 +450,7 @@
                     class="rounded-full h-8 w-8"/>
 
                 <textarea 
-                    v-model="formRef.caption"
+                    v-model="Imageform.caption"
                     :disabled="currentModalStage === 'sharing-post'"
                     rows="2"
                     maxlength="2200"
@@ -468,7 +467,7 @@
             <div class="flex justify-between bg-black">
 
                 <textarea 
-                    v-model="formRef.location"
+                    v-model="Imageform.location"
                     :disabled="currentModalStage === 'sharing-post'"
                     rows="1"
                     maxlength="50"
@@ -522,7 +521,7 @@ export default defineComponent({
         // References to DOM element
         const fileUpload = ref<InstanceType<typeof HTMLInputElement>>()
         const previewImage = ref<string | null>(null)
-        const activePreviewImageFilter = ref({
+        const activeImageFilter = ref({
             filterName: '',
             filterClass: '',
             filterValue: ''
@@ -541,19 +540,20 @@ export default defineComponent({
 
         // Others
         const currentImageAdjustments = ref({
-            brightness: 0 as number | string,
-            contrast: 0 as number | string,
-            saturation: 0 as number | string
+            brightness: {
+                label: 'Brightness',
+                level: 0 as number | string
+            },
+            contrast: {
+                label: 'Contrast',
+                level: 0 as number | string
+            },
+            saturation: {
+                label: 'Saturation',
+                level: 0 as number | string
+            },
         })
-
-        const adjustments = ref([
-            { label: 'Brightness', value: currentImageAdjustments.value.brightness },
-            { label: 'Contrast', value: currentImageAdjustments.value.contrast },
-            { label: 'Saturation', value: currentImageAdjustments.value.saturation }
-            // Add more filters here
-        ])
-
-        const formRef = ref({
+        const Imageform = ref({
             caption: '',
             location: ''
         })
@@ -599,8 +599,8 @@ export default defineComponent({
          * Update preview image filter
          */
         const updatePreviewImageFitler = (filterName: string, filterClass: string) => {
-            activePreviewImageFilter.value.filterName = filterName
-            activePreviewImageFilter.value.filterClass = filterClass
+            activeImageFilter.value.filterName = filterName
+            activeImageFilter.value.filterClass = filterClass
         }
 
         /**
@@ -660,22 +660,28 @@ export default defineComponent({
             }
         })
 
+        /**
+         * If any manual adjustments triggered, then disable filter
+         */
         watch(currentImageAdjustments.value, () => {
-            if (!isFilterApplied.value) {
-                isFilterApplied.value = true
+            if (isFilterApplied.value) {
+                isFilterApplied.value = false
             }
         })
 
-        watch(activePreviewImageFilter.value, () => {
-            if (isFilterApplied.value) {
-                isFilterApplied.value = false
+        /**
+         * If an active image filter triggered, then enable filter
+         */
+        watch(activeImageFilter.value, () => {
+            if (!isFilterApplied.value) {
+                isFilterApplied.value = true
             }
         })
 
         // Computed
 
         const characterCount = computed(() => {
-            return formRef.value.caption ? formRef.value.caption.length : 0
+            return Imageform.value.caption ? Imageform.value.caption.length : 0
         })
 
         const largeModalHeaderName = computed(() => {
@@ -709,30 +715,49 @@ export default defineComponent({
             }
         })
 
-        
+        const smallModalButtonName = computed(() => {
+            return currentModalStage.value === 'create-post' ? 'Next' : 'Share'
+        })
+
         const imageFilter = computed(() => {
-            return activePreviewImageFilter.value.filterClass
+            return activeImageFilter.value.filterClass
         })
 
         const imageBrightness = computed(() => {
-            const brightness = currentImageAdjustments.value.brightness
+            const brightness = currentImageAdjustments.value.brightness.level
 
             return brightness ? `brightness(${brightness}%)` : ''
         })
 
         const imageContrast = computed(() => {
-            const contrast = currentImageAdjustments.value.contrast
+            const contrast = currentImageAdjustments.value.contrast.level
 
             return contrast ? `contrast(${contrast}%)` : ''
         })
 
 
         const imageSaturation = computed(() => {
-            const saturate = currentImageAdjustments.value.saturation
+            const saturate = currentImageAdjustments.value.saturation.level
 
             return saturate ? `saturate(${saturate}%)` : ''
         })
 
+
+        const filterStyle = computed(() => {
+            return { "filter": `${ imageBrightness.value } ${ imageContrast.value } ${ imageSaturation.value }` };
+        })
+
+        const isFiltersTabActive = computed(() => {
+            return currentModalStage.value === 'edit-post-adjustments' && currentActiveFilterTab.value === 'filters-tab'
+        })
+
+        const isAdjustmentsTabActive = computed(() => {
+            return currentModalStage.value === 'edit-post-adjustments' && currentActiveFilterTab.value === 'adjustments-tab'
+        })
+
+        const returnButtonAction = computed(() => {
+            return currentModalStage.value === 'edit-post-adjustments' ? 'create-post' : 'edit-post-adjustments'
+        })
 
         onMounted(() => {
         })
@@ -745,22 +770,26 @@ export default defineComponent({
             isFileValid,
             isFilterApplied,
             previewImage,
-            activePreviewImageFilter,
-            formRef,
+            activeImageFilter,
+            Imageform,
             fileUpload,
             nonEditStages,
             editStages,
             filters,
-            adjustments,
 
             // Computed
             imageSaturation,
             imageContrast,
             imageBrightness,
             imageFilter,
+            isFiltersTabActive,
+            isAdjustmentsTabActive,
             largeModalHeaderName,
             smallModalHeaderName,
             characterCount,
+            filterStyle,
+            smallModalButtonName,
+            returnButtonAction,
 
             // Methods
             onModalClosed,
@@ -787,6 +816,7 @@ export default defineComponent({
     ]
 })
 </script>
+
 
 
 <style>
