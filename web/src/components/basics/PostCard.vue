@@ -119,7 +119,7 @@ import { defineComponent, ref, computed } from 'vue'
 
 import SVGLoader from "@/components/basics/SVGLoader.vue"
 import MediaCarousel from '@/components/basics/MediaCarousel.vue'
-import type { PostCard } from '@/common/models/Post.model'
+import type { PostCard } from '@/common/models/post.model'
 
 export default defineComponent({
     name: 'PostCard',

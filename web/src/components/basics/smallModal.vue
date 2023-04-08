@@ -60,7 +60,7 @@
 <script lang="ts">
 import { defineComponent, onMounted } from 'vue'
 
-import type { SuggestionCard } from '@/common/models/Post.model'
+import type { SuggestionCard } from '@/common/models/post.model'
 import SmallCard from './smallCard.vue'
 import SVGLoader from '@/components/basics/SVGLoader.vue'
 

@@ -195,7 +195,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, onMounted } from 'vue'
-import type { PostMedia } from '@/common/models/Post.model'
+import type { PostMedia } from '@/common/models/post.model'
 
 export default defineComponent({
     name: 'MediaCarousel',

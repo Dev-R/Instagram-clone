@@ -304,7 +304,7 @@
 <script lang="ts">
 import { defineComponent, onMounted, computed } from 'vue';
 
-import type { PostCommentModal } from '@/common/models/Post.model';
+import type { PostCommentModal } from '@/common/models/post.model';
 import SVGLoader from '@/components/basics/SVGLoader.vue';
 import MediaCarousel from './MediaCarousel.vue';
 
