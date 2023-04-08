@@ -37,8 +37,8 @@
                     </span>
 
                     <span 
-                        v-if="isFileUploaded && isFileValid && currentModalStage === 'edit-post-adjustments'"
-                        @click="updateModalStage('edit-post-form')"
+                        v-if="isFileUploaded && isFileValid && currentModalStage === PhotoStage.EditPostAdjustments"
+                        @click="updateModalStage(PhotoStage.EditPostForm)"
                         class="font-sans text-sm font-semibold text-sky-500 
                         justify-self-end cursor-pointer pt-1
                         hover:text-white">
@@ -46,8 +46,8 @@
                     </span>
 
                     <span 
-                        v-else-if="currentModalStage === 'edit-post-form'"
-                        @click="updateModalStage('sharing-post')"
+                        v-else-if="currentModalStage === PhotoStage.EditPostForm"
+                        @click="updateModalStage(PhotoStage.SharingPost)"
                         class="font-sans text-sm font-semibold text-sky-500 
                         justify-self-end cursor-pointer pt-1
                         hover:text-white">
@@ -72,7 +72,7 @@
 
                             <!-- Upload Form -->
                             <div 
-                                v-if="currentModalStage === 'create-post'"
+                                v-if="currentModalStage === PhotoStage.CreatePost"
                                 class="flex flex-col place-self-center space-y-4">
 
                                 <SVGLoader 
@@ -114,7 +114,7 @@
 
                             <!-- Loading Progress -->
                             <div 
-                                v-else-if="currentModalStage === 'sharing-post'">
+                                v-else-if="currentModalStage === PhotoStage.SharingPost">
                                 <img
                                     src="https://static.cdninstagram.com/rsrc.php/v3/yY/r/uCPMn4bWLAh.gif"
                                     class="absolute block md:h-24 md:w-24 w-full 
@@ -123,7 +123,7 @@
                             
                             <!-- Loading Completed Successfully -->
                             <div 
-                                v-else-if="currentModalStage === 'post-shared'"
+                                v-else-if="currentModalStage === PhotoStage.PostShared"
                                 class="absolute top-1/2 left-1/2 -translate-x-1/2 
                                 translate-y-1/2 lg:-translate-y-1/2 flex flex-col space-y-2">
 
@@ -145,26 +145,26 @@
                         class="md:block hidden">    
 
                         <div 
-                            v-if="currentModalStage === 'edit-post-adjustments'"
+                            v-if="currentModalStage === PhotoStage.EditPostAdjustments"
                             class="flex justify-between border-b border-slate-500"
                             :class="largeModalHeaderName != 'Edit' ? 'hidden' : ''">
 
                             <div
-                                @click="filterTabSwitcher('filters-tab')" 
+                                @click="filterTabSwitcher(PhotoTab.FiltersTab)" 
                                 class="basis-1/2 font-normal p-3
                                 text-center text-sm hover:cursor-pointer 
                                 border-b-2 border-gray-300"
-                                :class="currentActiveFilterTab === 'filters-tab' ? 'text-white' : 'border-transparent text-gray-500'">
+                                :class="currentActiveFilterTab === PhotoTab.FiltersTab ? 'text-white' : 'border-transparent text-gray-500'">
                                 Filters
                             </div>
 
                             <div 
-                                @click="filterTabSwitcher('adjustments-tab')" 
+                                @click="filterTabSwitcher(PhotoTab.AdjustmentsTab)" 
                                 class="basis-1/2 font-normal p-3
                                 text-center  text-sm 
                                 hover:cursor-pointer
                                 border-b-2 border-gray-300"
-                                :class="currentActiveFilterTab === 'adjustments-tab' ? 'text-white' : 'border-transparent text-gray-500'">
+                                :class="currentActiveFilterTab === PhotoTab.AdjustmentsTab ? 'text-white' : 'border-transparent text-gray-500'">
                                 Adjustments
                             </div>
 
@@ -176,7 +176,7 @@
                             h-fit md:w-80 justify-around"
                             :class="{
                                 'hidden': !isFiltersTabActive,
-                                'invisible': currentActiveFilterTab != 'filters-tab'}">
+                                'invisible': currentActiveFilterTab != PhotoTab.FiltersTab}">
 
                                 <!-- Use v-for directive to loop through the filters array -->
                                 <div
@@ -252,7 +252,7 @@
                         <div 
                             class="flex flex-col space-y-4 md:w-80 p-4"
                             :class="{
-                                'hidden': currentModalStage != 'edit-post-form' 
+                                'hidden': currentModalStage != PhotoStage.EditPostForm 
                             }">
 
                             <!-- Mini User Profile -->
@@ -345,18 +345,18 @@
 
                     <span 
                         class="rotate-[270deg]"
-                        :class="{'hidden': currentModalStage != 'create-post'}">
+                        :class="{'hidden': currentModalStage != PhotoStage.CreatePost}">
                         <SVGLoader 
                             :icon="'cross-large'"
                             :class="'group-hover:scale-110'"/>
                     </span>
 
                     <span 
-                        @click="updateModalStage('create-post')"
+                        @click="updateModalStage(PhotoStage.CreatePost)"
                         class="rotate-[270deg]"
                         :class="{
-                            'hidden': currentModalStage === 'create-post',
-                            'invisible': currentModalStage === 'sharing-post'}">
+                            'hidden': currentModalStage === PhotoStage.CreatePost,
+                            'invisible': currentModalStage === PhotoStage.SharingPost}">
                         <SVGLoader 
                             :icon="'back-arrow'"
                             :class="'group-hover:scale-110'"/>
@@ -368,12 +368,12 @@
                     class="flex px-2">
 
                     <span 
-                        @click="updateModalStage(currentModalStage === 'create-post' ? 'edit-post-form' : 'sharing-post')"
+                        @click="updateModalStage(currentModalStage === PhotoStage.CreatePost ? PhotoStage.EditPostForm : PhotoStage.SharingPost)"
                         class="font-sans text-md font-semibold text-sky-500 
                         group cursor-pointer flex space-x-4 pt-3 xl:justify-start
                         justify-center justify-self-end cursor-pointer 
                         pt-1 hover:delay-100 hover:text-white"
-                        :class="{'invisible': currentModalStage === 'sharing-post'}">
+                        :class="{'invisible': currentModalStage === PhotoStage.SharingPost}">
 
                         {{ smallModalButtonName }}
                     </span>
@@ -394,7 +394,7 @@
 
         <!-- Preview & Filters -->
         <div
-            :class="{'hidden' : currentModalStage != 'create-post'}"
+            :class="{'hidden' : currentModalStage != PhotoStage.CreatePost}"
             class="flex flex-col h-5/6">
 
             <!-- Image Preview -->
@@ -438,8 +438,8 @@
         <!-- Post Form -->
         <div
             :class="{
-                'hidden' : currentModalStage === 'create-post',
-                'brightness-50' : currentModalStage === 'sharing-post'
+                'hidden' : currentModalStage === PhotoStage.CreatePost,
+                'brightness-50' : currentModalStage === PhotoStage.SharingPost
             }"
             class="flex flex-col h-5/6 bg-slate-1000 space-y-4">
 
@@ -451,7 +451,7 @@
 
                 <textarea 
                     v-model="Imageform.caption"
-                    :disabled="currentModalStage === 'sharing-post'"
+                    :disabled="currentModalStage === PhotoStage.SharingPost"
                     rows="2"
                     maxlength="2200"
                     class="focus:outline-none resize-none 
@@ -468,7 +468,7 @@
 
                 <textarea 
                     v-model="Imageform.location"
-                    :disabled="currentModalStage === 'sharing-post'"
+                    :disabled="currentModalStage === PhotoStage.SharingPost"
                     rows="1"
                     maxlength="50"
                     class="focus:outline-none resize-none 
@@ -498,20 +498,30 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, computed, watch } from 'vue'
+import { useRouter } from 'vue-router'
+
+import type {
+    PhotoModalStage,
+    PhotoModalTab,
+    PhotoModalImage,
+    PhotoModalImageFilter,
+    PhotoModalAdjustment,
+    HTMLInputElementRef,
+    PhotoModalImageForm
+} from '@/common/models/profile.model'
+import { PhotoTab, PhotoStage } from '@/common/photo.modal.enum'
 
 import SmallCard from '@/components/basics/smallCard.vue'
 import SVGLoader from '@/components/basics/SVGLoader.vue'
-import { useRouter } from 'vue-router'
 
-type modalStages = 'create-post' | 'edit-post-adjustments' | 'edit-post-form' | 'sharing-post' | 'post-shared' | 'post-failed'
 
 /**
  * TODO:
  *  1- Create mobile view editor ✔
  *  2- Fix mobile nav-bar location ✔
- *  3- Optmize Code,  Remove lazy solution, add css
+ *  3- Optmize Code,  Remove lazy solution, add css ✔
  *  4- Create TS models
- *  5- Factorize code
+ *  5- Decompose code into components and modules
  */
 
 export default defineComponent({
@@ -519,19 +529,22 @@ export default defineComponent({
     setup(prop, context) {
 
         // References to DOM element
-        const fileUpload = ref<InstanceType<typeof HTMLInputElement>>()
-        const previewImage = ref<string | null>(null)
-        const activeImageFilter = ref({
+        const fileUpload = ref<HTMLInputElementRef | null> ()
+        const previewImage = ref<PhotoModalImage> (null)
+        const activeImageFilter = ref<PhotoModalImageFilter>({
             filterName: '',
             filterClass: '',
-            filterValue: ''
+            displayName: ''
         })
 
         // Trackers
-        const currentActiveFilterTab = ref('filters-tab')
-        const currentModalStage = ref<modalStages>('create-post')
-        const editStages = ['edit-post-adjustments', 'edit-post-form']
-        const nonEditStages = ['create-post', 'sharing-post', 'post-shared', 'post-failed']
+        const currentActiveFilterTab = ref<PhotoModalTab>(PhotoTab.FiltersTab)
+        const currentModalStage = ref<PhotoModalStage>(PhotoStage.CreatePost)
+
+        const editStages: PhotoModalStage[] = [PhotoStage.EditPostAdjustments, PhotoStage.EditPostForm]
+        const nonEditStages: PhotoModalStage[] = [PhotoStage.CreatePost, PhotoStage.SharingPost, 
+            PhotoStage.PostShared, PhotoStage.PostFailed
+        ]
 
         // Flags for tracking upload status
         const isFileUploaded = ref<boolean>(false)
@@ -539,7 +552,7 @@ export default defineComponent({
         const isFilterApplied = ref<boolean>(false)
 
         // Others
-        const currentImageAdjustments = ref({
+        const currentImageAdjustments = ref<PhotoModalAdjustment>({
             brightness: {
                 label: 'Brightness',
                 level: 0 as number | string
@@ -553,19 +566,41 @@ export default defineComponent({
                 level: 0 as number | string
             },
         })
-        const Imageform = ref({
+        const Imageform = ref<PhotoModalImageForm>({
             caption: '',
             location: ''
         })
 
-        const filters = [
-            { filterName: 'original', filterClass: '', displayName: 'Original' },
-            { filterName: 'slumber', filterClass: 'saturate-50', displayName: 'Slumber' },
-            { filterName: 'moon', filterClass: 'grayscale', displayName: 'Moon' },
-            { filterName: 'sepia', filterClass: 'sepia', displayName: 'Sepia' },
-            { filterName: 'invert', filterClass: 'invert', displayName: 'Invert' },
-            { filterName: 'juno', filterClass: 'contrast-150', displayName: 'Juno' },
-            // Add more filters here
+        const filters: PhotoModalImageFilter[] = [{
+                filterName: 'original',
+                filterClass: '',
+                displayName: 'Original'
+            },
+            {
+                filterName: 'slumber',
+                filterClass: 'saturate-50',
+                displayName: 'Slumber'
+            },
+            {
+                filterName: 'moon',
+                filterClass: 'grayscale',
+                displayName: 'Moon'
+            },
+            {
+                filterName: 'sepia',
+                filterClass: 'sepia',
+                displayName: 'Sepia'
+            },
+            {
+                filterName: 'invert',
+                filterClass: 'invert',
+                displayName: 'Invert'
+            },
+            {
+                filterName: 'juno',
+                filterClass: 'contrast-150',
+                displayName: 'Juno'
+            },
         ]
 
         // Services
@@ -575,7 +610,6 @@ export default defineComponent({
         // Methods
         /**
          * Emit signal when the modal is closed
-         * @event modal-closed
          */
         const onModalClosed = () => {
             context.emit('onModalClosed')
@@ -598,7 +632,8 @@ export default defineComponent({
         /**
          * Update preview image filter
          */
-        const updatePreviewImageFitler = (filterName: string, filterClass: string) => {
+        const updatePreviewImageFitler = (filterName: PhotoModalImageFilter['filterName'], 
+            filterClass: PhotoModalImageFilter['filterClass']) => {
             activeImageFilter.value.filterName = filterName
             activeImageFilter.value.filterClass = filterClass
         }
@@ -617,12 +652,12 @@ export default defineComponent({
             fileUpload.value?.click()
         }
 
-        const filterTabSwitcher = (currentTab: string) => {
+        const filterTabSwitcher = (currentTab: PhotoModalTab) => {
             console.log("Current Tab:", currentTab)
             currentActiveFilterTab.value = currentTab
         }
 
-        const updateModalStage = (stage: modalStages) => {
+        const updateModalStage = (stage: PhotoModalStage) => {
             currentModalStage.value = stage
         }
 
@@ -643,18 +678,20 @@ export default defineComponent({
             }
             isFileValid.value = true
             isFileUploaded.value = true
-            updateModalStage('edit-post-adjustments')
+            updateModalStage(PhotoStage.EditPostAdjustments)
             console.log("File uploaded", file)
         }
 
         // Watchers
 
         watch(currentModalStage, () => {
-            if (currentModalStage.value === 'sharing-post') {
+            if (currentModalStage.value === PhotoStage.SharingPost) {
                 console.log("updateSharingStatus ...")
                 setTimeout(() => {
-                    router.push({ path: '/' })
-                    // currentModalStage.value = 'post-shared'
+                    router.push({
+                        path: '/'
+                    })
+                    // currentModalStage.value = PhotoStage.PostShared
                     // console.log("Done")
                 }, 5000)
             }
@@ -686,14 +723,14 @@ export default defineComponent({
 
         const largeModalHeaderName = computed(() => {
             switch (currentModalStage.value) {
-                case 'create-post':
+                case PhotoStage.CreatePost:
                     return 'Create new post'
-                case 'edit-post-adjustments':
-                case 'edit-post-form':
+                case PhotoStage.EditPostAdjustments:
+                case PhotoStage.EditPostForm:
                     return 'Edit'
-                case 'sharing-post':
+                case PhotoStage.SharingPost:
                     return 'Sharing'
-                case 'post-shared':
+                case PhotoStage.PostShared:
                     return 'Post Shared'
                 default:
                     return {}
@@ -702,13 +739,13 @@ export default defineComponent({
 
         const smallModalHeaderName = computed(() => {
             switch (currentModalStage.value) {
-                case 'create-post':
+                case PhotoStage.CreatePost:
                     return 'New Photo Post'
-                case 'edit-post-form':
+                case PhotoStage.EditPostForm:
                     return 'New post'
-                case 'sharing-post':
+                case PhotoStage.SharingPost:
                     return 'Sharing...'
-                case 'post-shared':
+                case PhotoStage.PostShared:
                     return 'Post Shared'
                 default:
                     return {}
@@ -716,7 +753,7 @@ export default defineComponent({
         })
 
         const smallModalButtonName = computed(() => {
-            return currentModalStage.value === 'create-post' ? 'Next' : 'Share'
+            return currentModalStage.value === PhotoStage.CreatePost ? 'Next' : 'Share'
         })
 
         const imageFilter = computed(() => {
@@ -744,19 +781,21 @@ export default defineComponent({
 
 
         const filterStyle = computed(() => {
-            return { "filter": `${ imageBrightness.value } ${ imageContrast.value } ${ imageSaturation.value }` };
+            return {
+                "filter": `${imageBrightness.value} ${imageContrast.value} ${imageSaturation.value}`
+            }
         })
 
         const isFiltersTabActive = computed(() => {
-            return currentModalStage.value === 'edit-post-adjustments' && currentActiveFilterTab.value === 'filters-tab'
+            return currentModalStage.value === PhotoStage.EditPostAdjustments && currentActiveFilterTab.value === PhotoTab.FiltersTab
         })
 
         const isAdjustmentsTabActive = computed(() => {
-            return currentModalStage.value === 'edit-post-adjustments' && currentActiveFilterTab.value === 'adjustments-tab'
+            return currentModalStage.value === PhotoStage.EditPostAdjustments && currentActiveFilterTab.value === PhotoTab.AdjustmentsTab
         })
 
         const returnButtonAction = computed(() => {
-            return currentModalStage.value === 'edit-post-adjustments' ? 'create-post' : 'edit-post-adjustments'
+            return currentModalStage.value === PhotoStage.EditPostAdjustments ? PhotoStage.CreatePost : PhotoStage.EditPostAdjustments
         })
 
         onMounted(() => {
@@ -776,6 +815,10 @@ export default defineComponent({
             nonEditStages,
             editStages,
             filters,
+
+            // Enums
+            PhotoStage,
+            PhotoTab,
 
             // Computed
             imageSaturation,
