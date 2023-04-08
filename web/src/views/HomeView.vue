@@ -34,7 +34,7 @@
                         </div>
 
                         <!-- Posters -->
-                        <div class="flex flex-col space-y-8 md:p-0 md:p-0">
+                        <div class="flex flex-col space-y-8 sm:p-0 p-2.5">
                             <PostCard 
                                 v-for="(item, index) of postItems"
                                 @on-open-comment-modal="triggerCommentModal"
@@ -79,7 +79,7 @@ import SuggestionCard from '@/components/basics/SuggestionCard.vue';
 import StoryCarousel from '@/components/basics/StoryCarousel.vue';
 import CommentModal from '@/components/basics/CommentModal.vue';
 
-import type { PostMedia } from '@/common/models/Post.model';
+import type { PostMedia } from '@/common/models/post.model';
 
 export default defineComponent({
     name: 'HomeView',
