@@ -39,11 +39,17 @@ const router = createRouter({
           component: () => import('@/views/StoryView.vue'),
           meta: { title: 'Reels' }
         },
+        {
+          path: '/create',
+          name: 'create',
+          component: () => import('@/components/basics/PhotoModal.vue'),
+          meta: { title: 'Create' }
+        },
         { 
           path: '/:pathMatch(.*)*', 
           name: 'NotFound', 
           component: () => import('@/views/errors/NotFound.vue')
-      },
+        },
       ]
     },
     {
