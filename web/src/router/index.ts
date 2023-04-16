@@ -42,8 +42,20 @@ const router = createRouter({
         {
           path: '/create',
           name: 'create',
-          component: () => import('@/components/basics/PhotoModal.vue'),
-          meta: { title: 'Create' }
+          children: [
+            {
+              path: 'style',
+              name: 'style',
+              component: () => import('@/components/basics/PhotoModal.vue'),
+              meta: { title: 'Create Image' }
+            },
+            {
+              path: 'story',
+              name: 'story',
+              component: () => import('@/views/errors/NotFound.vue'),
+              meta: { title: 'Create Story' }
+            },
+          ],
         },
         { 
           path: '/:pathMatch(.*)*', 
