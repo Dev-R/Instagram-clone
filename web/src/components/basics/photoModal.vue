@@ -1,4 +1,14 @@
 <template>
+    <!-- Photo-modal Header -->
+    <div 
+        class="lg:block hidden pt-3"
+        :class="{ 
+            'lg:hidden md:hidden sm:hidden': !isToggled}">
+        <div class="absolute top-0 right-6 z-50 hover:cursor-pointer lg:mr-12 lg:mt-5">
+            <SVGLoader :icon="'cross-large'"  @click="onModalClosed()"/>
+        </div>
+    </div>
+
     <!-- Photo-modal for screens > sm -->
     <div 
         id="photo-modal"
@@ -7,7 +17,7 @@
         lg:h-auto lg:pt-0 lg:z-0 lg:w-screen w-4/5 h-3/5 max-h-md sm:max-h-fit
         md:max-w-none max-w-md"
         :class="{ 
-            'hidden': isToggled,
+            'lg:hidden md:hidden sm:hidden': !isToggled,
             'lg:max-w-[750px]' : nonEditStages.includes(currentModalStage),
             'lg:max-w-[1024px]' : editStages.includes(currentModalStage)
         }">
@@ -21,7 +31,7 @@
                         'justify-between' : isFileUploaded && isFileValid,
                         'justify-center' : !(isFileUploaded && isFileValid)
                     }">
-                    <!-- TODO: OZ -->
+                    
                     <span
                         v-if="editStages.includes(currentModalStage)"
                         @click="updateModalStage(returnButtonAction)">
@@ -326,6 +336,7 @@
         </div>
         
     </div>
+    <!-- TODO: Decompose into different component -->
     <!-- Photo-modal for mobile apps -->
     <div id="photo-modal" class="relative h-screen block sm:hidden">
 
@@ -479,19 +490,7 @@
             </div>
 
         </div>
-
-    </div>
-    <!-- Modal Header -->
-    <div class="lg:block hidden pt-3">
-
-        <div class="lg:mr-12 flex items-center justify-between cursor-pointer">
-
-            <span class="ml-auto inline-flex text-white">
-                <SVGLoader :icon="'cross'" @click="onModalClosed()" />
-            </span>
-
-        </div>
-
+    
     </div>
     
 </template>
@@ -511,7 +510,7 @@ import type {
 } from '@/common/models/profile.model'
 import { PhotoTab, PhotoStage } from '@/common/photo.modal.enum'
 
-import SmallCard from '@/components/basics/smallCard.vue'
+import SmallCard from '@/components/basics/SmallCard.vue'
 import SVGLoader from '@/components/basics/SVGLoader.vue'
 
 
@@ -618,20 +617,6 @@ export default defineComponent({
         }
 
         /**
-         * Go one set back
-         */
-        const onPreviousStep = () => {
-
-        }
-
-        /**
-         * Go one set front
-         */
-        const onNextStep = () => {
-
-        }
-
-        /**
          * Update preview image filter
          */
         const updatePreviewImageFitler = (filterName: PhotoModalImageFilter['filterName'], 
@@ -685,7 +670,6 @@ export default defineComponent({
         }
 
         // Watchers
-
         watch(currentModalStage, () => {
             if (currentModalStage.value === PhotoStage.SharingPost) {
                 console.log("updateSharingStatus ...")
@@ -718,7 +702,6 @@ export default defineComponent({
         })
 
         // Computed
-
         const characterCount = computed(() => {
             return Imageform.value.caption ? Imageform.value.caption.length : 0
         })
@@ -849,7 +832,8 @@ export default defineComponent({
     props: {
         isToggled: {
             type: Boolean,
-            required: true
+            required: true,
+            default: false
         }
     },
     components: {
