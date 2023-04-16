@@ -354,13 +354,14 @@
                     flex space-x-4 hover:bg-slate-1000
                     hover:delay-100 p-3 xl:justify-start justify-center">
 
-                    <span 
+                    <router-link
+                        to="../home" 
                         class="rotate-[270deg]"
                         :class="{'hidden': currentModalStage != PhotoStage.CreatePost}">
                         <SVGLoader 
                             :icon="'cross-large'"
                             :class="'group-hover:scale-110'"/>
-                    </span>
+                    </router-link>
 
                     <span 
                         @click="updateModalStage(PhotoStage.CreatePost)"
@@ -512,6 +513,7 @@ import { PhotoTab, PhotoStage } from '@/common/photo.modal.enum'
 
 import SmallCard from '@/components/basics/SmallCard.vue'
 import SVGLoader from '@/components/basics/SVGLoader.vue'
+import router from '@/router'
 
 
 /**
@@ -837,9 +839,10 @@ export default defineComponent({
         }
     },
     components: {
-        SmallCard,
-        SVGLoader
-    },
+    SmallCard,
+    SVGLoader,
+    router
+},
     emits: [
         'onModalClosed',
     ]
