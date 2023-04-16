@@ -34,6 +34,7 @@
                 class="flex space-x-0.5">
 
                 <div 
+                    @click="triggerDropDown"
                     class="group cursor-pointer rounded-full 
                     flex space-x-4 hover:bg-slate-1000 hover:delay-100 
                     pt-3 xl:justify-start justify-center">
@@ -68,10 +69,49 @@
 
         </div>
     </div>
+    <!-- Drop Down menu -->
+    <div 
+        :class="{
+            'hidden': !isDropDownTriggered
+        }"
+        class="absolute right-5 z-50  bg-slate-1100 
+        divide-y divide-gray-100 rounded-lg shadow w-24">
+
+        <div 
+            class="flex flex-col pt-2 pb-2 text-sm 
+            text-gray-200 space-y-3">
+            
+            <router-link 
+                class="flex hover:bg-gray-100 justify-evenly" 
+                to="create/style">
+                <span>
+                    Post
+                </span>
+
+                <SVGLoader 
+                    :icon="'create-small'" 
+                    :class="'group-hover:scale-100 self-end'"/>
+
+            </router-link>
+            
+            <router-link 
+                class="flex hover:bg-gray-100 justify-evenly" 
+                to="create/story">
+                <span>
+                    Story
+                </span>
+
+                <SVGLoader 
+                    :icon="'new-story-small'" 
+                    :class="'group-hover:scale-100 self-end'"/>
+
+            </router-link>
+        </div>
+    </div>
 </template>
 
 <script lang="ts">
-import { onMounted, defineComponent, computed } from 'vue';
+import { onMounted, defineComponent, computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import SVGLoader from '@/components/basics/SVGLoader.vue';
@@ -79,12 +119,20 @@ import SVGLoader from '@/components/basics/SVGLoader.vue';
 export default defineComponent({
     name: 'TopNavBar',
     setup() {
+
+        // Checkers
+        const isDropDownTriggered = ref<boolean>(false)
+        // inVisible Routes
+        const hiddenRoutes = ['explore', 'style', 'story']
+
+        const triggerDropDown = () => {
+            isDropDownTriggered.value = !isDropDownTriggered.value
+        }
+        
         // Services
         const route = useRoute()
         const router = useRouter()
 
-        // inVisible Routes
-        const hiddenRoutes = ['explore', 'create']
 
          const onPageBack= () => {
             setTimeout(() => {
@@ -105,6 +153,8 @@ export default defineComponent({
         return {
             routeName,
             hiddenRoutes,
+            isDropDownTriggered,
+            triggerDropDown,
             onPageBack
         }
     },
