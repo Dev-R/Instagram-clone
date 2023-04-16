@@ -65,10 +65,10 @@
 import { onMounted, defineComponent } from 'vue'
 import SVGLoader from "@/components/basics/SVGLoader.vue"
 export default defineComponent({
-    name: 'NavBarMobile',
+    name: 'BottomNavBar',
     setup() {
         onMounted(() => {
-            // console.log('Mounted NavBarMobile')
+            // console.log('Mounted BottomNavBarMobile')
         })
 
         return {}

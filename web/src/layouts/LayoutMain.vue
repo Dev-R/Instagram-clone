@@ -11,7 +11,7 @@
 <script lang="ts">
 import { onMounted, defineComponent } from 'vue';
 
-import NavBarMobile from '@/components/navbars/NavBarMobile.vue';
+import NavBarMobile from '@/components/navbars/BottomNavBar.vue';
 import SVGLoader from '@/components/basics/SVGLoader.vue';
 import TopNavBar from '@/components/navbars/TopNavBar.vue';
 
