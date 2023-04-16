@@ -74,7 +74,7 @@
                     flex-col lg:h-[750px]">
                     <!-- Body -->
                     <div 
-                        class="flex relative grid grow sm:w-4/5 
+                        class="relative grid grow sm:w-4/5 
                         sm:p-0 sm:translate-y-1/2 lg:translate-y-0"
                         :class="{ 
                             'p-12': !previewImage,
@@ -245,8 +245,8 @@
                                         type="range"
                                         max="99"
                                         v-model="adjustment.level"
-                                        class="self-center lg:w-64 w-auto h-0.5 bg-gray-200 
-                                        rounded-lg appearance-none cursor-pointer bg-white"/>
+                                        class="self-center lg:w-64 w-auto h-0.5 bg-white
+                                        rounded-lg appearance-none cursor-pointe"/>
 
                                     <span class="text-xs font-medium text-white">
                                         {{ adjustment.level === 'Normal' ? 50 : adjustment.level }}
@@ -344,7 +344,7 @@
         <div 
             class="flex flex-col space-x-2 justify-around 
             border-t border-gray-700 sticky top-0 md:hidden 
-            block z-50 bg-black border-gray-800 border-t border-b">
+            z-50 bg-black border-b">
 
             <div 
                 class="flex space-x-2 justify-between relative">
@@ -383,7 +383,7 @@
                         class="font-sans text-md font-semibold text-sky-500 
                         group flex space-x-4 pt-3 xl:justify-start
                         justify-center justify-self-end cursor-pointer 
-                        pt-1 hover:delay-100 hover:text-white"
+                        hover:delay-100 hover:text-white"
                         :class="{'invisible': currentModalStage === PhotoStage.SharingPost}">
 
                         {{ smallModalButtonName }}
@@ -437,7 +437,7 @@
                         <img 
                             src="https://i.ibb.co/m5p6wKJ/Normal.jpg" 
                             :class="filter.filterClass"
-                            class="w-24 h-24 rounded-full rounded"/>
+                            class="w-24 h-24 rounded"/>
                     </div>
 
                 </div>

@@ -2,15 +2,15 @@
     <div 
         v-if="!hiddenRoutes.includes(routeName)"
         class="flex flex-col space-x-2 justify-around 
-        border-t border-gray-700 sticky top-0 md:hidden 
-        block z-50 bg-black border-gray-800 border-t border-b">
+        sticky top-0 md:hidden z-50 bg-black border-gray-800 
+        border-t border-b">
         <div 
             class="flex space-x-2 justify-between relative">
 
             <div 
                 class="group cursor-pointer rounded-full 
                 flex space-x-4 hover:bg-slate-1000 hover:delay-100 
-                hover:delay-100 p-3 xl:justify-start justify-center">
+                p-3 xl:justify-start justify-center">
 
                 <span 
                     v-if="routeName != 'home'"
