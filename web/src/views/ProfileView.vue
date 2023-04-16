@@ -3,14 +3,15 @@
         <section 
             v-if="!commentModal.isToggled"
             class="container max-w-full mx-auto text-center h-screen  scrollbar scrollbar-thumb-gray-900"
-            :class="{ 'brightness-50 pointer-events-none': commentModal.isToggled || smallModal.isToggled }">
+            :class="{ 'brightness-50 pointer-events-none': commentModal.isToggled || smallModal.isToggled ||  photoModal.isToggled }">
             <div class=" grid grid-cols-12">
                 <!-- Left bar: Navigation -->
                 <div 
                     class="xl:col-span-2 col-span-1 bg-black pt-5
                     md:block hidden space-y-12 relative h-screen 
                     sticky top-0 border-r border-gray-900">
-                    <NavBarMain/>
+                    <NavBarMain
+                        @on-create="triggerPhotoModal"/>
                     
                 </div>
                 <!-- Center -->
@@ -307,6 +308,8 @@
             <PostCard
                 :post-item="postItems[commentModal.postId]"/>
         </div>
+        <!-- Modals -->
+
         <!-- Comment Modal -->
         <CommentModal
             v-else-if="commentModal.name === 'comment-modal'"
@@ -316,6 +319,11 @@
                 post : postItems[commentModal.postId],
             }"/>
         
+        <!-- Photo Modal -->
+        <PhotoModal
+            @on-modal-closed="triggerPhotoModal"  
+            :is-toggled="photoModal.isToggled" />
+
         <!-- Followers/ Following Modal -->
         <smallModal 
 
@@ -342,11 +350,12 @@ import CommentModal from '@/components/basics/CommentModal.vue'
 
 import type { PostMedia, SuggestionCard } from '@/common/models/post.model'
 
-import smallModal from '@/components/basics/smallModal.vue'
-import settingModal from '@/components/basics/settingModal.vue'
+import smallModal from '@/components/basics/SmallModal.vue'
+import settingModal from '@/components/basics/SettingModal.vue'
+import PhotoModal from '@/components/basics/PhotoModal.vue'
 
 type navBarTabs = 'profile-posts' | 'profile-tagged' | 'profile-saved' | 'profile-peed'
-type commentModalName = 'profile-modal' | 'comment-modal' | 'other-modal'
+type commentModalName = 'profile-modal' | 'photo-modal' | 'comment-modal' | 'other-modal'
 
 
 export default defineComponent({
@@ -360,6 +369,11 @@ export default defineComponent({
             name: '' as commentModalName,
             isToggled: false,
             postId: 0
+        })
+
+        const photoModal = ref({
+            isToggled: false,
+            currentStep: ''
         })
 
         const smallModal = ref({
@@ -391,6 +405,10 @@ export default defineComponent({
             // commentcommentModal.value = { 'isToggled': !commentcommentModal.value.isToggled, postId: id ? id : 0 }
         }
 
+        const triggerPhotoModal = () => {
+            console.log('emitted...')
+            photoModal.value.isToggled = !photoModal.value.isToggled
+        }
 
         const triggerSmallModal = (name: string | undefined, title: string | undefined) => {
 
@@ -656,10 +674,12 @@ export default defineComponent({
             postItems,
             commentModal,
             smallModal,
+            photoModal,
             currentActiveTab,
             triggerCommentModal,
             navBarTabSwitcher,
             triggerSmallModal,
+            triggerPhotoModal,
             emptyTabBarBodyMessage,
         }
     },
@@ -669,7 +689,8 @@ export default defineComponent({
     CommentModal,
     PostCard,
     smallModal,
-    settingModal
+    settingModal,
+    PhotoModal
 }
 })
 </script>
