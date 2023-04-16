@@ -504,9 +504,9 @@ import type {
     PhotoModalTab,
     PhotoModalImage,
     PhotoModalImageFilter,
+    PhotoModalImageForm,
     PhotoModalAdjustment,
-    HTMLInputElementRef,
-    PhotoModalImageForm
+    HTMLInputElementRef
 } from '@/common/models/profile.model'
 import { PhotoTab, PhotoStage } from '@/common/photo.modal.enum'
 
