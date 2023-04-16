@@ -2,15 +2,17 @@
     <div class="bg-black">
         <section 
             class="container max-w-full mx-auto text-center"
-            :class="{ 'brightness-50': commentModalInfo.isToggled }">
+            :class="{ 'brightness-50 pointer-events-none': commentModal.isToggled || photoModal.isToggled }">
             <div class="md:pt-5 grid grid-cols-12">
                 <!-- Left bar: Navigation -->
                 <div 
                     class="xl:col-span-2 col-span-1 bg-black 
                     md:block hidden space-y-12 relative h-screen 
                     sticky top-0 border-r border-gray-900">
+                    
                     <!-- A -->
-                    <NavBarMain/>
+                    <NavBarMain
+                        @on-create="triggerPhotoModal"/>
                     
                 </div>
 
@@ -57,44 +59,75 @@
                 </div>
             </div>
         </section>
+        <!-- Modals -->
+
         <!-- Comment Modal -->
         <CommentModal
             @on-modal-closed="triggerCommentModal" 
             :post-comment="{
-                isToggled: commentModalInfo.isToggled,
-                post : postItems[commentModalInfo.postId],
+                isToggled: commentModal.isToggled,
+                post : postItems[commentModal.postId],
             }"/>
+        
+        <!-- Photo Modal -->
+        <PhotoModal 
+            @on-modal-closed="triggerPhotoModal"  
+            :is-toggled="photoModal.isToggled" />  
 
     </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, watch } from 'vue'
 
-import MediaCarousel from '@/components/basics/MediaCarousel.vue';
-import PostCard from '@/components/basics/PostCard.vue';
-import SVGLoader from '@/components/basics/SVGLoader.vue';
-import NavBarMain from '@/components/navbars/NavBarMain.vue';
-import SuggestionCard from '@/components/basics/SuggestionCard.vue';
-import StoryCarousel from '@/components/basics/StoryCarousel.vue';
-import CommentModal from '@/components/basics/CommentModal.vue';
+import MediaCarousel from '@/components/basics/MediaCarousel.vue'
+import PostCard from '@/components/basics/PostCard.vue'
+import SVGLoader from '@/components/basics/SVGLoader.vue'
+import NavBarMain from '@/components/navbars/NavBarMain.vue'
+import SuggestionCard from '@/components/basics/SuggestionCard.vue'
+import StoryCarousel from '@/components/basics/StoryCarousel.vue'
+import CommentModal from '@/components/basics/CommentModal.vue'
 
-import type { PostMedia } from '@/common/models/post.model';
+import type { PostMedia } from '@/common/models/post.model'
+import PhotoModal from '@/components/basics/PhotoModal.vue'
 
 export default defineComponent({
     name: 'HomeView',
     setup() {
 
 
-        const commentModalInfo = ref({
+        const commentModal = ref({
             isToggled: false,
             postId: 0
         })
 
+        const photoModal = ref({
+            isToggled: false,
+            currentStep: ''
+        })
+
         const triggerCommentModal = (id: number | undefined) => {
             console.log('triggerCommentModal:', id)
-            commentModalInfo.value = { 'isToggled': !commentModalInfo.value.isToggled, postId: id ? id : 0 }
+            commentModal.value = { isToggled: !commentModal.value.isToggled, postId: id ? id : 0 }
         }
+
+        const triggerPhotoModal = () => {
+            console.log('emitted...')
+            photoModal.value.isToggled = !photoModal.value.isToggled
+        }
+
+        // Disable scrolling when a modal is open
+        // TODO: Check why watcher not detecting changes on Comment Modal
+        watch([photoModal.value, commentModal.value], () => {
+            console.log('Watching')
+            if (photoModal.value.isToggled || commentModal.value.isToggled) {
+                console.log('Watching')
+                document.documentElement.style.overflow = 'hidden'
+                return
+            }
+            document.documentElement.style.overflow = 'auto'
+        })
+
         const mediasArraySampleA: PostMedia[] = [
             {
                 index: 0,
@@ -188,8 +221,10 @@ export default defineComponent({
             postItems,
             suggested,
             reels,
-            commentModalInfo,
-            triggerCommentModal
+            commentModal,
+            photoModal,
+            triggerCommentModal,
+            triggerPhotoModal
         }
     },
     components: {
@@ -199,11 +234,11 @@ export default defineComponent({
         NavBarMain,
         SuggestionCard,
         StoryCarousel,
-        CommentModal
+        CommentModal,
+        PhotoModal
     }
 })
 </script>
-
 
 
 
