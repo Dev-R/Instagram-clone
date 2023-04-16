@@ -84,7 +84,7 @@ export default defineComponent({
         const router = useRouter()
 
         // inVisible Routes
-        const hiddenRoutes = ['explore']
+        const hiddenRoutes = ['explore', 'create']
 
          const onPageBack= () => {
             setTimeout(() => {
