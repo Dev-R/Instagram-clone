@@ -1,111 +1,112 @@
 <template>
-    <div 
-        v-if="!hiddenRoutes.includes(routeName)"
-        class="flex flex-col space-x-2 justify-around 
-        sticky top-0 md:hidden z-50 bg-black border-gray-800 
-        border-t border-b">
-        <div 
-            class="flex space-x-2 justify-between relative">
-
+    <div  v-if="!hiddenRoutes.includes(routeName)">
+        <div
+            class="flex flex-col space-x-2 justify-around 
+            sticky top-0 md:hidden z-50 bg-black border-gray-800 
+            border-t border-b">
             <div 
-                class="group cursor-pointer rounded-full 
-                flex space-x-4 hover:bg-slate-1000 hover:delay-100 
-                p-3 xl:justify-start justify-center">
-
-                <span 
-                    v-if="routeName != 'home'"
-                    class='rotate-[270deg]'>
-                    <SVGLoader 
-                        @click="onPageBack"
-                        :icon="'back-arrow'" 
-                        :class="'group-hover:scale-110'"/>
-                </span>
-    
-                <span v-else>
-                    <SVGLoader 
-                        :icon="'instagram-large'" 
-                        :class="'group-hover:scale-110'"/>
-                </span>
-
-            </div>
-            
-            <div 
-                v-if="routeName === 'home'"
-                class="flex space-x-0.5">
+                class="flex space-x-2 justify-between relative">
 
                 <div 
-                    @click="triggerDropDown"
                     class="group cursor-pointer rounded-full 
                     flex space-x-4 hover:bg-slate-1000 hover:delay-100 
-                    pt-3 xl:justify-start justify-center">
-                    <SVGLoader 
-                        :icon="'create'" 
-                        :class="'group-hover:scale-110'"/>
-                </div>
+                    p-3 xl:justify-start justify-center">
 
-                <div 
-                    class="group cursor-pointer rounded-full 
-                    flex space-x-4 hover:bg-slate-1000 
-                    hover:delay-100 p-3 xl:justify-start 
-                    justify-center">
-                    <SVGLoader 
-                        :icon="'like'" 
-                        :class="'group-hover:scale-110'"/>
-                </div>
-
-            </div>
-
-            <div    
-                v-else
-                class="font-sans text-md font-bold 
-                absolute top-1/2 left-1/2 transform 
-                -translate-x-1/2 -translate-y-1/2 ml-12
-                text-white">
-                    <span class="capitalize">
-                        {{ routeName }}
+                    <span 
+                        v-if="routeName != 'home'"
+                        class='rotate-[270deg]'>
+                        <SVGLoader 
+                            @click="onPageBack"
+                            :icon="'back-arrow'" 
+                            :class="'group-hover:scale-110'"/>
                     </span>
+        
+                    <span v-else>
+                        <SVGLoader 
+                            :icon="'instagram-large'" 
+                            :class="'group-hover:scale-110'"/>
+                    </span>
+
+                </div>
+                
+                <div 
+                    v-if="routeName === 'home'"
+                    class="flex space-x-0.5">
+
+                    <div 
+                        @click="triggerDropDown"
+                        class="group cursor-pointer rounded-full 
+                        flex space-x-4 hover:bg-slate-1000 hover:delay-100 
+                        pt-3 xl:justify-start justify-center">
+                        <SVGLoader 
+                            :icon="'create'" 
+                            :class="'group-hover:scale-110'"/>
+                    </div>
+
+                    <div 
+                        class="group cursor-pointer rounded-full 
+                        flex space-x-4 hover:bg-slate-1000 
+                        hover:delay-100 p-3 xl:justify-start 
+                        justify-center">
+                        <SVGLoader 
+                            :icon="'like'" 
+                            :class="'group-hover:scale-110'"/>
+                    </div>
+
+                </div>
+
+                <div    
+                    v-else
+                    class="font-sans text-md font-bold 
+                    absolute top-1/2 left-1/2 transform 
+                    -translate-x-1/2 -translate-y-1/2 ml-12
+                    text-white">
+                        <span class="capitalize">
+                            {{ routeName }}
+                        </span>
+                </div>
+                
+
             </div>
-            
-
         </div>
-    </div>
-    <!-- Drop Down menu -->
-    <div 
-        :class="{
-            'hidden': !isDropDownTriggered
-        }"
-        class="absolute right-5 z-50  bg-slate-1100 
-        divide-y divide-gray-100 rounded-lg shadow w-24">
+        <!-- Drop Down menu -->
+        <div
+            :class="{
+                'hidden': !isDropDownTriggered
+            }"
+            class="absolute right-5 z-50  bg-slate-1100 
+            divide-y divide-gray-100 rounded-lg shadow w-24">
 
-        <div 
-            class="flex flex-col pt-2 pb-2 text-sm 
-            text-gray-200 space-y-3">
-            
-            <router-link 
-                class="flex hover:bg-gray-100 justify-evenly" 
-                to="create/style">
-                <span>
-                    Post
-                </span>
+            <div 
+                class="flex flex-col pt-2 pb-2 text-sm 
+                text-gray-200 space-y-3">
+                
+                <router-link 
+                    class="flex hover:bg-gray-100 justify-evenly" 
+                    to="create/style">
+                    <span>
+                        Post
+                    </span>
 
-                <SVGLoader 
-                    :icon="'create-small'" 
-                    :class="'group-hover:scale-100 self-end'"/>
+                    <SVGLoader 
+                        :icon="'create-small'" 
+                        :class="'group-hover:scale-100 self-end'"/>
 
-            </router-link>
-            
-            <router-link 
-                class="flex hover:bg-gray-100 justify-evenly" 
-                to="create/story">
-                <span>
-                    Story
-                </span>
+                </router-link>
+                
+                <router-link 
+                    class="flex hover:bg-gray-100 justify-evenly" 
+                    to="create/story">
+                    <span>
+                        Story
+                    </span>
 
-                <SVGLoader 
-                    :icon="'new-story-small'" 
-                    :class="'group-hover:scale-100 self-end'"/>
+                    <SVGLoader 
+                        :icon="'new-story-small'" 
+                        :class="'group-hover:scale-100 self-end'"/>
 
-            </router-link>
+                </router-link>
+            </div>
         </div>
     </div>
 </template>
