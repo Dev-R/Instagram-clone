@@ -71,7 +71,9 @@
         
         <!-- Photo Modal -->
         <PhotoModal 
-            @on-modal-closed="triggerPhotoModal"  
+            @on-modal-closed="triggerPhotoModal"
+            @on-file-uploaded="updateFileValiditiyState"  
+            :call-file-upload-trigger="photoModal.isFileUploadTriggered"
             :is-toggled="photoModal.isToggled" />  
 
     </div>
@@ -93,7 +95,7 @@ import PhotoModal from '@/components/basics/PhotoModal.vue'
 
 export default defineComponent({
     name: 'HomeView',
-    setup() {
+    setup(props, context) {
 
 
         const commentModal = ref({
@@ -103,7 +105,9 @@ export default defineComponent({
 
         const photoModal = ref({
             isToggled: false,
-            currentStep: ''
+            currentStep: '',
+            isFileUploadTriggered: false,
+            isFileValid: false
         })
 
         const triggerCommentModal = (id: number | undefined) => {
@@ -116,6 +120,17 @@ export default defineComponent({
             photoModal.value.isToggled = !photoModal.value.isToggled
         }
 
+        const triggerFileUpload = () => {
+            photoModal.value.isFileUploadTriggered = !photoModal.value.isFileUploadTriggered
+        }
+
+        const updateFileValiditiyState = () => {
+            console.log('updateFileValiditiyState ...')
+            // photoModal.value.isFileValid = !photoModal.value.isFileValid
+            // // Since file is valid, trigger modal
+            // triggerPhotoModal()
+        }
+
         // Disable scrolling when a modal is open
         // TODO: Check why watcher not detecting changes on Comment Modal
         watch([photoModal.value, commentModal.value], () => {
@@ -126,6 +141,15 @@ export default defineComponent({
                 return
             }
             document.documentElement.style.overflow = 'auto'
+        })
+
+        // Trigger file upload based on parent value
+        watch(() => props.callMobileFileUploadTrigger, (uploadFile) => {
+            console.log(`newVal is: ${uploadFile}`);
+            if (uploadFile)
+                console.log('New Val, triggerFileUpload:', uploadFile)
+                triggerFileUpload()
+            // context.emit('funcResult', myFunc());
         })
 
         const mediasArraySampleA: PostMedia[] = [
@@ -224,7 +248,8 @@ export default defineComponent({
             commentModal,
             photoModal,
             triggerCommentModal,
-            triggerPhotoModal
+            triggerPhotoModal,
+            updateFileValiditiyState
         }
     },
     components: {
@@ -236,6 +261,13 @@ export default defineComponent({
         StoryCarousel,
         CommentModal,
         PhotoModal
+    },
+    props: {
+        callMobileFileUploadTrigger: {
+            type: Boolean,
+            required: false,
+            default: false
+        }
     }
 })
 </script>
