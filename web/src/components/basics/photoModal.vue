@@ -532,8 +532,8 @@ export default defineComponent({
     setup(props, context) {
 
         // References to DOM element
-        const fileUpload = ref<HTMLInputElementRef | null> ()
-        const previewImage = ref<PhotoModalImage> (null)
+        const fileUpload = ref<HTMLInputElementRef | null>()
+        const previewImage = ref<PhotoModalImage>(null)
         const activeImageFilter = ref<PhotoModalImageFilter>({
             filterName: '',
             filterClass: '',
@@ -574,7 +574,8 @@ export default defineComponent({
             location: ''
         })
 
-        const filters: PhotoModalImageFilter[] = [{
+        const filters: PhotoModalImageFilter[] = [
+            {
                 filterName: 'original',
                 filterClass: '',
                 displayName: 'Original'
@@ -619,9 +620,15 @@ export default defineComponent({
         }
 
         /**
+         * Emit signal when file is succcessfully uploaded
+         */
+        const onSuccessFileUpload = () => {
+            context.emit('onFileUploaded')
+        }
+        /**
          * Update preview image filter
          */
-        const updatePreviewImageFitler = (filterName: PhotoModalImageFilter['filterName'], 
+        const updatePreviewImageFitler = (filterName: PhotoModalImageFilter['filterName'],
             filterClass: PhotoModalImageFilter['filterClass']) => {
             activeImageFilter.value.filterName = filterName
             activeImageFilter.value.filterClass = filterClass
@@ -668,6 +675,8 @@ export default defineComponent({
             isFileValid.value = true
             isFileUploaded.value = true
             updateModalStage(PhotoStage.EditPostAdjustments)
+            // Inform parent component
+            onSuccessFileUpload()
             console.log("File uploaded", file)
         }
 
@@ -707,6 +716,15 @@ export default defineComponent({
             if (!isFilterApplied.value) {
                 isFilterApplied.value = true
             }
+        })
+
+        // Trigger file upload based on parent value
+        watch(() => props.callFileUploadTrigger, (uploadFile) => {
+            console.log(`newVal is: ${uploadFile}`)
+            if (uploadFile)
+                console.log('New Val, triggerFileUpload:', uploadFile)
+            triggerFileUpload()
+            // context.emit('funcResult', myFunc());
         })
 
         // Computed
@@ -842,18 +860,25 @@ export default defineComponent({
             type: Boolean,
             required: true,
             default: false
+        },
+        callFileUploadTrigger: {
+            type: Boolean,
+            required: false,
+            default: false
         }
     },
     components: {
-    SmallCard,
-    SVGLoader,
-    router
-},
+        SmallCard,
+        SVGLoader,
+        router
+    },
     emits: [
         'onModalClosed',
+        'onFileUploaded'
     ]
 })
 </script>
+
 
 
 
