@@ -529,7 +529,7 @@ import router from '@/router'
 
 export default defineComponent({
     name: "photoModal",
-    setup(prop, context) {
+    setup(props, context) {
 
         // References to DOM element
         const fileUpload = ref<HTMLInputElementRef | null> ()
@@ -676,11 +676,17 @@ export default defineComponent({
             if (currentModalStage.value === PhotoStage.SharingPost) {
                 console.log("updateSharingStatus ...")
                 setTimeout(() => {
-                    router.push({
-                        path: '/'
-                    })
-                    // currentModalStage.value = PhotoStage.PostShared
-                    // console.log("Done")
+                    currentModalStage.value = PhotoStage.PostShared
+                    setTimeout(() => {
+                        if (router.currentRoute.value.name != 'home') {
+                            router.push({
+                                path: '/'
+                            })
+                        } else {
+                            onModalClosed()
+                        }
+                        // console.log("Done")
+                    }, 5000)
                 }, 5000)
             }
         })
