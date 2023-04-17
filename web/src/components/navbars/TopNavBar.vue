@@ -81,9 +81,9 @@
                 class="flex flex-col pt-2 pb-2 text-sm 
                 text-gray-200 space-y-3">
                 
-                <router-link 
-                    class="flex hover:bg-gray-100 justify-evenly" 
-                    to="create/style">
+                <div
+                    @click="onCreate"
+                    class="flex hover:bg-gray-100 justify-evenly">
                     <span>
                         Post
                     </span>
@@ -92,7 +92,7 @@
                         :icon="'create-small'" 
                         :class="'group-hover:scale-100 self-end'"/>
 
-                </router-link>
+                </div>
                 
                 <router-link 
                     class="flex hover:bg-gray-100 justify-evenly" 
@@ -119,7 +119,7 @@ import SVGLoader from '@/components/basics/SVGLoader.vue';
 
 export default defineComponent({
     name: 'TopNavBar',
-    setup() {
+    setup(props, context) {
 
         // Checkers
         const isDropDownTriggered = ref<boolean>(false)
@@ -130,6 +130,13 @@ export default defineComponent({
             isDropDownTriggered.value = !isDropDownTriggered.value
         }
         
+        /**
+         * Emit signal when the modal is closed
+         */
+         const onCreate = () => {
+            context.emit('onCreate')
+        }
+
         // Services
         const route = useRoute()
         const router = useRouter()
@@ -156,11 +163,15 @@ export default defineComponent({
             hiddenRoutes,
             isDropDownTriggered,
             triggerDropDown,
-            onPageBack
+            onPageBack,
+            onCreate
         }
     },
     components: {
         SVGLoader
-    }
+    },
+    emits: [
+        'onCreate',
+    ]
 })
 </script>
