@@ -384,7 +384,7 @@ export default defineComponent({
         })
         // Checkers
         const isCommentModalOpen = ref(false)
-        let windowWidth = ref(window.innerWidth) // Current windo width
+        let windowWidth = ref(window.innerWidth) // Current window width
 
         // Computed
         // const findNumberOfLikes = computed(() => {
