@@ -72,7 +72,7 @@
         <!-- Photo Modal -->
         <PhotoModal 
             @on-modal-closed="triggerPhotoModal"
-            @on-file-uploaded="updateFileValiditiyState"  
+            @on-file-uploaded="uploadedFileData"  
             :call-file-upload-trigger="photoModal.isFileUploadTriggered"
             :is-toggled="photoModal.isToggled" />  
 
@@ -80,7 +80,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch } from 'vue'
+import { defineComponent, ref, watch, computed } from 'vue'
+import type { ComputedRef } from 'vue'
+import { useRouter } from 'vue-router'
 
 import MediaCarousel from '@/components/basics/MediaCarousel.vue'
 import PostCard from '@/components/basics/PostCard.vue'
@@ -110,6 +112,11 @@ export default defineComponent({
             isFileValid: false
         })
 
+        let windowWidth = ref(window.innerWidth) // Current window width
+
+        // Services
+        const router = useRouter()
+
         const triggerCommentModal = (id: number | undefined) => {
             console.log('triggerCommentModal:', id)
             commentModal.value = { isToggled: !commentModal.value.isToggled, postId: id ? id : 0 }
@@ -124,11 +131,37 @@ export default defineComponent({
             photoModal.value.isFileUploadTriggered = !photoModal.value.isFileUploadTriggered
         }
 
-        const updateFileValiditiyState = () => {
-            console.log('updateFileValiditiyState ...')
-            // photoModal.value.isFileValid = !photoModal.value.isFileValid
-            // // Since file is valid, trigger modal
-            // triggerPhotoModal()
+        const uploadedFileData = () => {
+            const { type } = useBreakpoints()
+            // Push to image route only when screen size is extra small (i.e: Phone screen)
+            if (type.value === 'xs') 
+                router.push({
+                    name: 'style'
+                })
+        }
+
+
+        /**
+         * A Vue composition function that provides reactive properties for the current window width
+         * and breakpoint type (xs, md, lg). The breakpoint values are based on commonly used
+         * device widths.
+         *
+         * @returns an object with the following properties:
+         * - width: a reactive property with the current window width
+         * - type: a reactive property with the current breakpoint type (xs, md, lg)
+         */
+        function useBreakpoints(): { width: ComputedRef<number>; type: ComputedRef<"xs" | "md" | "lg" | null> } {
+
+            const type = computed(() => {
+                if (windowWidth.value < 550) return 'xs'
+                if (windowWidth.value >= 550 && windowWidth.value < 1200) return 'md'
+                if (windowWidth.value >= 1200) return 'lg'
+                return null // This is an unreachable line, simply to keep eslint happy.
+            })
+
+            const width = computed(() => windowWidth.value)
+
+            return { width, type }
         }
 
         // Disable scrolling when a modal is open
@@ -249,7 +282,7 @@ export default defineComponent({
             photoModal,
             triggerCommentModal,
             triggerPhotoModal,
-            updateFileValiditiyState
+            uploadedFileData
         }
     },
     components: {
