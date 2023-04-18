@@ -3,7 +3,7 @@
     <div 
         class="lg:block hidden pt-3"
         :class="{ 
-            'lg:hidden md:hidden sm:hidden': !isToggled}">
+            'lg:hidden md:hidden sm:hidden': !isModalToggled}">
         <div class="absolute top-0 right-6 z-50 hover:cursor-pointer lg:mr-12 lg:mt-5">
             <SVGLoader :icon="'cross-large'"  @click="onModalClosed()"/>
         </div>
@@ -17,7 +17,7 @@
         lg:h-auto lg:pt-0 lg:z-0 lg:w-screen w-4/5 h-3/5 max-h-md sm:max-h-fit
         md:max-w-none max-w-md"
         :class="{ 
-            'lg:hidden md:hidden sm:hidden': !isToggled,
+            'lg:hidden md:hidden sm:hidden': !isModalToggled,
             'lg:max-w-[750px]' : nonEditStages.includes(currentModalStage),
             'lg:max-w-[1024px]' : editStages.includes(currentModalStage)
         }">
@@ -342,7 +342,7 @@
         id="photo-modal" 
         class="relative h-screen block sm:hidden"
         :class="{ 
-            'hidden': !isToggled,
+            'hidden': !isModalToggled,
             'lg:max-w-[750px]' : nonEditStages.includes(currentModalStage),
             'lg:max-w-[1024px]' : editStages.includes(currentModalStage)
         }">
@@ -730,8 +730,8 @@ export default defineComponent({
         })
 
         // Trigger file upload dialog based on parent state
-        watch(() => props.callFileUploadTrigger, (uploadFile) => {
-            if (uploadFile)
+        watch(() => photoStore.isFileUploadDialogOpen, (isFileUpload) => {
+            if (isFileUpload)
                 triggerFileUpload()
         })
 
@@ -744,6 +744,10 @@ export default defineComponent({
         // Computed
         const characterCount = computed(() => {
             return Imageform.value.caption ? Imageform.value.caption.length : 0
+        })
+
+        const isModalToggled = computed(() => {
+            return props.isToggled ? props.isToggled : photoStore.isToggled ? photoStore.isToggled : false
         })
 
         const largeModalHeaderName = computed(() => {
@@ -859,6 +863,7 @@ export default defineComponent({
             filterStyle,
             smallModalButtonName,
             returnButtonAction,
+            isModalToggled,
 
             // Methods
             onModalClosed,
@@ -873,11 +878,6 @@ export default defineComponent({
     props: {
         isToggled: {
             type: Boolean,
-            required: true,
-            default: false
-        },
-        callFileUploadTrigger: {
-            type: Boolean,
             required: false,
             default: false
         }
@@ -885,7 +885,6 @@ export default defineComponent({
     components: {
         SmallCard,
         SVGLoader,
-        router
     },
     emits: [
         'onModalClosed',
