@@ -4,7 +4,7 @@
         <TopNavBar 
             @on-create="triggerMobileFileUpload"/>
         <RouterView 
-            :call-mobile-file-upload-trigger="isTriggered "/>
+            :call-mobile-file-upload-trigger="isTriggered"/>
         <!-- Mobile Navbar -->
         <NavBarMobile />
     </div>
