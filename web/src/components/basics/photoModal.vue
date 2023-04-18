@@ -338,7 +338,14 @@
     </div>
     <!-- TODO: Decompose into different component -->
     <!-- Photo-modal for mobile apps -->
-    <div id="photo-modal" class="relative h-screen block sm:hidden">
+    <div 
+        id="photo-modal" 
+        class="relative h-screen block sm:hidden"
+        :class="{ 
+            'hidden': !isToggled,
+            'lg:max-w-[750px]' : nonEditStages.includes(currentModalStage),
+            'lg:max-w-[1024px]' : editStages.includes(currentModalStage)
+        }">
 
         <!-- Header -->
         <div 
@@ -411,7 +418,8 @@
 
             <!-- Image Preview -->
             <img
-                src="https://loremflickr.com/1024/1080/cat"
+                v-if="previewImage"
+                :src="previewImage"
                 :style="!isFilterApplied ? filterStyle : '' "
                 :class="[imageFilter]"
                 class="basis-2/4"/>
@@ -499,6 +507,7 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref, computed, watch } from 'vue'
 import { useRouter } from 'vue-router'
+import { usePhotoStore } from '@/stores'
 
 import type {
     PhotoModalStage,
@@ -609,6 +618,7 @@ export default defineComponent({
 
         // Services
         const router = useRouter()
+        const photoStore = usePhotoStore()
 
 
         // Methods
@@ -675,9 +685,7 @@ export default defineComponent({
             isFileValid.value = true
             isFileUploaded.value = true
             updateModalStage(PhotoStage.EditPostAdjustments)
-            // Inform parent component
-            onSuccessFileUpload()
-            console.log("File uploaded", file)
+            // console.log("File uploaded", file)
         }
 
         // Watchers
@@ -693,7 +701,10 @@ export default defineComponent({
                             })
                         } else {
                             onModalClosed()
+                            router.go(0) // Refresh page
                         }
+                        // Clear photoModal
+                        photoStore.$reset()
                         // console.log("Done")
                     }, 5000)
                 }, 5000)
@@ -718,13 +729,16 @@ export default defineComponent({
             }
         })
 
-        // Trigger file upload based on parent value
+        // Trigger file upload dialog based on parent state
         watch(() => props.callFileUploadTrigger, (uploadFile) => {
-            console.log(`newVal is: ${uploadFile}`)
             if (uploadFile)
-                console.log('New Val, triggerFileUpload:', uploadFile)
-            triggerFileUpload()
-            // context.emit('funcResult', myFunc());
+                triggerFileUpload()
+        })
+
+        // Store preview image on store and notify parent of state
+        watch(() => previewImage.value, (file: PhotoModalImage) => {
+            photoStore.previewImage = file
+            onSuccessFileUpload()
         })
 
         // Computed
@@ -810,6 +824,7 @@ export default defineComponent({
         })
 
         onMounted(() => {
+            previewImage.value = photoStore.previewImage ? photoStore.previewImage : null
         })
         return {
             // Variables
