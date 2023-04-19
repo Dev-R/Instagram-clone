@@ -1,16 +1,20 @@
 <template>
     <div class="min-h-screen min-w-screen bg-black">
-        <TopNavBar />
+        <TopNavBar 
+            v-if="!topNavBarHiddenRoutes.includes(routeName)"/>
         <RouterView />
         <!-- Mobile Navbar -->
-        <NavBarMobile />
+        <BottomNavBar 
+            v-if="!bottomNavBarHiddenRoutes.includes(routeName)"/>
+
     </div>
 </template>
 
 <script lang="ts">
-import { onMounted, defineComponent, ref } from 'vue';
+import { onMounted, defineComponent, computed } from 'vue';
+import { useRoute } from 'vue-router';
 
-import NavBarMobile from '@/components/navbars/BottomNavBar.vue';
+import BottomNavBar from '@/components/navbars/BottomNavBar.vue';
 import SVGLoader from '@/components/basics/SVGLoader.vue';
 import TopNavBar from '@/components/navbars/TopNavBar.vue';
 
@@ -20,15 +24,30 @@ export default defineComponent({
     name: 'LayoutMain',
     setup() {
 
+        // Forbidden routes
+        const topNavBarHiddenRoutes = ['explore', 'style', 'stories']
+        const bottomNavBarHiddenRoutes = ['stories', 'style']
+
+        // Services
+        const route = useRoute()
+
+        // Computed
+        const routeName = computed(()=> {
+            return route.name ? route.name.toString() : ''
+        })
+
         onMounted(() => {
             // console.log('Mounted LayoutMain')
         })
 
         return {
+            routeName,
+            topNavBarHiddenRoutes,
+            bottomNavBarHiddenRoutes
         }
     },
     components: {
-        NavBarMobile,
+        BottomNavBar,
         SVGLoader,
         TopNavBar
     }
