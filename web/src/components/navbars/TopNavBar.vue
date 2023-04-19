@@ -82,8 +82,8 @@
                 text-gray-200 space-y-3">
                 
                 <div
-                    @click="onCreate"
-                    class="flex hover:bg-gray-100 justify-evenly">
+                    @click="onToggle"
+                    class="flex justify-evenly">
                     <span>
                         Post
                     </span>
@@ -95,7 +95,7 @@
                 </div>
                 
                 <router-link 
-                    class="flex hover:bg-gray-100 justify-evenly" 
+                    class="flex justify-evenly" 
                     to="create/story">
                     <span>
                         Story
@@ -115,6 +115,7 @@
 import { onMounted, defineComponent, computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
+import { usePhotoStore } from '@/stores';
 import SVGLoader from '@/components/basics/SVGLoader.vue';
 
 export default defineComponent({
@@ -130,17 +131,18 @@ export default defineComponent({
             isDropDownTriggered.value = !isDropDownTriggered.value
         }
         
-        /**
-         * Emit signal when the modal is closed
-         */
-         const onCreate = () => {
-            context.emit('onCreate')
-        }
 
         // Services
         const route = useRoute()
         const router = useRouter()
+        const photoStore = usePhotoStore()
 
+        /**
+         * Change store state to open file upload dialog
+         */
+         const onToggle = () => {
+            photoStore.isFileUploadDialogOpen = true
+        }
 
          const onPageBack= () => {
             setTimeout(() => {
@@ -164,14 +166,14 @@ export default defineComponent({
             isDropDownTriggered,
             triggerDropDown,
             onPageBack,
-            onCreate
+            onToggle
         }
     },
     components: {
         SVGLoader
     },
     emits: [
-        'onCreate',
+        'onToggle',
     ]
 })
 </script>
