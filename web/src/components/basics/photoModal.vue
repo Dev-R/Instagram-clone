@@ -801,7 +801,7 @@ export default defineComponent({
         })
 
         const smallModalButtonName = computed(() => {
-            return currentModalStage.value === PhotoStage.CreatePost ? 'Next' : 'Share'
+            return currentModalStage.value === PhotoStage.CreatePost ? 'Next' : currentModalStage.value != PhotoStage.PostShared ? 'Share' : 'Shared'
         })
 
         const imageFilter = computed(() => {
