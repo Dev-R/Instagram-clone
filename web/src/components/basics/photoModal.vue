@@ -564,6 +564,7 @@ export default defineComponent({
         const isFilterApplied = ref<boolean>(false)
 
         // Others
+        let screenWidth = ref<number>(window.innerWidth) // Current window width
         const currentImageAdjustments = ref<PhotoModalAdjustment>({
             brightness: {
                 label: 'Brightness',
@@ -667,6 +668,10 @@ export default defineComponent({
             currentModalStage.value = stage
         }
 
+        const goToHomeRoute = () => {
+            router.push({ name: 'home' })
+        }
+
         /**
          * TODO: Add validation
          * Handle file uploaded event
@@ -695,16 +700,9 @@ export default defineComponent({
                 setTimeout(() => {
                     currentModalStage.value = PhotoStage.PostShared
                     setTimeout(() => {
-                        if (router.currentRoute.value.name != 'home') {
-                            router.push({
-                                path: '/'
-                            })
-                        } else {
-                            onModalClosed()
-                            router.go(0) // Refresh page
-                        }
                         // Clear photoModal
                         photoStore.$reset()
+                        goToHomeRoute()
                         // console.log("Done")
                     }, 5000)
                 }, 5000)
@@ -739,6 +737,16 @@ export default defineComponent({
         watch(() => previewImage.value, (file: PhotoModalImage) => {
             photoStore.previewImage = file
             onSuccessFileUpload()
+        })
+
+        // Watch screen size to prevent accessing route with large screen
+        watch(() => screenWidth.value, (size) => {
+            const mobileScreenWidth = 550
+            if(size >= mobileScreenWidth) {
+                // Clear photoModal
+                photoStore.$reset()
+                goToHomeRoute()
+            }
         })
 
         // Computed
@@ -829,6 +837,10 @@ export default defineComponent({
 
         onMounted(() => {
             previewImage.value = photoStore.previewImage ? photoStore.previewImage : null
+            // Keep track of screen width
+            window.onresize = () => {
+                screenWidth.value = window.innerWidth
+            }
         })
         return {
             // Variables
