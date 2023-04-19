@@ -72,7 +72,7 @@
         <!-- Photo Modal -->
         <PhotoModal 
             @on-modal-closed="triggerPhotoModal"
-            @on-file-uploaded="uploadedFileData"  
+            @on-file-upload="uploadedFileData"  
             :is-toggled="photoModal.isToggled" />  
 
     </div>
@@ -122,7 +122,6 @@ export default defineComponent({
         }
 
         const triggerPhotoModal = () => {
-            // console.log('triggerPhotoModal...')
             photoModal.value.isToggled = !photoModal.value.isToggled
         }
 
