@@ -3,7 +3,7 @@
     <div 
         class="lg:block hidden pt-3"
         :class="{ 
-            'lg:hidden md:hidden sm:hidden': !isModalToggled}">
+            'lg:hidden md:hidden sm:hidden': !isModalToggled || isModalToggled && currentModalStage === PhotoStage.SharingPost}">
         <div class="absolute top-0 right-6 z-50 hover:cursor-pointer lg:mr-12 lg:mt-5">
             <SVGLoader :icon="'cross-large'"  @click="onModalClosed()"/>
         </div>
@@ -105,7 +105,7 @@
                                 </button>
 
                                 <input
-                                    @change="onFileUploaded"
+                                    @change="onFileUpload"
                                     ref="fileUpload"
                                     accept="image/*"
                                     type='file' hidden/>
@@ -119,8 +119,8 @@
                                 :style="!isFilterApplied ? filterStyle : '' "
                                 :class="[imageFilter]"
                                 class="absolute block top-1/2 left-1/2 
-                                -translate-x-1/2 md:-translate-y-1/2
-                                lg:h-full md:h-[500.6px] h-lg w-full"/>
+                                -translate-x-1/2 md:-translate-y-1/2 
+                                lg:object-cover lg:w-full lg:h-full md:h-[500.6px] h-lg w-full"/>
 
                             <!-- Loading Progress -->
                             <div 
@@ -361,14 +361,14 @@
                     flex space-x-4 hover:bg-slate-1000
                     hover:delay-100 p-3 xl:justify-start justify-center">
 
-                    <router-link
-                        to="../home" 
+                    <div
                         class="rotate-[270deg]"
                         :class="{'hidden': currentModalStage != PhotoStage.CreatePost}">
                         <SVGLoader 
+                            @click="goToHomeRoute()"
                             :icon="'cross-large'"
                             :class="'group-hover:scale-110'"/>
-                    </router-link>
+                    </div>
 
                     <span 
                         @click="updateModalStage(PhotoStage.CreatePost)"
@@ -479,7 +479,8 @@
                     block w-full text-xs bg-black text-white"/>
 
                 <img 
-                    :src="'https://loremflickr.com/1024/1080/dog'"
+                    v-if="previewImage"
+                    :src="previewImage"
                     class="h-12 w-12"/>
 
             </div>
@@ -544,9 +545,9 @@ export default defineComponent({
         const fileUpload = ref<HTMLInputElementRef | null>()
         const previewImage = ref<PhotoModalImage>(null)
         const activeImageFilter = ref<PhotoModalImageFilter>({
-            filterName: '',
+            filterName: 'original',
             filterClass: '',
-            displayName: ''
+            displayName: 'Original'
         })
 
         // Trackers
@@ -634,8 +635,30 @@ export default defineComponent({
          * Emit signal when file is succcessfully uploaded
          */
         const onSuccessFileUpload = () => {
-            context.emit('onFileUploaded')
+            context.emit('onFileUpload')
         }
+
+        /**
+         * TODO: Add validation
+         * Handle file uploaded event
+         * @param {Object} event - The event object
+         */
+         const onFileUpload = (event: Event) => {
+            const targetEvent = event.target as HTMLInputElement
+            const file = targetEvent?.files?.item(0) as Blob
+
+            // Read the file as data URL to show preview
+            const reader = new FileReader()
+            reader.readAsDataURL(file)
+            reader.onload = (event) => {
+                previewImage.value = event.target?.result as string
+            }
+            isFileValid.value = true
+            isFileUploaded.value = true
+            updateModalStage(PhotoStage.EditPostAdjustments)
+            // console.log("File uploaded", file)
+        }
+
         /**
          * Update preview image filter
          */
@@ -669,29 +692,14 @@ export default defineComponent({
         }
 
         const goToHomeRoute = () => {
-            router.push({ name: 'home' })
-        }
-
-        /**
-         * TODO: Add validation
-         * Handle file uploaded event
-         * @param {Object} event - The event object
-         */
-        const onFileUploaded = (event: Event) => {
-            const targetEvent = event.target as HTMLInputElement
-            const file = targetEvent?.files?.item(0) as Blob
-
-            // Read the file as data URL to show preview
-            const reader = new FileReader()
-            reader.readAsDataURL(file)
-            reader.onload = (event) => {
-                previewImage.value = event.target?.result as string
+            if(router.currentRoute.value.name != 'home') {
+                router.push({ name: 'home' })
+                router.go(0)
+            } else{
+                router.go(0)
             }
-            isFileValid.value = true
-            isFileUploaded.value = true
-            updateModalStage(PhotoStage.EditPostAdjustments)
-            // console.log("File uploaded", file)
         }
+
 
         // Watchers
         watch(currentModalStage, () => {
@@ -702,9 +710,12 @@ export default defineComponent({
                     setTimeout(() => {
                         // Clear photoModal
                         photoStore.$reset()
+                        // Reset state in parent
+                        onModalClosed()
+                        // Go to home route
                         goToHomeRoute()
                         // console.log("Done")
-                    }, 5000)
+                    }, 3000)
                 }, 5000)
             }
         })
@@ -742,7 +753,7 @@ export default defineComponent({
         // Watch screen size to prevent accessing route with large screen
         watch(() => screenWidth.value, (size) => {
             const mobileScreenWidth = 550
-            if(size >= mobileScreenWidth) {
+            if(size >= mobileScreenWidth && photoStore.isToggled) {
                 // Clear photoModal
                 photoStore.$reset()
                 goToHomeRoute()
@@ -882,9 +893,10 @@ export default defineComponent({
             triggerFileUpload,
             updatePreviewImageFitler,
             filterTabSwitcher,
-            onFileUploaded,
             clearPreviewImage,
             updateModalStage,
+            onFileUpload,
+            goToHomeRoute
         }
     },
     props: {
@@ -900,7 +912,8 @@ export default defineComponent({
     },
     emits: [
         'onModalClosed',
-        'onFileUploaded'
+        'onFileUpload',
+        'onProcessCompleted'
     ]
 })
 </script>
