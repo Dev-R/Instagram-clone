@@ -124,11 +124,11 @@
                 </Slide>
             </Carousel3d>
 
-            <div class="absolute top-0 right-6 z-50 hover:cursor-pointer">
+            <div class="absolute top-8 right-6 z-50 hover:cursor-pointer">
                 <SVGLoader :icon="'cross-large'"  @click="onModalClosed()"/>
             </div>
 
-            <div class="absolute top-0 left-6 z-50">
+            <div class="absolute top-0 left-6 z-50 md:block hidden">
                 <SVGLoader :icon="'instagram-large'" />
             </div>
 
