@@ -350,7 +350,7 @@ import PostCard from '@/components/basics/PostCard.vue'
 import NavBarMain from '@/components/navbars/NavBarMain.vue'
 import CommentModal from '@/components/basics/CommentModal.vue'
 
-import type { PostMedia, SuggestionCard } from '@/common/models/post.model'
+import type { PostMedia } from '@/common/models/post.model'
 
 import smallModal from '@/components/basics/SmallModal.vue'
 import settingModal from '@/components/basics/SettingModal.vue'

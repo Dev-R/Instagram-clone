@@ -82,7 +82,7 @@
 <script lang="ts">
 import { defineComponent, onMounted } from 'vue';
 
-import SmallCard from '@/components/basics/smallCard.vue';
+import SmallCard from '@/components/basics/SmallCard.vue';
 import SVGLoader from '@/components/basics/SVGLoader.vue';
 
 export default defineComponent({
