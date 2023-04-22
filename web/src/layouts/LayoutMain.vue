@@ -24,7 +24,7 @@ export default defineComponent({
     name: 'LayoutMain',
     setup() {
 
-        // Forbidden routes
+        // Routes without no top/bottom navbars
         const topNavBarHiddenRoutes = ['explore', 'style', 'stories']
         const bottomNavBarHiddenRoutes = ['stories', 'style']
 
