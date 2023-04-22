@@ -340,7 +340,7 @@
     <!-- Photo-modal for mobile apps -->
     <div 
         id="photo-modal" 
-        class="relative h-screen block sm:hidden"
+        class="relative block sm:hidden"
         :class="{ 
             'hidden': !isModalToggled,
             'lg:max-w-[750px]' : nonEditStages.includes(currentModalStage),
@@ -414,7 +414,7 @@
         <!-- Preview & Filters -->
         <div
             :class="{'hidden' : currentModalStage != PhotoStage.CreatePost}"
-            class="flex flex-col h-5/6">
+            class="flex flex-col">
 
             <!-- Image Preview -->
             <img
