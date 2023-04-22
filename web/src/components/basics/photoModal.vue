@@ -365,7 +365,7 @@
                         class="rotate-[270deg]"
                         :class="{'hidden': currentModalStage != PhotoStage.CreatePost}">
                         <SVGLoader 
-                            @click="goToHomeRoute()"
+                            @click="refreshPage()"
                             :icon="'cross-large'"
                             :class="'group-hover:scale-110'"/>
                     </div>
@@ -523,7 +523,6 @@ import { PhotoTab, PhotoStage } from '@/common/photo.modal.enum'
 
 import SmallCard from '@/components/basics/SmallCard.vue'
 import SVGLoader from '@/components/basics/SVGLoader.vue'
-import router from '@/router'
 
 
 /**
@@ -691,13 +690,8 @@ export default defineComponent({
             currentModalStage.value = stage
         }
 
-        const goToHomeRoute = () => {
-            if(router.currentRoute.value.name != 'home') {
-                router.push({ name: 'home' })
-                router.go(0)
-            } else{
-                router.go(0)
-            }
+        const refreshPage = () => {
+            router.go(0)
         }
 
 
@@ -712,8 +706,8 @@ export default defineComponent({
                         photoStore.$reset()
                         // Reset state in parent
                         onModalClosed()
-                        // Go to home route
-                        goToHomeRoute()
+                        // Refresh page
+                        refreshPage()
                         // console.log("Done")
                     }, 3000)
                 }, 5000)
@@ -756,7 +750,7 @@ export default defineComponent({
             if(size >= mobileScreenWidth && photoStore.isToggled) {
                 // Clear photoModal
                 photoStore.$reset()
-                goToHomeRoute()
+                refreshPage()
             }
         })
 
@@ -896,7 +890,7 @@ export default defineComponent({
             clearPreviewImage,
             updateModalStage,
             onFileUpload,
-            goToHomeRoute
+            refreshPage
         }
     },
     props: {
