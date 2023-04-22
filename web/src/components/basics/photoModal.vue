@@ -919,11 +919,4 @@ export default defineComponent({
 #photo-modal {
     transition:250ms linear;
 }
-
-/* #theImage {
-    filter: brightness(200%);
-    filter: saturate(200%);
-    filter: contrast(200%);
-} */
-
 </style>
