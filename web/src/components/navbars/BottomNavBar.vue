@@ -5,14 +5,15 @@
         block z-50 bg-black">
         <div class="flex space-x-2 justify-around">
 
-            <div 
-            class="group cursor-pointer rounded-full 
-            flex space-x-4 hover:bg-slate-1000 hover:delay-100 
-            hover:delay-100 p-3 xl:justify-start justify-center">
-            <SVGLoader 
-                :icon="'home'" 
-                :class="'group-hover:scale-110'"/>
-            </div>
+            <router-link
+                to="home" 
+                class="group cursor-pointer rounded-full 
+                flex space-x-4 hover:bg-slate-1000 hover:delay-100 
+                hover:delay-100 p-3 xl:justify-start justify-center">
+                <SVGLoader 
+                    :icon="'home'" 
+                    :class="'group-hover:scale-110'"/>
+            </router-link>
 
             <div 
                 class="group cursor-pointer rounded-full 
@@ -44,7 +45,8 @@
                     :class="'group-hover:scale-110'"/>
             </div>
 
-            <div 
+            <router-link 
+                to="profile"
                 class="group cursor-pointer rounded-full 
                 flex space-x-4 hover:bg-slate-1000 hover:delay-100 
                 p-3 xl:justify-start justify-center">
@@ -53,7 +55,7 @@
                 class="w-6 h-6 rounded-full shadow-lg 
                 group-hover:scale-110"
                 src="http://via.placeholder.com/26x26">
-            </div>
+            </router-link >
 
         </div>
         <div class="h-8">
