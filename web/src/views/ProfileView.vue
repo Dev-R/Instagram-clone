@@ -231,7 +231,9 @@
                         </div>
 
                         <!-- Empty Section Messages -->
-                        <!-- <div class="flex flex-col space-y-2 self-center pt-14 h-screen">
+                        <div 
+                            v-if="emptyTabBarBodyMessage.isEmpty"
+                            class="flex flex-col space-y-2 self-center pt-14 h-screen">
                             <i 
                                 class="text-slate-1100 text-6xl pb-2"
                                 :class="emptyTabBarBodyMessage.icon"></i>
@@ -250,7 +252,7 @@
                                 </span>
                             </div>
                             <i class="fa-regular fa-bookmark"></i>
-                        </div> -->
+                        </div>
                         
                         <!-- Image Rendering Section -->
                         <div 
@@ -475,21 +477,25 @@ export default defineComponent({
                         icon: 'fa-solid fa-photo-film',
                         top: 'Share Photos',
                         body: 'When you share photos, they will appear on your profile.',
-                        footer: 'Share your first photo'
+                        footer: 'Share your first photo',
+                        isEmpty: postItems === undefined || postItems.length == 0
                     }
                 case 'profile-tagged':
                     return {
                         icon: 'fa-solid fa-users-viewfinder',
                         top: 'Start Saving',
                         body: 'Save photos and videos to your collection.',
-                        footer: 'Add to collection'
+                        footer: 'Add to collection',
+                        isEmpty: taggedItems === undefined || taggedItems.length == 0
+
                     }
                 case 'profile-saved':
                     return {
                         icon: 'fa-regular fa-bookmark',
                         top: 'Photos of you',
                         body: "When people tag you in photos, they'll appear here.",
-                        footer: ''
+                        footer: '',
+                        isEmpty: savedItems === undefined || savedItems.length == 0
                     }
                 default:
                     return {}
@@ -522,6 +528,9 @@ export default defineComponent({
         const onWidthChange = () => windowWidth.value = window.innerWidth
         onMounted(() => window.addEventListener('resize', onWidthChange))
         onUnmounted(() => window.removeEventListener('resize', onWidthChange))
+
+        const savedItems = [] as Object[]
+        const taggedItems = [] as Object[]
 
         const postItems = [
             {
@@ -672,6 +681,8 @@ export default defineComponent({
         return {
             suggested,
             postItems,
+            savedItems,
+            taggedItems,
             commentModal,
             smallModal,
             photoModal,
