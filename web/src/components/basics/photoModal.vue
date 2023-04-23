@@ -3,7 +3,7 @@
     <div 
         class="lg:block hidden pt-3"
         :class="{ 
-            'lg:hidden md:hidden sm:hidden': !isModalToggled || isModalToggled && currentModalStage === PhotoStage.SharingPost}">
+            'lg:hidden md:hidden sm:hidden': isModalToggled}">
         <div class="absolute top-0 right-6 z-50 hover:cursor-pointer lg:mr-12 lg:mt-5">
             <SVGLoader :icon="'cross-large'"  @click="onModalClosed()"/>
         </div>
@@ -17,7 +17,7 @@
         lg:h-auto lg:pt-0 lg:z-0 lg:w-screen w-4/5 h-3/5 max-h-md sm:max-h-fit
         md:max-w-none max-w-md"
         :class="{ 
-            'lg:hidden md:hidden sm:hidden': !isModalToggled,
+            'lg:hidden md:hidden sm:hidden': !isModalExternallyToggled,
             'lg:max-w-[750px]' : nonEditStages.includes(currentModalStage),
             'lg:max-w-[1024px]' : editStages.includes(currentModalStage)
         }">
@@ -342,7 +342,7 @@
         id="photo-modal" 
         class="relative block sm:hidden"
         :class="{ 
-            'hidden': !isModalToggled,
+            'hidden': !isModalExternallyToggled,
             'lg:max-w-[750px]' : nonEditStages.includes(currentModalStage),
             'lg:max-w-[1024px]' : editStages.includes(currentModalStage)
         }">
@@ -759,7 +759,7 @@ export default defineComponent({
             return Imageform.value.caption ? Imageform.value.caption.length : 0
         })
 
-        const isModalToggled = computed(() => {
+        const isModalExternallyToggled = computed(() => {
             return props.isToggled ? props.isToggled : photoStore.isToggled ? photoStore.isToggled : false
         })
 
@@ -792,6 +792,10 @@ export default defineComponent({
                 default:
                     return {}
             }
+        })
+
+        const isModalToggled = computed(() => {
+            return !isModalExternallyToggled || isModalExternallyToggled && currentModalStage.value === PhotoStage.SharingPost
         })
 
         const smallModalButtonName = computed(() => {
@@ -855,6 +859,7 @@ export default defineComponent({
             isFileUploaded,
             isFileValid,
             isFilterApplied,
+            isModalToggled,
             previewImage,
             activeImageFilter,
             Imageform,
@@ -880,7 +885,7 @@ export default defineComponent({
             filterStyle,
             smallModalButtonName,
             returnButtonAction,
-            isModalToggled,
+            isModalExternallyToggled,
 
             // Methods
             onModalClosed,
