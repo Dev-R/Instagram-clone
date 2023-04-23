@@ -1,4 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { usePhotoStore } from '@/stores'
+
+const ROOT_ROUTE = '/home'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -39,11 +42,29 @@ const router = createRouter({
           component: () => import('@/views/StoryView.vue'),
           meta: { title: 'Reels' }
         },
-        { 
-          path: '/:pathMatch(.*)*', 
-          name: 'NotFound', 
+        {
+          path: '/create',
+          name: 'create',
+          children: [
+            {
+              path: 'style',
+              name: 'style',
+              component: () => import('@/components/basics/PhotoModal.vue'),
+              meta: { title: 'Create Image' }
+            },
+            {
+              path: 'story',
+              name: 'story',
+              component: () => import('@/views/errors/NotFound.vue'),
+              meta: { title: 'Create Story' }
+            },
+          ],
+        },
+        {
+          path: '/:pathMatch(.*)*',
+          name: 'NotFound',
           component: () => import('@/views/errors/NotFound.vue')
-      },
+        },
       ]
     },
     {
@@ -55,7 +76,7 @@ const router = createRouter({
           path: 'login',
           name: 'login',
           component: () => import('@/views/auth/LoginView.vue'),
-          meta : { title: 'Login' }
+          meta: { title: 'Login' }
         },
         // {
         //   path: 'signup',
@@ -66,8 +87,30 @@ const router = createRouter({
       ]
     }
 
-    
+
   ]
 })
 
+
+/**
+ * RouterGuard
+ */
+router.beforeEach(async (to, from, next) => {
+  const photoStore = usePhotoStore()
+
+  // User shouldn't be able to access create route without preview image
+  if (to.path.startsWith('/create') && !photoStore.previewImage) {
+    console.log('Here')
+    return next({ name: 'home' })
+  }
+
+  return next()
+})
+
+router.afterEach((to, from, failure) => {
+  if (to.meta.title && failure?.from.path !== ROOT_ROUTE) {
+    // Only update page title if no failure
+    document.title = `PhotoFlow - ${ to.meta.title }`
+  }
+})
 export default router

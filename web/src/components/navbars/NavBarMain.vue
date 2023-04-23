@@ -112,6 +112,7 @@
             </div>
 
             <div 
+                @click="onCreate"
                 class="group cursor-pointer rounded-full 
                 flex space-x-4 hover:bg-slate-1000 hover:delay-100 
                 p-3 xl:justify-start justify-center">
@@ -126,7 +127,8 @@
 
             </div>
 
-            <div 
+            <router-link 
+                to="profile"
                 class="group cursor-pointer rounded-full 
                 flex space-x-4 hover:bg-slate-1000 hover:delay-100 
                 p-3 xl:justify-start justify-center">
@@ -136,7 +138,7 @@
                     Profile
                 </span>
                 
-            </div>
+            </router-link>
 
         </div>
         <!-- Temp-solution -->
@@ -156,19 +158,50 @@
 </template>
 
 <script lang="ts">
-import { onMounted, defineComponent } from 'vue'
-import SVGLoader from "@/components/basics/SVGLoader.vue"
+import { onMounted, defineComponent } from 'vue';
+import { useRouter } from 'vue-router';
+
+import SVGLoader from '@/components/basics/SVGLoader.vue';
+
 export default defineComponent({
     name: 'NavBarMain',
-    setup() {
+    setup(prop, context) {
+        // Services
+        const router = useRouter()
+
+        // Methods
+        /**
+         * Emit signal when the modal is closed
+         */
+         const onCreate = () => {
+            context.emit('onCreate')
+        }
+
+        /**
+         * Emit signal when the profile is clicked
+         */
+        const onProfileOpen = () => {
+            context.emit('onProfileOpen')
+            setTimeout(() => {
+                router.push({ path: '/profile' })
+            }, 1000)
+        }
+
         onMounted(() => {
             // console.log('Mounted NavBarMain')
         })
 
-        return {}
+        return {
+            onProfileOpen,
+            onCreate
+        }
     },
     components: {
         SVGLoader
-    }
+    },
+    emits: [
+        'onCreate',
+        'onProfileOpen'
+    ]
 })
 </script>

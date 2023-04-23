@@ -2,23 +2,25 @@
     <div class="bg-black">
         <section 
             class="container max-w-full mx-auto text-center"
-            :class="{ 'brightness-50': commentModalInfo.isToggled }">
-            <div class="pt-5 grid grid-cols-12">
+            :class="{ 'brightness-50 pointer-events-none': commentModal.isToggled || photoModal.isToggled }">
+            <div class="md:pt-5 grid grid-cols-12">
                 <!-- Left bar: Navigation -->
                 <div 
                     class="xl:col-span-2 col-span-1 bg-black 
                     md:block hidden space-y-12 relative h-screen 
                     sticky top-0 border-r border-gray-900">
+                    
                     <!-- A -->
-                    <NavBarMain/>
+                    <NavBarMain
+                        @on-create="triggerPhotoModal"/>
                     
                 </div>
 
                 <!-- Center: Posts -->
                 <div 
                     class="lg:col-span-6 lg:grid md:col-span-6 
-                    md:col-start-4 md:mt-8 md:p-0
-                    col-span-12 bg-black p-2">
+                    md:col-start-4 md:mt-8
+                    col-span-12 bg-black">
  
                     <div 
                         class="md:w-[470px] flex flex-col 
@@ -26,12 +28,15 @@
                         justify-self-end lg:mr-[64px]">
 
                         <!-- Stories -->
-                        <div class="mb-6 relative rounded-xl overflow-auto">
+                        <div 
+                            class="mb-6 relative md:rounded-xl md:bg-current 
+                            overflow-auto md:border-current border-gray-800 
+                            bg-slate-1000 border-t border-b">
                             <StoryCarousel :reels="reels"/>
                         </div>
 
                         <!-- Posters -->
-                        <div class="flex flex-col space-y-8">
+                        <div class="flex flex-col space-y-8 sm:p-0 p-2.5">
                             <PostCard 
                                 v-for="(item, index) of postItems"
                                 @on-open-comment-modal="triggerCommentModal"
@@ -54,47 +59,103 @@
                 </div>
             </div>
         </section>
+        <!-- Modals -->
+
         <!-- Comment Modal -->
         <CommentModal
             @on-modal-closed="triggerCommentModal" 
             :post-comment="{
-                isToggled: commentModalInfo.isToggled,
-                post : postItems[commentModalInfo.postId],
+                isToggled: commentModal.isToggled,
+                post : postItems[commentModal.postId],
             }"/>
+        
+        <!-- Photo Modal -->
+        <PhotoModal 
+            @on-modal-closed="triggerPhotoModal"
+            @on-file-upload="uploadedFileData"  
+            :is-toggled="photoModal.isToggled" />  
 
-        <!-- Mobile Navbar -->
-        <NavBarMobile />
     </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, watch, computed } from 'vue'
+import { useRouter } from 'vue-router'
 
-import MediaCarousel from '@/components/basics/MediaCarousel.vue';
-import PostCard from '@/components/basics/PostCard.vue';
-import SVGLoader from '@/components/basics/SVGLoader.vue';
-import NavBarMain from '@/components/navbars/NavBarMain.vue';
-import NavBarMobile from '@/components/navbars/NavBarMobile.vue';
-import SuggestionCard from '@/components/basics/SuggestionCard.vue';
-import StoryCarousel from '@/components/basics/StoryCarousel.vue';
-import CommentModal from '@/components/basics/CommentModal.vue';
+import MediaCarousel from '@/components/basics/MediaCarousel.vue'
+import PostCard from '@/components/basics/PostCard.vue'
+import SVGLoader from '@/components/basics/SVGLoader.vue'
+import NavBarMain from '@/components/navbars/NavBarMain.vue'
+import SuggestionCard from '@/components/basics/SuggestionCard.vue'
+import StoryCarousel from '@/components/basics/StoryCarousel.vue'
+import CommentModal from '@/components/basics/CommentModal.vue'
 
-import type { PostMedia } from '@/common/models/post.model';
+import type { PostMedia } from '@/common/models/post.model'
+import PhotoModal from '@/components/basics/PhotoModal.vue'
+import { usePhotoStore } from '@/stores'
 
 export default defineComponent({
-    name: 'Home',
-    setup() {
+    name: 'HomeView',
+    setup(props, context) {
 
 
-        const commentModalInfo = ref({
+        const commentModal = ref({
             isToggled: false,
             postId: 0
         })
 
+        const photoModal = ref({
+            isToggled: false,
+            currentStep: '',
+            isFileValid: false
+        })
+
+        let windowWidth = ref(window.innerWidth) // Current window width
+
+        // Services
+        const router = useRouter()
+        const photoStore = usePhotoStore()
+
         const triggerCommentModal = (id: number | undefined) => {
-            console.log('triggerCommentModal:', id)
-            commentModalInfo.value = { 'isToggled': !commentModalInfo.value.isToggled, postId: id ? id : 0 }
+            // console.log('triggerCommentModal:', id)
+            commentModal.value = { isToggled: !commentModal.value.isToggled, postId: id ? id : 0 }
         }
+
+        const triggerPhotoModal = () => {
+            photoModal.value.isToggled = !photoModal.value.isToggled
+        }
+
+        const uploadedFileData = () => {
+            // Go to image view only when screen size is extra small (i.e: Phone screen)
+            if (windowType.value === 'xs')
+                router.push({
+                    name: 'style'
+                })
+            photoStore.isToggled = true // Trigger photoModal in mobile view 
+        }
+
+        // Computed
+        /**
+         * Get current screen width
+         */
+        const windowType = computed(() => {
+            if (windowWidth.value < 550) return 'xs'
+            return null
+        })
+
+        // Watchers
+        // Disable scrolling when a modal is open
+        // TODO: Check why watcher not detecting changes on Comment Modal
+        watch([photoModal.value, commentModal.value], () => {
+            console.log('Watching')
+            if (photoModal.value.isToggled || commentModal.value.isToggled) {
+                console.log('Watching')
+                document.documentElement.style.overflow = 'hidden'
+                return
+            }
+            document.documentElement.style.overflow = 'auto'
+        })
+
         const mediasArraySampleA: PostMedia[] = [
             {
                 index: 0,
@@ -188,8 +249,11 @@ export default defineComponent({
             postItems,
             suggested,
             reels,
-            commentModalInfo,
-            triggerCommentModal
+            commentModal,
+            photoModal,
+            triggerCommentModal,
+            triggerPhotoModal,
+            uploadedFileData
         }
     },
     components: {
@@ -200,11 +264,11 @@ export default defineComponent({
         SuggestionCard,
         StoryCarousel,
         CommentModal,
-        NavBarMobile
-    }
+        PhotoModal
+    },
+    props: {}
 })
 </script>
-
 
 
 
