@@ -2,43 +2,49 @@
     <div class="bg-black relative">
         <section 
             v-if="!commentModal.isToggled"
-            class="container max-w-full mx-auto text-center h-screen  scrollbar scrollbar-thumb-gray-900"
-            :class="{ 'brightness-50 pointer-events-none': commentModal.isToggled || smallModal.isToggled ||  photoModal.isToggled }">
+            class="container max-w-full mx-auto text-center 
+            h-screen scrollbar scrollbar-thumb-gray-900"
+            :class="{ 'brightness-50 pointer-events-none': isModalToggled }">
             <div class=" grid grid-cols-12">
                 <!-- Left bar: Navigation -->
                 <div 
-                    class="xl:col-span-2 col-span-1 bg-black pt-5
-                    md:block hidden space-y-12 relative h-screen 
+                    class="bg-black pt-5 col-span-1 xl:col-span-2
+                    h-screen space-y-12 hidden md:block
                     sticky top-0 border-r border-gray-900">
                     <NavBarMain
                         @on-create="triggerPhotoModal"/>
                     
                 </div>
+                
                 <!-- Center -->
                 <div 
-                    class="lg:col-span-8 lg:grid md:col-span-6  scrollbar scrollbar-thumb-gray-900
-                    md:ml-5 lg:ml-0 md:col-start-2 md:mt-8 md:p-0 
-                    col-span-12 p-2">
-                    
+                    class="lg:col-span-8 lg:grid md:col-span-6 scrollbar
+                  scrollbar-thumb-gray-900 md:ml-5 lg:ml-0 md:col-start-2 
+                    md:mt-8 md:p-0 col-span-12 p-2">
+            
+                    <!-- Profile Info -->
                     <div 
-                        class="md:w-[935px] flex flex-col
-                        space-y-4 flex-nowrap md:pt-0 pt-2
-                        justify-self-end lg:mr--[64px]">            
-                        <!-- Profile Info -->
+                        class="flex flex-col md:w-[935px] flex-nowrap space-y-4 
+                        pt-2 md:pt-0 justify-self-end lg:mr-[64px]">            
                         <div class="flex md:space-x-14 md:pl-14 md:pb-8">
                             <!-- User Profile image -->
                             <div>
                                 <img 
-                                    src="https://loremflickr.com/1024/1280/black" 
+                                    :src="profileInfo.profilePictureUrl" 
                                     class="md:w-36 md:h-36 h-20 w-20 rounded-full">
                             </div>
 
                             <!-- Profile data -->
                             <div class="md:pl-20 bg-black flex flex-col space-y-6">
-                                <div class="md:flex md:flex-row flex-col md:space-x-4 space-y-3 items-center">
+
+                                <div 
+                                    class="md:flex md:flex-row flex-col md:space-x-4 
+                                    space-y-3 items-center">
                                     <!-- User name -->
-                                    <div class="md:pl-0 pl-6 font-sans text-lg font-normal text-white text-left md:mt-4">
-                                        hot_souce_56
+                                    <div 
+                                        class="md:pl-0 pl-6 font-sans text-lg font-normal
+                                      text-white text-left md:mt-4">
+                                        {{ profileInfo.userName }}
                                     </div>
 
                                     <!-- Options -->
@@ -46,11 +52,12 @@
                                         <button 
                                             type="button" 
                                             class="text-gray-900 bg-white hover:bg-gray-100 
-                                            border border-gray-200 font-semibold w-auto
-                                            rounded-lg text-xs md:p-1.5 md:px-3 md:py-1.5 px-20 py-1 md:w-auto  ">
+                                            border border-gray-200 font-semibold w-auto rounded-lg text-xs md:p-1.5 
+                                            md:px-3 md:py-1.5 px-20 py-1 md:w-auto">
                                             Edit Profile
                                         </button>
                                     </div>
+
                                     <!-- Logged-in user Options -->
                                     <div>
                                         <SVGLoader 
@@ -59,178 +66,86 @@
                                             :class="'md:block hidden hover:cursor-pointer'"/>
                                     </div>
                                 </div>
-                                <!-- Profile Info: Desktop -->
+
+                                <!-- Profile Info Rendering: Desktop -->
                                 <div class="md:block hidden">
+
                                     <div class="flex space-x-10">
-                                        <!-- Number of posts -->
-                                        <div class="font-sans text-sm font-normal text-white">
-                                            <span class="font-sans text-sm font-bold text-white">
-                                                2
-                                            </span>
-                                            posts
-                                        </div>
-                                        <!-- Number of followers -->
-                                    <div 
-                                         @click="triggerSmallModal('follow-modal', 'Followers')"
-                                        class="font-sans text-sm font-normal text-white hover:cursor-pointer">
-                                        <span class="font-sans text-sm font-bold text-white">
-                                                8
-                                            </span>
-                                            followers
-                                        </div>
-                                        <!-- Number of following -->
+
                                         <div 
-                                            @click="triggerSmallModal('follow-modal', 'Following')"
-                                            class="font-sans text-sm font-normal text-white hover:cursor-pointer">
+                                        v-for="(element, index) of profileInfoElements"
+                                            :key="index"
+                                            @click="element.onClick"
+                                            class="font-sans text-sm font-normal 
+                                          text-white hover:cursor-pointer">
                                             <span class="font-sans text-sm font-bold text-white">
-                                                47
+                                                {{ element.value }}
                                             </span>
-                                            following
+                                            {{ element.title }}
                                         </div>
 
                                     </div>
+
                                 </div>
+
                             </div>
                         </div>
-                        <!-- Profile Info: Mobile -->
+                        <!-- Profile Info Rendering: Mobile -->
                         <div 
-                            class="text-center border-t md:hidden block
-                            border-slate-1100 mt-2">
-                            <ul class="flex space-x-14 flex-wrap justify-around pt-3 pl-4 pr-4">
-                                <!-- Posts Tab -->
-
-                                <div class="flex flex-col hover:cursor-pointer">
-                                    <span class="text-sm subpixel-antialiase text-white">
-                                            85
-                                    </span>
-                                    <span class="text-sm subpixel-antialiase text-gray-400">
-                                            post
-                                    </span>
-                                </div>
+                            class="text-center border-t 
+                            md:hidden blockborder-slate-1100 mt-2">
+                            <ul 
+                                class="flex space-x-14 flex-wrap 
+                                justify-around pt-3 pl-4 pr-4">
 
                                 <div 
-                                @click="triggerSmallModal('follow-modal', 'Followers')"
+                                    v-for="(element, index) of profileInfoElements"
+                                    :key="index"
+                                    @click="element.onClick"
                                     class="flex flex-col hover:cursor-pointer">
 
-                                        <span class="text-sm subpixel-antialiase text-white">
-                                                84
-                                        </span>
-
-                                        <span class="text-sm subpixel-antialiase text-gray-400">
-                                                followers
-                                        </span>
-                                        
-                                </div>
-
-                                <div 
-                                @click="triggerSmallModal('follow-modal', 'Following')"
-                                    class="flex flex-col hover:cursor-pointer">
                                     <span class="text-sm subpixel-antialiase text-white">
-                                            545
+                                        {{ element.value }}
                                     </span>
+
                                     <span class="text-sm subpixel-antialiase text-gray-400">
-                                            following
+                                        {{ element.title }}
                                     </span>
+
                                 </div>
 
                             </ul>
                         </div>
-                        <!-- Tab bar -->
-                        <div 
-                            class="text-center border-t
-                            border-slate-1100">
-                            <ul class="flex space-x-14 flex-wrap -mb-px md:justify-center justify-between px-6">
 
-                                <!-- Posts Tab -->
+                        <!-- Tab bar Rendering Section-->
+                        <div class="text-center border-tborder-slate-1100">
+                            <ul 
+                                class="flex space-x-14 flex-wrap -mb-px 
+                                md:justify-center justify-between sm:px-6">
+
                                 <li 
-                                    @click="navBarTabSwitcher('profile-posts')"
-                                    class="hover:cursor-pointer">
+                                    v-for="(tab, index) in tabElements" 
+                                    :key="index" 
+                                    @click="navBarTabSwitcher(tab.name as navBarTabs)" 
+                                    class="hover:cursor-pointer"
+                                    :class="{'md:hidden block' : tab.name === 'profile-peed'}">
                                     <div 
-                                        class="flex items-center space-x-2
-                                        inline-block py-4 p-1 border-t-2 border-gray-300 
-                                        hover:border-gray-300"
-                                        :class="{
-                                            'border-transparent text-gray-200' : currentActiveTab != 'profile-posts',
-                                            'text-white' : currentActiveTab === 'profile-posts'
-                                        }">
-                                        <SVGLoader :icon="'profile-posts-large'" :class="'md:block hidden'"/>
-                                        <SVGLoader :icon="'profile-posts-small'" :class="'md:hidden block'"/>
-
+                                        :class="getTabClass(tab.name)">
+                                        <SVGLoader 
+                                            :icon="tab.iconLarge" 
+                                            :class="'md:block hidden'"/>
+                                        <SVGLoader 
+                                            :icon="tab.iconSmall" 
+                                            :class="'md:hidden block'"/>
                                         <span class="text-xs subpixel-antialiased hidden md:block">
-                                            POSTS
-                                        </span>
-
-                                    </div>
-                                </li>
-                                <!-- Peeds Tab -->
-                                <li 
-                                    @click="navBarTabSwitcher('profile-peed')"
-                                    class="hover:cursor-pointe md:hidden block">
-                                    <div 
-                                        class="flex items-center space-x-2
-                                        inline-block py-4 p-1 border-t-2 border-gray-300 
-                                        hover:border-gray-300"
-                                        :class="{
-                                            'border-transparent text-gray-200' : currentActiveTab != 'profile-peed',
-                                            'text-white' : currentActiveTab === 'profile-peed'
-                                        }">
-                                        <SVGLoader :icon="'profile-peed-small'" :class="'md:hidden block'"/>
-
-                                        <span class="text-xs subpixel-antialiased hidden md:block">
-                                            Peeds
-                                        </span>
-
-                                    </div>
-                                </li>
-
-                                <!-- Profile Saved Tab -->
-                                <li 
-                                    @click="navBarTabSwitcher('profile-saved')"
-                                    class="hover:cursor-pointer">
-                                    <div 
-                                        class="flex items-center space-x-2
-                                        inline-block py-4 p-1 border-t-2 border-gray-300 
-                                        hover:border-gray-300 hover:text-gray-300"
-                                        :class="{
-                                            'border-transparent text-gray-300' : currentActiveTab != 'profile-saved',
-                                            'text-white font-bold' : currentActiveTab === 'profile-saved'
-                                        }">
-
-                                        <SVGLoader :icon="'profile-saved-large'" :class="'md:block hidden'"/>
-                                        <SVGLoader :icon="'profile-saved-small'" :class="'md:hidden block'"/>
-
-                                        <span class="text-xs subpixel-antialiased hidden md:block">
-                                            SAVED
+                                            {{ tab.label }}
                                         </span>
                                     </div>
                                 </li>
-                                <!-- Profile Tagged -->
-                                <li 
-                                    @click="navBarTabSwitcher('profile-tagged')"
-                                    class="hover:cursor-pointer">
-                                    <div 
-                                        class="flex items-center space-x-2
-                                        inline-block py-4 p-1 border-t-2 border-gray-300 
-                                        hover:border-gray-300 hover:text-gray-300"
-                                        :class="{
-                                            'border-transparent text-gray-300' : currentActiveTab != 'profile-tagged',
-                                            'text-white' : currentActiveTab === 'profile-tagged'
-                                        }">
-
-                                        <SVGLoader :icon="'profile-tagged-large'" :class="'md:block hidden'"/>
-                                        <SVGLoader :icon="'profile-tagged-small'" :class="'md:hidden block bg-greem-500'"/>
-
-                                        <span class="text-xs subpixel-antialiased hidden md:block">
-                                            TAGGED
-                                        </span>
-                    
-                                    </div>
-                                </li>
-
                             </ul>
                         </div>
 
-                        <!-- Empty Section Messages -->
+                        <!-- Empty Section Messages Rendering Section -->
                         <div 
                             v-if="emptyTabBarBodyMessage.isEmpty"
                             class="flex flex-col space-y-2 self-center pt-14 h-screen">
@@ -304,31 +219,32 @@
                 
             </div>
         </section>
+
+        <!-- Modals -->
+
+        <!-- PostCard Modal -->
         <div 
-            v-else-if="commentModal.name === 'profile-modal'"
+            v-if="commentModal.name === 'profile-modal'"
             class="md:w-[470px] justify-self-end p-2">
             <PostCard
                 :post-item="postItems[commentModal.postId]"/>
         </div>
-        <!-- Modals -->
 
         <!-- Comment Modal -->
         <CommentModal
-            v-else-if="commentModal.name === 'comment-modal'"
             @on-modal-closed="triggerCommentModal" 
             :post-comment="{
-                isToggled: commentModal.isToggled,
+                isToggled: commentModal.isToggled && commentModal.name === 'comment-modal',
                 post : postItems[commentModal.postId],
             }"/>
         
         <!-- Photo Modal -->
         <PhotoModal
-            @on-modal-closed="triggerPhotoModal"  
+            @on-modal-closed="triggerPhotoModal"
             :is-toggled="photoModal.isToggled" />
 
         <!-- Followers/ Following Modal -->
         <smallModal 
-
             @on-modal-closed="triggerSmallModal"
             :title="smallModal.title" 
             :items="smallModal.items" :is-toggled="smallModal.isToggled && smallModal.name === 'follow-modal'" />
@@ -343,21 +259,22 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, onMounted, onUnmounted } from 'vue'
-import type { ComputedRef } from 'vue'
+
+import type {
+    navBarTabs,
+    commentModalName,
+    User,
+    PostMedia
+} from '@/common/models'
 
 import SVGLoader from '@/components/basics/SVGLoader.vue'
 import PostCard from '@/components/basics/PostCard.vue'
 import NavBarMain from '@/components/navbars/NavBarMain.vue'
 import CommentModal from '@/components/basics/CommentModal.vue'
 
-import type { PostMedia } from '@/common/models/post.model'
-
 import smallModal from '@/components/basics/SmallModal.vue'
 import settingModal from '@/components/basics/SettingModal.vue'
 import PhotoModal from '@/components/basics/PhotoModal.vue'
-
-type navBarTabs = 'profile-posts' | 'profile-tagged' | 'profile-saved' | 'profile-peed'
-type commentModalName = 'profile-modal' | 'photo-modal' | 'comment-modal' | 'other-modal'
 
 
 export default defineComponent({
@@ -367,90 +284,39 @@ export default defineComponent({
         // Selectors
         const currentActiveTab = ref<navBarTabs>('profile-posts') // Select profile-posts as default active tab
 
+        // Modals data
         const commentModal = ref({
             name: '' as commentModalName,
             isToggled: false,
             postId: 0
         })
-
         const photoModal = ref({
             isToggled: false,
             currentStep: ''
         })
-
         const smallModal = ref({
-            name: '' ,
+            name: '',
             title: '',
             items: [] as any,
             isToggled: false
         })
-        // Checkers
-        const isCommentModalOpen = ref(false)
+
+        // Others
         let windowWidth = ref(window.innerWidth) // Current window width
-
-        // Computed
-        // const findNumberOfLikes = computed(() => {
-        //     return postItem.likeCount >= 1 ? `${postItem.likeCount} Likes` : 'Be the first to like this' 
-        // })
-
-        const triggerCommentModal = (id: number | undefined) => {
-            const { width, type } = useBreakpoints()
-            
-            console.log(" width, type", width.value, type.value)
-
-            console.log('triggerCommentModal:', id)
-
-
-            const modalName = type.value === 'xs' ? 'profile-modal' : 'comment-modal' // If screen size > 768 open comment Modal else open Profile Modal
-
-            commentModal.value = {name: modalName , isToggled: !commentModal.value.isToggled, postId: id ? id : 0 }
-            // commentcommentModal.value = { 'isToggled': !commentcommentModal.value.isToggled, postId: id ? id : 0 }
-        }
-
-        const triggerPhotoModal = () => {
-            console.log('emitted...')
-            photoModal.value.isToggled = !photoModal.value.isToggled
-        }
-
-        const triggerSmallModal = (name: string | undefined, title: string | undefined) => {
-
-            smallModal.value = {name: name ? name : '', title: title ? title : '', isToggled: !smallModal.value.isToggled, items: suggested}
-        } 
-
-
-        const mediasArraySampleA: PostMedia[] = [
-            {
-                index: 0,
-                type: 'image',
-                mediaUrl:
-                    "https://loremflickr.com/1024/1280/cat",
-                title: "Legendary A"
-            },
-            {
-                index: 1,
-                type: 'image',
-                mediaUrl:
-                    "https://loremflickr.com/1024/1280/nature",
-                title: "Legendary A"
-            }
-        ]
-
-        const mediasArraySampleB: PostMedia[] = [
-            {
-                index: 0,
-                type: 'image',
-                mediaUrl:
-                    "https://loremflickr.com/1024/1280/holiday",
-                title: "Legendary B"
-            },
-            {
-                index: 1,
-                type: 'image',
-                mediaUrl:
-                    "https://loremflickr.com/1024/1280/life",
-                title: "Legendary B"
-            }
-        ]
+        const profileInfo = ref<User>({
+            id: 0,
+            firstName: 'Alex',
+            lastName: 'Boo',
+            userName: 'Alex_boo',
+            profilePictureUrl: 'https://loremflickr.com/1024/1280/holiday',
+            dateJoined: '01-01-2012',
+            followerCount: 0,
+            followingCount: 0,
+            mediaCount: 50,
+            mediaItems: [],
+        })
+        const savedItems = ref<Object[]>([])
+        const taggedItems = ref<Object[]>([])
 
         // Handlers
         const navBarTabSwitcher = (currentTab: navBarTabs) => {
@@ -458,16 +324,41 @@ export default defineComponent({
             currentActiveTab.value = currentTab
         }
 
-        /**
-         * Emit signal when comment modal button is clicked
-         * @event comment-unliked
-         * @param {string} postId - The ID of the post
-         */
-        const onOpenCommentModal = (postId: string) => {
-            isCommentModalOpen.value = true
-            console.log("Emitting signal:", postId)
+        const triggerCommentModal = (id: number | undefined) => {
+            // If screen size > 768 open comment Modal else open Profile Modal
+            const modalName = screenSizeType.value === 'xs' ? 'profile-modal' : 'comment-modal'
+            commentModal.value = { name: modalName, isToggled: !commentModal.value.isToggled, postId: id ? id : 0 }
         }
 
+        const triggerPhotoModal = () => {
+            photoModal.value.isToggled = !photoModal.value.isToggled
+        }
+
+        const triggerSmallModal = (name: string | undefined, title: string | undefined) => {
+            smallModal.value = { name: name ? name : '', title: title ? title : '', isToggled: !smallModal.value.isToggled, items: suggested }
+        }
+
+        const getTabClass = (tabName: string) => {
+            return {
+                'flex items-center space-x-2 inline-block py-4 p-1 border-t-2 border-gray-300 hover:border-gray-300': true,
+                'border-transparent text-gray-200': currentActiveTab.value !== tabName && tabName !==
+                    'profile-saved' && tabName !== 'profile-tagged',
+                'border-transparent text-gray-300': currentActiveTab.value !== tabName && (tabName ===
+                    'profile-saved' || tabName === 'profile-tagged'),
+                'text-white': currentActiveTab.value === tabName,
+                'hover:text-gray-300': currentActiveTab.value !== tabName && (tabName === 'profile-saved' ||
+                    tabName === 'profile-tagged'),
+            }
+        }
+        
+        // Listeners
+        const onWidthChange = () => windowWidth.value = window.innerWidth
+
+        // Computed
+        const screenSizeType = computed(() => {
+            if (windowWidth.value < 550) return 'xs'
+            return false
+        })
 
         const emptyTabBarBodyMessage = computed(() => {
             switch (currentActiveTab.value) {
@@ -486,7 +377,7 @@ export default defineComponent({
                         top: 'Start Saving',
                         body: 'Save photos and videos to your collection.',
                         footer: 'Add to collection',
-                        isEmpty: taggedItems === undefined || taggedItems.length == 0
+                        isEmpty: taggedItems === undefined || taggedItems.value.length == 0
 
                     }
                 case 'profile-saved':
@@ -495,42 +386,90 @@ export default defineComponent({
                         top: 'Photos of you',
                         body: "When people tag you in photos, they'll appear here.",
                         footer: '',
-                        isEmpty: savedItems === undefined || savedItems.length == 0
+                        isEmpty: savedItems === undefined || savedItems.value.length == 0
                     }
                 default:
                     return {}
             }
         })
 
-        /**
-         * A Vue composition function that provides reactive properties for the current window width
-         * and breakpoint type (xs, md, lg). The breakpoint values are based on commonly used
-         * device widths.
-         *
-         * @returns an object with the following properties:
-         * - width: a reactive property with the current window width
-         * - type: a reactive property with the current breakpoint type (xs, md, lg)
-         */
-        function useBreakpoints(): { width: ComputedRef<number>; type: ComputedRef<"xs" | "md" | "lg" | null> } {
+        const isModalToggled = computed(() => {
+            return commentModal.value.isToggled || smallModal.value.isToggled || photoModal.value.isToggled
+        })
 
-            const type = computed(() => {
-                if (windowWidth.value < 550) return 'xs'
-                if (windowWidth.value >= 550 && windowWidth.value < 1200) return 'md'
-                if (windowWidth.value >= 1200) return 'lg'
-                return null // This is an unreachable line, simply to keep eslint happy.
-            })
-
-            const width = computed(() => windowWidth.value)
-
-            return { width, type }
-        }
-        
-        const onWidthChange = () => windowWidth.value = window.innerWidth
+        // Lifecycle Hooks 
         onMounted(() => window.addEventListener('resize', onWidthChange))
         onUnmounted(() => window.removeEventListener('resize', onWidthChange))
 
-        const savedItems = [] as Object[]
-        const taggedItems = [] as Object[]
+
+        // Dynamic elements array
+        const tabElements = [
+            {
+                name: 'profile-posts',
+                label: 'POSTS',
+                iconLarge: 'profile-posts-large',
+                iconSmall: 'profile-posts-small',
+                onClick: () => navBarTabSwitcher('profile-posts')
+            },
+            {
+                name: 'profile-peed',
+                label: 'Peeds',
+                iconLarge: '',
+                iconSmall: 'profile-peed-small',
+                onClick: () => navBarTabSwitcher('profile-peed')
+            },
+            {
+                name: 'profile-saved',
+                label: 'SAVED',
+                iconLarge: 'profile-saved-large',
+                iconSmall: 'profile-saved-small',
+                onClick: () => navBarTabSwitcher('profile-saved')
+            },
+            {
+                name: 'profile-tagged',
+                label: 'TAGGED',
+                iconLarge: 'profile-tagged-large',
+                iconSmall: 'profile-tagged-small',
+                onClick: () => navBarTabSwitcher('profile-tagged')
+            },
+        ]
+
+        const profileInfoElements = [
+            {
+                title: 'posts',
+                value: profileInfo.value.mediaCount,
+                onClick: () => {},
+            },
+            {
+                title: 'followers',
+                value: profileInfo.value.followerCount,
+                onClick: () => triggerSmallModal('follow-modal', 'Followers'),
+            },
+            {
+                title: 'following',
+                value: profileInfo.value.followingCount,
+                onClick: () => triggerSmallModal('follow-modal', 'Following'),
+            }
+        ]
+
+
+        // Sample Data
+        const mediasArraySampleA: PostMedia[] = [
+            {
+                index: 0,
+                type: 'image',
+                mediaUrl:
+                    "https://loremflickr.com/1024/1280/cat",
+                title: "Legendary A"
+            },
+            {
+                index: 1,
+                type: 'image',
+                mediaUrl:
+                    "https://loremflickr.com/1024/1280/nature",
+                title: "Legendary A"
+            }
+        ]
 
         const postItems = [
             {
@@ -543,29 +482,7 @@ export default defineComponent({
                 carouselMedia: mediasArraySampleA,
                 commentCount: 2456,
                 profilePictureUrl: 'https://loremflickr.com/32/32/bird'
-            },
-            {
-                id: '1',
-                userName: 'Sara',
-                createdAt: 'February 24',
-                likeCount: 152,
-                hasLiked: false,
-                caption: 'Be like a tree. Stay grounded. Connect with your roots. Turn over a new leaf. Bend before you break. Enjoy your unique natural beauty. Keep growing.',
-                carouselMedia: mediasArraySampleB,
-                commentCount: 152,
-                profilePictureUrl: 'https://loremflickr.com/32/32/girl'
-            },
-            {
-                id: '3',
-                userName: 'Sara',
-                createdAt: 'February 24',
-                likeCount: 152,
-                hasLiked: false,
-                caption: 'Be like a tree. Stay grounded. Connect with your roots. Turn over a new leaf. Bend before you break. Enjoy your unique natural beauty. Keep growing.',
-                carouselMedia: mediasArraySampleB,
-                commentCount: 152,
-                profilePictureUrl: 'https://loremflickr.com/32/32/girl'
-            },
+            }
         ]
         const suggested = [
             {
@@ -576,109 +493,11 @@ export default defineComponent({
                     profilePictureUrl: 'https://loremflickr.com/1024/1080/bird',
                     followedBy: 'imamomarsuleiman + 1 more'
                 }]
-            },
-            {
-                userName: 'Adil',
-                profilePictureUrl: 'https://loremflickr.com/1024/1080/cat',
-                suggested: [{
-                    userName: 'Rabee',
-                    profilePictureUrl: 'https://loremflickr.com/1024/1080/dog',
-                    followedBy: 'imamomarsuleiman + 1 more'
-                }]
-            },
-            {
-                userName: 'Ahmed',
-                profilePictureUrl: 'https://loremflickr.com/1024/1080/death',
-                suggested: [{
-                    userName: 'Rabee',
-                    profilePictureUrl: 'http://via.placeholder.com/32x32',
-                    followedBy: 'imamomarsuleiman + 1 more'
-                }]
-            },
-            {
-                userName: 'Rabee',
-                profilePictureUrl: 'https://loremflickr.com/1024/1080/bird',
-                suggested: [{
-                    userName: 'Rabee',
-                    profilePictureUrl: 'https://loremflickr.com/1024/1080/bird',
-                    followedBy: 'imamomarsuleiman + 1 more'
-                }]
-            },
-            {
-                userName: 'Adil',
-                profilePictureUrl: 'https://loremflickr.com/1024/1080/cat',
-                suggested: [{
-                    userName: 'Rabee',
-                    profilePictureUrl: 'https://loremflickr.com/1024/1080/dog',
-                    followedBy: 'imamomarsuleiman + 1 more'
-                }]
-            },
-            {
-                userName: 'Ahmed',
-                profilePictureUrl: 'https://loremflickr.com/1024/1080/death',
-                suggested: [{
-                    userName: 'Rabee',
-                    profilePictureUrl: 'http://via.placeholder.com/32x32',
-                    followedBy: 'imamomarsuleiman + 1 more'
-                }]
-            },
-            {
-                userName: 'Rabee',
-                profilePictureUrl: 'https://loremflickr.com/1024/1080/bird',
-                suggested: [{
-                    userName: 'Rabee',
-                    profilePictureUrl: 'https://loremflickr.com/1024/1080/bird',
-                    followedBy: 'imamomarsuleiman + 1 more'
-                }]
-            },
-            {
-                userName: 'Adil',
-                profilePictureUrl: 'https://loremflickr.com/1024/1080/cat',
-                suggested: [{
-                    userName: 'Rabee',
-                    profilePictureUrl: 'https://loremflickr.com/1024/1080/dog',
-                    followedBy: 'imamomarsuleiman + 1 more'
-                }]
-            },
-            {
-                userName: 'Ahmed',
-                profilePictureUrl: 'https://loremflickr.com/1024/1080/death',
-                suggested: [{
-                    userName: 'Rabee',
-                    profilePictureUrl: 'http://via.placeholder.com/32x32',
-                    followedBy: 'imamomarsuleiman + 1 more'
-                }]
-            },
-            {
-                userName: 'Rabee',
-                profilePictureUrl: 'https://loremflickr.com/1024/1080/bird',
-                suggested: [{
-                    userName: 'Rabee',
-                    profilePictureUrl: 'https://loremflickr.com/1024/1080/bird',
-                    followedBy: 'imamomarsuleiman + 1 more'
-                }]
-            },
-            {
-                userName: 'Adil',
-                profilePictureUrl: 'https://loremflickr.com/1024/1080/cat',
-                suggested: [{
-                    userName: 'Rabee',
-                    profilePictureUrl: 'https://loremflickr.com/1024/1080/dog',
-                    followedBy: 'imamomarsuleiman + 1 more'
-                }]
-            },
-            {
-                userName: 'Ahmed',
-                profilePictureUrl: 'https://loremflickr.com/1024/1080/death',
-                suggested: [{
-                    userName: 'Rabee',
-                    profilePictureUrl: 'http://via.placeholder.com/32x32',
-                    followedBy: 'imamomarsuleiman + 1 more'
-                }]
             }
-    ]
+        ]
 
         return {
+            // Data
             suggested,
             postItems,
             savedItems,
@@ -686,23 +505,33 @@ export default defineComponent({
             commentModal,
             smallModal,
             photoModal,
+            tabElements,
+
+            // Computed
+            emptyTabBarBodyMessage,
+            isModalToggled,
+
             currentActiveTab,
+            profileInfo,
+            profileInfoElements,
+
+            // Methods
             triggerCommentModal,
-            navBarTabSwitcher,
             triggerSmallModal,
             triggerPhotoModal,
-            emptyTabBarBodyMessage,
+            getTabClass,
+            navBarTabSwitcher,
         }
     },
     components: {
-    SVGLoader,
-    NavBarMain,
-    CommentModal,
-    PostCard,
-    smallModal,
-    settingModal,
-    PhotoModal
-}
+        SVGLoader,
+        NavBarMain,
+        CommentModal,
+        PostCard,
+        smallModal,
+        settingModal,
+        PhotoModal
+    }
 })
 </script>
 
