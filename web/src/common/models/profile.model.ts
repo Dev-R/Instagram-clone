@@ -1,23 +1,32 @@
 /**
- * Interface for the different stages of the photo-modal.
+ * Type alias for the different stages of the photo-modal.
  */
 export type PhotoModalStage = 'create-post' | 'edit-post-adjustments' | 'edit-post-form' | 'sharing-post' | 'post-shared' | 'post-failed'
 
 /**
- * Interface for the different tabs of the photo-modal.
+ * Type alias for the different tabs of the photo-modal.
  */
 export type PhotoModalTab = 'adjustments-tab' | 'filters-tab'
 
 /**
- * Interface for an image in the photo-modal.
- * It can be either a string (image URL) or null (no image).
+ * Type alias for an image in the photo-modal.
  */
 export type PhotoModalImage = string | null;
 
 /**
- * Interface for a reference to an HTML input element.
+ * Type alias representing a reference to an HTML input element.
  */
 export type HTMLInputElementRef = InstanceType<typeof HTMLInputElement>;
+
+/**
+ * Type alias representing the available tab options for the navigation bar.
+ */
+export type navBarTabs = 'profile-posts' | 'profile-tagged' | 'profile-saved' | 'profile-peed'
+/**
+ * Type alias representing the available modal options for the application.
+ */
+export type commentModalName = 'profile-modal' | 'photo-modal' | 'comment-modal' | 'other-modal'
+
 
 /**
  * Interface for  an image filter applied to an image.
