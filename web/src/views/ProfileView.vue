@@ -400,11 +400,6 @@ export default defineComponent({
             return commentModal.value.isToggled || smallModal.value.isToggled || photoModal.value.isToggled
         })
 
-        // Lifecycle Hooks 
-        onMounted(() => window.addEventListener('resize', onWidthChange))
-        onUnmounted(() => window.removeEventListener('resize', onWidthChange))
-
-
         // Dynamic elements array
         const tabElements = [
             {
@@ -455,7 +450,10 @@ export default defineComponent({
             }
         ]
 
-
+        // Lifecycle Hooks 
+        onMounted(() => window.addEventListener('resize', onWidthChange))
+        onUnmounted(() => window.removeEventListener('resize', onWidthChange))
+        
         // Sample Data
         const mediasArraySampleA: PostMedia[] = [
             {
