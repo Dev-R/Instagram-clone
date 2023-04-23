@@ -61,7 +61,7 @@
                                     <!-- Logged-in user Options -->
                                     <div>
                                         <SVGLoader 
-                                            @click="triggerSmallModal('setting-modal', 'Followers')"
+                                            @click="triggerSmallModal(ProfileTriggeredModal.Setting, 'Followers')"
                                             :icon="'profile-options'" 
                                             :class="'md:block hidden hover:cursor-pointer'"/>
                                     </div>
@@ -252,7 +252,7 @@
         <!-- Quick Setting Modal -->
         <settingModal
             @on-modal-closed="triggerSmallModal"
-            :is-toggled="smallModal.isToggled && smallModal.name === 'setting-modal'"/>
+            :is-toggled="smallModal.isToggled && smallModal.name === ProfileTriggeredModal.Setting"/>
 
     </div>
 </template>
