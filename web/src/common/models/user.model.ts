@@ -18,34 +18,34 @@ export interface User {
     profilePictureUrl: string
   
     /** User's email */
-    email: string
+    email?: string
   
     /** Is user active? */
-    isActive: boolean
+    isActive?: boolean
   
     /** Whether the user's account is private or not */
-    isPrivate: boolean
+    isPrivate?: boolean
   
     /** Whether the user's account is verified or not */
-    isVerified: boolean
+    isVerified?: boolean
   
     /** Is user superuser? */
-    isSuperuser: boolean
+    isSuperuser?: boolean
   
     /** Last login date and time */
-    lastLogin: string
+    lastLogin?: string
   
     /** Joined date and time */
     dateJoined: string
   
     /** Entry last modification date and time */
-    lastModifiedAt: string
+    lastModifiedAt?: string
   
     /** Biography of the user */
-    biography: string
+    biography?: string
   
     /** URL of the user's external website */
-    externalUrl: string
+    externalUrl?: string
   
     /** Number of posts on the user's profile */
     mediaCount: number
