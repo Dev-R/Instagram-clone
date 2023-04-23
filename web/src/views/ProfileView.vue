@@ -128,7 +128,7 @@
                                     :key="index" 
                                     @click="navBarTabSwitcher(tab.name as navBarTabs)" 
                                     class="hover:cursor-pointer"
-                                    :class="{'md:hidden block' : tab.name === 'profile-peed'}">
+                                    :class="{'md:hidden block' : tab.name === ProfileTab.Peeds}">
                                     <div 
                                         :class="getTabClass(tab.name)">
                                         <SVGLoader 
@@ -171,7 +171,7 @@
                         
                         <!-- Image Rendering Section -->
                         <div 
-                            v-if="currentActiveTab === 'profile-posts'"
+                            v-if="currentActiveTab === ProfileTab.Posts"
                             class="flex flex-wrap">
                             
                             <div 
@@ -224,7 +224,7 @@
 
         <!-- PostCard Modal -->
         <div 
-            v-if="commentModal.name === 'profile-modal'"
+            v-if="commentModal.name === ProfileTriggeredModal.Profile"
             class="md:w-[470px] justify-self-end p-2">
             <PostCard
                 :post-item="postItems[commentModal.postId]"/>
@@ -234,7 +234,7 @@
         <CommentModal
             @on-modal-closed="triggerCommentModal" 
             :post-comment="{
-                isToggled: commentModal.isToggled && commentModal.name === 'comment-modal',
+                isToggled: commentModal.isToggled && commentModal.name === ProfileTriggeredModal.Comment,
                 post : postItems[commentModal.postId],
             }"/>
         
@@ -247,7 +247,7 @@
         <smallModal 
             @on-modal-closed="triggerSmallModal"
             :title="smallModal.title" 
-            :items="smallModal.items" :is-toggled="smallModal.isToggled && smallModal.name === 'follow-modal'" />
+            :items="smallModal.items" :is-toggled="smallModal.isToggled && smallModal.name === ProfileTriggeredModal.Follow" />
 
         <!-- Quick Setting Modal -->
         <settingModal
@@ -266,6 +266,10 @@ import type {
     User,
     PostMedia
 } from '@/common/models'
+import {
+    ProfileTab,
+    ProfileTriggeredModal
+} from '@/common/profile.enum'
 
 import SVGLoader from '@/components/basics/SVGLoader.vue'
 import PostCard from '@/components/basics/PostCard.vue'
@@ -274,7 +278,7 @@ import CommentModal from '@/components/basics/CommentModal.vue'
 
 import smallModal from '@/components/basics/SmallModal.vue'
 import settingModal from '@/components/basics/SettingModal.vue'
-import PhotoModal from '@/components/basics/PhotoModal.vue'
+import PhotoModal from '@/components/basics/photoModal.vue'
 
 
 export default defineComponent({
@@ -282,7 +286,7 @@ export default defineComponent({
     setup() {
 
         // Selectors
-        const currentActiveTab = ref<navBarTabs>('profile-posts') // Select profile-posts as default active tab
+        const currentActiveTab = ref<navBarTabs>(ProfileTab.Posts) // Select profile-posts as default active tab
 
         // Modals data
         const commentModal = ref({
@@ -320,13 +324,12 @@ export default defineComponent({
 
         // Handlers
         const navBarTabSwitcher = (currentTab: navBarTabs) => {
-            console.log("Current Tab:", currentTab, currentTab === 'profile-posts')
             currentActiveTab.value = currentTab
         }
 
         const triggerCommentModal = (id: number | undefined) => {
             // If screen size > 768 open comment Modal else open Profile Modal
-            const modalName = screenSizeType.value === 'xs' ? 'profile-modal' : 'comment-modal'
+            const modalName = screenSizeType.value === 'xs' ? ProfileTriggeredModal.Profile : ProfileTriggeredModal.Comment
             commentModal.value = { name: modalName, isToggled: !commentModal.value.isToggled, postId: id ? id : 0 }
         }
 
@@ -342,12 +345,12 @@ export default defineComponent({
             return {
                 'flex items-center space-x-2 inline-block py-4 p-1 border-t-2 border-gray-300 hover:border-gray-300': true,
                 'border-transparent text-gray-200': currentActiveTab.value !== tabName && tabName !==
-                    'profile-saved' && tabName !== 'profile-tagged',
+                    ProfileTab.Saved && tabName !== ProfileTab.Tagged,
                 'border-transparent text-gray-300': currentActiveTab.value !== tabName && (tabName ===
-                    'profile-saved' || tabName === 'profile-tagged'),
+                    ProfileTab.Saved || tabName === ProfileTab.Tagged),
                 'text-white': currentActiveTab.value === tabName,
-                'hover:text-gray-300': currentActiveTab.value !== tabName && (tabName === 'profile-saved' ||
-                    tabName === 'profile-tagged'),
+                'hover:text-gray-300': currentActiveTab.value !== tabName && (tabName === ProfileTab.Saved ||
+                    tabName === ProfileTab.Tagged),
             }
         }
         
@@ -362,8 +365,8 @@ export default defineComponent({
 
         const emptyTabBarBodyMessage = computed(() => {
             switch (currentActiveTab.value) {
-                case 'profile-posts':
-                case 'profile-peed':
+                case ProfileTab.Posts:
+                case ProfileTab.Peeds:
                     return {
                         icon: 'fa-solid fa-photo-film',
                         top: 'Share Photos',
@@ -371,7 +374,7 @@ export default defineComponent({
                         footer: 'Share your first photo',
                         isEmpty: postItems === undefined || postItems.length == 0
                     }
-                case 'profile-tagged':
+                case ProfileTab.Tagged:
                     return {
                         icon: 'fa-solid fa-users-viewfinder',
                         top: 'Start Saving',
@@ -380,7 +383,7 @@ export default defineComponent({
                         isEmpty: taggedItems === undefined || taggedItems.value.length == 0
 
                     }
-                case 'profile-saved':
+                case ProfileTab.Saved:
                     return {
                         icon: 'fa-regular fa-bookmark',
                         top: 'Photos of you',
@@ -405,32 +408,32 @@ export default defineComponent({
         // Dynamic elements array
         const tabElements = [
             {
-                name: 'profile-posts',
+                name: ProfileTab.Posts,
                 label: 'POSTS',
                 iconLarge: 'profile-posts-large',
                 iconSmall: 'profile-posts-small',
-                onClick: () => navBarTabSwitcher('profile-posts')
+                onClick: () => navBarTabSwitcher(ProfileTab.Posts)
             },
             {
-                name: 'profile-peed',
+                name: ProfileTab.Peeds,
                 label: 'Peeds',
                 iconLarge: '',
                 iconSmall: 'profile-peed-small',
-                onClick: () => navBarTabSwitcher('profile-peed')
+                onClick: () => navBarTabSwitcher(ProfileTab.Peeds)
             },
             {
-                name: 'profile-saved',
+                name: ProfileTab.Saved,
                 label: 'SAVED',
                 iconLarge: 'profile-saved-large',
                 iconSmall: 'profile-saved-small',
-                onClick: () => navBarTabSwitcher('profile-saved')
+                onClick: () => navBarTabSwitcher(ProfileTab.Saved)
             },
             {
-                name: 'profile-tagged',
+                name: ProfileTab.Tagged,
                 label: 'TAGGED',
                 iconLarge: 'profile-tagged-large',
                 iconSmall: 'profile-tagged-small',
-                onClick: () => navBarTabSwitcher('profile-tagged')
+                onClick: () => navBarTabSwitcher(ProfileTab.Tagged)
             },
         ]
 
@@ -443,12 +446,12 @@ export default defineComponent({
             {
                 title: 'followers',
                 value: profileInfo.value.followerCount,
-                onClick: () => triggerSmallModal('follow-modal', 'Followers'),
+                onClick: () => triggerSmallModal(ProfileTriggeredModal.Follow, 'Followers'),
             },
             {
                 title: 'following',
                 value: profileInfo.value.followingCount,
-                onClick: () => triggerSmallModal('follow-modal', 'Following'),
+                onClick: () => triggerSmallModal(ProfileTriggeredModal.Follow, 'Following'),
             }
         ]
 
@@ -506,6 +509,10 @@ export default defineComponent({
             smallModal,
             photoModal,
             tabElements,
+
+            // Enums
+            ProfileTab,
+            ProfileTriggeredModal,
 
             // Computed
             emptyTabBarBodyMessage,
