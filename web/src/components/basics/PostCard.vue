@@ -17,7 +17,7 @@
                         <i class="fa-solid fa-circle-check"></i>
                     </div>
 
-                    <div class="text-gray-500 w-5 font-sans text-md font-semibold text-white">
+                    <div class="text-gray-500 w-5 font-sans text-md font-semibold">
                         •
                     </div>
 
