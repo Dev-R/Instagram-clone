@@ -6,7 +6,7 @@
             xl:justify-start justify-center">
 
             <!-- Large Icon -->
-            <div class="xl:block hidden">
+            <div class="xl:block hidden p-2 pt-7">
                 <SVGLoader :icon="'instagram-large'"/>
             </div>
             <div class="xl:hidden block">
@@ -16,7 +16,7 @@
 
         </div>
         <!-- B -->
-        <div class="p-1 flex flex-col space-y-2">
+        <div class="p-1 md:pl-3 flex flex-col space-y-2">
 
             <router-link
                 to="home" 
@@ -150,7 +150,7 @@
         <!-- C -->
         <div 
             class="cursor-pointer pt-10 rounded-full 
-            flex space-x-4 absolute inset-x-0 -bottom-80">
+            flex space-x-4 absolute inset-x-0 -bottom-80 md:p-5">
             <SVGLoader :icon="'more'"/>
             <span class="xl:block hidden font-sans text-md font-normal text-white">
                     More
