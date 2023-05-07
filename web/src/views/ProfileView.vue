@@ -276,8 +276,8 @@ import PostCard from '@/components/basics/PostCard.vue'
 import NavBarMain from '@/components/navbars/NavBarMain.vue'
 import CommentModal from '@/components/basics/CommentModal.vue'
 
-import smallModal from '@/components/basics/SmallModal.vue'
-import settingModal from '@/components/basics/SettingModal.vue'
+import smallModal from '@/components/basics/smallModal.vue'
+import settingModal from '@/components/basics/settingModal.vue'
 import PhotoModal from '@/components/basics/photoModal.vue'
 
 
