@@ -8,10 +8,10 @@
 import { onMounted, defineComponent } from 'vue'
 
 export default defineComponent({
-    name: 'Chat',
+    name: 'Direct',
     setup() {
         onMounted(() => {
-            // console.log('Mounted Chat')
+            console.log('Mounted Direct')
         })
 
         return {}
