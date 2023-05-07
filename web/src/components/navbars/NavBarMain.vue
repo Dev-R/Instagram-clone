@@ -81,7 +81,8 @@
 
             </div>
 
-            <div 
+            <router-link
+                to="direct" 
                 class="group cursor-pointer rounded-full 
                 flex space-x-4 hover:bg-slate-1000 
                 hover:delay-100 p-3 xl:justify-start 
@@ -95,7 +96,7 @@
                     Messages
                 </span>
 
-            </div>
+            </router-link>
 
             <div 
                 class="group cursor-pointer rounded-full 
