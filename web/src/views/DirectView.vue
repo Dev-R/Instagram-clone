@@ -21,8 +21,8 @@
                     class="lg:col-span-6 lg:col-start-5 lg:grid md:col-span-6 
                     md:col-start-4 md:mt-8
                     col-span-12 bg-gray-300 lg:max-h-[920px]">
-                    <div class="flex flex-row">
-                        <div class="bg-black basis-1/2">
+                    <div class="flex flex-row h-full">
+                        <div class="bg-black basis-1/2 lg:block hidden">
                             
                             <div class="flex bg-black border border-slate-800 p-5 lg:h-16 w-full space-x-2 justify-between items-center">
                                     <div>
@@ -109,9 +109,9 @@
 
                         </div>
                         <!-- Current Chat -->
-                        <div class="relative bg-black basis-9/12">
+                        <div class="relative bg-black lg:basis-9/12 w-full md:h-full h-screen">
                             
-                            <div class="flex lg:h-16 md:pl-8 w-full space-x-2 justify-between items-center border-slate-700 border-b">
+                            <div class="flex lg:h-16 md:pl-8 w-full space-x-2 justify-between items-center border-slate-700 border-b lg:visible invisible">
                                     <div class="flex space-x-2 items-center">
                                         <img 
                                         src="https://loremflickr.com/1024/1080/car"
@@ -132,23 +132,52 @@
                                     </div>
                              </div>
                                 
-                            <div class="flex h-5/6">
+                            <div class="flex flex-col h-5/6 lg:max-h-[850px] overflow-auto">
+                                <div class="flex pt-5 space-x-2 justify-center">
+                                    <span class="font-sans text-xs font-semibold text-gray-400">
+                                        November 2, 2020 12:44 am
+                                    </span>
+                                </div>
+
+                                <!-- Other -->
+                                <div class="m-2 flex pt-5 space-x-2">
+                                    <img 
+                                        src="https://loremflickr.com/1024/1080/car"
+                                        class="cursor-pointer h-6 w-6 rounded-full shadow-lg self-end">
+                                    <div class="p-3 border border-[#1f1f1f] rounded-full text-white lg:text-sm text-xs">
+                                            السلام عليكم
+                                    </div>
+                                </div>
+
+                                <!-- Current User -->
+                                <div class="flex pt-5 space-x-2 justify-end">
+                                    <!-- <img 
+                                        src="https://loremflickr.com/1024/1080/car"
+                                        class="cursor-pointer h-6 w-6 rounded-full shadow-lg self-end"> -->
+                                    <div class="m-2 p-3 border border-[#1f1f1f] bg-[#262626] rounded-full text-white lg:text-sm text-xs">
+                                        وعليكم السلام ورحمة الله وبركاته
+                                    </div>
+                                </div>
+                                
+
                             </div>
 
 
                             <!-- TODO: Improve input shape -->
-                            <div class="absolute inset-x-3 bottom-6 w-11/12 rounded-full h-11 flex space-x-3">
-                                <input
-                                    tabindex="1"
-                                    type="text" 
-                                    class="z-50 bg-black border border-gray-300 text-gray-900 text-sm rounded-full focus:
-                                    block w-full p-2.5" 
-                                    placeholder="Message">
+                            <div class="md:absolute sticky inset-x-3 bottom-6 w-11/12 rounded-full h-11 flex space-x-3">
+                                <div class="relative w-full">
+
+                                    <SVGLoader :icon="'gallery'" :class="'cursor-pointer absolute inset-y-0 right-14 flex items-center  pointer-events-none'"/> 
+
+                                    <SVGLoader :icon="'like'" :class="'cursor-pointer absolute inset-y-0 right-4 flex items-center  pointer-events-none'"/> 
+                                    <input
+                                        tabindex="1"
+                                        type="text"
+                                        class="z-50 bg-black border border-[#262626] text-gray-900 text-sm rounded-full focus:outline-none
+                                        block w-full p-2.5" 
+                                        placeholder="Message">
+                                </div>
                                     
-
-                                <SVGLoader :icon="'like'" :class="'self-center hover:cursor-pointer'"/>
-
-                                <SVGLoader :icon="'direct'" :class="'self-center hover:cursor-pointer'"/> 
                             </div>
 
                         </div>
