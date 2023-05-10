@@ -47,7 +47,7 @@
 
                             <div class="flex flex-col lg:max-h-[850px] overflow-auto">
 
-                                <div class="flex p-3 space-x-3 hover:bg-[#262626] w-full">
+                                <div class="flex p-3 space-x-3 hover:bg-[#262626] w-full cursor-pointer">
                                     <!-- Profile Image -->
                                     <img 
                                         src="https://loremflickr.com/1024/1080/cat"
@@ -75,7 +75,7 @@
                                     </div>
                                 </div>
 
-                                <div class="flex p-3 space-x-3 hover:bg-[#262626] w-full">
+                                <div class="flex p-3 space-x-3 hover:bg-[#262626] w-full cursor-pointer">
                                     <!-- Profile Image -->
                                     <img 
                                         src="https://loremflickr.com/1024/1080/love"
@@ -199,8 +199,25 @@ import { useRouter } from 'vue-router'
 import PostCard from '@/components/basics/PostCard.vue'
 import SVGLoader from '@/components/basics/SVGLoader.vue'
 import NavBarMain from '@/components/navbars/NavBarMain.vue'
+import type { 
+    Emoji,
+    Viewer,
+    Inbox,
+    Chat,
+    Reactions
+} from '@/common/models'
 
-
+/**
+ * TODO:
+ *      - Sender and receiver data interface ✅
+ *      - Send message design / logic
+ *      - Switch chat design / logic
+ *      - Send button design / logic
+ *      - Loading data based on URL
+ *      - Welcome message if no data provided
+ *      - Unsupported feature popup design / logic
+ *      - Send media design / logic
+ */
 
 export default defineComponent({
     name: 'DirectView',
@@ -220,10 +237,68 @@ export default defineComponent({
 
         let windowWidth = ref(window.innerWidth) // Current window width
 
+
+        // Testing variables...
+        // Logic to send message
+        const inboxRef = ref({
+            thread: [
+                {
+                    
+                }
+            ]
+        })
+
         // Services
         const router = useRouter()
         // const photoStore = usePhotoStore()
 
+
+        /**
+         * Dummy datas
+         */
+
+        // Dummy data for Emoji interface
+        const emoji: Emoji = {
+            timeStamp: 1683491483190270,
+            senderId: "4036118946",
+            emoji: "👍"
+        }
+
+        // Dummy data for Reactions interface
+        const reactions: Reactions = {
+            likes: [],
+            likesCount: 0,
+            Emojis: [emoji]
+        }
+
+        // Dummy data for Chat interface
+        const chat: Chat = {
+            utemId: "31054936540680616356189602913976320",
+            userId: "34351335554",
+            timestamp: 1683491483190270,
+            itemType: "text",
+            isSentByViewer: true,
+            uqSeqId: "5136",
+            Text: "Hello, how are you?",
+            Reactions: reactions
+        }
+
+        // Dummy data for Inbox interface
+        const inbox: Inbox = {
+            threads: [chat],
+            unseenCount: 1,
+            unseenCountTimeStamp: 1683491483190270
+        }
+
+        // Dummy data for Viewer interface
+        const viewer: Viewer = {
+            id: "123456789",
+            mediaCount: 10,
+            profilePicture: "https://example.com/profile-picture.jpg",
+            isVerified: true,
+            fullName: "John Doe",
+            userName: "johndoe"
+        }
 
         return {
             commentModal,
