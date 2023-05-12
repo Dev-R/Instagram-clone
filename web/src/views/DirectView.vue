@@ -149,24 +149,47 @@
                                         src="https://loremflickr.com/1024/1080/car"
                                         class="cursor-pointer h-6 w-6 rounded-full shadow-lg self-end">
                                     <div 
+                                        v-if="thread.text"
                                         class="p-3 border border-[#1f1f1f] rounded-full text-white lg:text-sm text-xs"
                                         :class="{ 'm-2 bg-slate-1100': thread.isSentByViewer }">
                                             {{ thread.text }}
                                     </div>
+                                    <img 
+                                        v-else-if="thread.img"
+                                        :src="thread.img"
+                                        class="cursor-pointer w-60 h-40 rounded-lg">
                                 </div>
 
                             </div>
 
+                            <!-- File Uploading -->
+                            <input
+                                @change="onFileUpload"
+                                ref="fileUpload"
+                                accept="image/*"
+                                type='file' hidden/> 
+
 
                             <!-- TODO: Improve input shape -->
-                            <div class="md:absolute sticky inset-x-3 bottom-6 w-11/12 rounded-full h-11 flex space-x-3">
+                            <div class="md:absolute sticky inset-x-3 bottom-6 sm:w-11/12 rounded-full h-11 flex space-x-3">
                                 <div class="relative w-full">
+                                    
+                                    <div @click="triggerFileUpload">
+                                        <SVGLoader
+                                            :icon="'gallery'" 
+                                            :class="'cursor-pointer absolute inset-y-0 right-14 \
+                                            flex items-center'"/> 
+                                    </div>
 
-                                    <SVGLoader :icon="'gallery'" :class="'cursor-pointer absolute inset-y-0 right-14 flex items-center  pointer-events-none'"/> 
-
-                                    <SVGLoader :icon="'like'" :class="'cursor-pointer absolute inset-y-0 right-4 flex items-center  pointer-events-none'"/> 
+                                    <div @click="sendHeartEmoji()">
+                                        <SVGLoader
+                                            :icon="'like'" 
+                                            :class="'cursor-pointer absolute inset-y-0 right-4 \
+                                            flex items-center'"/>     
+                                    </div>                             
+                                        
                                     <input
-                                        @keyup.enter="sendMessage"
+                                        @keyup.enter="onSendMessage"
                                         tabindex="1"
                                         type="text"
                                         class="z-50 bg-black border border-[#262626] text-white text-sm rounded-full focus:outline-none
@@ -200,22 +223,25 @@ import type {
     Viewer,
     Inbox,
     Chat,
-    Reactions
+    Reactions,
+    HTMLInputElementRef,
+PhotoModalImage
 } from '@/common/models'
 import {
     getCurrentTimestamp
 } from '@/common/helpers'
+
 
 /**
  * TODO:
  *      - Sender and receiver data interface ✅
  *      - Send message design / logic: ✅
  *      - Switch chat design / logic
- *      - Send button design / logic
+ *      - Send button design / logic ✅
  *      - Loading data based on URL
  *      - Welcome message if no data provided
  *      - Unsupported feature popup design / logic
- *      - Send media design / logic
+ *      - Send media design / logic ✅
  */
 
  export default defineComponent({
@@ -223,6 +249,9 @@ import {
     setup(props, context) {
 
 
+        // References to DOM element
+        const fileUpload = ref<HTMLInputElementRef | null>()
+        
         const commentModal = ref({
             isToggled: false,
             postId: 0
@@ -233,6 +262,12 @@ import {
             currentStep: '',
             isFileValid: false
         })
+        const attachmentImage = ref<PhotoModalImage>(null)
+
+
+        // Flags for tracking upload status
+        const isFileUploaded = ref<boolean>(false)
+        const isFileValid = ref<boolean>(false)
 
         // let window = ref(window) // Current window width
 
@@ -314,7 +349,7 @@ import {
 
 
         // Methods
-        const sendMessage = (payload: Event) => {
+        const onSendMessage = (payload: Event) => {
             const targetEvent = payload.target as HTMLInputElement
             console.log('Message to sent', targetEvent.value)
             chatMessage.value = {
@@ -328,6 +363,13 @@ import {
             targetEvent.value = ''
         }
         
+        /**
+         * Trigger DOM file upload event
+         */
+         const triggerFileUpload = () => {
+            console.log('Clicked...')
+            fileUpload.value?.click()
+        }
 
         /**
          * Push message to inbox
@@ -341,7 +383,41 @@ import {
             }))
         }
 
+        /**
+         * TODO: Add validation
+         * Handle file uploaded event
+         * @param {Object} event - The event object
+         */
+          const onFileUpload = async (event: Event) => {
+            const targetEvent = event.target as HTMLInputElement
+            const file = targetEvent?.files?.item(0) as Blob
+
+            // Read the file as data URL to show preview
+            const reader = new FileReader()
+            reader.readAsDataURL(file)
+            reader.onload = (event) => {
+                attachmentImage.value = event.target?.result as string
+                isFileValid.value = true
+                isFileUploaded.value = true
+                console.log("File uploaded", file)
+                
+                chatMessage.value = {
+                    userId: viewer.id,
+                    itemType: 'image',
+                    isSentByViewer: true,
+                    img: attachmentImage.value as string,
+                    timestamp: getCurrentTimestamp(),
+                }
+            }
+        }
+
         const resetChatMessage = () => {
+            chatMessage.value = {
+                text: undefined,
+            }
+        }
+        
+        const sendHeartEmoji = () => {
             chatMessage.value = {
                 text: undefined,
             }
@@ -352,12 +428,16 @@ import {
             window.scrollTo
         }
 
+        const shouldUpdateInbox = () => {
+            const message = chatMessage.value
+            return (message.text != undefined || message.img != undefined)
+        }
+
         /**
          * Update inbox with latest message
          */
         watch(chatMessage, () => {
-            const message = chatMessage.value
-            if (message.text && (message.text != '' || message.text?.length === 0)) {
+            if (shouldUpdateInbox()) {
                 console.log('Adding message ...')
                 addToThread(chatMessage.value)
                 resetChatMessage()
@@ -377,8 +457,13 @@ import {
         return {
             commentModal,
             photoModal,
-            sendMessage,
-            inbox
+            fileUpload,
+            inbox,
+
+            onSendMessage,
+            onFileUpload,
+            triggerFileUpload,
+            sendHeartEmoji
         }
     },
     components: {

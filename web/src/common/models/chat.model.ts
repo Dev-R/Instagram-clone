@@ -51,6 +51,9 @@ export interface Chat {
     /** Text content of the chat item */
     text?: string
 
+    /** Image as a data URI scheme of the chat item*/
+    img?: string
+
     /** Reactions associated with the chat item */
     reactions?: Reactions
 }
