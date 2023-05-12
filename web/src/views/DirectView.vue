@@ -140,25 +140,20 @@
                                 </div>
 
                                 <!-- Other -->
-                                <div class="m-2 flex pt-5 space-x-2">
+                                <div 
+                                    v-for="thread of inbox.threads"
+                                    class="flex pt-5 space-x-2 m-2"
+                                    :class="{ 'justify-end ': thread.isSentByViewer }">
                                     <img 
+                                        v-if="!thread.isSentByViewer"
                                         src="https://loremflickr.com/1024/1080/car"
                                         class="cursor-pointer h-6 w-6 rounded-full shadow-lg self-end">
-                                    <div class="p-3 border border-[#1f1f1f] rounded-full text-white lg:text-sm text-xs">
-                                            السلام عليكم
+                                    <div 
+                                        class="p-3 border border-[#1f1f1f] rounded-full text-white lg:text-sm text-xs"
+                                        :class="{ 'm-2 bg-slate-1100': thread.isSentByViewer }">
+                                            {{ thread.text }}
                                     </div>
                                 </div>
-
-                                <!-- Current User -->
-                                <div class="flex pt-5 space-x-2 justify-end">
-                                    <!-- <img 
-                                        src="https://loremflickr.com/1024/1080/car"
-                                        class="cursor-pointer h-6 w-6 rounded-full shadow-lg self-end"> -->
-                                    <div class="m-2 p-3 border border-[#1f1f1f] bg-[#262626] rounded-full text-white lg:text-sm text-xs">
-                                        وعليكم السلام ورحمة الله وبركاته
-                                    </div>
-                                </div>
-                                
 
                             </div>
 
@@ -171,9 +166,10 @@
 
                                     <SVGLoader :icon="'like'" :class="'cursor-pointer absolute inset-y-0 right-4 flex items-center  pointer-events-none'"/> 
                                     <input
+                                        @keyup.enter="sendMessage"
                                         tabindex="1"
                                         type="text"
-                                        class="z-50 bg-black border border-[#262626] text-gray-900 text-sm rounded-full focus:outline-none
+                                        class="z-50 bg-black border border-[#262626] text-white text-sm rounded-full focus:outline-none
                                         block w-full p-2.5" 
                                         placeholder="Message">
                                 </div>
@@ -193,7 +189,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch, computed } from 'vue'
+import { defineComponent, ref, watch, computed, triggerRef } from 'vue'
 import { useRouter } from 'vue-router'
 
 import PostCard from '@/components/basics/PostCard.vue'
@@ -206,11 +202,14 @@ import type {
     Chat,
     Reactions
 } from '@/common/models'
+import {
+    getCurrentTimestamp
+} from '@/common/helpers'
 
 /**
  * TODO:
  *      - Sender and receiver data interface ✅
- *      - Send message design / logic
+ *      - Send message design / logic: ✅
  *      - Switch chat design / logic
  *      - Send button design / logic
  *      - Loading data based on URL
@@ -219,7 +218,7 @@ import type {
  *      - Send media design / logic
  */
 
-export default defineComponent({
+ export default defineComponent({
     name: 'DirectView',
     setup(props, context) {
 
@@ -235,17 +234,78 @@ export default defineComponent({
             isFileValid: false
         })
 
-        let windowWidth = ref(window.innerWidth) // Current window width
+        // let window = ref(window) // Current window width
+
+        /**
+         * Dummy datas
+         */
+        const emoji: Emoji = {
+            timeStamp: 1683491483190270,
+            senderId: "4036118946",
+            emoji: "👍"
+        }
+        const reactions: Reactions = {
+            likes: [],
+            likesCount: 0,
+            Emojis: [emoji]
+        }
+
+        const chats: Chat[] = [
+            {
+                utemId: "31054936540680616356189602913976320",
+                userId: "34351335554",
+                timestamp: 1683491483190270,
+                itemType: "text",
+                isSentByViewer: true,
+                uqSeqId: 5136,
+                text: "Hello, how are you?"
+            },
+            {
+                utemId: "42054936540680616356189602913976320",
+                userId: "4036118946",
+                timestamp: 1683491483195270,
+                itemType: "text",
+                isSentByViewer: false,
+                uqSeqId: 5137,
+                text: "I'm good, thanks! How about you?",
+            },
+            {
+                utemId: "52054936540680616356189602913976320",
+                userId: "34351335554",
+                timestamp: 1683491483198270,
+                itemType: "text",
+                isSentByViewer: true,
+                uqSeqId: 5138,
+                text: "I'm doing great too!"
+            },
+            {
+                utemId: "62054936540680616356189602913976320",
+                userId: "4036118946",
+                timestamp: 1683491483200270,
+                itemType: "text",
+                isSentByViewer: false,
+                uqSeqId: 5139,
+                text: "That's great to hear!"
+            },
+        ]
 
 
-        // Testing variables...
-        // Logic to send message
-        const inboxRef = ref({
-            thread: [
-                {
-                    
-                }
-            ]
+        /**
+         * Reactive datas
+         */
+        const chatMessage = ref<Chat>({
+            userId: undefined,
+            uqSeqId: undefined,
+            itemType: undefined,
+            isSentByViewer: undefined,
+            text: undefined,
+            timestamp: undefined
+        })
+
+        const inbox = ref<Inbox>({
+            threads: chats,
+            unseenCount: 1,
+            unseenCountTimeStamp: 1683491483190270
         })
 
         // Services
@@ -253,42 +313,56 @@ export default defineComponent({
         // const photoStore = usePhotoStore()
 
 
+        // Methods
+        const sendMessage = (payload: Event) => {
+            const targetEvent = payload.target as HTMLInputElement
+            console.log('Message to sent', targetEvent.value)
+            chatMessage.value = {
+                userId: viewer.id,
+                itemType: '',
+                isSentByViewer: true,
+                text: targetEvent.value,
+                timestamp: getCurrentTimestamp(),
+            }
+            // Reset message
+            targetEvent.value = ''
+        }
+        
+
         /**
-         * Dummy datas
+         * Push message to inbox
+         * @param message Message to be added
          */
-
-        // Dummy data for Emoji interface
-        const emoji: Emoji = {
-            timeStamp: 1683491483190270,
-            senderId: "4036118946",
-            emoji: "👍"
+        const addToThread = (message: Chat) => {
+            inbox.value.threads.push(message)
+            console.log('Message added successfully ✅', message)
+            console.log('Current messages', inbox.value.threads.forEach(element => {
+                console.log('Message: ', element.text)
+            }))
         }
 
-        // Dummy data for Reactions interface
-        const reactions: Reactions = {
-            likes: [],
-            likesCount: 0,
-            Emojis: [emoji]
+        const resetChatMessage = () => {
+            chatMessage.value = {
+                text: undefined,
+            }
         }
 
-        // Dummy data for Chat interface
-        const chat: Chat = {
-            utemId: "31054936540680616356189602913976320",
-            userId: "34351335554",
-            timestamp: 1683491483190270,
-            itemType: "text",
-            isSentByViewer: true,
-            uqSeqId: "5136",
-            Text: "Hello, how are you?",
-            Reactions: reactions
+        // TODO: Complete and use
+        const scrollToBottom = () => {
+            window.scrollTo
         }
 
-        // Dummy data for Inbox interface
-        const inbox: Inbox = {
-            threads: [chat],
-            unseenCount: 1,
-            unseenCountTimeStamp: 1683491483190270
-        }
+        /**
+         * Update inbox with latest message
+         */
+        watch(chatMessage, () => {
+            const message = chatMessage.value
+            if (message.text && (message.text != '' || message.text?.length === 0)) {
+                console.log('Adding message ...')
+                addToThread(chatMessage.value)
+                resetChatMessage()
+            }
+        })
 
         // Dummy data for Viewer interface
         const viewer: Viewer = {
@@ -303,6 +377,8 @@ export default defineComponent({
         return {
             commentModal,
             photoModal,
+            sendMessage,
+            inbox
         }
     },
     components: {
