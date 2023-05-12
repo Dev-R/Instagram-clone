@@ -31,28 +31,28 @@ export interface Reactions {
  */
 export interface Chat {
     /** ID of the chat item */
-    utemId: string
+    utemId?: string
 
     /** ID of the user */
-    userId: string
+    userId?: string
 
     /** Timestamp of the chat item */
-    timestamp: number
+    timestamp?: number
 
     /** Type of the chat item */
-    itemType: string
+    itemType?: string
 
     /** Indicates if the chat item is sent by the viewer */
-    isSentByViewer: boolean
+    isSentByViewer?: boolean
 
     /** Unique sequence ID of the chat item */
-    uqSeqId: string
+    uqSeqId?: number
 
     /** Text content of the chat item */
-    Text: string
+    text?: string
 
     /** Reactions associated with the chat item */
-    Reactions: Reactions
+    reactions?: Reactions
 }
 
 /**
