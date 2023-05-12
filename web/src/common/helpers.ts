@@ -12,3 +12,12 @@ export function addIndexToObjects<T extends { index: number }>(arr: T[]): T[] {
         return obj
     })
 }
+
+/**
+ * Get the current Unix timestamp in milliseconds.
+ * @returns {number} The current Unix timestamp.
+ */
+export function getCurrentTimestamp(): number {
+    return new Date().getTime();
+  }
+  
