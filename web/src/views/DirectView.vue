@@ -148,12 +148,12 @@
                                         v-if="!thread.isSentByViewer"
                                         src="https://loremflickr.com/1024/1080/car"
                                         class="cursor-pointer h-6 w-6 rounded-full shadow-lg self-end">
-                                    <div 
+                                    <p 
                                         v-if="thread.text"
-                                        class="p-3 border border-[#1f1f1f] rounded-full text-white lg:text-sm text-xs"
+                                        class="break-words p-3 border border-[#1f1f1f] rounded-lg text-white lg:text-sm text-xs max-w-xs"
                                         :class="{ 'm-2 bg-slate-1100': thread.isSentByViewer }">
                                             {{ thread.text }}
-                                    </div>
+                                    </p>
                                     <img 
                                         v-else-if="thread.img"
                                         :src="thread.img"
@@ -174,27 +174,30 @@
                             <div class="md:absolute sticky inset-x-3 bottom-6 sm:w-11/12 rounded-full h-11 flex space-x-3">
                                 <div class="relative w-full">
                                     
-                                    <div @click="triggerFileUpload">
+                                    <div @click="triggerFileUpload" :class="{'hidden': commentText}">
                                         <SVGLoader
                                             :icon="'gallery'" 
                                             :class="'cursor-pointer absolute inset-y-0 right-14 \
                                             flex items-center'"/> 
                                     </div>
 
-                                    <div @click="sendHeartEmoji()">
+                                    <div @click="sendHeartEmoji()" :class="{'hidden': commentText}">
                                         <SVGLoader
                                             :icon="'like'" 
                                             :class="'cursor-pointer absolute inset-y-0 right-4 \
                                             flex items-center'"/>     
                                     </div>                             
                                         
-                                    <input
+                                    <textarea
                                         @keyup.enter="onSendMessage"
+                                        v-model="commentText"
                                         tabindex="1"
+                                        rows="1"
                                         type="text"
-                                        class="z-50 bg-black border border-[#262626] text-white text-sm rounded-full focus:outline-none
-                                        block w-full p-2.5" 
-                                        placeholder="Message">
+                                        :class="{'rounded-lg ': commentText}"
+                                        class="z-50 bg-black border border-[#262626] text-white rounded-full text-sm focus:outline-none
+                                        block w-full p-2.5 pb-0 resize-none" 
+                                        placeholder="Message"/>
                                 </div>
                                     
                             </div>
@@ -251,7 +254,7 @@ import {
 
         // References to DOM element
         const fileUpload = ref<HTMLInputElementRef | null>()
-        
+
         const commentModal = ref({
             isToggled: false,
             postId: 0
@@ -263,6 +266,7 @@ import {
             isFileValid: false
         })
         const attachmentImage = ref<PhotoModalImage>(null)
+        const commentText = ref<string>()
 
 
         // Flags for tracking upload status
@@ -350,23 +354,27 @@ import {
 
         // Methods
         const onSendMessage = (payload: Event) => {
-            const targetEvent = payload.target as HTMLInputElement
-            console.log('Message to sent', targetEvent.value)
-            chatMessage.value = {
-                userId: viewer.id,
-                itemType: '',
-                isSentByViewer: true,
-                text: targetEvent.value,
-                timestamp: getCurrentTimestamp(),
+            commentText.value = '' // Clear message area
+            const message = payload.target as HTMLInputElement
+            console.log('Message to sent', message.value)
+            // Prevent spacing values
+            if (message.value.trim() != '') {
+                chatMessage.value = {
+                    userId: viewer.id,
+                    itemType: '',
+                    isSentByViewer: true,
+                    text: message.value,
+                    timestamp: getCurrentTimestamp(),
+                }
+                // Reset message
+                message.value = ''
             }
-            // Reset message
-            targetEvent.value = ''
         }
-        
+
         /**
          * Trigger DOM file upload event
          */
-         const triggerFileUpload = () => {
+        const triggerFileUpload = () => {
             console.log('Clicked...')
             fileUpload.value?.click()
         }
@@ -388,7 +396,7 @@ import {
          * Handle file uploaded event
          * @param {Object} event - The event object
          */
-          const onFileUpload = async (event: Event) => {
+        const onFileUpload = async (event: Event) => {
             const targetEvent = event.target as HTMLInputElement
             const file = targetEvent?.files?.item(0) as Blob
 
@@ -400,7 +408,7 @@ import {
                 isFileValid.value = true
                 isFileUploaded.value = true
                 console.log("File uploaded", file)
-                
+
                 chatMessage.value = {
                     userId: viewer.id,
                     itemType: 'image',
@@ -416,7 +424,7 @@ import {
                 text: undefined,
             }
         }
-        
+
         const sendHeartEmoji = () => {
             chatMessage.value = {
                 text: undefined,
@@ -459,6 +467,7 @@ import {
             photoModal,
             fileUpload,
             inbox,
+            commentText,
 
             onSendMessage,
             onFileUpload,
