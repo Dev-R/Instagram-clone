@@ -1,3 +1,5 @@
+import type { BaseUser } from "./user.model"
+
 /**
  * Represents an emoji reaction.
  */
@@ -29,12 +31,12 @@ export interface Reactions {
 /**
  * Represents a chat item.
  */
-export interface Chat {
+export interface ChatDialog {
     /** ID of the chat item */
     utemId?: string
 
-    /** ID of the user */
-    userId?: string
+    /** A simple instance of the user */
+    user?: Sender | Viewer
 
     /** Timestamp of the chat item */
     timestamp?: number
@@ -59,11 +61,36 @@ export interface Chat {
 }
 
 /**
+ * Represent a single conversation instance between two users.
+ */
+export interface Conversation {
+    /** Unique identifier for the conversation */
+    uuid: string
+
+    /** User who initiated the conversation */
+    user: Sender
+
+    /** Last message in the conversation */
+    lastMessage: string
+
+    /** Time elapsed since the last message */
+    timeSinceLastMessage: string
+
+    /** Dialogs (messages) in the conversation */
+    dialogs: ChatDialog[]
+
+    /** Indicates if the conversation is currently active */
+    isActive: boolean
+}
+
+
+
+/**
  * Represents an inbox containing chat threads.
  */
 export interface Inbox {
     /** List of chat threads */
-    threads: Chat[]
+    threads: Conversation[]
 
     /** Number of unseen chats */
     unseenCount: number
@@ -75,22 +102,13 @@ export interface Inbox {
 /**
  * Represents the viewer (current user) of the application.
  */
-export interface Viewer {
-    /** User ID in the database */
-    id: string
+export interface Viewer extends BaseUser {
 
-    /** Number of media uploaded by the user */
-    mediaCount: number
+}
 
-    /** URL link of the user's profile image */
-    profilePicture: string
+/**
+ * Represents the Sender (chatting to) of the application.
+ */
+export interface Sender extends BaseUser {
 
-    /** Indicates whether the user is verified */
-    isVerified: boolean
-
-    /** Full name of the current user */
-    fullName: string
-
-    /** Username of the current user */
-    userName: string
 }
