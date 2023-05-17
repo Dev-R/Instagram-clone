@@ -1,25 +1,38 @@
+
+/**
+ * Base Interface for User model
+ */
+export interface BaseUser {
+  /** Database ID */
+  id: string
+
+  /** User's first name */
+  firstName: string
+
+  /** User's last name */
+  lastName: string
+
+  /** User's user name */
+  userName: string
+
+  /** URL of the user's profile picture */
+  profilePictureUrl: string
+
+  /** User's email */
+  email?: string
+
+  /** Number of followers the user has */
+  followerCount: number
+
+  /** Number of users the user is following */
+  followingCount: number
+}
+
 /**
  * Interface for User model
  */
-export interface User {
-    /** Database ID */
-    id: number
-  
-    /** User's first name */
-    firstName: string
-  
-    /** User's last name */
-    lastName: string
-  
-    /** User's user name */
-    userName: string
-  
-    /** URL of the user's profile picture */
-    profilePictureUrl: string
-  
-    /** User's email */
-    email?: string
-  
+export interface User extends BaseUser {
+
     /** Is user active? */
     isActive?: boolean
   
@@ -44,19 +57,7 @@ export interface User {
     /** Biography of the user */
     biography?: string
   
-    /** URL of the user's external website */
-    externalUrl?: string
-  
-    /** Number of posts on the user's profile */
-    mediaCount: number
-    
     /** Posts made by the user's */
     mediaItems: []
-
-    /** Number of followers the user has */
-    followerCount: number
-  
-    /** Number of users the user is following */
-    followingCount: number
   }
   
