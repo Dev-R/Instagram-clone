@@ -50,34 +50,6 @@
                                 <div class="flex p-3 space-x-3 hover:bg-[#262626] w-full cursor-pointer">
                                     <!-- Profile Image -->
                                     <img 
-                                        src="https://loremflickr.com/1024/1080/cat"
-                                        class="cursor-pointer h-14 w-14 rounded-full shadow-lg">
-
-
-                                    <!-- Username / Chat / Date -->
-                                    <div class="flex flex-col self-center space-y-2 pb-3">
-                                        <span class="font-sans text-sm font-semibold text-white self-start">
-                                            Instagram User
-                                        </span>
-                                        <div class="flex flex-row space-x-1">
-                                                <span class="font-sans text-xs font-semibold text-gray-400">
-                                                    Hello World ...
-                                                </span>
-
-                                                <div class="font-sans text-xs font-semibold text-gray-500">
-                                                    •
-                                                </div>
-
-                                                <div class="font-sans font-semibold text-xs text-gray-500 justify-self-end">
-                                                    1d
-                                                </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="flex p-3 space-x-3 hover:bg-[#262626] w-full cursor-pointer">
-                                    <!-- Profile Image -->
-                                    <img 
                                         src="https://loremflickr.com/1024/1080/love"
                                         class="cursor-pointer h-14 w-14 rounded-full shadow-lg">
 
@@ -108,8 +80,33 @@
 
 
                         </div>
+                        <!-- Intro message -->
+                        <div class="grid place-content-center bg-black lg:basis-9/12 w-full md:h-full h-screen">
+                            <div class="flex flex-col space-y-1">
+                                <SVGLoader
+                                    :icon="'direct-intro'" 
+                                    :class="'cursor-pointer self-center'"/> 
+                                <div class="text-white md:text-xl text-xs">
+                                    Your Messages
+                                </div>
+                                <div class="text-[#a8a8a8] lg:text-sm text-xs pb-5">
+                                    Send private photos and messages to a friend or group.
+                                </div>
+                                <!-- <div>
+                                    Send private photos and messages to a friend or group.
+                                </div> -->
+                                <button 
+                                    type="button" 
+                                    class="text-white bg-[#0095f6] hover:brightness-75 self-center
+                                    font-semibold w-auto rounded-lg text-sm md:p-1.5 
+                                    md:px-3 md:py-1.5 px-20 py-1 md:w-32">
+                                    Send Message
+                                </button>
+                            </div>
+                                
+                        </div>
                         <!-- Current Chat -->
-                        <div class="relative bg-black lg:basis-9/12 w-full md:h-full h-screen">
+                        <div class="relative bg-black lg:basis-9/12 w-full md:h-full h-screen hidden">
                             
                             <div class="flex lg:h-16 md:pl-8 w-full space-x-2 justify-between items-center border-slate-700 border-b lg:visible invisible">
                                     <div class="flex space-x-2 items-center">
@@ -224,11 +221,13 @@ import NavBarMain from '@/components/navbars/NavBarMain.vue'
 import type { 
     Emoji,
     Viewer,
+    Sender,
     Inbox,
-    Chat,
+    ChatDialog,
     Reactions,
     HTMLInputElementRef,
-PhotoModalImage
+PhotoModalImage,
+Conversation
 } from '@/common/models'
 import {
     getCurrentTimestamp
@@ -241,8 +240,9 @@ import {
  *      - Send message design / logic: ✅
  *      - Switch chat design / logic
  *      - Send button design / logic ✅
- *      - Loading data based on URL
- *      - Welcome message if no data provided
+ *      - Loading data based on URL:
+ *        - Welcome message if no data provided <URL> ✅
+ *        - Render side chat dynamically and emit event when any is clicked
  *      - Unsupported feature popup design / logic
  *      - Send media design / logic ✅
  */
@@ -273,6 +273,9 @@ import {
         const isFileUploaded = ref<boolean>(false)
         const isFileValid = ref<boolean>(false)
 
+        // Others
+        const isChatLoading = ref<boolean>(false)
+
         // let window = ref(window) // Current window width
 
         /**
@@ -288,11 +291,32 @@ import {
             likesCount: 0,
             Emojis: [emoji]
         }
+        const viewer: Viewer = {
+            id: "123456789",
+            firstName: "John",
+            lastName: "Doe",
+            userName: "johndoe",
+            profilePictureUrl: "https://example.com/profile-picture.jpg",
+            email: "johndoe@example.com",
+            followerCount: 1000,
+            followingCount: 500,
+        }
 
-        const chats: Chat[] = [
+        const sender: Sender = {
+            id: "987654321",
+            firstName: "Jane",
+            lastName: "Smith",
+            userName: "janesmith",
+            profilePictureUrl: "https://example.com/profile-picture.jpg",
+            followerCount: 500,
+            followingCount: 1000,
+        };
+
+        // A chat instance between two users
+        const chat = ref<ChatDialog[]> ([
             {
                 utemId: "31054936540680616356189602913976320",
-                userId: "34351335554",
+                user: viewer,
                 timestamp: 1683491483190270,
                 itemType: "text",
                 isSentByViewer: true,
@@ -301,7 +325,7 @@ import {
             },
             {
                 utemId: "42054936540680616356189602913976320",
-                userId: "4036118946",
+                user: sender,
                 timestamp: 1683491483195270,
                 itemType: "text",
                 isSentByViewer: false,
@@ -310,7 +334,7 @@ import {
             },
             {
                 utemId: "52054936540680616356189602913976320",
-                userId: "34351335554",
+                user: viewer,
                 timestamp: 1683491483198270,
                 itemType: "text",
                 isSentByViewer: true,
@@ -319,21 +343,39 @@ import {
             },
             {
                 utemId: "62054936540680616356189602913976320",
-                userId: "4036118946",
+                user: sender,
                 timestamp: 1683491483200270,
                 itemType: "text",
                 isSentByViewer: false,
                 uqSeqId: 5139,
                 text: "That's great to hear!"
             },
-        ]
+        ])
 
+        // List of all conversations in the inbox
+        const conversation = ref<Conversation[]>([
+            {
+                uuid: '12',
+                user: sender,
+                lastMessage: 'Hello World',
+                timeSinceLastMessage: '1w',
+                dialogs: chat.value,
+                isActive: true
+            }
+        ])
+
+        // Current user inbox
+        const inbox = ref<Inbox>({
+            threads: conversation.value,
+            unseenCount: 1,
+            unseenCountTimeStamp: 1683491483190270
+        })
 
         /**
          * Reactive datas
          */
-        const chatMessage = ref<Chat>({
-            userId: undefined,
+        const chatMessage = ref<ChatDialog>({
+            user: undefined,
             uqSeqId: undefined,
             itemType: undefined,
             isSentByViewer: undefined,
@@ -341,11 +383,6 @@ import {
             timestamp: undefined
         })
 
-        const inbox = ref<Inbox>({
-            threads: chats,
-            unseenCount: 1,
-            unseenCountTimeStamp: 1683491483190270
-        })
 
         // Services
         const router = useRouter()
@@ -360,7 +397,7 @@ import {
             // Prevent spacing values
             if (message.value.trim() != '') {
                 chatMessage.value = {
-                    userId: viewer.id,
+                    user: viewer,
                     itemType: '',
                     isSentByViewer: true,
                     text: message.value,
@@ -383,8 +420,13 @@ import {
          * Push message to inbox
          * @param message Message to be added
          */
-        const addToThread = (message: Chat) => {
-            inbox.value.threads.push(message)
+        const addToChat = (message: ChatDialog) => {
+            /**
+             * TODO: 
+             *      - Fix this bug
+             *      - Find a way to select one conversation and make it active
+             */
+            // inbox.value.threads.push(message)
             console.log('Message added successfully ✅', message)
             console.log('Current messages', inbox.value.threads.forEach(element => {
                 console.log('Message: ', element.text)
@@ -410,7 +452,7 @@ import {
                 console.log("File uploaded", file)
 
                 chatMessage.value = {
-                    userId: viewer.id,
+                    user: viewer,
                     itemType: 'image',
                     isSentByViewer: true,
                     img: attachmentImage.value as string,
@@ -447,20 +489,11 @@ import {
         watch(chatMessage, () => {
             if (shouldUpdateInbox()) {
                 console.log('Adding message ...')
-                addToThread(chatMessage.value)
+                addToChat(chatMessage.value)
                 resetChatMessage()
             }
         })
 
-        // Dummy data for Viewer interface
-        const viewer: Viewer = {
-            id: "123456789",
-            mediaCount: 10,
-            profilePicture: "https://example.com/profile-picture.jpg",
-            isVerified: true,
-            fullName: "John Doe",
-            userName: "johndoe"
-        }
 
         return {
             commentModal,
@@ -468,6 +501,7 @@ import {
             fileUpload,
             inbox,
             commentText,
+            isChatLoading,
 
             onSendMessage,
             onFileUpload,
