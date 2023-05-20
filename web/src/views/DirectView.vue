@@ -37,7 +37,9 @@
                                         </div>
                                     </div>
 
-                                    <div class="flex cursor-pointer items-center">
+                                    <div 
+                                        @click="onUnsupportedFeatureClick"
+                                        class="flex cursor-pointer items-center">
                                         <SVGLoader :icon="'new-message'" />
                                     </div>
                             </div>
@@ -132,7 +134,9 @@
                                         </div>
                                     </div>
 
-                                    <div class="flex space-x-4 cursor-pointer ">
+                                    <div 
+                                        @click="onUnsupportedFeatureClick"
+                                        class="flex space-x-4 cursor-pointer">
                                         <SVGLoader :icon="'audio-call'" />
                                         <SVGLoader :icon="'video-call'" />
                                         <SVGLoader :icon="'chat-info'" />
@@ -249,6 +253,7 @@ import type {
 import {
     getCurrentTimestamp
 } from '@/common/helpers'
+import { useToast } from 'vue-toastification'
 
 
 /**
@@ -500,6 +505,7 @@ export default defineComponent({
 
         // Services
         const router = useRouter()
+        const toast = useToast()
         // const photoStore = usePhotoStore()
 
 
@@ -578,6 +584,11 @@ export default defineComponent({
             currentlyActiveConversation.value = convo
         }
 
+
+        const onUnsupportedFeatureClick = () => {
+            toast.info("The following feature, is not supported yet.")
+        }
+
         const resetChatMessage = () => {
             chatMessage.value = {
                 text: undefined,
@@ -624,6 +635,7 @@ export default defineComponent({
 
             onSendMessage,
             onFileUpload,
+            onUnsupportedFeatureClick,
             onSelectConversation,
             triggerFileUpload,
             sendHeartEmoji
