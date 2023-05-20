@@ -43,25 +43,29 @@
                             </div>
 
 
-                            <!-- Chat rendering -->
+                            <!-- Conversations rendering -->
 
-                            <div class="flex flex-col lg:max-h-[850px] overflow-auto">
+                            <div 
+                                v-for="(convo, index) of conversations"
+                                :key="index"
+                                class="flex flex-col 
+                                overflow-auto lg:max-h-[850px]">
 
                                 <div class="flex p-3 space-x-3 hover:bg-[#262626] w-full cursor-pointer">
                                     <!-- Profile Image -->
                                     <img 
-                                        src="https://loremflickr.com/1024/1080/love"
+                                        :src="convo.user.profilePictureUrl"
                                         class="cursor-pointer h-14 w-14 rounded-full shadow-lg">
 
 
                                     <!-- Username / Chat / Date -->
                                     <div class="flex flex-col self-center space-y-2 pb-3">
                                         <span class="font-sans text-sm font-semibold text-white self-start">
-                                            Instagram User
+                                            {{ convo.user.userName }}
                                         </span>
                                         <div class="flex flex-row space-x-1">
                                                 <span class="font-sans text-xs font-semibold text-gray-400">
-                                                    Hello World ...
+                                                    {{ convo.lastMessage }}
                                                 </span>
 
                                                 <div class="font-sans text-xs font-semibold text-gray-500">
@@ -69,7 +73,7 @@
                                                 </div>
 
                                                 <div class="font-sans font-semibold text-xs text-gray-500 justify-self-end">
-                                                    1d
+                                                    {{ convo.timeSinceLastMessage }}
                                                 </div>
                                         </div>
                                     </div>
@@ -137,7 +141,7 @@
                                 </div>
 
                                 <!-- Other -->
-                                <div 
+                                <!-- <div 
                                     v-for="thread of inbox.threads"
                                     class="flex pt-5 space-x-2 m-2"
                                     :class="{ 'justify-end ': thread.isSentByViewer }">
@@ -155,7 +159,7 @@
                                         v-else-if="thread.img"
                                         :src="thread.img"
                                         class="cursor-pointer w-60 h-40 rounded-lg">
-                                </div>
+                                </div> -->
 
                             </div>
 
@@ -296,7 +300,7 @@ import {
             firstName: "John",
             lastName: "Doe",
             userName: "johndoe",
-            profilePictureUrl: "https://example.com/profile-picture.jpg",
+            profilePictureUrl: "https://loremflickr.com/1024/1280/life",
             email: "johndoe@example.com",
             followerCount: 1000,
             followingCount: 500,
@@ -307,7 +311,7 @@ import {
             firstName: "Jane",
             lastName: "Smith",
             userName: "janesmith",
-            profilePictureUrl: "https://example.com/profile-picture.jpg",
+            profilePictureUrl: "https://loremflickr.com/1024/1280/car",
             followerCount: 500,
             followingCount: 1000,
         };
@@ -353,7 +357,7 @@ import {
         ])
 
         // List of all conversations in the inbox
-        const conversation = ref<Conversation[]>([
+        const conversations = ref<Conversation[]>([
             {
                 uuid: '12',
                 user: sender,
@@ -366,7 +370,7 @@ import {
 
         // Current user inbox
         const inbox = ref<Inbox>({
-            threads: conversation.value,
+            threads: conversations.value,
             unseenCount: 1,
             unseenCountTimeStamp: 1683491483190270
         })
@@ -429,7 +433,7 @@ import {
             // inbox.value.threads.push(message)
             console.log('Message added successfully ✅', message)
             console.log('Current messages', inbox.value.threads.forEach(element => {
-                console.log('Message: ', element.text)
+                // console.log('Message: ', element.text)
             }))
         }
 
@@ -501,6 +505,7 @@ import {
             fileUpload,
             inbox,
             commentText,
+            conversations,
             isChatLoading,
 
             onSendMessage,
