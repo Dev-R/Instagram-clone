@@ -165,7 +165,7 @@
                                     <p 
                                         v-if="dialog.text"
                                         class="break-words p-3 border border-[#1f1f1f] rounded-lg text-white lg:text-sm text-xs max-w-xs"
-                                        :class="{ 'm-2 bg-slate-1100': dialog.isSentByViewer }">
+                                        :class="{ 'm-2 bg-sky-1100': dialog.isSentByViewer }">
                                             {{ dialog.text }}
                                     </p>
                                     <img 
