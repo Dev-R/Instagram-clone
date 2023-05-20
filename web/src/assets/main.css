@@ -2,6 +2,7 @@
 @import './base.css'; 
 @import './icons.css';
 @import './carousel.css';
+@import './toastification.css';
 
 @tailwind base;
 @tailwind components;
