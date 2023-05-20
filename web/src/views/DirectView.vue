@@ -48,6 +48,7 @@
                             <div 
                                 v-for="(convo, index) of conversations"
                                 :key="index"
+                                @click="onSelectConversation(convo)"
                                 class="flex flex-col 
                                 overflow-auto lg:max-h-[850px]">
 
@@ -85,7 +86,10 @@
 
                         </div>
                         <!-- Intro message -->
-                        <div class="grid place-content-center bg-black lg:basis-9/12 w-full md:h-full h-screen">
+                        <div 
+                            v-if="!currentlyActiveConversation"
+                            class="grid place-content-center bg-black 
+                            lg:basis-9/12 w-full md:h-full h-screen">
                             <div class="flex flex-col space-y-1">
                                 <SVGLoader
                                     :icon="'direct-intro'" 
@@ -110,9 +114,13 @@
                                 
                         </div>
                         <!-- Current Chat -->
-                        <div class="relative bg-black lg:basis-9/12 w-full md:h-full h-screen hidden">
+                        <div 
+                            v-else
+                            class="relative bg-black lg:basis-9/12 w-full md:h-full h-screen">
                             
-                            <div class="flex lg:h-16 md:pl-8 w-full space-x-2 justify-between items-center border-slate-700 border-b lg:visible invisible">
+                            <div 
+                                class="flex lg:h-16 md:pl-8 w-full space-x-2 justify-between 
+                                items-center border-slate-700 border-b lg:visible invisible">
                                     <div class="flex space-x-2 items-center">
                                         <img 
                                         src="https://loremflickr.com/1024/1080/car"
@@ -135,31 +143,36 @@
                                 
                             <div class="flex flex-col h-5/6 lg:max-h-[850px] overflow-auto">
                                 <div class="flex pt-5 space-x-2 justify-center">
-                                    <span class="font-sans text-xs font-semibold text-gray-400">
+                                    <!-- <span class="font-sans text-xs font-semibold text-gray-400">
                                         November 2, 2020 12:44 am
-                                    </span>
+                                    </span> -->
+                                    <i  
+                                        v-if="isChatLoading"
+                                        class="fa-solid fa-spinner fa-spin fa-2xl text-slate-500"></i>
                                 </div>
 
                                 <!-- Other -->
-                                <!-- <div 
-                                    v-for="thread of inbox.threads"
+                                <div 
+
+                                    v-for="(dialog, index) of currentlyActiveConversation?.dialogs"
+                                    :key="index"
                                     class="flex pt-5 space-x-2 m-2"
-                                    :class="{ 'justify-end ': thread.isSentByViewer }">
+                                    :class="{ 'justify-end ': dialog.isSentByViewer }">
                                     <img 
-                                        v-if="!thread.isSentByViewer"
+                                        v-if="!dialog.isSentByViewer"
                                         src="https://loremflickr.com/1024/1080/car"
                                         class="cursor-pointer h-6 w-6 rounded-full shadow-lg self-end">
                                     <p 
-                                        v-if="thread.text"
+                                        v-if="dialog.text"
                                         class="break-words p-3 border border-[#1f1f1f] rounded-lg text-white lg:text-sm text-xs max-w-xs"
-                                        :class="{ 'm-2 bg-slate-1100': thread.isSentByViewer }">
-                                            {{ thread.text }}
+                                        :class="{ 'm-2 bg-slate-1100': dialog.isSentByViewer }">
+                                            {{ dialog.text }}
                                     </p>
                                     <img 
-                                        v-else-if="thread.img"
-                                        :src="thread.img"
+                                        v-else-if="dialog.img"
+                                        :src="dialog.img"
                                         class="cursor-pointer w-60 h-40 rounded-lg">
-                                </div> -->
+                                </div>
 
                             </div>
 
@@ -222,7 +235,7 @@ import { useRouter } from 'vue-router'
 import PostCard from '@/components/basics/PostCard.vue'
 import SVGLoader from '@/components/basics/SVGLoader.vue'
 import NavBarMain from '@/components/navbars/NavBarMain.vue'
-import type { 
+import type {
     Emoji,
     Viewer,
     Sender,
@@ -230,8 +243,8 @@ import type {
     ChatDialog,
     Reactions,
     HTMLInputElementRef,
-PhotoModalImage,
-Conversation
+    PhotoModalImage,
+    Conversation
 } from '@/common/models'
 import {
     getCurrentTimestamp
@@ -246,12 +259,23 @@ import {
  *      - Send button design / logic ✅
  *      - Loading data based on URL:
  *        - Welcome message if no data provided <URL> ✅
- *        - Render side chat dynamically and emit event when any is clicked
+ *        - Render side chat dynamically and emit event when any is clicked ✅
+ *        - Switch view on conversation click:
+ *          - Directly assign current active Conversation to the emited number ✅
+ *          - Loop through it and render convo ✅
  *      - Unsupported feature popup design / logic
  *      - Send media design / logic ✅
+ *        ** Message hierarchy **
+ *               Inbox
+ *                 |
+ *            Conversations ✅
+ *                 |
+ *                Chat
+ *                 |
+ *              Messages
  */
 
- export default defineComponent({
+export default defineComponent({
     name: 'DirectView',
     setup(props, context) {
 
@@ -279,6 +303,7 @@ import {
 
         // Others
         const isChatLoading = ref<boolean>(false)
+        const currentlyActiveConversation = ref<Conversation>()
 
         // let window = ref(window) // Current window width
 
@@ -295,7 +320,7 @@ import {
             likesCount: 0,
             Emojis: [emoji]
         }
-        const viewer: Viewer = {
+        const userA: Viewer = {
             id: "123456789",
             firstName: "John",
             lastName: "Doe",
@@ -306,7 +331,7 @@ import {
             followingCount: 500,
         }
 
-        const sender: Sender = {
+        const userB: Sender = {
             id: "987654321",
             firstName: "Jane",
             lastName: "Smith",
@@ -314,13 +339,13 @@ import {
             profilePictureUrl: "https://loremflickr.com/1024/1280/car",
             followerCount: 500,
             followingCount: 1000,
-        };
+        }
 
-        // A chat instance between two users
-        const chat = ref<ChatDialog[]> ([
+        // A chat instances between two users
+        const chatA = ref<ChatDialog[]>([
             {
                 utemId: "31054936540680616356189602913976320",
-                user: viewer,
+                user: userA,
                 timestamp: 1683491483190270,
                 itemType: "text",
                 isSentByViewer: true,
@@ -329,7 +354,7 @@ import {
             },
             {
                 utemId: "42054936540680616356189602913976320",
-                user: sender,
+                user: userB,
                 timestamp: 1683491483195270,
                 itemType: "text",
                 isSentByViewer: false,
@@ -338,7 +363,7 @@ import {
             },
             {
                 utemId: "52054936540680616356189602913976320",
-                user: viewer,
+                user: userA,
                 timestamp: 1683491483198270,
                 itemType: "text",
                 isSentByViewer: true,
@@ -347,7 +372,7 @@ import {
             },
             {
                 utemId: "62054936540680616356189602913976320",
-                user: sender,
+                user: userB,
                 timestamp: 1683491483200270,
                 itemType: "text",
                 isSentByViewer: false,
@@ -355,17 +380,102 @@ import {
                 text: "That's great to hear!"
             },
         ])
+        const chatB = ref<ChatDialog[]>([
+            {
+                utemId: "31054936540680616356189602913976320",
+                user: userA,
+                timestamp: 1683491483190270,
+                itemType: "text",
+                isSentByViewer: true,
+                uqSeqId: 5136,
+                text: "Hey, how's your day going?",
+            },
+            {
+                utemId: "42054936540680616356189602913976320",
+                user: userB,
+                timestamp: 1683491483195270,
+                itemType: "text",
+                isSentByViewer: false,
+                uqSeqId: 5137,
+                text: "It's going well, thanks! What about you?",
+            },
+            {
+                utemId: "52054936540680616356189602913976320",
+                user: userA,
+                timestamp: 1683491483198270,
+                itemType: "text",
+                isSentByViewer: true,
+                uqSeqId: 5138,
+                text: "I'm having a productive day so far!",
+            },
+            {
+                utemId: "62054936540680616356189602913976320",
+                user: userB,
+                timestamp: 1683491483200270,
+                itemType: "text",
+                isSentByViewer: false,
+                uqSeqId: 5139,
+                text: "That's awesome! Keep up the good work!",
+            },
+            {
+                utemId: "72054936540680616356189602913976320",
+                user: userA,
+                timestamp: 1683491483203270,
+                itemType: "text",
+                isSentByViewer: true,
+                uqSeqId: 5140,
+                text: "Thanks! I'm working on an exciting project.",
+            },
+            {
+                utemId: "82054936540680616356189602913976320",
+                user: userB,
+                timestamp: 1683491483206270,
+                itemType: "text",
+                isSentByViewer: false,
+                uqSeqId: 5141,
+                text: "Oh, that sounds interesting. What is it about?",
+            },
+            {
+                utemId: "92054936540680616356189602913976320",
+                user: userA,
+                timestamp: 1683491483209270,
+                itemType: "text",
+                isSentByViewer: true,
+                uqSeqId: 5142,
+                text: "It's a mobile app for organizing daily tasks and setting reminders.",
+            },
+            {
+                utemId: "102054936540680616356189602913976320",
+                user: userB,
+                timestamp: 1683491483212270,
+                itemType: "text",
+                isSentByViewer: false,
+                uqSeqId: 5143,
+                text: "That's useful! I could definitely use something like that.",
+            },
+        ])
+
+
+
 
         // List of all conversations in the inbox
         const conversations = ref<Conversation[]>([
             {
-                uuid: '12',
-                user: sender,
+                uuid: '1',
+                user: userA,
                 lastMessage: 'Hello World',
                 timeSinceLastMessage: '1w',
-                dialogs: chat.value,
+                dialogs: chatA.value,
                 isActive: true
-            }
+            },
+            {
+                uuid: '2',
+                user: userB,
+                lastMessage: 'I miss you baby 💕',
+                timeSinceLastMessage: '1w',
+                dialogs: chatB.value,
+                isActive: true
+            },
         ])
 
         // Current user inbox
@@ -401,7 +511,7 @@ import {
             // Prevent spacing values
             if (message.value.trim() != '') {
                 chatMessage.value = {
-                    user: viewer,
+                    user: userA,
                     itemType: '',
                     isSentByViewer: true,
                     text: message.value,
@@ -425,15 +535,10 @@ import {
          * @param message Message to be added
          */
         const addToChat = (message: ChatDialog) => {
-            /**
-             * TODO: 
-             *      - Fix this bug
-             *      - Find a way to select one conversation and make it active
-             */
-            // inbox.value.threads.push(message)
+            currentlyActiveConversation.value?.dialogs.push(message)
             console.log('Message added successfully ✅', message)
-            console.log('Current messages', inbox.value.threads.forEach(element => {
-                // console.log('Message: ', element.text)
+            console.log('Current messages', currentlyActiveConversation.value?.dialogs.forEach(element => {
+                console.log('Message: ', element.text)
             }))
         }
 
@@ -456,13 +561,21 @@ import {
                 console.log("File uploaded", file)
 
                 chatMessage.value = {
-                    user: viewer,
+                    user: userA,
                     itemType: 'image',
                     isSentByViewer: true,
                     img: attachmentImage.value as string,
                     timestamp: getCurrentTimestamp(),
                 }
             }
+        }
+
+        /**
+         * 
+         * @param convo - Conversation to be selected
+         */
+        const onSelectConversation = (convo: Conversation) => {
+            currentlyActiveConversation.value = convo
         }
 
         const resetChatMessage = () => {
@@ -506,10 +619,12 @@ import {
             inbox,
             commentText,
             conversations,
+            currentlyActiveConversation,
             isChatLoading,
 
             onSendMessage,
             onFileUpload,
+            onSelectConversation,
             triggerFileUpload,
             sendHeartEmoji
         }
@@ -522,6 +637,7 @@ import {
     props: {}
 })
 </script>
+
 
 
 
