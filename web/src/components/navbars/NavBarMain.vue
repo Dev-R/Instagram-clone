@@ -15,133 +15,35 @@
             </div>
 
         </div>
-        <!-- B -->
+        <!-- Side NavBar Items Rendering -->
         <div class="p-1 md:pl-3 flex flex-col space-y-2">
-
-            <router-link
-                to="home" 
-                class="group cursor-pointer rounded-full 
-                flex space-x-4 hover:bg-slate-1000
-                hover:delay-100 p-3 xl:justify-start justify-center">
-                
-                <SVGLoader 
-                    :icon="'home'" 
-                    :class="'group-hover:scale-110'"/>
-                
-                <span class="xl:block hidden font-sans text-md font-bold text-white">
-                    Home
-                </span>
-                
-            </router-link>
-
-            <div 
-                class="group cursor-pointer rounded-full 
-                flex space-x-4 hover:bg-slate-1000 
-                hover:delay-100 p-3 xl:justify-start 
-                justify-center">
-
-                <SVGLoader 
-                    :icon="'search'" 
-                    :class="'group-hover:scale-110'"/>
-
-                <span class="xl:block hidden font-sans text-md font-normal text-white">
-                    Search
-                </span>
-
-            </div>
-
-            <div 
-                class="group cursor-pointer rounded-full 
-                flex space-x-4 hover:bg-slate-1000 hover:delay-100
+            <template 
+                v-for="item in menuItems">
+                <router-link
+                    @click="item.onClick"
+                    :to="item.path"
+                    class="group cursor-pointer rounded-full 
+                    flex space-x-4 hover:bg-slate-1000 hover:delay-100 
                     p-3 xl:justify-start justify-center">
+                    
+                    <SVGLoader 
+                        v-if="item.name != 'profile'"
+                        :icon="item.iconName" 
+                        :class="'group-hover:scale-110'"/>
 
-                <SVGLoader 
-                    :icon="'explore'" 
-                    :class="'group-hover:scale-110'"/>
+                    <img 
+                        v-else
+                        :src="item.img" 
+                        class="w-6 h-6 rounded-full shadow-lg group-hover:scale-110" />
 
-                <span class="xl:block hidden font-sans text-md font-normal text-white">
-                    Explore
-                </span>
+                    <span 
+                        class="xl:block hidden font-sans text-md 
+                        font-normal text-white">
+                        {{ item.title }}
+                    </span>
 
-            </div>
-
-            <div 
-                class="group cursor-pointer rounded-full 
-                flex space-x-4 hover:bg-slate-1000 
-                hover:delay-100 p-3 xl:justify-start 
-                justify-center">
-
-                <SVGLoader 
-                    :icon="'reels'" 
-                    :class="'group-hover:scale-110'"/>
-
-                <span class="xl:block hidden font-sans text-md font-normal text-white">
-                    Reels
-                </span>
-
-            </div>
-
-            <router-link
-                to="direct" 
-                class="group cursor-pointer rounded-full 
-                flex space-x-4 hover:bg-slate-1000 
-                hover:delay-100 p-3 xl:justify-start 
-                justify-center">
-
-                <SVGLoader 
-                    :icon="'direct'" 
-                    :class="'group-hover:scale-110'"/>
-
-                <span class="xl:block hidden font-sans text-md font-normal text-white">
-                    Messages
-                </span>
-
-            </router-link>
-
-            <div 
-                class="group cursor-pointer rounded-full 
-                flex space-x-4 hover:bg-slate-1000 hover:delay-100 
-                p-3 xl:justify-start justify-center">
-
-                <SVGLoader 
-                    :icon="'notifications'" 
-                    :class="'group-hover:scale-110'"/>
-
-                <span class="xl:block hidden font-sans text-md font-normal text-white">
-                    Notifications
-                </span>
-
-            </div>
-
-            <div 
-                @click="onCreate"
-                class="group cursor-pointer rounded-full 
-                flex space-x-4 hover:bg-slate-1000 hover:delay-100 
-                p-3 xl:justify-start justify-center">
-
-                <SVGLoader 
-                    :icon="'create'" 
-                    :class="'group-hover:scale-110'"/>
-
-                <span class="xl:block hidden font-sans text-md font-light text-white">
-                    Create
-                </span>
-
-            </div>
-
-            <router-link 
-                to="profile"
-                class="group cursor-pointer rounded-full 
-                flex space-x-4 hover:bg-slate-1000 hover:delay-100 
-                p-3 xl:justify-start justify-center">
-
-                <img src="http://via.placeholder.com/26x26" class="w-6 h-6 rounded-full shadow-lg group-hover:scale-110">
-                <span class="xl:block hidden font-sans text-md font-light text-white">
-                    Profile
-                </span>
-                
-            </router-link>
-
+                </router-link>
+            </template>
         </div>
         <!-- Temp-solution -->
         <div class="pt-10 invisible">
@@ -160,10 +62,11 @@
 </template>
 
 <script lang="ts">
-import { onMounted, defineComponent } from 'vue';
-import { useRouter } from 'vue-router';
+import { onMounted, defineComponent } from 'vue'
+import { useRouter } from 'vue-router'
 
-import SVGLoader from '@/components/basics/SVGLoader.vue';
+import SVGLoader from '@/components/basics/SVGLoader.vue'
+import type { NavBarItem } from '@/common/models/navbar.model' 
 
 export default defineComponent({
     name: 'NavBarMain',
@@ -171,11 +74,82 @@ export default defineComponent({
         // Services
         const router = useRouter()
 
+        const menuItems: NavBarItem[] = [
+            {
+                title: 'Home',
+                path: '/home',
+                name: 'home',
+                customClass: '',
+                iconName: 'home',
+                onClick: () => {},
+            },
+            {
+                title: 'Search',
+                path: '/',
+                name: 'search',
+                customClass: '',
+                iconName: 'search',
+                onClick: () => {},
+            },
+            {
+                title: 'Explore',
+                path: '/',
+                name: 'explore',
+                customClass: '',
+                iconName: 'explore',
+                onClick: () => {},
+            },
+            {
+                title: 'Reels',
+                path: '/',
+                name: 'reels',
+                customClass: '',
+                iconName: 'reels',
+                onClick: () => {},
+            },
+            {
+                title: 'Messages',
+                path: '/direct',
+                name: 'direct',
+                customClass: '',
+                iconName: 'direct',
+                onClick: () => {},
+            },
+            {
+                title: 'Notifications',
+                path: '/',
+                name: 'notifications',
+                customClass: '',
+                iconName: 'notifications',
+                onClick: () => {},
+            },
+            {
+                title: 'Create',
+                path: '/create',
+                name: 'create',
+                customClass: '',
+                iconName: 'create',
+                onClick: () => onCreate(),
+            },
+            {
+                title: 'Profile',
+                path: '/profile',
+                name: 'profile',
+                customClass: '',
+                iconName: '',
+                img: 'http://via.placeholder.com/26x26',
+                onClick: () => {}
+            }
+        ]
+
+        // Routes with collapsed sidenavbar
+        const topNavBarHiddenRoutes = ['direct']
+
         // Methods
         /**
          * Emit signal when the modal is closed
          */
-         const onCreate = () => {
+        const onCreate = () => {
             context.emit('onCreate')
         }
 
@@ -194,6 +168,8 @@ export default defineComponent({
         })
 
         return {
+            topNavBarHiddenRoutes,
+            menuItems,
             onProfileOpen,
             onCreate
         }
