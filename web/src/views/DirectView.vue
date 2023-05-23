@@ -1,12 +1,12 @@
 <template>
     <div class="bg-[#121212]">
         <section 
-            class="container max-w-full mx-auto text-center"
+            class="container max-w-full mx-auto text-center scrollbar scrollbar-thumb-gray-900"
             :class="{ 'brightness-50 pointer-events-none': commentModal.isToggled || photoModal.isToggled }">
-            <div class="grid grid-cols-12">
+            <div class="flex">
                 <!-- Left bar: Navigation -->
                 <div 
-                    class="xl:col-span-2 col-span-1 bg-black 
+                    class="bg-black sm:w-20 
                     md:block hidden space-y-12 h-screen 
                     sticky top-0 border-r border-gray-900">
                     
@@ -17,91 +17,111 @@
 
                 <!-- Center: Messages -->
                 <div 
-                    class="lg:col-start-5 md:col-span-6 lg:grid
-                    md:col-start-4 md:mt-8
-                    col-span-12 bg-gray-300 lg:max-h-[920px]">
+                    class="lg:grid bg-black basis-full border-l border-slate-800">
                     <div class="flex md:flex-row flex-col h-full">
-                        <!-- Conversations -->
+                        
+                        <!-- Left: Conversations -->
                         <div 
                             :class="{ 'hidden': currentlyActiveConversation}"
-                            class="bg-black basis-1/2 md:block">
+                            class="bg-black basis-1/5 md:block">
                             
                             <!-- Conversation Rendering Header  -->
-                            <div 
-                                class="flex bg-black border-y border-slate-800 md:p-5 p-3 lg:h-16 
-                                w-full space-x-2 justify-between">
-                                    <div>
-                                    </div>
-                                    
-                                    <div class="flex">
-                                        <div class="cursor-pointer font-sans text-sm font-bold text-white pt-1">
-                                            {{ currentUser.userName }}
+                            <div class="flex flex-col">
+                                <div 
+                                    class="flex bg-black p-5 lg:h-16 
+                                    w-full space-x-2 justify-between">
+                                        <div class="flex">
+                                            <div class="cursor-pointer font-sans text-xl font-bold text-white pt-1">
+                                                {{ currentUser.userName }}
+                                            </div>
+
+                                            <div class="flex space-x-4 cursor-pointer">
+                                            </div>
                                         </div>
 
-                                        <div class="flex space-x-4 cursor-pointer">
+                                        <div>
                                         </div>
-                                    </div>
+                                        
+                                        <div 
+                                            @click="onUnsupportedFeatureClick"
+                                            class="flex cursor-pointer">
+                                            <SVGLoader :icon="'new-message'" />
+                                        </div>
+                                </div>
+                                <div 
+                                    class="flex bg-black pl-5 pr-5 pb-2 w-full space-x-2 justify-between">
+                                        <div class="flex">
+                                            <div class="cursor-pointer font-sans text-md font-bold text-white pt-1">
+                                                Messages
+                                            </div>
 
-                                    <div 
-                                        @click="onUnsupportedFeatureClick"
-                                        class="flex cursor-pointer">
-                                        <SVGLoader :icon="'new-message'" />
-                                    </div>
+                                            <div class="flex space-x-4 cursor-pointer">
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                        </div>
+                                        
+                                        <div class="cursor-pointer font-sans text-xs font-semibold text-[#949494] pt-1">
+                                            Requests
+                                        </div>
+                                </div>
                             </div>
 
 
                             <!-- Conversations rendering -->
 
-                            <div 
-                                v-for="(convo, index) of conversations"
-                                :key="index"
-                                @click="onSelectConversation(convo)"
-                                class="flex flex-col md:block
-                                overflow-auto lg:max-h-[850px]">
+                            <div class="overflow-auto lg:max-h-[850px]">
                                 <div 
-                                    :class="{ 'bg-slate-1100': convo.uuid === currentlyActiveConversation?.uuid }"
-                                    class="flex p-3 space-x-3 hover:bg-slate-1100 w-full cursor-pointer">
-                                    <!-- Profile Image -->
-                                    <img 
-                                        :src="convo.user.profilePictureUrl"
-                                        class="cursor-pointer h-14 w-14 rounded-full shadow-lg">
+                                    v-for="(convo, index) of conversations"
+                                    :key="index"
+                                    @click="onSelectConversation(convo)"
+                                    class="flex flex-col md:block pl-2 pr-2">
+                                    <div 
+                                        :class="{ 'bg-slate-1100': convo.uuid === currentlyActiveConversation?.uuid }"
+                                        class="flex p-3 space-x-3 hover:bg-slate-1100 w-full cursor-pointer">
+                                        <!-- Profile Image -->
+                                        <img 
+                                            :src="convo.user.profilePictureUrl"
+                                            class="cursor-pointer h-14 w-14 rounded-full shadow-lg">
 
 
-                                    <!-- Username / Chat / Date -->
-                                    <div class="flex flex-col self-center space-y-2 pb-3">
-                                        <span class="font-sans text-sm font-semibold text-white self-start">
-                                            {{ convo.user.userName }}
-                                        </span>
+                                        <!-- Username / Chat / Date -->
+                                        <div class="flex flex-col self-center space-y-2 pb-3">
+                                            <span class="font-sans text-sm font-semibold text-white self-start">
+                                                {{ convo.user.userName }}
+                                            </span>
 
-                                        <div class="flex flex-row space-x-1">
-                                                <span class="font-sans text-xs font-semibold text-gray-400">
-                                                    {{ convo.lastMessage }}
-                                                </span>
+                                            <div class="flex flex-row space-x-1">
+                                                    <span class="font-sans text-xs font-semibold text-gray-400">
+                                                        {{ convo.lastMessage }}
+                                                    </span>
 
-                                                <div class="font-sans text-xs font-semibold text-gray-500">
-                                                    •
-                                                </div>
+                                                    <div class="font-sans text-xs font-semibold text-gray-500">
+                                                        •
+                                                    </div>
 
-                                                <div class="font-sans font-semibold text-xs text-gray-500 justify-self-end">
-                                                    {{ convo.timeSinceLastMessage }}
-                                                </div>
+                                                    <div class="font-sans font-semibold text-xs text-gray-500 justify-self-end">
+                                                        {{ convo.timeSinceLastMessage }}
+                                                    </div>
+                                            </div>
                                         </div>
+                                        
                                     </div>
-                                    
+
+
                                 </div>
-
-
                             </div>
 
 
                         </div>
-                        <!-- Current Chat -->
+                        <!-- Right: Current Chat -->
                         <div 
                             v-if="currentlyActiveConversation"
-                            class="relative bg-black lg:basis-9/12 w-full md:h-full h-screen">
+                            class="relative bg-black lg:max-w-[1320px] lg:basis-10/12 w-full h-screen border-l border-gray-800">
                             
                             <div 
-                                class="flex lg:h-16 md:pl-8 w-full space-x-2 md:justify-between p-3
+                                class="flex lg:h-16  w-full space-x-2 md:justify-between p-3
                                 items-center border-slate-700 border-b">
                                     <div 
                                         @click="onPageBack"
@@ -114,7 +134,7 @@
                                     <div class="flex space-x-2 items-center">
                                         <img 
                                         src="https://loremflickr.com/1024/1080/car"
-                                        class="cursor-pointer h-6 w-6 rounded-full shadow-lg">
+                                        class="cursor-pointer h-10 w-10 rounded-full shadow-lg">
 
                                         <div class="cursor-pointer font-sans text-sm font-bold text-white pt-1">
                                             {{ currentlyActiveConversation.user.firstName }}
@@ -127,8 +147,6 @@
                                         <SVGLoader :icon="'audio-call'" />
                                         <SVGLoader :icon="'video-call'" />
                                         <SVGLoader :icon="'chat-info'" />
-                                        <div />
-                                        <div />
                                     </div>
                              </div>
                                 
@@ -148,7 +166,9 @@
                                     v-for="(dialog, index) of currentlyActiveConversation?.dialogs"
                                     :key="index"
                                     class="flex pt-5 space-x-2 m-2"
-                                    :class="{ 'justify-end ': dialog.isSentByViewer }">
+                                    :class="{
+                                        'justify-end': dialog.isSentByViewer,
+                                    }">
                                     <img 
                                         v-if="!dialog.isSentByViewer"
                                         src="https://loremflickr.com/1024/1080/car"
@@ -157,7 +177,10 @@
                                     <p 
                                         v-if="dialog.text"
                                         class="break-words p-3 border border-[#1f1f1f] rounded-lg text-white lg:text-sm text-xs max-w-xs"
-                                        :class="{ 'm-2 bg-dark md:bg-sky-1100': dialog.isSentByViewer }">
+                                        :class="{ 
+                                            'm-2 bg-gray-1100 md:bg-sky-1100': dialog.isSentByViewer, 
+                                            'md:bg-[#262626]': !dialog.isSentByViewer 
+                                        }">
                                             {{ dialog.text }}
                                     </p>
 
@@ -165,6 +188,10 @@
                                         v-else-if="dialog.img"
                                         :src="dialog.img"
                                         class="cursor-pointer w-60 h-40 rounded-lg">
+
+                                    <div v-if="index === currentlyActiveConversation.dialogs.length - 1" 
+                                        id="last-element">
+                                    </div>
                                 </div>
 
                             </div>
@@ -179,7 +206,7 @@
                             <!-- TODO: Improve input shape -->
                             <div 
                                 class="md:absolute sticky inset-x-3 bottom-6 
-                                sm:w-11/12 rounded-full flex space-x-3">
+                                sm:w-full rounded-full flex space-x-3">
                                 <div class="relative w-full">
                                     
                                     <div @click="triggerFileUpload" :class="{'hidden': commentText}">
@@ -189,7 +216,7 @@
                                             flex items-center'" /> 
                                     </div>
 
-                                    <div @click="sendHeartEmoji()" :class="{'hidden': commentText}">
+                                    <div @click="scrollToTheLatestMessage" :class="{'hidden': commentText}">
                                         <SVGLoader
                                             :icon="'like'" 
                                             :class="'cursor-pointer absolute inset-y-0 right-4 \
@@ -201,32 +228,33 @@
                                         v-model="commentText"
                                         tabindex="1"
                                         rows="1"
+                                        maxlength="2200"
                                         type="text"
                                         :class="{'rounded-lg ': commentText}"
                                         class="z-50 bg-black border border-[#262626] text-white 
                                         rounded-full text-sm focus:outline-none
                                         block w-full p-2.5 lg:pb-0 resize-none" 
-                                        placeholder="Message" />
+                                        placeholder="Message..." />
                                 </div>
                                     
                             </div>
 
                         </div>
-                        <!-- Intro message -->
+                        <!-- Right: Intro message -->
                         <div 
                             v-else
-                            class="md:grid place-content-center bg-black 
+                            class="md:grid place-content-center bg-black border-l border-slate-800
                             lg:basis-9/12 w-full md:h-full h-screen hidden">
                             <div class="flex flex-col space-y-1">
                                 <SVGLoader
                                     :icon="'direct-intro'" 
                                     :class="'cursor-pointer self-center'" /> 
 
-                                <div class="text-white md:text-xl text-xs">
-                                    
+                                <div class="text-white md:text-xl text-xs pt-3">
+                                    Your messages
                                 </div>
 
-                                <div class="text-[#a8a8a8] lg:text-sm text-xs pb-5">
+                                <div class="text-[#a8a8a8] lg:text-sm text-xs pb-3">
                                     Send private photos and messages to a friend or group.
                                 </div>
 
@@ -255,7 +283,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch, computed, triggerRef, onMounted } from 'vue'
+import { defineComponent, ref, watch, computed, triggerRef, onMounted, type VNodeRef, type Ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 import PostCard from '@/components/basics/PostCard.vue'
@@ -302,13 +330,14 @@ import { useToast } from 'vue-toastification'
  *              Messages 
  */
 
-export default defineComponent({
+ export default defineComponent({
     name: 'DirectView',
     setup(props, context) {
 
 
         // References to DOM element
         const fileUpload = ref<HTMLInputElementRef | null>()
+        const lastMessageElement = ref()
 
         const commentModal = ref({
             isToggled: false,
@@ -349,7 +378,7 @@ export default defineComponent({
             likesCount: 0,
             Emojis: [emoji]
         }
-        
+
         const userA: Viewer = {
             id: "123456789",
             firstName: "John",
@@ -485,10 +514,79 @@ export default defineComponent({
                 uqSeqId: 5143,
                 text: "That's useful! I could definitely use something like that.",
             },
+            {
+                utemId: "31054936540680616356189602913976320",
+                user: userA,
+                timestamp: 1683491483190270,
+                itemType: "text",
+                isSentByViewer: true,
+                uqSeqId: 5136,
+                text: "Hey, how's your day going?",
+            },
+            {
+                utemId: "42054936540680616356189602913976320",
+                user: userB,
+                timestamp: 1683491483195270,
+                itemType: "text",
+                isSentByViewer: false,
+                uqSeqId: 5137,
+                text: "It's going well, thanks! What about you?",
+            },
+            {
+                utemId: "52054936540680616356189602913976320",
+                user: userA,
+                timestamp: 1683491483198270,
+                itemType: "text",
+                isSentByViewer: true,
+                uqSeqId: 5138,
+                text: "I'm having a productive day so far!",
+            },
+            {
+                utemId: "62054936540680616356189602913976320",
+                user: userB,
+                timestamp: 1683491483200270,
+                itemType: "text",
+                isSentByViewer: false,
+                uqSeqId: 5139,
+                text: "That's awesome! Keep up the good work!",
+            },
+            {
+                utemId: "72054936540680616356189602913976320",
+                user: userA,
+                timestamp: 1683491483203270,
+                itemType: "text",
+                isSentByViewer: true,
+                uqSeqId: 5140,
+                text: "Thanks! I'm working on an exciting project.",
+            },
+            {
+                utemId: "82054936540680616356189602913976320",
+                user: userB,
+                timestamp: 1683491483206270,
+                itemType: "text",
+                isSentByViewer: false,
+                uqSeqId: 5141,
+                text: "Oh, that sounds interesting. What is it about?",
+            },
+            {
+                utemId: "92054936540680616356189602913976320",
+                user: userA,
+                timestamp: 1683491483209270,
+                itemType: "text",
+                isSentByViewer: true,
+                uqSeqId: 5142,
+                text: "It's a mobile app for organizing daily tasks and setting reminders.",
+            },
+            {
+                utemId: "102054936540680616356189602913976320",
+                user: userB,
+                timestamp: 1683491483212270,
+                itemType: "text",
+                isSentByViewer: false,
+                uqSeqId: 5143,
+                text: "That's useful! I could definitely use something like that.",
+            },
         ])
-
-
-
 
         // List of all conversations in the inbox
         const conversations = ref<Conversation[]>([
@@ -610,11 +708,11 @@ export default defineComponent({
         const onSelectConversation = (convo: Conversation) => {
             currentlyActiveConversation.value = convo
         }
-        
+
         /**
          * Go back to conversation list
          */
-         const onPageBack= () => {
+        const onPageBack = () => {
             currentlyActiveConversation.value = undefined
         }
 
@@ -634,9 +732,14 @@ export default defineComponent({
             }
         }
 
-        // TODO: Complete and use
-        const scrollToBottom = () => {
-            window.scrollTo
+        /**
+         * Scroll to latest message in the conversation
+         */
+        const scrollToTheLatestMessage = () => {
+            const target = document.querySelector("#last-element")
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth' })
+            }
         }
 
         const shouldUpdateInbox = () => {
@@ -646,7 +749,9 @@ export default defineComponent({
 
 
         // Watchers
-        // 
+        /**
+         * Watch screen size to trigger mobile screen flag
+         */
         watch(() => screenWidth.value, (size) => {
             const smallScreenWidth = 750
             if (size <= smallScreenWidth) {
@@ -662,12 +767,21 @@ export default defineComponent({
          */
         watch(chatMessage, () => {
             if (shouldUpdateInbox()) {
-                console.log('Adding message ...')
                 addToChat(chatMessage.value)
                 resetChatMessage()
+                scrollToTheLatestMessage()
             }
         })
 
+        /**
+         * Scroll to latest message on conversation change
+         */
+        watch(currentlyActiveConversation, () => {
+            const WAITING_TIME = 5
+            setTimeout(() => {
+                scrollToTheLatestMessage()
+            }, WAITING_TIME)
+        })
 
         onMounted(() => {
             // Keep track of screen width
@@ -686,6 +800,7 @@ export default defineComponent({
             currentlyActiveConversation,
             isChatLoading,
             isMobileScreenSize,
+            lastMessageElement,
             currentUser,
 
             onSendMessage,
@@ -694,7 +809,8 @@ export default defineComponent({
             onUnsupportedFeatureClick,
             onSelectConversation,
             triggerFileUpload,
-            sendHeartEmoji
+            sendHeartEmoji,
+            scrollToTheLatestMessage
         }
     },
     components: {
