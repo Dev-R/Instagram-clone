@@ -2,14 +2,18 @@
     <div class="flex flex-col space-y-4 flex-nowrap sticky top-0">
         <!-- A -->
         <div 
-            class="p-4 rounded-lg flex cursor-pointer 
-            xl:justify-start justify-center">
 
+            :class="{'xl:justify-start': !isNavBarCollapsed}"
+            class="p-4 rounded-lg flex cursor-pointer justify-center">
+            
             <!-- Large Icon -->
-            <div class="xl:block hidden p-2 pt-7">
+            <div
+                v-if="!isNavBarCollapsed"
+                class="xl:block hidden p-2 pt-7">
                 <SVGLoader :icon="'instagram-large'"/>
             </div>
-            <div class="xl:hidden block">
+            <div 
+                :class="isNavBarCollapsed ? 'block pt-5' : 'xl:hidden block'">
                 <!-- Small Icon -->
                 <SVGLoader :icon="'instagram-small'"/>
             </div>
@@ -22,6 +26,7 @@
                 <router-link
                     @click="item.onClick"
                     :to="item.path"
+                    :class="{'xl:justify-center': isNavBarCollapsed}"
                     class="group cursor-pointer rounded-full 
                     flex space-x-4 hover:bg-slate-1000 hover:delay-100 
                     p-3 xl:justify-start justify-center">
@@ -37,11 +42,11 @@
                         class="w-6 h-6 rounded-full shadow-lg group-hover:scale-110" />
 
                     <span 
+                        :class="{'xl:hidden': isNavBarCollapsed}"
                         class="xl:block hidden font-sans text-md 
                         font-normal text-white">
                         {{ item.title }}
                     </span>
-
                 </router-link>
             </template>
         </div>
@@ -54,7 +59,10 @@
             class="cursor-pointer pt-10 rounded-full 
             flex space-x-4 absolute inset-x-0 -bottom-80 md:p-5">
             <SVGLoader :icon="'more'"/>
-            <span class="xl:block hidden font-sans text-md font-normal text-white">
+            <span 
+            :class="isNavBarCollapsed ? 'xl:hidden block' : 'block'"
+                class="font-sans text-md 
+                font-normal text-white">
                     More
             </span>
         </div>
@@ -62,8 +70,8 @@
 </template>
 
 <script lang="ts">
-import { onMounted, defineComponent } from 'vue'
-import { useRouter } from 'vue-router'
+import { onMounted, defineComponent, computed } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
 import SVGLoader from '@/components/basics/SVGLoader.vue'
 import type { NavBarItem } from '@/common/models/navbar.model' 
@@ -73,6 +81,7 @@ export default defineComponent({
     setup(prop, context) {
         // Services
         const router = useRouter()
+        const route = useRoute()
 
         const menuItems: NavBarItem[] = [
             {
@@ -146,6 +155,16 @@ export default defineComponent({
         const topNavBarHiddenRoutes = ['direct']
 
         // Methods
+
+        // Computed
+        const routeName = computed(()=> {
+            return route.name ? route.name.toString() : ''
+        })
+
+        const isNavBarCollapsed = computed(() => {
+            return topNavBarHiddenRoutes.includes(routeName.value)
+        })
+
         /**
          * Emit signal when the modal is closed
          */
@@ -170,6 +189,8 @@ export default defineComponent({
         return {
             topNavBarHiddenRoutes,
             menuItems,
+            routeName,
+            isNavBarCollapsed,
             onProfileOpen,
             onCreate
         }
