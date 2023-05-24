@@ -137,15 +137,17 @@
 </template>
 
 <script lang="ts">
-import { onMounted, defineComponent, ref, watch, computed } from 'vue';
-import { useRouter } from 'vue-router';
+import { onMounted, defineComponent, ref, watch, computed } from 'vue'
+import { useRouter } from 'vue-router'
 
 // @ts-ignore
-import { Carousel3d, Slide } from 'vue3-carousel-3d';
+import { Carousel3d, Slide } from 'vue3-carousel-3d'
 
-import MediaCarousel from '@/components/carousels/MediaCarousel.vue';
-import SVGLoader from '@/components/basics/SVGLoader.vue';
-import CommentModal from '@/components/modals/CommentModal.vue';
+import {
+    MediaCarousel,
+    CommentModal, 
+    SVGLoader
+} from '@/components'
 
 export default defineComponent({
     name: "StoryView",
