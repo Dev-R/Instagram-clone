@@ -1,7 +1,7 @@
 <template>
 	<div class="bg-[#121212]">
 		<section 
-			class="container max-w-full mx-auto text-center 
+			class="container max-w-full mx-auto
 			scrollbar scrollbar-thumb-gray-900">
 			<div class="flex">
 				<!-- Left bar: Navigation -->
@@ -13,7 +13,7 @@
 
 				<!-- Center: Messages & Chat -->
 				<div 
-					class="lg:grid bg-black basis-full border-l border-slate-800">
+					class="lg:grid bg-black basis-full md:border-l border-slate-800">
 					<div class="flex md:flex-row flex-col h-full">
 						<TheMessages 
 							@on-select-conversation="selectConversation"
@@ -29,6 +29,7 @@
 							:active-conversation="activeConversation"
 							:current-user="currentUser"
 							:is-chat-loading="isChatLoading"
+                            :is-chat-empty="true"
 							v-model="chatMessageInput" />
 
 						<ChatIntro 
@@ -52,6 +53,7 @@ import {
     defineComponent,
     ref,
     watch,
+    computed,
     onMounted
 } from 'vue'
 
@@ -92,7 +94,7 @@ export default defineComponent({
 
         // Form data
         const attachmentImage = ref<PhotoModalImage>(null)
-        const chatMessageInput = ref<string>()
+        const chatMessageInput = ref<string | null>(null)
 
         // Flags for tracking state
         const isFileUploaded = ref<boolean>(false)
@@ -341,6 +343,7 @@ export default defineComponent({
             fileUpload,
             inbox,
             chatMessageInput,
+            chatMessage,
             conversations,
             activeConversation,
             lastMessageElement,

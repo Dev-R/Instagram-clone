@@ -1,10 +1,9 @@
 <template>
     <div 
-        class="md:absolute sticky inset-x-3 bottom-6 
-        sm:w-full rounded-full flex space-x-3">
-        <div class="relative w-full">
+        class="absolute inset-x-3 bottom-8 
+        rounded-full flex md:space-x-3">
             <div
-                :class="{ 'hidden': modalValue }"
+                :class="{ 'hidden': !isChatEmpty }"
                 @click="emitFileUpload">
                 <SVGLoader
                     :icon="'gallery'" 
@@ -13,7 +12,7 @@
             </div>
 
             <div
-                :class="{ 'hidden': modalValue }"
+                :class="{ 'hidden': !isChatEmpty }"
                 @click="emitLikeIcon()">
                 <SVGLoader
                     :icon="'like'" 
@@ -26,14 +25,13 @@
                 rows="1"
                 maxlength="2200"
                 type="text"
-                class="z-50 bg-black border border-[#262626] text-white 
+                class="bg-black border border-[#262626] text-white 
                 rounded-full text-sm focus:outline-none
                 block w-full p-2.5 lg:pb-0 resize-none"
                 placeholder="Message..."
-                :class="{ 'rounded-lg ': modalValue }"
+                :class="{ 'rounded-lg ': !isChatEmpty }"
                 :value="modalValue" 
                 @keyup.enter="emitSendMessage"/>
-        </div>
     </div>
 </template>
 
@@ -76,6 +74,10 @@ export default defineComponent({
         modalValue: {
             type: String as () => string | number | string[] | undefined,
             default: undefined
+        },
+        isChatEmpty: {
+            type: Boolean,
+            required: true
         }
     },
     emits: [

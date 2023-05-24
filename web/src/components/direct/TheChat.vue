@@ -9,7 +9,7 @@
             :current-user-name="currentUser.firstName"/>
             
         <!-- Chat Body -->
-        <div class="flex flex-col h-5/6 lg:max-h-[850px] overflow-auto">
+        <div class="flex flex-col lg:max-h-[850px] overflow-auto">
             <!-- C -->
             <div class="flex pt-5 space-x-2 justify-center">
                 <span class="font-sans text-xs font-semibold text-gray-400">
@@ -22,7 +22,7 @@
             </div>
 
             <!-- Chat Messages -->
-            <ChatMessage 
+            <ChatMessage
                 :active-conversation="activeConversation"/>
         </div>
 
@@ -31,6 +31,7 @@
         <ChatInput 
             @on-file-upload="$emit('onFileUpload')"
             @on-send-message="$emit('onSendMessage', $event)"
+            :is-chat-empty="isChatEmpty" 
             :value="modalValue"/>
     </div>
 </template>
@@ -60,6 +61,10 @@ export default defineComponent({
             required: true
         },
         isChatLoading: {
+            type: Boolean,
+            required: true
+        },
+        isChatEmpty: {
             type: Boolean,
             required: true
         },
