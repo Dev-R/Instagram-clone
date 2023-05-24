@@ -82,16 +82,19 @@
 import { defineComponent, ref, watch, computed } from 'vue'
 import { useRouter } from 'vue-router'
 
-import MediaCarousel from '@/components/basics/MediaCarousel.vue'
-import PostCard from '@/components/basics/PostCard.vue'
 import SVGLoader from '@/components/basics/SVGLoader.vue'
 import NavBarMain from '@/components/navbars/NavBarMain.vue'
-import SuggestionCard from '@/components/basics/SuggestionCard.vue'
-import StoryCarousel from '@/components/basics/StoryCarousel.vue'
-import CommentModal from '@/components/basics/CommentModal.vue'
+
+import SuggestionCard from '@/components/cards/SuggestionCard.vue'
+import PostCard from '@/components/cards/PostCard.vue'
+
+import StoryCarousel from '@/components/carousels/StoryCarousel.vue'
+import MediaCarousel from '@/components/carousels/MediaCarousel.vue'
+
+import CommentModal from '@/components/modals/CommentModal.vue'
+import PhotoModal from '@/components/modals/PhotoModal.vue'
 
 import type { PostMedia } from '@/common/models/post.model'
-import PhotoModal from '@/components/basics/PhotoModal.vue'
 import { usePhotoStore } from '@/stores'
 
 export default defineComponent({

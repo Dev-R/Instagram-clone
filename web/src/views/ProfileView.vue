@@ -272,13 +272,13 @@ import {
 } from '@/common/profile.enum'
 
 import SVGLoader from '@/components/basics/SVGLoader.vue'
-import PostCard from '@/components/basics/PostCard.vue'
+import PostCard from '@/components/cards/PostCard.vue'
 import NavBarMain from '@/components/navbars/NavBarMain.vue'
-import CommentModal from '@/components/basics/CommentModal.vue'
 
-import smallModal from '@/components/basics/smallModal.vue'
-import settingModal from '@/components/basics/settingModal.vue'
-import PhotoModal from '@/components/basics/photoModal.vue'
+import CommentModal from '@/components/modals/CommentModal.vue'
+import smallModal from '@/components/modals/SmallModal.vue'
+import settingModal from '@/components/modals/SettingModal.vue'
+import PhotoModal from '@/components/modals/PhotoModal.vue'
 
 
 export default defineComponent({
@@ -308,7 +308,7 @@ export default defineComponent({
         // Others
         let windowWidth = ref(window.innerWidth) // Current window width
         const profileInfo = ref<User>({
-            id: 0,
+            id: '0',
             firstName: 'Alex',
             lastName: 'Boo',
             userName: 'Alex_boo',

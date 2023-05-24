@@ -143,9 +143,9 @@ import { useRouter } from 'vue-router';
 // @ts-ignore
 import { Carousel3d, Slide } from 'vue3-carousel-3d';
 
-import MediaCarousel from '@/components/basics/MediaCarousel.vue';
+import MediaCarousel from '@/components/carousels/MediaCarousel.vue';
 import SVGLoader from '@/components/basics/SVGLoader.vue';
-import CommentModal from '@/components/basics/CommentModal.vue';
+import CommentModal from '@/components/modals/CommentModal.vue';
 
 export default defineComponent({
     name: "StoryView",
