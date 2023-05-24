@@ -244,13 +244,13 @@
             :is-toggled="photoModal.isToggled" />
 
         <!-- Followers/ Following Modal -->
-        <smallModal 
+        <SmallModal 
             @on-modal-closed="triggerSmallModal"
             :title="smallModal.title" 
             :items="smallModal.items" :is-toggled="smallModal.isToggled && smallModal.name === ProfileTriggeredModal.Follow" />
 
         <!-- Quick Setting Modal -->
-        <settingModal
+        <SettingModal
             @on-modal-closed="triggerSmallModal"
             :is-toggled="smallModal.isToggled && smallModal.name === ProfileTriggeredModal.Setting"/>
 
@@ -260,26 +260,27 @@
 <script lang="ts">
 import { defineComponent, ref, computed, onMounted, onUnmounted } from 'vue'
 
+import {
+    SVGLoader,
+    NavBarMain,
+    PostCard,
+    SmallModal,
+    SettingModal,
+    CommentModal,
+    PhotoModal
+} from '@/components'
+
 import type {
     navBarTabs,
     commentModalName,
     User,
     PostMedia
 } from '@/common/models'
+
 import {
     ProfileTab,
     ProfileTriggeredModal
 } from '@/common/profile.enum'
-
-import SVGLoader from '@/components/basics/SVGLoader.vue'
-import PostCard from '@/components/cards/PostCard.vue'
-import NavBarMain from '@/components/navbars/NavBarMain.vue'
-
-import CommentModal from '@/components/modals/CommentModal.vue'
-import smallModal from '@/components/modals/SmallModal.vue'
-import settingModal from '@/components/modals/SettingModal.vue'
-import PhotoModal from '@/components/modals/PhotoModal.vue'
-
 
 export default defineComponent({
     name: 'ProfileView',
@@ -533,8 +534,8 @@ export default defineComponent({
         NavBarMain,
         CommentModal,
         PostCard,
-        smallModal,
-        settingModal,
+        SmallModal,
+        SettingModal,
         PhotoModal
     }
 })
