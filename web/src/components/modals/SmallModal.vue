@@ -61,7 +61,7 @@
 import { defineComponent, onMounted } from 'vue'
 
 import type { SuggestionCard } from '@/common/models/post.model'
-import SmallCard from './SmallCard.vue'
+import SmallCard from '@/components/cards/SmallCard.vue'
 import SVGLoader from '@/components/basics/SVGLoader.vue'
 
 export default defineComponent({

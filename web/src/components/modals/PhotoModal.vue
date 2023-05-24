@@ -521,7 +521,7 @@ import type {
 } from '@/common/models/profile.model'
 import { PhotoTab, PhotoStage } from '@/common/photo.modal.enum'
 
-import SmallCard from '@/components/basics/SmallCard.vue'
+import SmallCard from '@/components/cards/SmallCard.vue'
 import SVGLoader from '@/components/basics/SVGLoader.vue'
 
 

@@ -117,8 +117,8 @@
 <script lang="ts">
 import { defineComponent, ref, computed } from 'vue'
 
-import SVGLoader from "@/components/basics/SVGLoader.vue"
-import MediaCarousel from '@/components/basics/MediaCarousel.vue'
+import SVGLoader from '@/components/basics/SVGLoader.vue'
+import MediaCarousel from '@/components/carousels/MediaCarousel.vue'
 import type { PostCard } from '@/common/models/post.model'
 
 export default defineComponent({
