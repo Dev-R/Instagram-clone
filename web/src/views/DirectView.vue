@@ -14,7 +14,7 @@
 				<!-- Center: Messages & Chat -->
 				<div 
 					class="lg:grid bg-black basis-full md:border-l border-slate-800">
-					<div class="flex md:flex-row flex-col h-full">
+					<div class="flex md:flex-row flex-col h-screen">
 						<TheMessages 
 							@on-select-conversation="selectConversation"
 							:active-conversation="activeConversation"
