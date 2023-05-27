@@ -1,7 +1,7 @@
 <template>
     <div
         class="md:grid place-content-center bg-black border-l border-slate-800
-        lg:basis-9/12 w-full md:h-full h-screen hidden">
+        lg:basis-9/12 w-full md:h-full h-screen hidden text-center">
         <div class="flex flex-col space-y-1">
             <SVGLoader
                 :icon="'direct-intro'" 

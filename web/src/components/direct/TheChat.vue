@@ -1,6 +1,6 @@
 <template>
     <div 
-        class="relative bg-black lg:max-w-[1320px] lg:basis-10/12 
+        class="relative bg-black lg:basis-10/12 
         w-full h-screen border-l border-gray-800">
 
         <!-- Chat Header -->
