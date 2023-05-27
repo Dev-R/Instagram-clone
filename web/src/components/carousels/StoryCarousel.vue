@@ -11,11 +11,10 @@
                 :key="index">
                 
                 <div 
-                    class="bg-gradient-to-tr from-yellow-400 
-                    to-fuchsia-600 p-1 rounded-full">
+                    class="story-avatar">
                     <a href="#" class="block bg-white rounded-full relative">
                         <img 
-                            class="md:w-16 md:h-16 h-14 w-14 rounded-full object-cover"
+                            class="md:w-16 md:h-16 h-14 w-14 rounded-full object-cover p-0.5 bg-black"
                             :src="reel.profilePictureUrl"/>
                     </a>
 
@@ -56,3 +55,12 @@ export default defineComponent({
     }
 })
 </script>
+
+<style>
+.story-avatar {
+    position: relative;
+    border-radius: 50%;
+    padding: 2.5px;
+    background-image: linear-gradient(to right top,#ffc600 20%,#ff0040,#e600cc 80%);
+}
+</style>

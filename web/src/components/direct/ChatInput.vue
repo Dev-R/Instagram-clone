@@ -1,6 +1,6 @@
 <template>
     <div 
-        class="absolute inset-x-3 bottom-8 
+        class="absolute inset-x-3 md:bottom-2 bottom-8 
         rounded-full flex md:space-x-3">
             <div
                 :class="{ 'hidden': !isChatEmpty }"
