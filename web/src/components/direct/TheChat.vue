@@ -30,6 +30,7 @@
         <!-- Chat Input -->
         <ChatInput 
             @on-file-upload="$emit('onFileUpload')"
+            @on-like-icon="$emit('onLikeIcon')"
             @on-send-message="$emit('onSendMessage', $event)"
             :is-chat-empty="isChatEmpty" 
             :value="modalValue"/>
