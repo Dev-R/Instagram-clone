@@ -16,6 +16,7 @@
             </div>
 
             <button 
+                @click="emitSendMessageModal()"
                 type="button" 
                 class="text-white bg-[#0095f6] hover:brightness-75 self-center
                 font-semibold w-auto rounded-lg text-sm md:p-1.5 
@@ -35,11 +36,19 @@ import SVGLoader from '../basics/SVGLoader.vue'
 export default defineComponent({
     name: "ChatIntro",
     setup(prop, context) {
+        /**
+         * Emit new message for modal
+         */
+         const emitSendMessageModal = () => {
+            context.emit("onSendMessageModal");
+        };
         onMounted(() => {
         });
-        return {};
+        return {
+            emitSendMessageModal
+        };
     },
-    emits: [],
+    emits: ['onSendMessageModal'],
     components: { SVGLoader }
 })
 </script>
