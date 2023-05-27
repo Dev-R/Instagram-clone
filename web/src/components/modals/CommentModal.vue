@@ -124,7 +124,7 @@
                                                 type="text" 
                                                 id="comment-form" 
                                                 class="bg-black border border-slate-800
-                                                text-gray-900 text-sm rounded-full 
+                                                text-white text-sm rounded-full 
                                                 w-full p-3" 
                                                 placeholder="Add a comment...">
                                             <div 
@@ -306,7 +306,7 @@ import { defineComponent, onMounted, computed } from 'vue';
 
 import type { PostCommentModal } from '@/common/models/post.model';
 import SVGLoader from '@/components/basics/SVGLoader.vue';
-import MediaCarousel from './MediaCarousel.vue';
+import MediaCarousel from '@/components/carousels/MediaCarousel.vue';
 
 
 export default defineComponent({

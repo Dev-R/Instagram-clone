@@ -2,14 +2,14 @@
     <div 
         class="flex flex-col space-x-2 justify-around 
         border-t border-gray-700 sticky bottom-0 md:hidden 
-        block z-50 bg-black">
+        z-50 bg-black">
         <div class="flex space-x-2 justify-around">
 
             <router-link
                 to="home" 
                 class="group cursor-pointer rounded-full 
-                flex space-x-4 hover:bg-slate-1000 hover:delay-100 
-                hover:delay-100 p-3 xl:justify-start justify-center">
+                flex space-x-4 hover:bg-slate-1000 hover:delay-100
+                p-3 xl:justify-start justify-center">
                 <SVGLoader 
                     :icon="'home'" 
                     :class="'group-hover:scale-110'"/>
@@ -35,7 +35,8 @@
             </div>
 
 
-            <div 
+            <router-link
+                to="direct" 
                 class="group cursor-pointer rounded-full 
                 flex space-x-4 hover:bg-slate-1000 
                 hover:delay-100 p-3 xl:justify-start 
@@ -43,7 +44,7 @@
                 <SVGLoader 
                     :icon="'direct'" 
                     :class="'group-hover:scale-110'"/>
-            </div>
+            </router-link>
 
             <router-link 
                 to="profile"

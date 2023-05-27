@@ -19,12 +19,6 @@ const router = createRouter({
           meta: { title: 'Home' }
         },
         {
-          path: '/chat',
-          name: 'chat',
-          component: () => import('@/views/ChatView.vue'),
-          meta: { title: 'Chat' }
-        },
-        {
           path: '/explore',
           name: 'explore',
           component: () => import('@/views/ExploreView.vue'),
@@ -41,6 +35,12 @@ const router = createRouter({
           name: 'stories',
           component: () => import('@/views/StoryView.vue'),
           meta: { title: 'Reels' }
+        },
+        {
+          path: '/direct',
+          name: 'direct',
+          component: () => import('@/views/DirectView.vue'),
+          meta: { title: 'Direct' }
         },
         {
           path: '/create',
@@ -85,6 +85,12 @@ const router = createRouter({
         //   meta: { title: 'Sign up' }
         // }
       ]
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'Not Found',
+      component: () => import("@/views/errors/NotFound.vue"),
+      meta: { title: 'Not Found' }
     }
 
 
