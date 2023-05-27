@@ -26,6 +26,7 @@
 							@on-chat-back="leaveChat"
 							@on-file-upload="triggerFileUpload"
 							@on-send-message="sendMessage"
+                            @on-like-icon="sendHeartEmoji"
 							:active-conversation="activeConversation"
 							:current-user="currentUser"
 							:is-chat-loading="isChatLoading"
@@ -33,6 +34,7 @@
 							v-model="chatMessageInput" />
 
 						<ChatIntro 
+                            @on-send-message-modal="openSendMessageModal"
 							v-else />
 					</div>
 				</div>
@@ -267,6 +269,16 @@ export default defineComponent({
             }
         }
 
+        /**
+         * TODO
+         */
+        const openSendMessageModal = () => {
+            onUnsupportedFeatureClick()
+        }
+
+        /**
+         * TODO
+         */
         const sendHeartEmoji = () => {
             chatMessage.value = {
                 text: undefined
@@ -356,6 +368,7 @@ export default defineComponent({
             onUnsupportedFeatureClick,
             selectConversation,
             sendHeartEmoji,
+            openSendMessageModal,
             scrollToTheLatestMessage,
             triggerFileUpload
         }
