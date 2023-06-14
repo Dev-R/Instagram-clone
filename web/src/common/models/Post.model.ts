@@ -26,14 +26,17 @@ export interface PostCard {
     id: string
 
     /** Array of media in post carousel */
-    carouselMedia: PostMedia[]
+    carouselMedia?: PostMedia[]
   
     /** Number of likes for the post */
     likeCount: number
   
     /** Whether the current user has liked the post */
     hasLiked: boolean
-  
+
+    /** Whether the current user follow the uploader of this post */
+    isFollowed: boolean
+
     /** Caption for the post */
     caption: string
   

@@ -43,7 +43,9 @@
 
             <div class="flex space-x-4">
 
-                <span class="cursor-pointer hover:scale-90">
+                <span 
+                    @click="$emit('onPostLike', postItem.id)"
+                    class="cursor-pointer hover:scale-90">
                     <SVGLoader 
                         v-if="postItem.hasLiked" :icon="'like'"/>
                     
@@ -161,7 +163,8 @@ export default defineComponent({
         },
     },
     emits: [
-        'onOpenCommentModal'
+        'onOpenCommentModal',
+        'onPostLike'
     ]
 })
 </script>
