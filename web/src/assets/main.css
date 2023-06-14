@@ -3,8 +3,21 @@
 @import './icons.css';
 @import './carousel.css';
 @import './toastification.css';
+/* @import './swiper.css'; */
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 @tailwind screens;
+@layer utilities {
+    
+    /**
+    * Adding dynamic viewport height to tailwind
+    * https://stackoverflow.com/questions/75079019/tailwind-css-fallback-for-new-screen-length-types-such-as-lvh-svh
+    * https://stackoverflow.com/questions/37112218/css3-100vh-not-constant-in-mobile-browser
+    */
+    .h-dynamic-screen {
+      height: 100vh; /* fallback for Opera, IE and etc. */
+      height: 100dvh;
+    }
+};
