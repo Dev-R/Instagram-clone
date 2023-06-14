@@ -81,7 +81,7 @@
                 <!-- Play Button -->
                 <button 
                     v-if="media.type === 'video' && media.index in videoElements" 
-                    id="data-carousel-next" 
+                    id="data-carousel-play" 
                     type="button"
                     class="absolute top-0 right-1/2 
                     left-1/2 z-30 

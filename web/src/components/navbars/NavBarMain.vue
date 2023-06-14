@@ -110,7 +110,7 @@ export default defineComponent({
             },
             {
                 title: 'Reels',
-                path: '/',
+                path: '/reels',
                 name: 'reels',
                 customClass: '',
                 iconName: 'reels',
