@@ -40,6 +40,7 @@
                             <PostCard 
                                 v-for="(item, index) of postItems"
                                 @on-open-comment-modal="triggerCommentModal"
+                                @on-post-like="changeLikeState"
                                 :post-item="item"
                                 :key="index"/>
                         </div>
@@ -127,6 +128,7 @@ export default defineComponent({
             photoModal.value.isToggled = !photoModal.value.isToggled
         }
 
+
         const uploadedFileData = () => {
             // Go to image view only when screen size is extra small (i.e: Phone screen)
             if (windowType.value === 'xs')
@@ -178,9 +180,9 @@ export default defineComponent({
         const mediasArraySampleB: PostMedia[] = [
             {
                 index: 0,
-                type: 'image',
+                type: 'video',
                 mediaUrl:
-                    "https://loremflickr.com/1024/1280/sky",
+                    "https://into-the-program.com/uploads/sample_video02.mp4",
                 title: "Legendary A"
             },
             {
@@ -192,7 +194,7 @@ export default defineComponent({
             }
         ]
 
-        const postItems = [
+        const postItems = ref([
             {
                 id: '0',
                 userName: 'Rabee',
@@ -215,7 +217,7 @@ export default defineComponent({
                 commentCount: 5,
                 profilePictureUrl: 'https://loremflickr.com/32/32/girl'
             }
-        ]
+        ])
 
         const suggested = {
             userName: 'Rabee',
@@ -247,6 +249,15 @@ export default defineComponent({
         }
         ]
 
+        /**
+         * Update like state of a post.
+         * @param id Liked / Unliked post ID
+         */
+        const changeLikeState = (id: number) => {
+            const postItem = postItems.value[id]
+            postItem.hasLiked = !postItem.hasLiked
+        }
+
         return {
             postItems,
             suggested,
@@ -255,7 +266,8 @@ export default defineComponent({
             photoModal,
             triggerCommentModal,
             triggerPhotoModal,
-            uploadedFileData
+            uploadedFileData,
+            changeLikeState
         }
     },
     components: {
