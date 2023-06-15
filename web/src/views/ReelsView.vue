@@ -39,307 +39,155 @@
                             :modules="modules">
 
                             <swiper-slide
-                                :class="'flex flex-col relative max-w-lg sm:max-h-[868.5px]'"
-                                v-on="{ click: isVideoPlaying ? () => pauseVideo() : () => playVideo() }">
+                                :class="'flex flex-col relative max-w-lg sm:max-h-[868.5px]'">
 
-                            <!-- <img src="https://i.ibb.co/Yh0C772/img.png" class="absolute blur-filter h-4/4">  -->
-                            <div class="relative sm:max-h-[868.5px]">
-                                
-                                <video
-                                    :controls="false"
-                                    data-slide-type="video"
-                                    autoplay
-                                    loop
-                                    defaultMuted
-                                    playsinline
-                                    oncontextmenu="return false"
-                                    preload="auto"
-                                    @play="updateVideoPlayingStatus"
-                                    :muted="isVideoMuted"
-                                    src="https://player.vimeo.com/external/458873588.sd.mp4?s=0bc2654e0d044d2a06cb13a7cc24bc278c3ed079&profile_id=165&oauth2_token_id=57447761"
-                                    class="sm:rounded cursor-pointer h-dynamic-screen sm:h-auto max-w-none md:max-w-full md:w-11/12">
-                                     <!-- max-w-none  -->
-                                </video>
+                                <!-- <img src="https://i.ibb.co/Yh0C772/img.png" class="absolute blur-filter h-4/4">  -->
+                                <div class="relative sm:max-h-[868.5px]">
+                                    
+                                    <video
+                                        v-on="{ click: isVideoPlaying ? () => pauseVideo() : () => playVideo() }"
+                                        :controls="false"
+                                        data-slide-type="video"
+                                        autoplay
+                                        loop
+                                        defaultMuted
+                                        playsinline
+                                        oncontextmenu="return false"
+                                        preload="auto"
+                                        @play="updateVideoPlayingStatus"
+                                        :muted="isVideoMuted"
+                                        src="https://player.vimeo.com/external/458873588.sd.mp4?s=0bc2654e0d044d2a06cb13a7cc24bc278c3ed079&profile_id=165&oauth2_token_id=57447761"
+                                        class="sm:rounded cursor-pointer h-dynamic-screen sm:h-auto max-w-none md:max-w-full md:w-11/12">
+                                        <!-- max-w-none  -->
+                                    </video>
 
-                                <!-- Mute Button -->
-                                <button
-                                    id="data-carousel-mute"
-                                    type="button"
-                                    class="absolute top-3 z-50
-                                    sm:flex items-center justify-center
-                                    cursor-pointer group hidden
-                                    focus:outline-none"
-                                    @click="toggleVideoMute">
+                                    <!-- Mute Button -->
+                                    <button
+                                        id="data-carousel-mute"
+                                        type="button"
+                                        class="absolute top-3 z-50
+                                        sm:flex items-center justify-center
+                                        cursor-pointer group hidden
+                                        focus:outline-none"
+                                        @click="toggleVideoMute">
 
-                                    <span
-                                        class="inline-flex items-center justify-center
-                                        lg:w-8 lg:h-8 w-6 h-6 rounded-full
-                                        group-focus:outline-none transparent-gray">
+                                        <span
+                                            class="inline-flex items-center justify-center
+                                            lg:w-8 lg:h-8 w-6 h-6 rounded-full
+                                            group-focus:outline-none transparent-gray">
 
-                                        <i
-                                        class="fa-solid
-                                        text-sm text-gray-300"
-                                        :class="{
-                                            'fa-volume-high': !isVideoMuted,
-                                            'fa-volume-xmark': isVideoMuted,
-                                        }">
-                                        </i>
-
-                                    </span>
-                                </button>
-
-                                <!-- Play Button -->
-                                <button
-                                    id="data-carousel-play"
-                                    type="button"
-                                    class="absolute top-0
-                                    sm:left-56 left-1/2 z-30 duration-300 ease-in-out
-                                    sm:flex items-center justify-center
-                                    h-full cursor-pointer group hidden
-                                    focus:outline-none">
-
-                                    <span
-                                        :class="{
-                                            'invisible w-full h-full' : isVideoPlaying
-                                        }"
-                                        class="inline-flex items-center transparent-black
-                                        justify-center rounded-full w-16 h-16
-                                        group-focus:outline-none">
-                                        <i
+                                            <i
                                             class="fa-solid
-                                            text-2xl text-gray-300"
+                                            text-sm text-gray-300"
                                             :class="{
-                                                'fa-play': !isVideoPlaying,
+                                                'fa-volume-high': !isVideoMuted,
+                                                'fa-volume-xmark': isVideoMuted,
                                             }">
-                                        </i>
-                                    </span>
-                                </button>
-
-                                <div class="absolute bottom-3 left-5 flex flex-col space-y-3 basis-full">
-                                    <SmallCard
-                                        @on-action-click="handleFollowRequest"
-                                        profile-image="https://i.ibb.co/JQVbxyH/img.jpg">
-
-                                        <template v-slot:user-name>
-                                            {{ 'Rabi' }}
-                                        </template>
-
-                                        <template
-                                            v-slot:action-name>
-                                            {{ isFollowed ? 'Following' : 'Follow' }}
-                                        </template>
-
-                                    </SmallCard>
-
-                                    <div class="text-white font-normal text-sm">
-                                        Living like its my last 🤙🏻🔥
-                                    </div>
-
-                                    <div class="flex flex-row flex-nowrap">
-                                        <!-- Music -->
-                                        <div class="text-sm font-sans text-white flex flex-row">
-                                            <i class="fa-solid fa-music text-white text-xs p-1">
                                             </i>
 
-                                            <div class="relative flex overflow-x-hidden">
-                                                <div class="animate-marquee whitespace-nowrap">
-                                                    <span class="text-xs mx-4">Marquee Item 1</span>
-                                                </div>
+                                        </span>
+                                    </button>
 
-                                                <div class="absolute top-0 animate-marquee2 whitespace-nowrap">
-                                                    <span class="text-xs mx-4">Marquee Item 1</span>
-                                                </div>
-                                            </div>
+                                    <!-- Play Button -->
+                                    <button
+                                        id="data-carousel-play"
+                                        type="button"
+                                        class="absolute top-0
+                                        sm:left-56 left-1/2 z-30 duration-300 ease-in-out
+                                        sm:flex items-center justify-center
+                                        h-full cursor-pointer group hidden
+                                        focus:outline-none">
 
-                                        </div>
-
-                                        <!-- Location -->
-                                        <div class="text-sm font-sans text-white">
-                                            <i class="fa-solid fa-location-dot text-xs p-1"></i>
-                                            <span>
-                                                San Francisco, California
-                                            </span>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-
-                            <!-- Side Buttons -->
-                            <div class="absolute flex flex-col inset-y-2/3 right-0 space-y-7">
-                                <!-- Like -->
-                                <div class="flex flex-col hover:brightness-50 cursor-pointer">
-                                    <i class="fa-regular fa-heart text-white text-2xl"></i>
-                                    <div class="text-xs font-sans text-white">750K</div>
-                                </div>
-
-                                <div class="flex flex-col hover:brightness-50 cursor-pointer">
-                                    <i class="fa-regular fa-comment text-white text-2xl"></i>
-                                    <div class="text-xs font-sans text-white">7,225</div>
-                                </div>
-
-                                <div class="flex flex-col hover:brightness-50 cursor-pointer">
-                                    <i class="fa-regular fa-paper-plane text-white text-2xl"></i>
-                                 </div>
-
-                                 <div class="flex flex-col hover:brightness-50 cursor-pointer self-center">
-                                    <i class="fa-regular fa-bookmark text-white text-2xl"></i>
-                                 </div>
- 
-
-                            </div>
-                            </swiper-slide>
-
-                            <swiper-slide
-                                :class="'flex flex-col relative max-w-lg sm:max-h-[868.5px]'"
-                                v-on="{ click: isVideoPlaying ? () => pauseVideo() : () => playVideo() }">
-
-                            <!-- <img src="https://i.ibb.co/Yh0C772/img.png" class="absolute blur-filter h-4/4">  -->
-                            <div class="relative sm:max-h-[868.5px]">
-                                
-                                <video
-                                    :controls="false"
-                                    data-slide-type="video"
-                                    autoplay
-                                    loop
-                                    defaultMuted
-                                    playsinline
-                                    oncontextmenu="return false"
-                                    preload="auto"
-                                    @play="updateVideoPlayingStatus"
-                                    :muted="isVideoMuted"
-                                    src="https://player.vimeo.com/external/458873588.sd.mp4?s=0bc2654e0d044d2a06cb13a7cc24bc278c3ed079&profile_id=165&oauth2_token_id=57447761"
-                                    class="sm:rounded cursor-pointer h-dynamic-screen sm:h-auto max-w-none md:max-w-full md:w-11/12">
-                                     <!-- max-w-none  -->
-                                </video>
-
-                                <!-- Mute Button -->
-                                <button
-                                    id="data-carousel-mute"
-                                    type="button"
-                                    class="absolute top-3 z-50
-                                    sm:flex items-center justify-center
-                                    cursor-pointer group hidden
-                                    focus:outline-none"
-                                    @click="toggleVideoMute">
-
-                                    <span
-                                        class="inline-flex items-center justify-center
-                                        lg:w-8 lg:h-8 w-6 h-6 rounded-full
-                                        group-focus:outline-none transparent-gray">
-
-                                        <i
-                                        class="fa-solid
-                                        text-sm text-gray-300"
-                                        :class="{
-                                            'fa-volume-high': !isVideoMuted,
-                                            'fa-volume-xmark': isVideoMuted,
-                                        }">
-                                        </i>
-
-                                    </span>
-                                </button>
-
-                                <!-- Play Button -->
-                                <button
-                                    id="data-carousel-play"
-                                    type="button"
-                                    class="absolute top-0
-                                    sm:left-56 left-1/2 z-30 duration-300 ease-in-out
-                                    sm:flex items-center justify-center
-                                    h-full cursor-pointer group hidden
-                                    focus:outline-none">
-
-                                    <span
-                                        :class="{
-                                            'invisible w-full h-full' : isVideoPlaying
-                                        }"
-                                        class="inline-flex items-center transparent-black
-                                        justify-center rounded-full w-16 h-16
-                                        group-focus:outline-none">
-                                        <i
-                                            class="fa-solid
-                                            text-2xl text-gray-300"
+                                        <span
                                             :class="{
-                                                'fa-play': !isVideoPlaying,
-                                            }">
-                                        </i>
-                                    </span>
-                                </button>
-
-                                <div class="absolute bottom-3 left-5 flex flex-col space-y-3 basis-full">
-                                    <SmallCard
-                                        @on-action-click="handleFollowRequest"
-                                        profile-image="https://i.ibb.co/JQVbxyH/img.jpg">
-
-                                        <template v-slot:user-name>
-                                            {{ 'Rabi' }}
-                                        </template>
-
-                                        <template
-                                            v-slot:action-name>
-                                            {{ isFollowed ? 'Following' : 'Follow' }}
-                                        </template>
-
-                                    </SmallCard>
-
-                                    <div class="text-white font-normal text-sm">
-                                        Living like its my last 🤙🏻🔥
-                                    </div>
-
-                                    <div class="flex flex-row flex-nowrap">
-                                        <!-- Music -->
-                                        <div class="text-sm font-sans text-white flex flex-row">
-                                            <i class="fa-solid fa-music text-white text-xs p-1">
+                                                'invisible w-full h-full' : isVideoPlaying
+                                            }"
+                                            class="inline-flex items-center transparent-black
+                                            justify-center rounded-full w-16 h-16
+                                            group-focus:outline-none">
+                                            <i
+                                                class="fa-solid
+                                                text-2xl text-gray-300"
+                                                :class="{
+                                                    'fa-play': !isVideoPlaying,
+                                                }">
                                             </i>
+                                        </span>
+                                    </button>
 
-                                            <div class="relative flex overflow-x-hidden">
-                                                <div class="animate-marquee whitespace-nowrap">
-                                                    <span class="text-xs mx-4">Marquee Item 1</span>
+                                    <div class="absolute bottom-3 left-5 flex flex-col space-y-3 basis-full">
+                                        <SmallCard
+                                            @on-action-click="handleFollowRequest"
+                                            profile-image="https://i.ibb.co/JQVbxyH/img.jpg">
+
+                                            <template v-slot:user-name>
+                                                {{ 'Rabi' }}
+                                            </template>
+
+                                            <template
+                                                v-slot:action-name>
+                                                {{ isFollowed ? 'Following' : 'Follow' }}
+                                            </template>
+
+                                        </SmallCard>
+
+                                        <div class="text-white font-normal text-sm">
+                                            Living like its my last 🤙🏻🔥
+                                        </div>
+
+                                        <div class="flex flex-row flex-nowrap">
+                                            <!-- Music -->
+                                            <div class="text-sm font-sans text-white flex flex-row">
+                                                <i class="fa-solid fa-music text-white text-xs p-1">
+                                                </i>
+
+                                                <div class="relative flex overflow-x-hidden">
+                                                    <div class="animate-marquee whitespace-nowrap">
+                                                        <span class="text-xs mx-4">Marquee Item 1</span>
+                                                    </div>
+
+                                                    <div class="absolute top-0 animate-marquee2 whitespace-nowrap">
+                                                        <span class="text-xs mx-4">Marquee Item 1</span>
+                                                    </div>
                                                 </div>
 
-                                                <div class="absolute top-0 animate-marquee2 whitespace-nowrap">
-                                                    <span class="text-xs mx-4">Marquee Item 1</span>
-                                                </div>
                                             </div>
 
+                                            <!-- Location -->
+                                            <div class="text-sm font-sans text-white">
+                                                <i class="fa-solid fa-location-dot text-xs p-1"></i>
+                                                <span>
+                                                    San Francisco, California
+                                                </span>
+                                            </div>
                                         </div>
 
-                                        <!-- Location -->
-                                        <div class="text-sm font-sans text-white">
-                                            <i class="fa-solid fa-location-dot text-xs p-1"></i>
-                                            <span>
-                                                San Francisco, California
-                                            </span>
-                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Side Buttons -->
+                                <div class="absolute flex flex-col inset-y-2/3 right-0 space-y-7">
+                                    <!-- Like -->
+                                    <div class="flex flex-col hover:brightness-50 cursor-pointer">
+                                        <i class="fa-regular fa-heart text-white text-2xl"></i>
+                                        <div class="text-xs font-sans text-white">750K</div>
                                     </div>
 
+                                    <div class="flex flex-col hover:brightness-50 cursor-pointer">
+                                        <i class="fa-regular fa-comment text-white text-2xl"></i>
+                                        <div class="text-xs font-sans text-white">7,225</div>
+                                    </div>
+
+                                    <div class="flex flex-col hover:brightness-50 cursor-pointer">
+                                        <i class="fa-regular fa-paper-plane text-white text-2xl"></i>
+                                    </div>
+
+                                    <div class="flex flex-col hover:brightness-50 cursor-pointer self-center">
+                                        <i class="fa-regular fa-bookmark text-white text-2xl"></i>
+                                    </div>
+    
+
                                 </div>
-                            </div>
-
-                            <!-- Side Buttons -->
-                            <div class="absolute flex flex-col inset-y-2/3 right-0 space-y-7">
-                                <!-- Like -->
-                                <div class="flex flex-col hover:brightness-50 cursor-pointer">
-                                    <i class="fa-regular fa-heart text-white text-2xl"></i>
-                                    <div class="text-xs font-sans text-white">750K</div>
-                                </div>
-
-                                <div class="flex flex-col hover:brightness-50 cursor-pointer">
-                                    <i class="fa-regular fa-comment text-white text-2xl"></i>
-                                    <div class="text-xs font-sans text-white">7,225</div>
-                                </div>
-
-                                <div class="flex flex-col hover:brightness-50 cursor-pointer">
-                                    <i class="fa-regular fa-paper-plane text-white text-2xl"></i>
-                                 </div>
-
-                                 <div class="flex flex-col hover:brightness-50 cursor-pointer self-center">
-                                    <i class="fa-regular fa-bookmark text-white text-2xl"></i>
-                                 </div>
- 
-
-                            </div>
                             </swiper-slide>
 
                         </SwiperContainer>
