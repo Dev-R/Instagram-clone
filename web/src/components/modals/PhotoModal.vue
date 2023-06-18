@@ -518,8 +518,8 @@ import type {
     PhotoModalImageForm,
     PhotoModalAdjustment,
     HTMLInputElementRef
-} from '@/common/models/profile.model'
-import { PhotoTab, PhotoStage } from '@/common/photo.modal.enum'
+} from '@/common'
+import { PhotoTab, PhotoStage } from '@/common'
 
 import SmallCard from '@/components/cards/SmallCard.vue'
 import SVGLoader from '@/components/basics/SVGLoader.vue'

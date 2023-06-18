@@ -275,12 +275,12 @@ import type {
     commentModalName,
     User,
     PostMedia
-} from '@/common/models'
+} from '@/common'
 
 import {
     ProfileTab,
     ProfileTriggeredModal
-} from '@/common/profile.enum'
+} from '@/common'
 
 export default defineComponent({
     name: 'ProfileView',

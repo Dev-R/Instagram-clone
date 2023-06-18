@@ -67,7 +67,7 @@
             @on-modal-closed="triggerCommentModal" 
             :post-comment="{
                 isToggled: commentModal.isToggled,
-                post : postItems[commentModal.postId],
+                post: postItems[commentModal.postId],
             }"/>
         
         <!-- Photo Modal -->
@@ -94,7 +94,7 @@ import {
     PhotoModal
 } from '@/components'
 
-import type { PostMedia } from '@/common/models'
+import type { PostMedia } from '@/common'
 import { usePhotoStore } from '@/stores'
 
 export default defineComponent({
@@ -204,7 +204,8 @@ export default defineComponent({
                 caption: ' Sh. @abdullah_oduro and I getting that Saturday morning work in the gym and talking over @yaqeeninstitute Quran 30 ',
                 carouselMedia: mediasArraySampleA,
                 commentCount: 0,
-                profilePictureUrl: 'https://loremflickr.com/32/32/bird'
+                profilePictureUrl: 'https://loremflickr.com/32/32/bird',
+                isFollowed: false
             },
             {
                 id: '1',
@@ -215,7 +216,8 @@ export default defineComponent({
                 caption: 'Be like a tree. Stay grounded. Connect with your roots. Turn over a new leaf. Bend before you break. Enjoy your unique natural beauty. Keep growing.',
                 carouselMedia: mediasArraySampleB,
                 commentCount: 5,
-                profilePictureUrl: 'https://loremflickr.com/32/32/girl'
+                profilePictureUrl: 'https://loremflickr.com/32/32/girl',
+                isFollowed: false
             }
         ])
 
