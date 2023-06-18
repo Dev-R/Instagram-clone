@@ -1,5 +1,5 @@
 <template>
-	<div class="relative sm:max-h-[868.5px]">
+	<div class="relative sm:max-h-[868.5px] cursor-pointer">
 		<video
 			:id="reel.id"
 			:muted="isVideoMuted"
