@@ -5,385 +5,232 @@
 			scrollbar scrollbar-thumb-gray-900">
 			<div class="md:grid grid-cols-12 flex justify-center">
 				<!-- Left bar: Navigation -->
-                <div 
-                    class="xl:col-span-2 col-span-1 bg-black 
+				<div 
+					class="xl:col-span-2 col-span-1 bg-black 
                     md:block hidden space-y-12 h-screen 
                     sticky top-0 border-r border-gray-900">
-                    
-                    <NavBarMain />
-                    
-                </div>
+					<NavBarMain />
+				</div>
 
-                <div 
-                
-                    class="sm:col-span-7 md:col-start-6 sm:max-w-lg self-center 
-                     overflow-auto scrollbar scrollbar-none">
-
-                     <!--
-                        :slidesPerView="1.15" 
-                    -->
-                    <div class="swiper-container-wrapper">
-                        <SwiperContainer
-                            @afterInit="updateActiveSlideInstance"
-                            @active-index-change="updateActiveSlideInstance"
-                            :direction="'vertical'"
-                            :centeredSlides="true"
-                            :spaceBetween="15"
-                            :loop="true"
-                            :mousewheel="true"
-                            :pagination="{
-                                clickable: false,
-                                bulletClass: 'hidden'   
-                            }"
-                            :class="'max-h-screen h-dynamic-screen sm:h-auto sm:rounded-lg self-center swiper-container'"
-                            :modules="modules">
-
-                            <swiper-slide
-                                :class="'flex flex-col relative max-w-lg sm:max-h-[868.5px]'">
-
-                                <!-- <img src="https://i.ibb.co/Yh0C772/img.png" class="absolute blur-filter h-4/4">  -->
-                                <div class="relative sm:max-h-[868.5px]">
-                                    
-                                    <video
-                                        v-on="{ click: isVideoPlaying ? () => pauseVideo() : () => playVideo() }"
-                                        :controls="false"
-                                        data-slide-type="video"
-                                        autoplay
-                                        loop
-                                        defaultMuted
-                                        playsinline
-                                        oncontextmenu="return false"
-                                        preload="auto"
-                                        @play="updateVideoPlayingStatus"
-                                        :muted="isVideoMuted"
-                                        src="https://player.vimeo.com/external/458873588.sd.mp4?s=0bc2654e0d044d2a06cb13a7cc24bc278c3ed079&profile_id=165&oauth2_token_id=57447761"
-                                        class="sm:rounded cursor-pointer h-dynamic-screen sm:h-auto max-w-none md:max-w-full md:w-11/12">
-                                        <!-- max-w-none  -->
-                                    </video>
-
-                                    <!-- Mute Button -->
-                                    <button
-                                        id="data-carousel-mute"
-                                        type="button"
-                                        class="absolute top-3 z-50
-                                        sm:flex items-center justify-center
-                                        cursor-pointer group hidden
-                                        focus:outline-none"
-                                        @click="toggleVideoMute">
-
-                                        <span
-                                            class="inline-flex items-center justify-center
-                                            lg:w-8 lg:h-8 w-6 h-6 rounded-full
-                                            group-focus:outline-none transparent-gray">
-
-                                            <i
-                                            class="fa-solid
-                                            text-sm text-gray-300"
-                                            :class="{
-                                                'fa-volume-high': !isVideoMuted,
-                                                'fa-volume-xmark': isVideoMuted,
-                                            }">
-                                            </i>
-
-                                        </span>
-                                    </button>
-
-                                    <!-- Play Button -->
-                                    <button
-                                        id="data-carousel-play"
-                                        type="button"
-                                        class="absolute top-0
-                                        sm:left-56 left-1/2 z-30 duration-300 ease-in-out
-                                        sm:flex items-center justify-center
-                                        h-full cursor-pointer group hidden
-                                        focus:outline-none">
-
-                                        <span
-                                            :class="{
-                                                'invisible w-full h-full' : isVideoPlaying
-                                            }"
-                                            class="inline-flex items-center transparent-black
-                                            justify-center rounded-full w-16 h-16
-                                            group-focus:outline-none">
-                                            <i
-                                                class="fa-solid
-                                                text-2xl text-gray-300"
-                                                :class="{
-                                                    'fa-play': !isVideoPlaying,
-                                                }">
-                                            </i>
-                                        </span>
-                                    </button>
-
-                                    <div class="absolute bottom-3 left-5 flex flex-col space-y-3 basis-full">
-                                        <SmallCard
-                                            @on-action-click="handleFollowRequest"
-                                            profile-image="https://i.ibb.co/JQVbxyH/img.jpg">
-
-                                            <template v-slot:user-name>
-                                                {{ 'Rabi' }}
-                                            </template>
-
-                                            <template
-                                                v-slot:action-name>
-                                                {{ isFollowed ? 'Following' : 'Follow' }}
-                                            </template>
-
-                                        </SmallCard>
-
-                                        <div class="text-white font-normal text-sm">
-                                            Living like its my last 🤙🏻🔥
-                                        </div>
-
-                                        <div class="flex flex-row flex-nowrap">
-                                            <!-- Music -->
-                                            <div class="text-sm font-sans text-white flex flex-row">
-                                                <i class="fa-solid fa-music text-white text-xs p-1">
-                                                </i>
-
-                                                <div class="relative flex overflow-x-hidden">
-                                                    <div class="animate-marquee whitespace-nowrap">
-                                                        <span class="text-xs mx-4">Marquee Item 1</span>
-                                                    </div>
-
-                                                    <div class="absolute top-0 animate-marquee2 whitespace-nowrap">
-                                                        <span class="text-xs mx-4">Marquee Item 1</span>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-
-                                            <!-- Location -->
-                                            <div class="text-sm font-sans text-white">
-                                                <i class="fa-solid fa-location-dot text-xs p-1"></i>
-                                                <span>
-                                                    San Francisco, California
-                                                </span>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-
-                                <!-- Side Buttons -->
-                                <div class="absolute flex flex-col inset-y-2/3 right-0 space-y-7">
-                                    <!-- Like -->
-                                    <div class="flex flex-col hover:brightness-50 cursor-pointer">
-                                        <i class="fa-regular fa-heart text-white text-2xl"></i>
-                                        <div class="text-xs font-sans text-white">750K</div>
-                                    </div>
-
-                                    <div class="flex flex-col hover:brightness-50 cursor-pointer">
-                                        <i class="fa-regular fa-comment text-white text-2xl"></i>
-                                        <div class="text-xs font-sans text-white">7,225</div>
-                                    </div>
-
-                                    <div class="flex flex-col hover:brightness-50 cursor-pointer">
-                                        <i class="fa-regular fa-paper-plane text-white text-2xl"></i>
-                                    </div>
-
-                                    <div class="flex flex-col hover:brightness-50 cursor-pointer self-center">
-                                        <i class="fa-regular fa-bookmark text-white text-2xl"></i>
-                                    </div>
-    
-
-                                </div>
-                            </swiper-slide>
-
-                        </SwiperContainer>
-                    </div>
-                </div>
+				<div 
+					class="sm:col-span-7 md:col-start-6 sm:max-w-lg self-center 
+                    overflow-auto scrollbar scrollbar-none">
+					<div class="swiper-container-wrapper">
+						<SwiperContainer
+							:direction="'vertical'"
+							:centered-slides="true"
+							:space-between="15"
+							:slides-per-view="isMobileScreen ? 1.00 : 1.15"
+							:loop="reelItems.length > 3"
+							:mousewheel="true"
+							:modules="modules"
+							:pagination="{
+								clickable: false,
+								bulletClass: 'hidden'   
+							}"
+							:class="'max-h-screen h-dynamic-screen sm:h-auto \
+                            sm:rounded-lg self-center swiper-container'"
+							@afterInit="updateActiveSlideInstance"
+							@active-index-change="updateActiveSlideInstance">
+							<swiper-slide
+								v-for="reel of reelItems"
+								:class="'flex flex-col relative max-w-lg sm:max-h-[868.5px]'">
+								<ReelCard 
+									:reel="reel"
+									:active-video="activeVideo"
+									@on-follow-request="handleFollowRequest"
+									@on-like-state-change="handleLikeStateChange" />
+							</swiper-slide>
+						</SwiperContainer>
+					</div>
+				</div>
 			</div>
 		</section>
 	</div>
 </template>
+
 <script lang="ts">
 // Import Swiper styles
-import 'swiper/css/bundle';
-import 'swiper/css';
-import 'swiper/css/pagination';
+import 'swiper/css/bundle'
+import 'swiper/css'
+import 'swiper/css/pagination'
 
-import { Swiper, SwiperSlide } from 'swiper/vue';
-import SwiperInstance, { Mousewheel, Pagination } from 'swiper';
+import {
+    onMounted,
+    defineComponent,
+    ref,
+    computed,
+} from 'vue'
 
-import { NavBarMain, SmallCard } from '@/components'
-import { onMounted, defineComponent, ref } from 'vue'
-/**
- * TODO:
- *  -   Add video controllers
- * 
- */
+import SwiperInstance, {
+    Mousewheel,
+    Pagination
+} from 'swiper'
+
+import {
+    Swiper,
+    SwiperSlide
+} from 'swiper/vue'
+
+import {
+    NavBarMain,
+    ReelCard,
+    SmallCard,
+    SVGLoader
+} from '@/components'
+
+import type {
+    ReelMedia,
+    ReelPost,
+} from '@/common'
+
+import {
+    ScreenBreakpoint
+} from '@/common'
+
+// Sample data
+const mediasArraySampleA: ReelMedia = {
+    type: 'video',
+    mediaUrl: 'https://assets.mixkit.co/videos/download/mixkit-little-girl-laying-in-the-grass-enjoying-a-chocolate-bunny-49069.mp4',
+    title: 'Legendary A',
+    location: 'LA'
+}
+
+const mediasArraySampleB: ReelMedia = {
+    type: 'video',
+    mediaUrl: 'https://assets.mixkit.co/videos/download/mixkit-eastern-egg-picnic-in-the-garden-48599.mp4',
+    title: 'Legendary A',
+    location: 'LA'
+}
+
 export default defineComponent({
-    name: "Reels",
-    setup() {
-        // Others
-        const WAITING_TIME_IN_SECONDS = 1000000000000
-
+	name: 'Reels',
+	setup() {
 
         // Trackers
-        const isFollowed = ref<boolean>(false)
+		const activeSwiperInstance = ref<SwiperInstance>()
+		const activeVideo = ref<HTMLVideoElement>()
 
-        // Video trackers
-        var timeout = null
-        const currentActiveMediaSlide = ref <SwiperInstance>()
-        const currentActiveVideo = ref<HTMLVideoElement>()
-        // const videoPlayingStatus = ref(VideoPlayingState.PausingState)
+		// Others
+		const screenWidth = ref<number>(window.innerWidth) // Current window width
 
-        // Video handlers
-        const isVideoMuted = ref<boolean>(true) // Check if video is currently muted or not
-        const isVideoPlaying = ref<boolean>(false) // Check if video is playing or not
-
-        
-
-        const onSwiper = (swiper: any) => {
-            console.log(swiper)
-        }
-        const onSlideChange = () => {
-            console.log('slide change')
-        }
-
-
-        const goToNextSlide = () => {
-            currentActiveMediaSlide.value?.slideNext()
-        }
-
-        const goToPrevSlide = () => {
-            currentActiveMediaSlide.value?.slidePrev()
-        }
-
-        const runNext = () => {
-            timeout = setTimeout(function () {
-                goToNextSlide()
-            }, WAITING_TIME_IN_SECONDS)
-            console.log('Image switched')
-        }
-
-
-        /**
-         * Mutes or unmutes the current Active video.
+		/**
+         * Update active swiper slide and video
+         * @param swiper The new active swiper slide
          */
-        const toggleVideoMute = () => {
-            const video = currentActiveVideo.value
-            isVideoMuted.value = !video?.muted
-        }
+		const updateActiveSlideInstance = (swiper: SwiperInstance) => {
+			pauseVideo()
+			activeSwiperInstance.value = swiper // Update active swiper slide to current one
+			const currentIndex = swiper.activeIndex
+			const currenSlide = swiper.slides[currentIndex]
+			updateActiveVideo(currenSlide) // Update active video to current one
+		}
 
-
-        /**
-         * Pauses the current active video.
-         * 
-         */
-        const pauseVideo = () => {
-            const video = currentActiveVideo.value
-            video?.pause()
-            updateVideoPlayingStatus()
-        }
-
-        /**
-         * Plays the current active video.
-         */
-        const playVideo = () => {
-            const video = currentActiveVideo.value
-            video?.play()
-            updateVideoPlayingStatus()
-        }
-
-
-        const updateActiveSlideInstance = (swiper: SwiperInstance) => {
-            currentActiveMediaSlide.value = swiper
-            var currentIndex = swiper.activeIndex
-            var currenSlide = swiper.slides[currentIndex]
-            updateActiveVideo(currenSlide)
-            
-            console.log("Active instance updated:", currentActiveVideo.value)
-        }
-
-
-        /**
-         * Update the current active video variable to match that of active slide
+		/**
+         * Update the current active video variable to match that of the active slide
          * @param currentSlide Current active slide show
          */
-        const updateActiveVideo = (currentSlide: HTMLElement ) => {
-            currentActiveVideo.value = currentSlide.querySelector('video') as HTMLVideoElement
-        }
+		const updateActiveVideo = (currentSlide: HTMLElement) => {
+			activeVideo.value = currentSlide?.querySelector(
+                'video'
+                ) as HTMLVideoElement
+			playVideo() // Auto play new active 
+		}
 
+		/**
+         * Change the fllow state of the post based on user click
+         * @param activeReel 
+         */
+		const handleFollowRequest = (activeReel: ReelPost) => {
+			activeReel.isFollowed = !activeReel.isFollowed
+		}
 
-        const handleFollowRequest = () => {
-            console.log("Follow request received")
-            isFollowed.value = !isFollowed.value
-        }
+		/**
+         * Update the like state of the reel based on the user click
+         * @param id Liked / Unliked post ID
+         */
+		const handleLikeStateChange = (reel: ReelPost) => {
+            reel.likeCount += reel.hasLiked ? +1 : -1
+            reel.hasLiked = !reel.hasLiked
+		}   
 
         /**
-         * Update is video playing flag for tracking
+         * Assign the first media slide when swiper is fully mounted
+         * @param swiper The first swiper slide
          */
-        const updateVideoPlayingStatus = () => {
-            const video = currentActiveVideo.value
-            isVideoPlaying.value = !video?.paused
-            // console.log('Playing', !video.paused)
-        }
+		const initializeSlideInstance = (swiper: SwiperInstance) => {
+			activeSwiperInstance.value = swiper
+		}
         
-        const initializeSlideInstance = (swiper: SwiperInstance) => {
-            currentActiveMediaSlide.value = swiper
+        const pauseVideo = () => {
+            activeVideo.value?.pause()
         }
 
+        const playVideo = () => {
+            activeVideo.value?.play()
+        }
 
-        // const handleSlideChange = (swiper: SwiperInstance) => {
-        //     currentActiveMediaSlide.value = swiper
-            // var currentIndex = swiper.activeIndex
-            // var currenSlide = swiper.slides[currentIndex]
-            // const currentSlideMedia = currenSlide.firstElementChild
-        //     const currentSlideMediaType = currentSlideMedia?.getAttribute('data-slide-type')
-
-        //     // Handle cases when user click next before video ended
-        //     if (isVideoPlaying.value) {
-        //         console.log('Swiper: ', currentSlideMediaType)
-        //     }
-
-        //     switch (currentSlideMediaType) {
-        //     case 'image':
-        //         runNext()
-        //         break
-        //     case 'video':
-        //         // player.currentTime(0)
-        //         // player.play()
-        //         console.log('Playing')
-        //         isVideoPlaying.value = true
-        //         break
-        //     default:
-        //         // throw new Error('invalid slide type')
-        //     }
-        //     // clearTimeout(videoSetting.value.timeout)
-        // }
-
-        onMounted(() => {
-            console.log("Mounted Reels")
+        const isMobileScreen = computed(() => {
+            return screenWidth.value <= ScreenBreakpoint.Medium
         })
-        return {
+
+		const reelItems  = ref<ReelPost[]>([
+			{
+				id: '0',
+				userName: 'Rabee',
+				createdAt: 'February 24',
+				likeCount: 0,
+				hasLiked: true,
+				caption: ' Sh. @abdullah_oduro and I getting that Saturday morning work in the gym and talking over @yaqeeninstitute Quran 30 ',
+				reelMedia: mediasArraySampleA,
+				commentCount: 0,
+				isFollowed: false,
+				profilePictureUrl: 'https://loremflickr.com/1024/1280/dog'
+			},
+			{
+				id: '1',
+				userName: 'Sara',
+				createdAt: 'February 24',
+				likeCount: 10,
+				hasLiked: false,
+				caption: 'Be like a tree. Stay grounded. Connect with your roots. Turn over a new leaf. Bend before you break. Enjoy your unique natural beauty. Keep growing.',
+				reelMedia: mediasArraySampleB,
+				commentCount: 5,
+				isFollowed: false,
+				profilePictureUrl: 'https://loremflickr.com/1024/1280/cat'
+			}
+		])
+
+		onMounted(() => {
+			screenWidth.value = window.innerWidth // Set initial value to current screen size
+			// Keep track of screen width in case of change later
+			window.onresize = () => {
+				screenWidth.value = window.innerWidth
+			}
+		})
+		return {
+			updateActiveSlideInstance,
+			initializeSlideInstance,
+			handleFollowRequest,
+			handleLikeStateChange,
             modules: [Mousewheel, Pagination],
-            isVideoMuted,
-            isVideoPlaying,
-            onSlideChange,
-            onSwiper,
-            updateActiveSlideInstance,
-            initializeSlideInstance,
-            toggleVideoMute,
-            playVideo,
-            pauseVideo,
-            updateVideoPlayingStatus,
-            handleFollowRequest,
-            isFollowed
-        }
-    },
+			reelItems ,
+			activeVideo,
+            isMobileScreen,
+		}
+	},
     components: {
-    NavBarMain,
-    SwiperContainer: Swiper,
-    SwiperSlide,
-    SmallCard
-}
+		NavBarMain,
+		SwiperContainer: Swiper,
+		SwiperSlide,
+		SmallCard,
+		SVGLoader,
+		ReelCard
+	},
 })
 </script>
 
 <style>
-
 .blur-filter {
     filter: blur(30px);
 }
@@ -395,11 +242,6 @@ export default defineComponent({
 .transparent-gray {
     background-color:rgba(134, 134, 134, 0.5);
 }
-/* .rounded-mute-border {
-    border-top-left-radius: 50%;
-    border-bottom-right-radius: 50%;
-    border-bottom-left-radius: 50%;
-} */
 
 /**
 * Hide video controllers in mobile phones    
