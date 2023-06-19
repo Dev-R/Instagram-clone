@@ -141,65 +141,13 @@
 
                         <!-- 2: comments rendering -->
                         <div 
-                            class="lg:max-h-[600px] sm:max-h-[211px] grid h-screen
+                            class="lg:max-h-[600px] sm:max-h-[211px] h-screen
                             sm:p-1 space-y-7 overflow-y-auto scrollbar 
                             scrollbar-none">
-                                <div    
+                                <CommentCard 
                                     v-if="postComment.post.comments" 
-                                    v-for="(comment, index) of postComment.post.comments"
-                                    :key="index"
-                                    class="grid grid-cols-12 space-x-3">
-
-                                    <!-- Commenter picture -->
-                                    <div class="col-span-1">
-                                    <img 
-                                        :src="'postComment.picture?'" 
-                                        class="cursor-pointer h-8 w-8 rounded-full shadow-lg">                                  
-                                    </div>
-
-                                    <!-- Comment username and content -->
-                                    <div class="col-span-9 flex flex-col">
-                                        <p 
-                                        class="text-ellipsis overflow-hidden font-sans 
-                                        text-sm text-white text-justify">
-                                            
-                                        <span class="cursor-pointer font-sans 
-                                        text-sm font-semibold text-white">
-                                                {{ comment.userName }}
-                                                <i class="fa-solid fa-circle-check">
-                                                </i>
-                                            </span>
-                                                {{ comment.content }}
-                                        </p>
-                                    </div>
-
-                                    <!-- Like icon -->
-                                    <div class="col-span-1 text-gray-400 text-xs">
-                                        <i class="fa-regular fa-heart"></i>
-                                    </div>
-
-                                    <!-- Space -->
-                                    <div class="col-span-1">
-                                    </div>
-
-                                    <!-- Comment container footer -->
-                                    <div
-                                        class="group pt-3 col-span-11 
-                                        flex list-disc space-x-4 font-sans 
-                                        text-xs font-semibold text-gray-500 
-                                        self-start flex-wrap col-start-2">
-
-                                        <li class="list-none cursor-pointer">
-                                            {{ comment.createdAt }}
-                                        </li>
-                                        <li class="list-none cursor-pointer text-gray-400">Reply</li>
-                                        <li class="list-none cursor-pointer invisible group-hover:visible">
-                                            <SVGLoader :icon="'comment-options'" />
-                                        </li>
-
-                                    </div>
-                                
-                                </div>
+                                    v-for="comment of postComment.post.comments"
+                                    :comment="comment" />
 
                                 <div
                                     v-else
@@ -305,7 +253,10 @@
 import { defineComponent, onMounted, computed } from 'vue';
 
 import type { PostCommentModal } from '@/common/models/post.model';
-import SVGLoader from '@/components/basics/SVGLoader.vue';
+import {
+    SVGLoader,
+    CommentCard
+} from '@/components';
 import MediaCarousel from '@/components/carousels/MediaCarousel.vue';
 
 
@@ -377,7 +328,8 @@ export default defineComponent({
   },
   components: { 
       MediaCarousel,
-      SVGLoader 
+      SVGLoader,
+      CommentCard
   },
   props: {
       postComment: {
