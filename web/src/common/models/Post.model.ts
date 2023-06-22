@@ -115,6 +115,13 @@ export interface SuggestionCard {
     }[]
 }
 
+
+/**
+ * Interface for comment card
+ */
+export interface PostCommentCard extends PostComment {
+}
+
 /**
  * Interface for a single post comment
  */
