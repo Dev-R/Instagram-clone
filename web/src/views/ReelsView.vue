@@ -146,7 +146,7 @@ export default defineComponent({
             name: '',
             title: 'Comments',
             items: [] as PostComment[] | undefined,
-            isToggled: true
+            isToggled: false
         })
 
 
