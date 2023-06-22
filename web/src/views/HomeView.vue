@@ -94,7 +94,7 @@ import {
     PhotoModal
 } from '@/components'
 
-import type { PostMedia } from '@/common'
+import type { PostCard as PostCardType, PostMedia } from '@/common'
 import { usePhotoStore } from '@/stores'
 
 export default defineComponent({
@@ -194,7 +194,7 @@ export default defineComponent({
             }
         ]
 
-        const postItems = ref([
+        const postItems = ref<PostCardType[]>([
             {
                 id: '0',
                 userName: 'Rabee',
@@ -205,7 +205,20 @@ export default defineComponent({
                 carouselMedia: mediasArraySampleA,
                 commentCount: 0,
                 profilePictureUrl: 'https://loremflickr.com/32/32/bird',
-                isFollowed: false
+                isFollowed: false,
+                comments: [
+                    {
+                        userName: 'Sara',
+                        profilePictureUrl: 'https://loremflickr.com/1024/1280/woman',
+                        content: "\
+                        Subhanallah x3 \
+                        Alhamdulillah x3 \
+                        La ilaha ilallah x3 \
+                        Astagfirullah x3Astagfirullah x3 \
+                        Allahu akbar x3",
+                        createdAt: '2012-02-23'
+                    }
+                ]
             },
             {
                 id: '1',
