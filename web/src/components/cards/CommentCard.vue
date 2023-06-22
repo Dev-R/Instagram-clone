@@ -34,21 +34,37 @@
 			</div>
 		</div>
         
-		<div class="text-gray-400 text-xs sm:text-lg cursor-pointer">
-			<i class="fa-regular fa-heart"></i>
+		<div 
+			@click="triggerCommentLike"
+			class="text-gray-400 text-xs sm:text-xs cursor-pointer">
+			<SVGLoader 
+				v-if="isCommentLiked"
+				:icon="'like'" />
+			
+			<SVGLoader 
+				v-else
+				:icon="'unlike'" />
 		</div>
 	</div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 import type { PostCommentCard } from '@/common'
 import { SVGLoader } from '@/components'
 
 export default defineComponent({
     name: 'CommentCard',
     setup(props, context) {
+		
+		const isCommentLiked = ref<boolean>(false)
+		
+		const triggerCommentLike = () => {
+			isCommentLiked.value = !isCommentLiked.value
+		}
         return {
+			triggerCommentLike,
+			isCommentLiked
         }
     },
     components: {
