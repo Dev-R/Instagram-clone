@@ -7,15 +7,17 @@
             class="w-8 h-8 rounded-full">
         
         <div class="flex pl-1.5 pt-2 space-x-2">
-            <span class="font-sans text-md text-white self-start">
+            <a 
+                :href="profileLink"
+                class="font-sans text-md text-white self-start">
                 <slot name="user-name"></slot>
-            </span>
+            </a>
             <span class="font-sans text-md text-white self-start">
                 ·
             </span>
             <span
                 @click="$emit('onActionClick')"
-                class="font-sans font-semibold text-xs text-white pt-1 cursor-pointer">
+                class="font-sans font-semibold text-sm text-white pt-1 cursor-pointer">
                 <slot name="action-name"></slot>
             </span>
         </div>
@@ -48,6 +50,7 @@ export default defineComponent({
     },
     props: {
         profileImage: { type: String },
+        profileLink: { type: String },
         class: {
             type: String,
             required: false
