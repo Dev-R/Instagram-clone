@@ -1,7 +1,7 @@
 <template>
 	<div 
-		class="bg-black rounded-lg shadow h-5/6 w-full md:pt-0 md:z-50 pt-5 z-50 
-        lg:h-auto md:bg-slate-1100 absolute 
+		class="bg-black rounded-lg shadow w-full md:pt-0 md:z-50 pt-5 z-50 
+        md:5/6 md:bg-slate-1100 absolute 
         top-1/3 left-1/2 transform -translate-x-1/2 
         -translate-y-1/2"
 		:class="{
