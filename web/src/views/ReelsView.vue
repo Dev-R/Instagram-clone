@@ -2,7 +2,8 @@
 	<div class="bg-black">
 		<section 
 			class="container md:max-w-full mx-auto
-			scrollbar scrollbar-thumb-gray-900">
+			scrollbar scrollbar-thumb-gray-900"
+			:class="{ 'brightness-50 pointer-events-none': commentModal.isToggled }">
 			<div class="md:grid grid-cols-12 flex justify-center">
 				<!-- Left bar: Navigation -->
 				<div 
@@ -38,6 +39,7 @@
 								<ReelCard 
 									:reel="reel"
 									:active-video="activeVideo"
+									@on-comments="toggleCommentModal(reel.comments)"
 									@on-follow-request="handleFollowRequest"
 									@on-like-state-change="handleLikeStateChange" />
 							</swiper-slide>
@@ -47,6 +49,15 @@
 			</div>
 		</section>
 	</div>
+	
+	<SmallModal 
+		:title="commentModal.title"
+		:is-toggled="commentModal.isToggled" 
+		:items="commentModal.items"
+		:modal-type="ModalType.Comment" 
+		:modal-size="ModalSize.Medium"
+		@on-modal-closed="toggleCommentModal" />
+
 </template>
 
 <script lang="ts">
@@ -76,12 +87,16 @@ import {
     NavBarMain,
     ReelCard,
     SmallCard,
+	SmallModal,
     SVGLoader
 } from '@/components'
 
-import type {
-    ReelMedia,
-    ReelPost,
+import {
+	ModalSize,
+	ModalType,
+    type PostComment,
+    type ReelMedia,
+    type ReelPost,
 } from '@/common'
 
 import {
@@ -103,6 +118,20 @@ const mediasArraySampleB: ReelMedia = {
     location: 'LA'
 }
 
+const commentsSample: PostComment[] = [
+		{
+			userName: 'Sara',
+			profilePictureUrl: 'https://loremflickr.com/1024/1280/dog',
+			content: "\
+			Subhanallah x3 \
+			Alhamdulillah x3 \
+			La ilaha ilallah x3 \
+			Astagfirullah x3Astagfirullah x3 \
+			Allahu akbar x3",
+			createdAt: '2012-02-23'
+		}
+]
+
 export default defineComponent({
 	name: 'Reels',
 	setup() {
@@ -113,6 +142,13 @@ export default defineComponent({
 
 		// Others
 		const screenWidth = ref<number>(window.innerWidth) // Current window width
+		const commentModal = ref({
+            name: '',
+            title: 'Comments',
+            items: [] as PostComment[] | undefined,
+            isToggled: true
+        })
+
 
 		/**
          * Update active swiper slide and video
@@ -161,6 +197,12 @@ export default defineComponent({
 		const initializeSlideInstance = (swiper: SwiperInstance) => {
 			activeSwiperInstance.value = swiper
 		}
+
+
+		const toggleCommentModal = (comments: PostComment[] | undefined) => {
+			commentModal.value.items = comments
+			commentModal.value.isToggled = !commentModal.value.isToggled
+		}
         
         const pauseVideo = () => {
             activeVideo.value?.pause()
@@ -179,19 +221,20 @@ export default defineComponent({
 				id: '0',
 				userName: 'Rabee',
 				createdAt: 'February 24',
-				likeCount: 0,
+				likeCount: 253,
 				hasLiked: true,
 				caption: ' Sh. @abdullah_oduro and I getting that Saturday morning work in the gym and talking over @yaqeeninstitute Quran 30 ',
 				reelMedia: mediasArraySampleA,
-				commentCount: 0,
+				commentCount: 3,
 				isFollowed: false,
-				profilePictureUrl: 'https://loremflickr.com/1024/1280/dog'
+				profilePictureUrl: 'https://loremflickr.com/1024/1280/dog',
+				comments: commentsSample
 			},
 			{
 				id: '1',
 				userName: 'Sara',
 				createdAt: 'February 24',
-				likeCount: 10,
+				likeCount: 1255 ,
 				hasLiked: false,
 				caption: 'Be like a tree. Stay grounded. Connect with your roots. Turn over a new leaf. Bend before you break. Enjoy your unique natural beauty. Keep growing.',
 				reelMedia: mediasArraySampleB,
@@ -213,20 +256,25 @@ export default defineComponent({
 			initializeSlideInstance,
 			handleFollowRequest,
 			handleLikeStateChange,
+			toggleCommentModal,
             modules: [Mousewheel, Pagination],
 			reelItems ,
 			activeVideo,
             isMobileScreen,
+			commentModal,
+			ModalType,
+			ModalSize
 		}
 	},
     components: {
-		NavBarMain,
-		SwiperContainer: Swiper,
-		SwiperSlide,
-		SmallCard,
-		SVGLoader,
-		ReelCard
-	},
+    NavBarMain,
+    SwiperContainer: Swiper,
+    SwiperSlide,
+    SmallCard,
+    SVGLoader,
+    ReelCard,
+    SmallModal
+},
 })
 </script>
 
