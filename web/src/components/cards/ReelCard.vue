@@ -68,6 +68,7 @@
 		<div class="absolute bottom-3 left-5 flex flex-col space-y-3 basis-full">
             <!-- Simple User card -->
 			<UserCard
+				:profile-link="reel.userName"
 				:profile-image="reel.profilePictureUrl"
 				@on-action-click="$emit('onFollowRequest', reel as ReelPost)">
 				<template #user-name>
@@ -94,11 +95,11 @@
 
 					<div class="relative flex overflow-x-hidden w-48">
 						<div class="animate-marquee whitespace-nowrap">
-							<span class="text-xs mx-4">{{ reel.caption }}</span>
+							<span class="mx-4">{{ reel.caption }}</span>
 						</div>
 
 						<div class="absolute top-0 animate-marquee2 whitespace-nowrap">
-							<span class="text-xs mx-4">{{ reel.caption }}</span>
+							<span class="mx-4">{{ reel.caption }}</span>
 						</div>
 					</div>
 				</div>
@@ -133,7 +134,9 @@
 		</div>
 
 		<!-- Comment -->
-		<div class="flex flex-col sm:hover:brightness-50 cursor-pointer">
+		<div 
+			@click="$emit('onComments')"
+			class="flex flex-col sm:hover:brightness-50 cursor-pointer">
 			<i class="fa-regular fa-comment text-white text-2xl"></i>
 			<div class="text-xs font-sans text-white self-center">
 				{{ reel.commentCount }}
@@ -167,7 +170,8 @@ const prop = defineProps({
 // Emitters
 defineEmits([
 	'onLikeStateChange',
-	'onFollowRequest'
+	'onFollowRequest',
+	'onComments'
 ])
 
 /**
