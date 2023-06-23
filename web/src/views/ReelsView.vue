@@ -174,7 +174,7 @@ export default defineComponent({
 		}
 
 		/**
-         * Change the fllow state of the post based on user click
+         * Change the follow state of a post based on user click
          * @param activeReel 
          */
 		const handleFollowRequest = (activeReel: ReelPost) => {
@@ -182,7 +182,7 @@ export default defineComponent({
 		}
 
 		/**
-         * Update the like state of the reel based on the user click
+         * Update the like state of a reel based on user click
          * @param id Liked / Unliked post ID
          */
 		const handleLikeStateChange = (reel: ReelPost) => {
