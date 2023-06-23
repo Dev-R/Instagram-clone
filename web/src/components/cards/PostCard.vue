@@ -43,7 +43,9 @@
 
             <div class="flex space-x-4">
 
-                <span class="cursor-pointer hover:scale-90">
+                <span 
+                    @click="$emit('onPostLike', postItem.id)"
+                    class="cursor-pointer hover:scale-90">
                     <SVGLoader 
                         v-if="postItem.hasLiked" :icon="'like'"/>
                     
@@ -119,7 +121,7 @@ import { defineComponent, ref, computed } from 'vue'
 
 import SVGLoader from '@/components/basics/SVGLoader.vue'
 import MediaCarousel from '@/components/carousels/MediaCarousel.vue'
-import type { PostCard } from '@/common/models/post.model'
+import type { PostCard } from '@/common'
 
 export default defineComponent({
     name: 'PostCard',
@@ -161,7 +163,8 @@ export default defineComponent({
         },
     },
     emits: [
-        'onOpenCommentModal'
+        'onOpenCommentModal',
+        'onPostLike'
     ]
 })
 </script>

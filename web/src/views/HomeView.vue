@@ -40,6 +40,7 @@
                             <PostCard 
                                 v-for="(item, index) of postItems"
                                 @on-open-comment-modal="triggerCommentModal"
+                                @on-post-like="changeLikeState"
                                 :post-item="item"
                                 :key="index"/>
                         </div>
@@ -66,7 +67,7 @@
             @on-modal-closed="triggerCommentModal" 
             :post-comment="{
                 isToggled: commentModal.isToggled,
-                post : postItems[commentModal.postId],
+                post: postItems[commentModal.postId],
             }"/>
         
         <!-- Photo Modal -->
@@ -93,7 +94,7 @@ import {
     PhotoModal
 } from '@/components'
 
-import type { PostMedia } from '@/common/models'
+import type { PostCard as PostCardType, PostMedia } from '@/common'
 import { usePhotoStore } from '@/stores'
 
 export default defineComponent({
@@ -126,6 +127,7 @@ export default defineComponent({
         const triggerPhotoModal = () => {
             photoModal.value.isToggled = !photoModal.value.isToggled
         }
+
 
         const uploadedFileData = () => {
             // Go to image view only when screen size is extra small (i.e: Phone screen)
@@ -178,9 +180,9 @@ export default defineComponent({
         const mediasArraySampleB: PostMedia[] = [
             {
                 index: 0,
-                type: 'image',
+                type: 'video',
                 mediaUrl:
-                    "https://loremflickr.com/1024/1280/sky",
+                    "https://into-the-program.com/uploads/sample_video02.mp4",
                 title: "Legendary A"
             },
             {
@@ -192,7 +194,7 @@ export default defineComponent({
             }
         ]
 
-        const postItems = [
+        const postItems = ref<PostCardType[]>([
             {
                 id: '0',
                 userName: 'Rabee',
@@ -202,7 +204,21 @@ export default defineComponent({
                 caption: ' Sh. @abdullah_oduro and I getting that Saturday morning work in the gym and talking over @yaqeeninstitute Quran 30 ',
                 carouselMedia: mediasArraySampleA,
                 commentCount: 0,
-                profilePictureUrl: 'https://loremflickr.com/32/32/bird'
+                profilePictureUrl: 'https://loremflickr.com/32/32/bird',
+                isFollowed: false,
+                comments: [
+                    {
+                        userName: 'Sara',
+                        profilePictureUrl: 'https://loremflickr.com/1024/1280/woman',
+                        content: "\
+                        Subhanallah x3 \
+                        Alhamdulillah x3 \
+                        La ilaha ilallah x3 \
+                        Astagfirullah x3Astagfirullah x3 \
+                        Allahu akbar x3",
+                        createdAt: '2012-02-23'
+                    }
+                ]
             },
             {
                 id: '1',
@@ -213,9 +229,10 @@ export default defineComponent({
                 caption: 'Be like a tree. Stay grounded. Connect with your roots. Turn over a new leaf. Bend before you break. Enjoy your unique natural beauty. Keep growing.',
                 carouselMedia: mediasArraySampleB,
                 commentCount: 5,
-                profilePictureUrl: 'https://loremflickr.com/32/32/girl'
+                profilePictureUrl: 'https://loremflickr.com/32/32/girl',
+                isFollowed: false
             }
-        ]
+        ])
 
         const suggested = {
             userName: 'Rabee',
@@ -247,6 +264,15 @@ export default defineComponent({
         }
         ]
 
+        /**
+         * Update like state of a post.
+         * @param id Liked / Unliked post ID
+         */
+        const changeLikeState = (id: number) => {
+            const postItem = postItems.value[id]
+            postItem.hasLiked = !postItem.hasLiked
+        }
+
         return {
             postItems,
             suggested,
@@ -255,7 +281,8 @@ export default defineComponent({
             photoModal,
             triggerCommentModal,
             triggerPhotoModal,
-            uploadedFileData
+            uploadedFileData,
+            changeLikeState
         }
     },
     components: {

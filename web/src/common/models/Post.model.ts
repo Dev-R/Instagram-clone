@@ -1,4 +1,40 @@
 
+/**
+ * Base interface for card models
+ */
+
+export interface BaseCard {
+    /** A unique identifier for the current card */
+    id: string
+    
+    /** Number of likes for the current card */
+    likeCount: number
+  
+    /** Whether the current user has liked the current card */
+    hasLiked: boolean
+
+    /** Whether the current user follow the uploader of this current card */
+    isFollowed: boolean
+
+    /** Caption for the current card */
+    caption: string
+  
+    /** Username of the current card */
+    userName: string
+  
+    /** URL of the current card's profile picture */
+    profilePictureUrl: string
+
+    /** Unix timestamp representing when the current card was created */
+    createdAt: string | number
+  
+    /** Total number of comments on the current card */
+    commentCount: number
+
+    /** An array of comments on the current card */
+    comments?: PostComment[]
+}
+
 /** 
  * Interface for a single media in a post 
  */
@@ -21,36 +57,11 @@ export interface PostMedia {
 /**
  * Interface for a single post card
  */
-export interface PostCard {
-    /** A unique identifier for the post card */
-    id: string
+export interface PostCard extends BaseCard {
 
     /** Array of media in post carousel */
-    carouselMedia: PostMedia[]
+    carouselMedia?: PostMedia[]
   
-    /** Number of likes for the post */
-    likeCount: number
-  
-    /** Whether the current user has liked the post */
-    hasLiked: boolean
-  
-    /** Caption for the post */
-    caption: string
-  
-    /** Username of the poster */
-    userName: string
-  
-    /** URL of the poster's profile picture */
-    profilePictureUrl: string
-
-    /** Unix timestamp representing when the post was created */
-    createdAt: string | number
-  
-    /** Total number of comments on the post */
-    commentCount: number
-
-    /** An array of comments on the post */
-    comments?: PostComment[]
   }
   
 /**
@@ -102,6 +113,13 @@ export interface SuggestionCard {
         /** Username of the user that follows the suggested user. */
         followedBy: string
     }[]
+}
+
+
+/**
+ * Interface for comment card
+ */
+export interface PostCommentCard extends PostComment {
 }
 
 /**
