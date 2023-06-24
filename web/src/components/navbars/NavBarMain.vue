@@ -99,7 +99,7 @@ export default defineComponent({
 			},
 			{
 				title: 'Explore',
-				path: '/',
+				path: '/explore',
 				name: 'explore',
 				customClass: '',
 				iconName: 'explore',
