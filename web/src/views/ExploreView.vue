@@ -4,63 +4,31 @@
 			v-show="!activeModal.isToggled"
 			class="container md:max-w-full mx-auto h-screen
 			scrollbar scrollbar-thumb-gray-900"
-            :class="{ 'brightness-50 pointer-events-none': isModalToggled }">
+			:class="{ 'brightness-50 pointer-events-none': isModalToggled }">
 			<div class="md:grid grid-cols-12 flex justify-center">
 				<!-- Left bar: Navigation -->
 				<div 
 					class="xl:col-span-2 col-span-1 bg-black 
-                    md:block hidden space-y-12 h-screen 
-                    sticky top-0 border-r border-gray-900">
+					md:block hidden space-y-12 h-screen 
+					sticky top-0 border-r border-gray-900">
 					<NavBarMain />
 				</div>
 
 				<div 
-					class="
-                    xl:col-span-8 lg:grid md:col-span-10 bg-black
-                    scrollbar scrollbar-thumb-gray-900
-                    md:col-start-2 md:p-0 col-span-12 p-2">
+					class="xl:col-span-8 lg:grid md:col-span-10 bg-black
+					scrollbar scrollbar-thumb-gray-900
+					md:col-start-2 md:p-0 col-span-12 p-2">
 					<!-- Profile Info -->
 					<div 
-						class="flex flex-col md:w-[935px] flex-nowrap space-y-4 
-                        pt-2 md:pt-5 justify-self-end md:ml-5 lg:ml-0 ">
+						class="flex flex-col md:w-[935px] 
+						flex-nowrap space-y-4 pt-2 md:pt-5 justify-self-end 
+						md:ml-5 lg:ml-0 ">
 						<!-- Image Rendering Section -->
 						<div
 							class="flex flex-wrap">
-                                <!-- Post item card -->
-							<div 
-								v-for="(post, index) of posts"
-								:key="index"
-								class="h-fit w-fit basis-1/3 p-0.5 
-                                relative hover:brightness-75 group 
-                                hover:cursor-pointer"
-								@click="triggerCommentModal(index)">
-								<div 
-									class="flex absolute space-x-4 top-1/2 
-                                    left-1/2 transform -translate-x-1/2 -translate-y-1/2 
-                                    md:group-hover:visible invisible">
-									<div 
-										class="flex font-bold text-white 
-                                        text-md space-x-1">
-										<i class="fa-solid fa-heart mt-1"></i>
-
-										<span>
-											{{ post.likeCount }}
-										</span>
-									</div>
-
-									<div class="flex font-bold text-white text-md space-x-1">
-										<i class="fa-solid fa-comment mt-1"></i>
-
-										<span>
-											{{ post.commentCount }}
-										</span>
-									</div>
-								</div>
-
-								<img 
-									v-if="post.carouselMedia"
-									:src="post.carouselMedia[0]?.mediaUrl" />
-							</div>
+							<PostCoverCard 
+								@on-post-cover="triggerCommentModal"
+								:posts="posts" />
 						</div>
 					</div>
 				</div>
@@ -68,18 +36,18 @@
 		</section>
 		<!-- Modals -->
 
-        <!-- PostCard Modal -->
-        <div 
+		<!-- PostCard Modal -->
+		<div 
 			v-show="activeModal.name === ModalType.Profile"
-            class="md:w-[470px] justify-self-end p-2">
-            <PostCard
-                :post-item="posts[activeModal.postId]" />
-        </div>
+			class="md:w-[470px] justify-self-end p-2">
+			<PostCardModal
+				:post-item="posts[activeModal.postId]" />
+		</div>
 
 		<!-- Comment Modal -->
 		<CommentModal
 			:post-comment="{
-                isToggled: activeModal.isToggled && activeModal.name === ModalType.Comment,
+				isToggled: activeModal.isToggled && activeModal.name === ModalType.Comment,
 				post : posts[activeModal.postId],
 			}" 
 			@on-comment-liked="handleCommentLike"
@@ -104,7 +72,8 @@ import {
 	NavBarMain,
 	CommentModal,
 	SVGLoader,
-	PostCard
+	PostCard as PostCardModal,
+  PostCoverCard
 } from '@/components'
 
 
@@ -286,7 +255,8 @@ export default defineComponent({
     NavBarMain,
     SVGLoader,
     CommentModal,
-    PostCard
+    PostCardModal,
+    PostCoverCard
   },
 })
 
