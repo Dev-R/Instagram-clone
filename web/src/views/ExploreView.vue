@@ -1,9 +1,10 @@
 <template>
-	<div class="bg-black">
+	<div class="bg-black h-screen">
 		<section 
-			class="container md:max-w-full mx-auto
+			v-show="!activeModal.isToggled"
+			class="container md:max-w-full mx-auto h-screen
 			scrollbar scrollbar-thumb-gray-900"
-			:class="{ 'brightness-50 pointer-events-none': 1 != 1 }">
+            :class="{ 'brightness-50 pointer-events-none': isModalToggled }">
 			<div class="md:grid grid-cols-12 flex justify-center">
 				<!-- Left bar: Navigation -->
 				<div 
@@ -15,7 +16,7 @@
 
 				<div 
 					class="
-                    lg:col-span-8 lg:grid md:col-span-6
+                    xl:col-span-8 lg:grid md:col-span-10 bg-black
                     scrollbar scrollbar-thumb-gray-900
                     md:col-start-2 md:p-0 col-span-12 p-2">
 					<!-- Profile Info -->
@@ -25,13 +26,14 @@
 						<!-- Image Rendering Section -->
 						<div
 							class="flex flex-wrap">
+                                <!-- Post item card -->
 							<div 
-								v-for="(post, index) of postItems"
+								v-for="(post, index) of posts"
+								:key="index"
 								class="h-fit w-fit basis-1/3 p-0.5 
                                 relative hover:brightness-75 group 
                                 hover:cursor-pointer"
 								@click="triggerCommentModal(index)">
-                                <!-- Post item card -->
 								<div 
 									class="flex absolute space-x-4 top-1/2 
                                     left-1/2 transform -translate-x-1/2 -translate-y-1/2 
@@ -64,13 +66,25 @@
 				</div>
 			</div>
 		</section>
+		<!-- Modals -->
+
+        <!-- PostCard Modal -->
+        <div 
+			v-show="activeModal.name === ModalType.Profile"
+            class="md:w-[470px] justify-self-end p-2">
+            <PostCard
+                :post-item="posts[activeModal.postId]" />
+        </div>
 
 		<!-- Comment Modal -->
 		<CommentModal
 			:post-comment="{
-				isToggled: commentModal.isToggled,
-				post : postItems[commentModal.postId],
+                isToggled: activeModal.isToggled && activeModal.name === ModalType.Comment,
+				post : posts[activeModal.postId],
 			}" 
+			@on-comment-liked="handleCommentLike"
+			@on-add-comment="handleCommentAdd"
+			@on-post-liked="handlePostLike"
 			@on-modal-closed="triggerCommentModal" />
 	</div>
 </template>
@@ -81,21 +95,24 @@ import {
 	onMounted,
 	defineComponent,
 	ref,
-	computed
+	computed,
+onUnmounted
 } from 'vue'
 
 
 import {
 	NavBarMain,
-	SmallModal,
 	CommentModal,
-	SVGLoader
+	SVGLoader,
+	PostCard
 } from '@/components'
 
-import type { commentModalName, PostCard, PostMedia } from '@/common'
+
 import {
-	ProfileTab,
-	ProfileTriggeredModal
+	type PostCard as PostCardType,
+	type ModalName,
+	type PostMedia,
+	ModalType
 } from '@/common'
 
 // Sample Data
@@ -116,103 +133,163 @@ const mediasArraySampleA: PostMedia[] = [
 	}
 ]
 
-const postItems: PostCard[] = [
+const mediasArraySampleB: PostMedia[] = [
 	{
-		id: '0',
-		userName: 'Rabee',
-		createdAt: 'February 24',
-		likeCount: 2456,
-		hasLiked: true,
-		caption: ' Sh. @abdullah_oduro and I getting that Saturday morning work in the gym and talking over @yaqeeninstitute Quran 30 ',
-		carouselMedia: mediasArraySampleA,
-		commentCount: 2456,
-		profilePictureUrl: 'https://loremflickr.com/32/32/bird',
-		isFollowed: false
+		index: 0,
+		type: 'image',
+		mediaUrl:
+            'https://loremflickr.com/1024/1280/life',
+		title: 'Legendary A'
 	},
 	{
-		id: '1',
-		userName: 'Rabee',
-		createdAt: 'February 24',
-		likeCount: 2456,
-		hasLiked: true,
-		caption: ' Sh. @abdullah_oduro and I getting that Saturday morning work in the gym and talking over @yaqeeninstitute Quran 30 ',
-		carouselMedia: mediasArraySampleA,
-		commentCount: 2456,
-		profilePictureUrl: 'https://loremflickr.com/32/32/bird',
-		isFollowed: false
-	},
-	{
-		id: '2',
-		userName: 'Rabee',
-		createdAt: 'February 24',
-		likeCount: 2456,
-		hasLiked: true,
-		caption: ' Sh. @abdullah_oduro and I getting that Saturday morning work in the gym and talking over @yaqeeninstitute Quran 30 ',
-		carouselMedia: mediasArraySampleA,
-		commentCount: 2456,
-		profilePictureUrl: 'https://loremflickr.com/32/32/bird',
-		isFollowed: false
-	},
-	{
-		id: '3',
-		userName: 'Rabee',
-		createdAt: 'February 24',
-		likeCount: 2456,
-		hasLiked: true,
-		caption: ' Sh. @abdullah_oduro and I getting that Saturday morning work in the gym and talking over @yaqeeninstitute Quran 30 ',
-		carouselMedia: mediasArraySampleA,
-		commentCount: 2456,
-		profilePictureUrl: 'https://loremflickr.com/32/32/bird',
-		isFollowed: false
+		index: 1,
+		type: 'image',
+		mediaUrl:
+            'https://loremflickr.com/1024/1280/car',
+		title: 'Legendary A'
 	}
 ]
+
 export default defineComponent({
-	name: 'Reels',
-	components: {
-		NavBarMain,
-		SVGLoader,
-		CommentModal
-	},
-	setup() {
-		// Modals data
-		const commentModal = ref({
-			name: '' as commentModalName,
-			isToggled: false,
-			postId: 0
-		})
+  name: 'Reels',
+  setup() {
+    // Sample Data
+    const posts = ref<PostCardType[]>([
+      {
+        id: '0',
+        userName: 'Rabee',
+        createdAt: 'February 24',
+        likeCount: 2456,
+        hasLiked: true,
+        caption: 'Sh. @abdullah_oduro and I getting that Saturday morning work in the gym and talking over @yaqeeninstitute Quran 30',
+        carouselMedia: mediasArraySampleA,
+        commentCount: 2456,
+        profilePictureUrl: 'https://loremflickr.com/32/32/life',
+        isFollowed: false,
+        comments: []
+      },
+      {
+        id: '1',
+        userName: 'Rabee',
+        createdAt: 'February 24',
+        likeCount: 2456,
+        hasLiked: true,
+        caption: 'Sh. @abdullah_oduro and I getting that Saturday morning work in the gym and talking over @yaqeeninstitute Quran 30',
+        carouselMedia: mediasArraySampleB,
+        commentCount: 2456,
+        profilePictureUrl: 'https://loremflickr.com/32/32/dog',
+        isFollowed: false,
+        comments: []
+      }
+    ])
 
-		// Others
-		const windowWidth = ref(window.innerWidth) // Current window width
+    // Modals data
+    const activeModal = ref({
+      name: '' as ModalName,
+      isToggled: false,
+      postId: 0
+    })
 
+    /**
+     * Triggers the comment modal.
+     * If screen size > 768, opens comment modal, else opens profile modal.
+     * @param postId The ID of the post.
+     */
+    const triggerCommentModal = (postId: number | undefined) => {
+      const modalName = screenSizeType.value === 'xs' ? ModalType.Profile : ModalType.Comment
+      activeModal.value = { name: modalName, isToggled: !activeModal.value.isToggled, postId: postId ? postId : 0 }
 
-		const triggerCommentModal = (id: number | undefined) => {
-			// If screen size > 768 open comment Modal else open Profile Modal
-			const modalName = screenSizeType.value === 'xs' ? ProfileTriggeredModal.Profile : ProfileTriggeredModal.Comment
-			commentModal.value = { name: modalName, isToggled: !commentModal.value.isToggled, postId: id ? id : 0 }
-		}
+      console.log("Triggering the following modal:", modalName)
+    }
 
+    /**
+     * Handles post like.
+     * TODO: Remove.
+     */
+    const handlePostLike = () => {
+      posts.value[activePostId.value].hasLiked = !posts.value[activePostId.value].hasLiked
+      console.log("Post has been liked ...")
+    }
 
-		// Listeners
-		const onWidthChange = () => windowWidth.value = window.innerWidth
+    /**
+     * Handles comment addition.
+     * TODO: Remove.
+     * @param commentContent The content of the comment.
+     */
+    const handleCommentAdd = (commentContent: string) => {
+      posts.value[activePostId.value].comments?.push({
+        id: 0,
+        userName: 'Sara',
+        profilePictureUrl: 'https://loremflickr.com/1024/1280/woman',
+        content: commentContent,
+        createdAt: '2012-02-23'
+      })
+      console.log("New comment has been added ...", posts.value[activePostId.value].comments)
+    }
 
+    /**
+     * Handles comment like.
+     * @param commentId The ID of the comment.
+     */
+    const handleCommentLike = (commentId: number) => {
+      console.log("The following comment", commentId, "has been liked")
+    }
 
-		// Computed
-		const screenSizeType = computed(() => {
-			if (windowWidth.value < 550) return 'xs'
-			return false
-		})
+    /**
+     * Adds the resize event listener.
+     */
+    const addResizeListener = () => {
+      window.addEventListener('resize', onWidthChange)
+    }
 
-		onMounted(() => {
-			// console.log('Mounted Explore')
-		})
-		return {
-			triggerCommentModal,
-			postItems,
-			ProfileTriggeredModal,
-			commentModal
-		}
-	}
+    /**
+     * Removes the resize event listener.
+     */
+    const removeResizeListener = () => {
+      window.removeEventListener('resize', onWidthChange)
+    }
+
+    /**
+     * Updates the window width on resize.
+     */
+    const onWidthChange = () => {
+      windowWidth.value = window.innerWidth
+    }
+
+    // Computed
+    const windowWidth = ref(window.innerWidth) // Current window width
+    const screenSizeType = computed(() => (windowWidth.value < 550 ? 'xs' : false))
+    const isModalToggled = computed(() => activeModal.value.isToggled)
+    const activePostId = computed(() => activeModal.value.postId)
+
+    // Lifecycle Hooks
+    onMounted(() => {
+      addResizeListener()
+    })
+
+    onUnmounted(() => {
+      removeResizeListener()
+    })
+
+    return {
+      triggerCommentModal,
+      handleCommentAdd,
+      handleCommentLike,
+      handlePostLike,
+      posts,
+      ModalType,
+      activeModal,
+      isModalToggled
+    }
+  },
+  components: {
+    NavBarMain,
+    SVGLoader,
+    CommentModal,
+    PostCard
+  },
 })
+
 </script>
 
 <style>
