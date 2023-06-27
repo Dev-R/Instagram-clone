@@ -15,14 +15,15 @@
                     :class="'group-hover:scale-110'"/>
             </router-link>
 
-            <div 
+            <router-link 
+                to="explore"
                 class="group cursor-pointer rounded-full 
                 flex space-x-4 hover:bg-slate-1000 hover:delay-100
                     p-3 xl:justify-start justify-center">
                 <SVGLoader 
                     :icon="'mobile-explore'" 
                     :class="'group-hover:scale-110'"/>
-            </div>
+            </router-link>
 
             <router-link
                 to="reels" 

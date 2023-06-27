@@ -126,6 +126,9 @@ export interface PostCommentCard extends PostComment {
  * Interface for a single post comment
  */
 export interface PostComment {
+  /** Comment UUID */
+  id: number
+
   /** Comment username */
   userName: string
 

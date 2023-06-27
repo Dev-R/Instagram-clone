@@ -208,6 +208,7 @@ export default defineComponent({
                 isFollowed: false,
                 comments: [
                     {
+                        id: 0,
                         userName: 'Sara',
                         profilePictureUrl: 'https://loremflickr.com/1024/1280/woman',
                         content: "\

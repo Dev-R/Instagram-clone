@@ -60,7 +60,8 @@ export default defineComponent({
 		const isCommentLiked = ref<boolean>(false)
 		
 		const triggerCommentLike = () => {
-			isCommentLiked.value = !isCommentLiked.value
+			isCommentLiked.value = !isCommentLiked.value // TODO: Remove only for demo
+			context.emit('onCommentLike', props.comment.id)
 		}
         return {
 			triggerCommentLike,
@@ -78,7 +79,7 @@ export default defineComponent({
     },
     emits: [
         'onOpenCommentModal',
-        'onPostLike'
+        'onCommentLike'
     ]
 })
 </script>

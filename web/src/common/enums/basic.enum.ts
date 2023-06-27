@@ -33,9 +33,8 @@ export enum ModalSize {
 
 /** Enum for modal types */
 export enum ModalType {
-    /** Comment Modal */
-    Comment = 'comment',
-
-    /** Follow Modal */
-    Follow = 'follow'
+    Follow = 'follow-modal', // Represents the follow modal
+    Profile = 'profile-modal', // Represents the profile modal
+    Setting = 'setting-modal', // Represents the setting modal
+    Comment = 'comment-modal', // Represents the comment modal
 }
