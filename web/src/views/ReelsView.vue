@@ -92,15 +92,12 @@ import {
 } from '@/components'
 
 import {
+	ScreenBreakpoint,
 	ModalSize,
 	ModalType,
     type PostComment,
     type ReelMedia,
     type ReelPost,
-} from '@/common'
-
-import {
-    ScreenBreakpoint
 } from '@/common'
 
 // Sample data
@@ -120,6 +117,7 @@ const mediasArraySampleB: ReelMedia = {
 
 const commentsSample: PostComment[] = [
 		{
+			id: 0,
 			userName: 'Sara',
 			profilePictureUrl: 'https://loremflickr.com/1024/1280/dog',
 			content: "\
