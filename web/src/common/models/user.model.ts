@@ -29,6 +29,9 @@ export interface BaseUser {
 
   /** Number of users the user is following */
   followingCount: number
+
+  /** Relationship with other users */
+  friendShip?: FriendShipStatus
 }
 
 /**
@@ -64,3 +67,28 @@ export interface User extends BaseUser {
     mediaItems: []
   }
   
+
+/**
+ * Interface for the friendship status between users.
+ */
+export interface FriendShipStatus {
+  /**
+   * Indicates whether the user is muting the other user.
+   */
+  muting?: boolean
+
+  /**
+   * Indicates whether the user is muting the other user's reel.
+   */
+  isMutingReel?: boolean
+
+  /**
+   * Indicates whether the user is following the other user.
+   */
+  following?: boolean
+
+  /**
+   * Indicates whether the user has sent an outgoing friendship request to the other user.
+   */
+  outgoingRequest?: boolean
+}

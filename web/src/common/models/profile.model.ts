@@ -25,7 +25,7 @@ export type navBarTabs = 'profile-posts' | 'profile-tagged' | 'profile-saved' | 
 /**
  * Type alias representing the available modal options for the application.
  */
-export type commentModalName = 'profile-modal' | 'photo-modal' | 'comment-modal' | 'other-modal'
+export type ModalName = 'profile-modal' | 'photo-modal' | 'comment-modal' | 'other-modal'
 
 
 /**

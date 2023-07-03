@@ -1,7 +1,7 @@
 <template>
-    <div class="bg-black relative">
+    <div class="bg-black">
         <section 
-            v-if="!commentModal.isToggled"
+            v-if="!activeModal.isToggled"
             class="container max-w-full mx-auto text-center 
             h-screen scrollbar scrollbar-thumb-gray-900"
             :class="{ 'brightness-50 pointer-events-none': isModalToggled }">
@@ -61,7 +61,7 @@
                                     <!-- Logged-in user Options -->
                                     <div>
                                         <SVGLoader 
-                                            @click="triggerSmallModal(ProfileTriggeredModal.Setting, 'Followers')"
+                                            @click="triggerSmallModal(ModalType.Setting, 'Followers')"
                                             :icon="'profile-options'" 
                                             :class="'md:block hidden hover:cursor-pointer'"/>
                                     </div>
@@ -224,18 +224,18 @@
 
         <!-- PostCard Modal -->
         <div 
-            v-if="commentModal.name === ProfileTriggeredModal.Profile"
+            v-if="activeModal.name === ModalType.Profile"
             class="md:w-[470px] justify-self-end p-2">
             <PostCard
-                :post-item="postItems[commentModal.postId]"/>
+                :post-item="postItems[activeModal.postId]"/>
         </div>
 
         <!-- Comment Modal -->
         <CommentModal
             @on-modal-closed="triggerCommentModal" 
             :post-comment="{
-                isToggled: commentModal.isToggled && commentModal.name === ProfileTriggeredModal.Comment,
-                post : postItems[commentModal.postId],
+                isToggled: activeModal.isToggled && activeModal.name === ModalType.Comment,
+                post: postItems[activeModal.postId],
             }"/>
         
         <!-- Photo Modal -->
@@ -244,15 +244,15 @@
             :is-toggled="photoModal.isToggled" />
 
         <!-- Followers/ Following Modal -->
-        <SmallModal 
+        <FollowModal 
             @on-modal-closed="triggerSmallModal"
             :title="smallModal.title" 
-            :items="smallModal.items" :is-toggled="smallModal.isToggled && smallModal.name === ProfileTriggeredModal.Follow" />
+            :items="smallModal.items" :is-toggled="smallModal.isToggled && smallModal.name === ModalType.Follow" />
 
         <!-- Quick Setting Modal -->
         <SettingModal
             @on-modal-closed="triggerSmallModal"
-            :is-toggled="smallModal.isToggled && smallModal.name === ProfileTriggeredModal.Setting"/>
+            :is-toggled="smallModal.isToggled && smallModal.name === ModalType.Setting"/>
 
     </div>
 </template>
@@ -264,7 +264,7 @@ import {
     SVGLoader,
     NavBarMain,
     PostCard,
-    SmallModal,
+    SmallModal as FollowModal,
     SettingModal,
     CommentModal,
     PhotoModal
@@ -272,15 +272,15 @@ import {
 
 import type {
     navBarTabs,
-    commentModalName,
+    ModalName,
     User,
     PostMedia
-} from '@/common/models'
+} from '@/common'
 
 import {
     ProfileTab,
-    ProfileTriggeredModal
-} from '@/common/profile.enum'
+    ModalType
+} from '@/common'
 
 export default defineComponent({
     name: 'ProfileView',
@@ -290,8 +290,8 @@ export default defineComponent({
         const currentActiveTab = ref<navBarTabs>(ProfileTab.Posts) // Select profile-posts as default active tab
 
         // Modals data
-        const commentModal = ref({
-            name: '' as commentModalName,
+        const activeModal = ref({
+            name: '' as ModalName,
             isToggled: false,
             postId: 0
         })
@@ -330,8 +330,8 @@ export default defineComponent({
 
         const triggerCommentModal = (id: number | undefined) => {
             // If screen size > 768 open comment Modal else open Profile Modal
-            const modalName = screenSizeType.value === 'xs' ? ProfileTriggeredModal.Profile : ProfileTriggeredModal.Comment
-            commentModal.value = { name: modalName, isToggled: !commentModal.value.isToggled, postId: id ? id : 0 }
+            const modalName = screenSizeType.value === 'xs' ? ModalType.Profile : ModalType.Comment
+            activeModal.value = { name: modalName, isToggled: !activeModal.value.isToggled, postId: id ? id : 0 }
         }
 
         const triggerPhotoModal = () => {
@@ -398,7 +398,7 @@ export default defineComponent({
         })
 
         const isModalToggled = computed(() => {
-            return commentModal.value.isToggled || smallModal.value.isToggled || photoModal.value.isToggled
+            return activeModal.value.isToggled || smallModal.value.isToggled || photoModal.value.isToggled
         })
 
         // Dynamic elements array
@@ -442,12 +442,12 @@ export default defineComponent({
             {
                 title: 'followers',
                 value: profileInfo.value.followerCount,
-                onClick: () => triggerSmallModal(ProfileTriggeredModal.Follow, 'Followers'),
+                onClick: () => triggerSmallModal(ModalType.Follow, 'Followers'),
             },
             {
                 title: 'following',
                 value: profileInfo.value.followingCount,
-                onClick: () => triggerSmallModal(ProfileTriggeredModal.Follow, 'Following'),
+                onClick: () => triggerSmallModal(ModalType.Follow, 'Following'),
             }
         ]
 
@@ -483,7 +483,8 @@ export default defineComponent({
                 caption: ' Sh. @abdullah_oduro and I getting that Saturday morning work in the gym and talking over @yaqeeninstitute Quran 30 ',
                 carouselMedia: mediasArraySampleA,
                 commentCount: 2456,
-                profilePictureUrl: 'https://loremflickr.com/32/32/bird'
+                profilePictureUrl: 'https://loremflickr.com/32/32/bird',
+                isFollowed: false
             }
         ]
         const suggested = [
@@ -504,14 +505,14 @@ export default defineComponent({
             postItems,
             savedItems,
             taggedItems,
-            commentModal,
+            activeModal,
             smallModal,
             photoModal,
             tabElements,
 
             // Enums
             ProfileTab,
-            ProfileTriggeredModal,
+            ModalType,
 
             // Computed
             emptyTabBarBodyMessage,
@@ -534,7 +535,7 @@ export default defineComponent({
         NavBarMain,
         CommentModal,
         PostCard,
-        SmallModal,
+        FollowModal,
         SettingModal,
         PhotoModal
     }

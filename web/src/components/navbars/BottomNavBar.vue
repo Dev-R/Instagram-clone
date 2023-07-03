@@ -15,16 +15,18 @@
                     :class="'group-hover:scale-110'"/>
             </router-link>
 
-            <div 
+            <router-link 
+                to="explore"
                 class="group cursor-pointer rounded-full 
                 flex space-x-4 hover:bg-slate-1000 hover:delay-100
                     p-3 xl:justify-start justify-center">
                 <SVGLoader 
                     :icon="'mobile-explore'" 
                     :class="'group-hover:scale-110'"/>
-            </div>
+            </router-link>
 
-            <div 
+            <router-link
+                to="reels" 
                 class="group cursor-pointer rounded-full 
                 flex space-x-4 hover:bg-slate-1000 
                 hover:delay-100 p-3 xl:justify-start 
@@ -32,7 +34,7 @@
                 <SVGLoader 
                     :icon="'reels'" 
                     :class="'group-hover:scale-110'"/>
-            </div>
+            </router-link>
 
 
             <router-link
@@ -55,12 +57,12 @@
                 <img 
                 class="w-6 h-6 rounded-full shadow-lg 
                 group-hover:scale-110"
-                src="http://via.placeholder.com/26x26">
+                src="https://i.ibb.co/JQVbxyH/img.jpg">
             </router-link >
 
         </div>
-        <div class="h-8">
-        </div>
+        <!-- <div class="h-8">
+        </div> -->
     </div>
 </template>
 

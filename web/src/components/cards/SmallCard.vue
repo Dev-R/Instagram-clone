@@ -1,17 +1,23 @@
 <template>
-    <div class="flex flex-inital flex-row text-center space-x-1">
+    <div 
+        :class="class"
+        class="flex flex-inital flex-row text-center space-x-1">
         <img 
             :src="profileImage" 
             class="w-8 h-8 rounded-full">
         
         <div class="flex pl-1.5 pt-2 space-x-2">
-            <span class="font-sans text-sm font-semibold text-white self-start">
+            <a 
+                :href="profileLink"
+                class="font-sans text-md text-white self-start">
                 <slot name="user-name"></slot>
-            </span>
-            <span class="font-sans text-sm font-semibold text-white self-start">
+            </a>
+            <span class="font-sans text-md text-white self-start">
                 ·
             </span>
-            <span class="font-sans text-xs text-sky-500 pt-1">
+            <span
+                @click="$emit('onActionClick')"
+                class="font-sans font-semibold text-sm text-white pt-1 cursor-pointer">
                 <slot name="action-name"></slot>
             </span>
         </div>
@@ -19,6 +25,7 @@
     </div>
 
     <button 
+        v-if="showButton"
         type="button" 
         class="flex-inital self-end text-gray-900 
         border border-gray-200 font-semibold 
@@ -42,7 +49,20 @@ export default defineComponent({
         return { }
     },
     props: {
-        profileImage: { type: String }
-    }
+        profileImage: { type: String },
+        profileLink: { type: String },
+        class: {
+            type: String,
+            required: false
+        },
+        showButton: {
+            type: Boolean,
+            required: false,
+            default: false
+        }
+    },
+    emits: [
+        'onActionClick'
+    ]
 })
 </script>

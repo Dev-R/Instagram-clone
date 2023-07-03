@@ -1,398 +1,376 @@
 <template>
-    <div
-        class="md:ml-12 fixed top-0 left-0 right-0 z-50 
-        w-full sm:p-4 overflow-x-hidden overflow-y-auto 
-        md:inset-0 h-modal md:h-full"
-        :class="{ 'hidden': !postComment.isToggled }">
-        
+	<!-- Desktop Modal Header -->
+	<div 
+		:class="postComment.isToggled ? 'md:block' : ''"
+		class="hidden absolute inset-x-0 top-5 right-0">
+		<div class="md:mr-12 flex items-center justify-between cursor-pointer">
+			<span class="ml-auto inline-flex text-white">
+				<SVGLoader
+					:icon="'cross'"
+					@click="onModalClosed()" />
+			</span>
+		</div>
+	</div>
 
-        <!-- Modal Header -->
-        <div class="md:block hidden">
-            <div class="md:mr-12 flex items-center justify-between cursor-pointer">
-                <span class="ml-auto inline-flex text-white">
-                    <SVGLoader :icon="'cross'" @click="onModalClosed()" />
-                </span>
-            </div>
-        </div>
+	<div
+		class="w-full z-50 absolute h-screen md:h-auto
+        top-1/2 left-1/2 transform -translate-x-1/2 
+        -translate-y-1/2
+        "
+		:class="{
+			'hidden': !postComment.isToggled,
+			'max-w-xs': modalSize === ModalSize.SuperSmall,
+			'max-w-sm': modalSize === ModalSize.ExtraSmall,
+			'max-w-md': modalSize === ModalSize.Small,
+			'max-w-lg': modalSize === ModalSize.Medium,
+			'max-w-4xl': modalSize === ModalSize.Large,
+			'max-w-7xl': modalSize === ModalSize.ExtraLarge
+		}">
+		<!-- Mobile Modal Header -->
+		<div class="md:hidden block">
+			<div class="flex justify-between cursor-pointer bg-black w-full p-3 border-b border-gray-700">
+				<span
+					class="rotate-[270deg]"
+					@click="onModalClosed()">
+					<SVGLoader :icon="'back-arrow'" />
+				</span>
+				<span class="font-sans text-md font-semibold text-white">
+					Comments
+				</span>
+				<span>
+					<SVGLoader :icon="'share'" />
+				</span>
+			</div>
+		</div>
 
-        <div class="md:hidden block">
-            <div class="flex justify-between cursor-pointer bg-black w-full p-3 border-b border-gray-700">
-                <span class="rotate-[270deg]" @click="onModalClosed()" >
-                    <SVGLoader :icon="'back-arrow'" />
-                </span>
-                <span class="font-sans text-md font-semibold text-white">
-                    Comments
-                </span>
-                <span>
-                    <SVGLoader :icon="'share'" />
-                </span>
-            </div>
-        </div>
-
-          <!-- Modal Body -->
-        <div 
-            class="container mx-auto z-50 block 
+		<!-- Modal Body -->
+		<div 
+			class="container mx-auto z-50 block 
             w-full overflow-x-hidden overflow-y-auto 
             md:inset-0">
+			<!-- Modal Content -->
+			<div 
+				class="relative bg-black 
+                flex md:flex-row flex-col">
+				<!-- Carousel Container -->
+				<div 
+					class="md:p-0 md:block p-2 w-full hidden">
+					<MediaCarousel 
+						v-if="postComment.post.carouselMedia"
+						:style="'rounded-none'"
+						:medias="postComment.post.carouselMedia" />
+				</div>
 
-            <div class="relative sm:h-full sm:w-full md:h-auto">
+				<!-- Comment Container -->
+				<div 
+					class="flex flex-col sm:space-y-4 lg:basis-7/12 sm:basis-10/12
+                    z-50 sm:border-l border-slate-800 sm:p-2">
+					<div class="flex flex-col sm:space-x-1 justify-between sm:p-2">
+						<!-- 1: username | daysSinceUpload | options for screens > 640px -->
+						<div class="sm:block hidden">
+							<div class="flex justify-between border-b border-slate-800 p-3">
+								<div class="flex space-x-2">
+									<img 
+										:src="postComment.post.profilePictureUrl"
+										class="cursor-pointer h-8 w-8 rounded-full shadow-lg" />
 
-                <!-- Modal Content -->
-                <div 
-                    class="relative bg-black md:grid
-                    md:grid-cols-9 flex flex-col sm:space-y-4">
-                
-                    <!-- Carousel Container -->
-                    <div 
-                        class="lg:col-span-5 col-span-5 md:max-w-[863px]
-                        md:max-w-full md:p-0 p-2 
-                        md:block hidden">
-                        <!-- space-y-12 -->
-                        <!-- Space -->
-                        <div>
-                        </div>
-                        <!-- Carousel -->
-                        <div class="h-full pt-7">
-                            <MediaCarousel 
-                                :style="'rounded-none'"
-                                :medias="postComment.post.carouselMedia"/>
-                        </div>
-                    </div>
+									<div class="flex pt-1">
+										<!-- Username -->
+										<div class="cursor-pointer font-sans text-sm font-semibold text-white">
+											{{ postComment.post.userName }}
+											<i class="fa-solid fa-circle-check"></i>
+										</div>
 
-                    <!-- Comments Container -->
-                    <div 
-                        class="flex flex-col sm:space-y-4  rounded-lg
-                        sm:pt-2 lg:col-span-3 col-span-7 z-100
-                        sm:border-l border-slate-800 sm:p-2">
+										<!-- Space -->
+										<div class="pl-2 w-5 font-sans text-md font-semibold text-white">
+											•
+										</div>
 
-                        <!-- 1: username | daysSinceUpload | options for screens > 640px -->
-                        <div class="flex flex-col sm:space-x-1 justify-between sm:p-2">
+										<!-- Follow -->
+										<div class="font-sans font-semibold text-sm text-sky-500 justify-self-end">
+											Follow
+										</div>
+									</div>
+								</div>
 
-                            <div class="sm:block hidden">
-                                <div class="flex justify-between border-b border-slate-800 p-3">
-                                    <div class="flex space-x-2">
+								<div class="cursor-pointer">
+									<SVGLoader :icon="'comment-options'" />
+								</div>
+							</div>
+						</div>
 
-                                        <img 
-                                            :src="postComment.post.profilePictureUrl"
-                                            class="cursor-pointer h-8 w-8 rounded-full shadow-lg">
-
-                                        <div class="flex pt-1">
-                                            <!-- Username -->
-                                            <div class="cursor-pointer font-sans text-sm font-semibold text-white">
-                                                {{ postComment.post.userName }}
-                                                <i class="fa-solid fa-circle-check"></i>
-                                            </div>
-
-                                            <!-- Space -->
-                                            <div class="pl-2 text-gray-500 w-5 font-sans text-md font-semibold text-white">
-                                                •
-                                            </div>
-
-                                            <!-- Follow -->
-                                            <div class="font-sans font-semibold text-sm text-sky-500 justify-self-end">
-                                                Follow
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-                                    <div class="cursor-pointer">
-                                        <SVGLoader :icon="'comment-options'" />
-                                    </div>
-
-                                </div>
-                            </div>
-
-                            <!-- 2: comment form for screens < 640px -->
-
-                            <div class="block sm:hidden"> 
-                                <div 
-                                    class="flex justify-between border-b 
-                                    border-t border-slate-700 
-                                    bg-slate-1100 p-2.5 space-x-4">
-
-                                        <div class="flex">
-                                            <img 
-                                                :src="postComment.post.profilePictureUrl"
-                                                class="cursor-pointer h-10 w-10 rounded-full shadow-lg">
-                                        </div>
+						<!-- 2: comment form for screens < 640px -->
+						<div class="block sm:hidden"> 
+							<div 
+								class="flex justify-between border-b 
+                                border-t border-slate-700 
+                                bg-slate-1100 p-2.5 space-x-4">
+								<div class="flex">
+									<img 
+										:src="postComment.post.profilePictureUrl"
+										class="cursor-pointer h-10 w-10 rounded-full shadow-lg" />
+								</div>
 
 
-                                        <div class="flex w-full relative">
-                                            <input 
-                                                type="text" 
-                                                id="comment-form" 
-                                                class="bg-black border border-slate-800
-                                                text-white text-sm rounded-full 
-                                                w-full p-3" 
-                                                placeholder="Add a comment...">
-                                            <div 
-                                                class="absolute inset-y-0 right-5 
-                                                flex items-center pl-3 pointer-events-none 
-                                                font-semibold text-sky-600">
-                                                Post
-                                            </div>
-                                        </div>
-                                </div>
-                            </div>
-                            
-                        </div>
+								<div class="flex w-full relative">
+									<input 
+										@click="onAddComment()"
+										v-model="commentForm"
+										type="text" 
+										class="bg-black border border-slate-800
+                                        text-white text-sm rounded-full w-full p-3" 
+										placeholder="Add a comment..." />
+									<div 
+										:class="commentForm ? 'text-sky-500 sm:cursor-pointer' : 'text-white'"
+										class="absolute inset-y-0 right-5 
+										flex items-center pl-3 pointer-events-none 
+										font-semibold">
+										Post
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 
-                        <!-- 2: comments rendering -->
-                        <div 
-                            class="lg:max-h-[600px] sm:max-h-[211px] grid h-screen
-                            sm:p-1 space-y-7 overflow-y-auto scrollbar 
-                            scrollbar-none">
-                                <div    
-                                    v-if="postComment.post.comments" 
-                                    v-for="(comment, index) of postComment.post.comments"
-                                    :key="index"
-                                    class="grid grid-cols-12 space-x-3">
+					<!-- 2: Comment Rendering -->
+					<div 
+						class="lg:max-h-[600px] sm:max-h-[211px] h-screen
+                        sm:p-1 space-y-7 overflow-y-auto scrollbar 
+                        scrollbar-none">
+						<CommentCard 
+							v-for="comment of postComment.post.comments" 
+							v-if="postComment.post.comments && postComment.post.comments.length >= 1"
+							:comment="comment"
+							@on-comment-like="onCommentLiked" />
 
-                                    <!-- Commenter picture -->
-                                    <div class="col-span-1">
-                                    <img 
-                                        :src="'postComment.picture?'" 
-                                        class="cursor-pointer h-8 w-8 rounded-full shadow-lg">                                  
-                                    </div>
-
-                                    <!-- Comment username and content -->
-                                    <div class="col-span-9 flex flex-col">
-                                        <p 
-                                        class="text-ellipsis overflow-hidden font-sans 
-                                        text-sm text-white text-justify">
-                                            
-                                        <span class="cursor-pointer font-sans 
-                                        text-sm font-semibold text-white">
-                                                {{ comment.userName }}
-                                                <i class="fa-solid fa-circle-check">
-                                                </i>
-                                            </span>
-                                                {{ comment.content }}
-                                        </p>
-                                    </div>
-
-                                    <!-- Like icon -->
-                                    <div class="col-span-1 text-gray-400 text-xs">
-                                        <i class="fa-regular fa-heart"></i>
-                                    </div>
-
-                                    <!-- Space -->
-                                    <div class="col-span-1">
-                                    </div>
-
-                                    <!-- Comment container footer -->
-                                    <div
-                                        class="group pt-3 col-span-11 
-                                        flex list-disc space-x-4 font-sans 
-                                        text-xs font-semibold text-gray-500 
-                                        self-start flex-wrap col-start-2">
-
-                                        <li class="list-none cursor-pointer">
-                                            {{ comment.createdAt }}
-                                        </li>
-                                        <li class="list-none cursor-pointer text-gray-400">Reply</li>
-                                        <li class="list-none cursor-pointer invisible group-hover:visible">
-                                            <SVGLoader :icon="'comment-options'" />
-                                        </li>
-
-                                    </div>
-                                
-                                </div>
-
-                                <div
-                                    v-else
-                                    class="flex flex-col place-self-center space-y-2">
-                                    <span
-                                        class="font-sans text-2xl text-white font-bold mx-auto">
-                                        No comments yet.
-                                    </span>
-                                    <span
-                                        class="font-sans text-sm self-center text-white font-normal">
-                                        Start the conversation.
-                                    </span>
-                                </div>
+						<div
+							v-else
+							class="flex flex-col space-y-2">
+							<span
+								class="font-sans lg:text-2xl md:text-md text-white font-bold self-center">
+								No comments yet.
+							</span>
+							<span
+								class="font-sans text-sm text-white font-normal self-center">
+								Start the conversation.
+							</span>
+						</div>
+					</div>
                     
-                        </div>
-                        
-                        <!-- 3: Comment Actions --> 
-                        <div class="sm:block hidden">
-                            <div class="flex justify-between p-2 border-t border-slate-800">
+					<!-- 3: Comment Actions --> 
+					<div class="sm:block hidden">
+						<div class="flex justify-between p-2 border-t border-slate-800">
+							<div class="flex space-x-4">
+								<span 
+									class="cursor-pointer hover:scale-90"
+									@click="onPostLike">
+									<SVGLoader 
+										v-if="postComment.post.hasLiked"
+										:icon="'like'" />
+                                    
+									<SVGLoader 
+										v-else
+										:icon="'unlike'" />
+								</span>
 
-                                <div class="flex space-x-4">
+								<span 
+									class="cursor-pointer hover:scale-90"
+									@click="focusTextArea">
+									<SVGLoader :icon="'comment'" />
+								</span>
 
-                                    <span class="cursor-pointer hover:scale-90">
-                                        <SVGLoader 
-                                            v-if="postComment.post.hasLiked" :icon="'like'"/>
-                                        
-                                        <SVGLoader 
-                                            v-else :icon="'unlike'"/>
-                                    </span>
+								<span class="cursor-pointer hover:scale-90">
+									<SVGLoader :icon="'share'" />
+								</span>
+							</div>
 
-                                    <span class="cursor-pointer hover:scale-90">
-                                        <SVGLoader :icon="'comment'" />
-                                    </span>
+							<div class="cursor-pointer hover:scale-90">
+								<SVGLoader :icon="'save'" />
+							</div>
+						</div>
+					</div>
 
-                                    <span class="cursor-pointer hover:scale-90">
-                                        <SVGLoader :icon="'share'" />
-                                    </span>
+					<!-- 4: Number of Likes | Upload date -->
+					<div class="sm:block hidden">
+						<div class="flex flex-col space-y-2 space-x-2">
+							<span 
+								class="pl-2 cursor-pointer font-sans text-sm 
+                                font-semibold text-white self-start">
+								{{ numberOfLikes }}
+								<!-- {{ postComment.likes }} -->
+							</span>
 
-                                </div>
+							<span 
+								class="cursor-pointer font-sans 
+                                text-gray-600 text-xs self-start">
+								{{ postComment.post.createdAt }}
+								<!-- {{ postComment.uploadDate }} -->
+							</span>
+						</div>
+					</div>
 
-                                <div class="cursor-pointer hover:scale-90">
-                                    <SVGLoader :icon="'save'" />
-                                </div>
+					<!-- 5: Comment Form > 640px: -->
+					<div class="sm:block hidden">
+						<div class="flex justify-between border-t border-slate-800 p-2 pb-0">
+							<span class="flex space-x-4">
+								<span class="hover:cursor-pointer">
+									<SVGLoader :icon="'emoji'" />
+								</span>
+								<textarea 
+									ref="commentFormElementRef"
+									v-model="commentForm"
+									rows="1"
+									class="focus:outline-none resize-none 
+                                    block w-full text-sm bg-black text-white"
+									placeholder="Add a comment..."
+									@keypress.enter.prevent="onAddComment"></textarea>
+							</span>
 
-                            </div>
-                        </div>
-
-                        <!-- 4: Number of Likes | Upload date -->
-                        <div class="sm:block hidden">
-                            <div class="flex flex-col space-y-2 space-x-2">
-                                <span 
-                                    class="pl-2 cursor-pointer font-sans text-sm 
-                                    font-semibold text-white self-start">
-                                    {{ findNumberOfLikes }}
-                                    <!-- {{ postComment.likes }} -->
-                                </span>
-
-                                <span 
-                                    class="cursor-pointer font-sans 
-                                    text-gray-600 text-xs self-start">
-                                    {{ postComment.post.createdAt }}
-                                    <!-- {{ postComment.uploadDate }} -->
-                                </span>
-
-                            </div>
-                        </div>
-
-                        <!-- 5: Comment Form > 640px: -->
-                        <div class="sm:block hidden">
-                            <div class="grid grid-cols-12 border-t border-slate-800 p-2">
-
-                                <span class="col-span-1 hover:cursor-pointer">
-                                    <SVGLoader :icon="'emoji'" />
-                                </span>
-
-                                <span class="col-span-10">
-                                    <textarea 
-                                        rows="1"
-                                        class="focus:outline-none resize-none 
-                                        block w-full text-sm bg-black text-gray-600"
-                                        placeholder="Add a comment..."></textarea>
-                                </span>
-
-                                <span
-                                    class="col-span-1 font-sans text-md text-white justify-self-end mb-2">
-                                    Post
-                                </span>
-
-                            </div>
-                        </div>
-                        
-                    </div>
-
-                </div>
-            </div>
-
-        </div>
-
-    </div>
+							<span
+								:class="commentForm ? 'text-sky-500 sm:cursor-pointer' : 'text-white'"
+								class="font-sans text-md text-white justify-self-end mb-2 cursor-default"
+								@click="onAddComment()">
+								Post
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, computed } from 'vue';
+import { defineComponent, onMounted, computed, ref } from 'vue'
 
-import type { PostCommentModal } from '@/common/models/post.model';
-import SVGLoader from '@/components/basics/SVGLoader.vue';
-import MediaCarousel from '@/components/carousels/MediaCarousel.vue';
+import {
+	SVGLoader,
+	CommentCard,
+	MediaCarousel
+} from '@/components'
 
+import { 
+	ModalSize,
+	type PostCommentModal,
+	type PostCommentCard
+} from '@/common'
 
 export default defineComponent({
-  name: "CommentModal",
-  setup(props, context) {
+	name: 'CommentModal',
+	setup(props, context) {
+		// Forms 
+		const commentForm = ref<string | undefined>()
 
-      // Computed
-      const findNumberOfLikes = computed(() => {
-          return props.postComment.post.likeCount >= 1 ? `${props.postComment.post.likeCount} Likes` : 'Be the first to like this' 
-      })
+		// DOM Refs
+		const commentFormElementRef = ref<HTMLAreaElement>()
+    
+		// Computed
+		const numberOfLikes = computed(() => {
+			return props.postComment.post.likeCount >= 1 ? `${ props.postComment.post.likeCount } Likes` : 'Be the first to like this' 
+		})
 
-      /**
+		/**
+       * Focus on text area when user click on the comment icon
+       */
+		const focusTextArea = () => {
+			commentFormElementRef.value?.focus()
+		}
+
+	   /**
+       * Reset comment value
+       */
+		const resetCommentValue = () => {
+			commentForm.value = undefined
+		}
+
+		/**
        * Emit signal to add new comment
        * @param {string} commentText - The text of the new comment
        */
-      const onAddComment = (commentText: string) => {
-          context.emit("onAddComment", commentText);
-      }
+		const onAddComment = () => {
+			if(commentForm.value) {
+				context.emit('onAddComment', commentForm.value)
+				resetCommentValue()      
+			}
+		}
 
-      /**
+	   /**
        * Emit signal to delete existing comment
        * @param {number} commentId - The ID of the comment to be deleted
        */
-      const onDeleteComment = (commentId: number) => {
-          context.emit("onDeleteComment", commentId);
-      }
+		const onDeleteComment = (commentId: number) => {
+			context.emit('onDeleteComment', commentId)
+		}
 
-      /**
+	   /**
        * Emit signal when the modal is opened
        * @event modal-opened
        */
-      const onModalOpened = () => {
-          context.emit('onModalOpened')
-      }
+		const onModalOpened = () => {
+			context.emit('onModalOpened')
+		}
 
-      /**
+	   /**
        * Emit signal when the modal is closed
        * @event modal-closed
        */
-      const onModalClosed = () => {
-          context.emit('onModalClosed')
-      }
+		const onModalClosed = () => {
+			context.emit('onModalClosed')
+		}
 
-      /**
-       * Emit signal when a comment is unliked
-       * @event comment-unliked
-       * @param {string} commentId - The ID of the comment being unliked
-       */
-      const onCommentUnliked = (commentId: string) => {
-          context.emit('onCommentUnliked', commentId)
-      }
-
-      /**
+	   /**
        * Emit signal when a comment is liked
        * @event comment-liked
-       * @param {string} commentId - The ID of the comment being liked
+       * @param {number} commentId - The ID of the comment being liked
        */
-      const onCommentLiked = (commentId: string) => {
-          context.emit('onCommentLiked', commentId)
-      }
+		const onCommentLiked = (commentId: PostCommentCard['id']) => {
+			context.emit('onCommentLiked', commentId)
+		}
 
-      onMounted(() => {
-      });
-      return {
-          onModalClosed,
-          findNumberOfLikes
-      };
-  },
-  components: { 
-      MediaCarousel,
-      SVGLoader 
-  },
-  props: {
-      postComment: {
-          type: Object as () => PostCommentModal,
-          required: true
-      }
-  },
-  emits: [
-      'onAddComment',
-      'onDeleteComment',
-      'onModalOpened',
-      'onModalClosed',
-      'onCommentUnliked',
-      'onCommentLiked'
-  ]
+	   /**
+       * Emit signal when a post is liked
+       */
+		const onPostLike = () => {
+			context.emit('onPostLiked')
+		}
+
+		onMounted(() => {
+		})
+		return {
+			focusTextArea,
+			onModalClosed,
+			onPostLike,
+			onAddComment,
+			onCommentLiked,
+			ModalSize,
+			numberOfLikes,
+			commentFormElementRef,
+			commentForm
+		}
+	},
+    components: { 
+		MediaCarousel,
+		SVGLoader,
+		CommentCard
+	},
+	props: {
+		postComment: {
+			type: Object as () => PostCommentModal,
+			required: true
+		},
+		modalSize: {
+			type: String,
+			default: ModalSize.ExtraLarge
+		}
+	},
+	emits: [
+		'onAddComment',
+		'onDeleteComment',
+		'onModalOpened',
+		'onModalClosed',
+		'onCommentLiked',
+		'onPostLiked'
+	],
 })
 </script>
 

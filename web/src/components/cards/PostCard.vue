@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col space-y-4 pt-2">
+    <div class="flex flex-col space-y-4 pt-2 h-screen">
 
         <!-- Header-->
         <div class="flex rounded-lg space-x--1 justify-between">
@@ -36,14 +36,18 @@
         <!-- 2: Medias -->
         <div class="md:max-h-[585px] p-1">
             <!-- <img src="https://loremflickr.com/1024/1280" class="rounded"> -->
-            <MediaCarousel :medias="postItem.carouselMedia"/>
+            <MediaCarousel 
+                v-if="postItem.carouselMedia"
+                :medias="postItem.carouselMedia"/>
         </div>
         <!-- 3: Actions -->
         <div class="flex justify-between">
 
             <div class="flex space-x-4">
 
-                <span class="cursor-pointer hover:scale-90">
+                <span 
+                    @click="$emit('onPostLike', postItem.id)"
+                    class="cursor-pointer hover:scale-90">
                     <SVGLoader 
                         v-if="postItem.hasLiked" :icon="'like'"/>
                     
@@ -119,13 +123,13 @@ import { defineComponent, ref, computed } from 'vue'
 
 import SVGLoader from '@/components/basics/SVGLoader.vue'
 import MediaCarousel from '@/components/carousels/MediaCarousel.vue'
-import type { PostCard } from '@/common/models/post.model'
+import type { PostCard } from '@/common'
 
 export default defineComponent({
     name: 'PostCard',
     setup(props, context) {
 
-        // Checkers
+        // Flags
         const isCommentModalOpen = ref(false);
 
         // Computed
@@ -161,7 +165,8 @@ export default defineComponent({
         },
     },
     emits: [
-        'onOpenCommentModal'
+        'onOpenCommentModal',
+        'onPostLike'
     ]
 })
 </script>

@@ -43,13 +43,19 @@ const router = createRouter({
           meta: { title: 'Direct' }
         },
         {
+          path: '/reels',
+          name: 'reels',
+          component: () => import('@/views/ReelsView.vue'),
+          meta: { title: 'Reels' }
+        },
+        {
           path: '/create',
           name: 'create',
           children: [
             {
               path: 'style',
               name: 'style',
-              component: () => import('@/components/basics/PhotoModal.vue'),
+              component: () => import('@/components/modals/PhotoModal.vue'),
               meta: { title: 'Create Image' }
             },
             {
@@ -78,12 +84,18 @@ const router = createRouter({
           component: () => import('@/views/auth/LoginView.vue'),
           meta: { title: 'Login' }
         },
-        // {
-        //   path: 'signup',
-        //   name: 'signup',
-        //   component: () => import('@/views/auth/LoginView.vue'),
-        //   meta: { title: 'Sign up' }
-        // }
+        {
+          path: 'signup',
+          name: 'signup',
+          component: () => import('@/views/auth/SignupView.vue'),
+          meta: { title: 'Sign up' }
+        },
+        {
+          path: 'reset',
+          name: 'reset',
+          component: () => import('@/views/auth/ResetPassword.vue'),
+          meta: { title: 'Reset Password' }
+        },
       ]
     },
     {
