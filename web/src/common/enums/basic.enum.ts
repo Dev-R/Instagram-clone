@@ -8,6 +8,29 @@ export enum ScreenBreakpoint {
     ExtraLarge = 1280  // Up to 1280px width
 }
 
+/** Enum for basic color */
+export enum BasicColor {
+    /** Default color */
+    DEFAULT = 'sky',
+
+    /** Success color */
+    SUCCESS = 'green',
+
+    /** Info color */
+    INFO = 'indigo',
+
+    /** Warning color */
+    WARNING = 'yellow',
+
+    /** Danger color */
+    DANGER = 'red',
+
+    /** Outline with default color */
+    OUTLINE  = 'outline', 
+    
+    /** Light color */
+    LIGHT = 'light'
+}
 
 /** Enum for modal size */
 export enum ModalSize {
