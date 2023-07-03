@@ -84,12 +84,18 @@ const router = createRouter({
           component: () => import('@/views/auth/LoginView.vue'),
           meta: { title: 'Login' }
         },
-        // {
-        //   path: 'signup',
-        //   name: 'signup',
-        //   component: () => import('@/views/auth/LoginView.vue'),
-        //   meta: { title: 'Sign up' }
-        // }
+        {
+          path: 'signup',
+          name: 'signup',
+          component: () => import('@/views/auth/SignupView.vue'),
+          meta: { title: 'Sign up' }
+        },
+        {
+          path: 'reset',
+          name: 'reset',
+          component: () => import('@/views/auth/ResetPassword.vue'),
+          meta: { title: 'Reset Password' }
+        },
       ]
     },
     {
