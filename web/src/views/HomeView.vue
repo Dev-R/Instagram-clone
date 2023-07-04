@@ -3,12 +3,12 @@
         <section 
             class="container max-w-full mx-auto text-center"
             :class="{ 'brightness-50 pointer-events-none': commentModal.isToggled || photoModal.isToggled }">
-            <div class="md:pt-5 grid grid-cols-12">
+            <div class="grid grid-cols-12">
                 <!-- Left bar: Navigation -->
                 <div 
-                    class="xl:col-span-2 col-span-1 bg-black 
-                    md:block hidden space-y-12 relative h-screen 
-                    sticky top-0 border-r border-gray-900">
+					class="xl:col-span-2 col-span-1 bg-black
+					md:block hidden space-y-12 h-screen 
+					sticky top-0 border-r border-gray-900">
                     
                     <!-- A -->
                     <NavBarMain

@@ -5,12 +5,12 @@
             class="container max-w-full mx-auto text-center 
             h-screen scrollbar scrollbar-thumb-gray-900"
             :class="{ 'brightness-50 pointer-events-none': isModalToggled }">
-            <div class=" grid grid-cols-12">
+            <div class="grid grid-cols-12">
                 <!-- Left bar: Navigation -->
                 <div 
-                    class="bg-black pt-5 col-span-1 xl:col-span-2
-                    h-screen space-y-12 hidden md:block
-                    sticky top-0 border-r border-gray-900">
+					class="xl:col-span-2 col-span-1 bg-black 
+					md:block hidden space-y-12 h-screen 
+					sticky top-0 border-r border-gray-900">
                     <NavBarMain
                         @on-create="triggerPhotoModal"/>
                     
