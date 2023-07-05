@@ -24,7 +24,7 @@
             
                     <!-- Profile Info -->
                     <div 
-                        class="flex flex-col md:w-[935px] flex-nowrap space-y-4 
+                        class="flex flex-col md:max-w-4xl w-full flex-nowrap space-y-4 
                         pt-2 md:pt-0 justify-self-end lg:mr-[64px]">            
                         <div class="flex md:space-x-14 md:pl-14 md:pb-8">
                             <!-- User Profile image -->
@@ -118,7 +118,7 @@
                         </div>
 
                         <!-- Tab bar Rendering Section-->
-                        <div class="text-center border-tborder-slate-1100">
+                        <div class="text-center border-tborder-slate-1100 border-t border-slate-1100">
                             <ul 
                                 class="flex space-x-14 flex-wrap -mb-px 
                                 md:justify-center justify-between sm:px-6">
@@ -247,6 +247,7 @@
         <FollowModal 
             @on-modal-closed="triggerSmallModal"
             :title="smallModal.title" 
+            :modal-size="ModalSize.Medium"
             :items="smallModal.items" :is-toggled="smallModal.isToggled && smallModal.name === ModalType.Follow" />
 
         <!-- Quick Setting Modal -->
@@ -279,7 +280,8 @@ import type {
 
 import {
     ProfileTab,
-    ModalType
+    ModalType,
+    ModalSize
 } from '@/common'
 
 export default defineComponent({
@@ -474,7 +476,7 @@ export default defineComponent({
         ]
 
         const postItems = [
-            {
+        {
                 id: '0',
                 userName: 'Rabee',
                 createdAt: 'February 24',
@@ -513,6 +515,7 @@ export default defineComponent({
             // Enums
             ProfileTab,
             ModalType,
+            ModalSize,
 
             // Computed
             emptyTabBarBodyMessage,
