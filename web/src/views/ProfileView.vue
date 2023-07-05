@@ -73,11 +73,11 @@
                                     <div class="flex space-x-10">
 
                                         <div 
-                                        v-for="(element, index) of profileInfoElements"
+                                            v-for="(element, index) of profileInfoElements"
                                             :key="index"
                                             @click="element.onClick"
-                                            class="font-sans text-md font-normal 
-                                          text-white hover:cursor-pointer">
+                                            class="font-sans text-md font-normal text-white"
+                                            :class="element.title != 'posts' ? 'hover:cursor-pointer' : ''">
                                             <span class="font-sans text-sm font-bold text-white">
                                                 {{ element.value }}
                                             </span>
