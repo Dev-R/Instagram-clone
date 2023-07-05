@@ -38,15 +38,18 @@
 				<div 
 					v-for="item of <SuggestionCard[]> items"
 					v-if="modalType === ModalType.Follow"
-					class="rounded-lg flex justify-between space-x-2">
+					class="rounded-lg flex justify-between space-x-2 p-5">
 					<SmallCard 
+						:show-button="true"
 						:profile-image="item.profilePictureUrl">
 						<template #user-name>
 							{{ item.userName }}
 						</template>
 
 						<template #action-name>
-							Follow
+							<span class="text-sky-500 text-sm">
+								Follow
+							</span>
 						</template>
 
 						<template #button-name>
