@@ -30,7 +30,11 @@
             'hover:bg-indigo-500 border-indigo-500 \
             hover:text-white text-indigo-700 \
             disabled:bg-indigo-300 disabled:text-white \
-            focus:outline-1' :  color === BasicColor.OUTLINE
+            focus:outline-1' :  color === BasicColor.OUTLINE,
+            'hover:bg-gray-300 bg-white border-gray-200 \
+            hover:text-gray-600 text-gray-900 \
+            disabled:bg-gray-300 disabled:text-white \
+            focus:outline-1' :  color === BasicColor.LIGHT
         }">
         <slot>Button</slot>
     </button>
