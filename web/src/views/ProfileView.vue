@@ -18,14 +18,14 @@
                 
                 <!-- Center -->
                 <div 
-                    class="lg:col-span-8 lg:grid md:col-span-6 scrollbar
+                    class="lg:col-span-8 lg:grid scrollbar
                   scrollbar-thumb-gray-900 md:ml-5 lg:ml-0 md:col-start-2 
                     md:mt-8 md:p-0 col-span-12 p-2">
             
                     <!-- Profile Info -->
                     <div 
-                        class="flex flex-col md:max-w-4xl w-full flex-nowrap space-y-4 
-                        pt-2 md:pt-0 justify-self-end lg:mr-[64px]">            
+                        class="flex flex-col md:w-[935px] w-full  flex-nowrap space-y-4 
+                        pt-2 md:pt-0 col-start-12">            
                         <div class="flex md:space-x-14 md:pl-14 md:pb-8">
                             <!-- User Profile image -->
                             <div>
@@ -76,7 +76,7 @@
                                         v-for="(element, index) of profileInfoElements"
                                             :key="index"
                                             @click="element.onClick"
-                                            class="font-sans text-sm font-normal 
+                                            class="font-sans text-md font-normal 
                                           text-white hover:cursor-pointer">
                                             <span class="font-sans text-sm font-bold text-white">
                                                 {{ element.value }}
@@ -93,10 +93,10 @@
                         <!-- Profile Info Rendering: Mobile -->
                         <div 
                             class="text-center border-t 
-                            md:hidden blockborder-slate-1100 mt-2">
+                            md:hidden block border-slate-1100 mt-2">
                             <ul 
-                                class="flex space-x-14 flex-wrap 
-                                justify-around pt-3 pl-4 pr-4">
+                                class="flex flex-wrap 
+                                justify-around pt-3 px-4">
 
                                 <div 
                                     v-for="(element, index) of profileInfoElements"
@@ -118,9 +118,9 @@
                         </div>
 
                         <!-- Tab bar Rendering Section-->
-                        <div class="text-center border-tborder-slate-1100 border-t border-slate-1100">
+                        <div class="text-cente border-t border-slate-1100">
                             <ul 
-                                class="flex space-x-14 flex-wrap -mb-px 
+                                class="flex flex-wrap sm:space-x-14  -mb-px 
                                 md:justify-center justify-between sm:px-6">
 
                                 <li 
@@ -172,7 +172,7 @@
                         <!-- Image Rendering Section -->
                         <div 
                             v-if="currentActiveTab === ProfileTab.Posts"
-                            class="flex flex-wrap">
+                            class="flex flex-wrap sm:h-screen">
                             
                             <div 
                                 v-for="(post, index) of postItems"
