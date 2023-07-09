@@ -82,6 +82,9 @@ export interface StoryCarousel {
     
     /** Whether the user has seen the story carousel or not */
     seen: boolean
+
+    /** Whether the current user has liked the story */
+    hasLiked: boolean
     
     /** The list of media items in the story carousel */
     items: PostMedia[]
