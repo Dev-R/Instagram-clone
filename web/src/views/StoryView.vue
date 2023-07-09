@@ -87,7 +87,10 @@
                             </span>
 
                             <!-- Others -->
-                            <i class="fa-solid fa-ellipsis self-center cursor-pointer"></i>
+                            <i class="fa-solid fa-ellipsis self-center cursor-pointer hidden sm:block"></i>
+                            <i 
+                                @click="onModalClosed()"
+                                class="fa-solid fa-x self-center cursor-pointer block sm:hidden"></i>
                         </div>
 
                     </figcaption>
@@ -107,6 +110,7 @@
                         v-else
                         :src="story.items[0].mediaUrl"
                         :controls="false"
+                        class="h-dynamic-screen sm:h-auto"
                         autoplay
                         loop
                         defaultMuted
@@ -144,7 +148,7 @@
         </SwiperContainer>
 
         <!-- Close mark -->
-        <div class="absolute right-6 z-50 hover:cursor-pointer">
+        <div class="absolute right-6 z-50 hover:cursor-pointer md:block hidden">
             <SVGLoader :icon="'cross-large'"  @click="onModalClosed()"/>
         </div>
 
