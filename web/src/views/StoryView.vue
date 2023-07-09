@@ -1,191 +1,271 @@
 <template>
-    <div class="overflow-y-scroll scrollbar">
-        <div class="container max-w-full h-screen bg-[#1a1a1a] space-y-5 p-2 relative">
-            <Carousel3d 
-                ref="carousel"
-                :startIndex="0"
-                :autoplay="false"
-                :controls-visible="true"
-                :height="850"
-                :width="490"
-                :space="800"
-                :autoplay-timeout="2000"
-                :inverse-scaling="1200" 
-                :perspective="0"
-                :clickable="false"
-                @after-slide-change="onAfterSlideChange"
-                :display="'5'">
-                <Slide
-                    v-for="(reel, slideIndex) in reels"
-                    @click="onSlideJump(slideIndex)" 
-                    :index="slideIndex">
-                    <figure class="relative max-w transition-all duration-300">
-                        <!-- TODO: Controls -->
-                        <!-- <div class="absolute top-1/2 left-1 z-50">
-                            <i class="fa-solid fa-circle-left text-2xl"></i>
-                            <i class="fa-solid fa-circle-arrow-left "></i>
-                        </div>
-                        <div class="absolute top-1/2 right-1 z-50">
-                            <i class="fa-solid fa-circle-right text-2xl"></i>
-                        </div> -->
-                        <!-- Progress Bar -->
-                        <figcaption 
-                            v-if="currentSlideIndex === slideIndex"
-                            class="absolute inset-x-3 
-                            top-2 w-11/12 bg-gray-400 
-                            rounded-full h-0.5">
-                                <div 
-                                    class="bg-gray-200 h-0.5 
-                                    rounded-full" 
-                                    :style="{ 'width': progressBar + '%' }">
-                                </div>
-                        </figcaption>
-
-                        <!-- Info Bar -->
-                        <figcaption 
-                            class="absolute py-2 
-                            text-lg top-5 flex 
-                            flex-nowrap w-auto">
-                            <div class="p-1 rounded-full">
-                                <span class="block bg-white rounded-full relative">
-                                    <img 
-                                        class="w-8 h-8 rounded-full object-cover"
-                                        :src="reel.profilePictureUrl"/>
-                                </span>
+    <div class="container flex max-w-full w-full h-screen bg-[#1a1a1a] space-y-5 sm:p-2">
+        <SwiperContainer
+            :centered-slides="true"
+            :modules="modules"
+            :effect="'cube'"
+            :cubeEffect="{
+                shadow: true,
+                slideShadows: true,
+                shadowOffset: 20,
+                shadowScale: 0.94,
+            }"
+            :autoplay="{
+                delay: 25000,
+                disableOnInteraction: false,
+            }"
+            :navigation="{
+                enabled: true
+            }"
+            @autoplayTimeLeft="onAutoplayTimeLeft"
+            @after-init="initializeSlideInstance"
+            @active-index-change="updateActiveSlideInstance"
+            :class="'sm:max-h-[877px] sm:max-w-lg sm:w-full sm:h-full h-screen w-screen self-center swiper-container'">
+            <swiper-slide
+                v-for="(story, index) in stories"
+                :key="index">
+                <figure class="relative sm:w-full sm:h-full h-screen w-screen transition-all duration-300 mx-auto">
+                    <!-- Progress Bar -->
+                    <figcaption 
+                        class="absolute inset-x-3 
+                        top-2 w-11/12 bg-gray-400 
+                        rounded-full h-0.5">
+                            <div 
+                                class="bg-gray-200 h-0.5 
+                                rounded-full" 
+                                :style="{ 'width': progressPercentage + '%' }">
                             </div>
+                    </figcaption>
 
+                    <!-- Info Bar -->
+                    <figcaption 
+                        class="absolute py-2 p-3 text-lg top-5 flex flex-row flex-nowrap justify-between w-11/12">
+
+                        <!-- User Info -->
+                        <div class="flex flex-row">
+                            <!-- Picture -->
+                            <img 
+                                class="w-8 h-8 rounded-full object-cover relative"
+                                :src="story.profilePictureUrl"/>
+
+                            <!-- Username -->
                             <div class="text-sm text-white self-center space-x-1">
                                 <span>
-                                    {{ reel.userName }}
+                                    {{ story.userName }}
                                 </span>
-
-                                <i class="fa-solid fa-circle-check"></i>
                                 
                                 <span>
-                                    3h
+                                    {{ story.expiringAt }}
                                 </span>
                             </div>
-                        </figcaption>
-                        
-                        <!-- TODO: Add Support For Media Options -->
-                        <!-- <figcaption
-                            v-if="reel.items[0]?.type === 'video'"  
-                            class="absolute py-5 px-2 text-lg top-5 right-0 flex flex-nowrap w-auto space-x-4">
-                            <i class="fa-solid fa-play text-md text-gray-300"></i>
+                        </div>
 
-                            <i 
-                                class="fa-solid fa-play 
-                                text-md text-gray-300"
-                                :class="{
-                                    'fa-volume-high': !isVideoMuted,
-                                    'fa-volume-xmark': isVideoMuted,
-                                }">
-                            </i>
-                            <SVGLoader :icon="'story-options'" />
-                        </figcaption> -->
+                        <!-- Media Controllers -->
+                        <div class="flex flex-row space-x-4 pt-2 text-white self-end">
+                            <!-- Players -->
+                            <span @click="onStoryPlay">
+                                <i 
+                                    v-if="isStoryPlaying"
+                                    class="fa-solid fa-pause
+                                    cursor-pointer"></i>
+                                <i 
+                                    v-else
+                                    class="fa-solid fa-play 
+                                    cursor-pointer"></i>
+                            </span>
 
-                        <!-- Image -->
-                        <img
-                            v-if="reel.items[0]?.type === 'image'" 
-                            :src="reel.items[0]?.mediaUrl" 
-                            class="rounded-lg" 
-                            :alt="reel.items[0]?.title" />
+                            <!-- Muters -->
+                            <span @click="onStoryMute">
+                                <i 
+                                    v-if="isStoryMuted"
+                                    class="fa-solid fa-volume-high
+                                    Mutecursor-pointer"></i>
+                                <i 
+                                    v-else
+                                    class="fa-solid fa-volume-xmark
+                                    cursor-pointer"></i>
+                            </span>
 
-                        <!-- TODO: Add Support For Video-->
-                        <!-- <video
-                            v-else @load="" 
-                            @canplay="appendToVideoElements(reel.items[0].index, $event)" 
-                            :muted="isVideoMuted" 
-                            class="absolute block w-full" 
-                            :alt="reel.items[0].title">
-                            <source :src="reel.items[0].mediaUrl" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video> -->
+                            <!-- Others -->
+                            <i class="fa-solid fa-ellipsis self-center cursor-pointer"></i>
+                        </div>
 
-                        <!-- Reel Form -->
-                        <!-- TODO: Check form bug -->
-                        <!-- TODO -->
-                        <figcaption class="absolute inset-x-3 bottom-6 w-11/12 rounded-full h-11 flex space-x-3">
-                            <input
-                                tabindex="1"
-                                type="text" 
-                                class="z-50 bg-transparent border border-gray-300 text-gray-900 text-sm rounded-full
-                                focus:border-blue-500 block w-full p-2.5" 
-                                placeholder="John">
+                    </figcaption>
 
-                            <SVGLoader :icon="'like'" :class="'self-center hover:cursor-pointer'"/>
+                    
 
-                            <SVGLoader :icon="'direct'" :class="'self-center hover:cursor-pointer'"/> 
+                    <!-- Image -->
+                    <img
+                        v-if="story.items[0]?.type === 'image'" 
+                        class="rounded-lg sm:w-full sm:h-full h-screen w-screen" 
+                        :class="commentFocused"
+                        :src="story.items[0]?.mediaUrl" 
+                        :alt="story.items[0]?.title" />
 
-                        </figcaption>
+                    <!-- TODO: Add Support For Video-->
+                    <video
+                        v-else
+                        :src="story.items[0].mediaUrl"
+                        :controls="false"
+                        autoplay
+                        loop
+                        defaultMuted
+                        playsinline
+                        oncontextmenu="return false"
+                        preload="auto">
+                    </video>
 
-                    </figure>
+                    <!-- Reel Form -->
+                    <figcaption class="absolute inset-x-3 bottom-6 w-11/12 rounded-full h-11 flex space-x-3">
+                        <input
+                            @focus="onCommentFocus"
+                            @focusout="onCommentFocus"
+                            tabindex="1"
+                            type="text" 
+                            class="z-50 bg-transparent border border-gray-300 text-white focus:outline-none text-sm rounded-full
+                            block w-full p-2.5" 
+                            :placeholder="'Reply to' + ' ' + story.userName" />
+                        <span 
+                            @click="updateLikeStatus(story)"
+                            class="self-center hover:cursor-pointer hover:scale-90">
+                            <SVGLoader 
+                                v-if="story.hasLiked" :icon="'like'"/>
+                            
+                            <SVGLoader 
+                                v-else :icon="'unlike'"/>
+                        </span>
 
-                </Slide>
-            </Carousel3d>
+                        <SVGLoader 
+                            :icon="'direct'" :class="'self-center hover:cursor-pointer hover:scale-90'" /> 
+                    </figcaption>
 
-            <div class="absolute top-8 right-6 z-50 hover:cursor-pointer">
-                <SVGLoader :icon="'cross-large'"  @click="onModalClosed()"/>
-            </div>
+                </figure>
+            </swiper-slide>
+        </SwiperContainer>
 
-            <div class="absolute top-0 left-6 z-50 md:block hidden">
-                <SVGLoader :icon="'instagram-large'" />
-            </div>
-
+        <!-- Close mark -->
+        <div class="absolute right-6 z-50 hover:cursor-pointer">
+            <SVGLoader :icon="'cross-large'"  @click="onModalClosed()"/>
         </div>
+
+        <!-- Instagram Logo -->
+        <div class="absolute top-0 left-6 z-50 md:block hidden">
+            <SVGLoader :icon="'instagram-large'" />
+        </div>
+
     </div>
 </template>
 
 <script lang="ts">
 import { onMounted, defineComponent, ref, watch, computed } from 'vue'
 import { useRouter } from 'vue-router'
+// Import Swiper styles
+import 'swiper/css/bundle'
+import 'swiper/css'
+import 'swiper/css/pagination'
+import 'swiper/css/navigation'
 
-// @ts-ignore
-import { Carousel3d, Slide } from 'vue3-carousel-3d'
+import SwiperInstance, {
+    Mousewheel,
+    Pagination,
+    EffectCube,
+    Autoplay,
+    Navigation
+} from 'swiper'
+
+import {
+    Swiper,
+    SwiperSlide
+} from 'swiper/vue'
+
 
 import {
     MediaCarousel,
-    CommentModal, 
+    CommentModal,
     SVGLoader
 } from '@/components'
+import type { StoryCarousel } from '@/common'
 
 export default defineComponent({
     name: "StoryView",
     setup() {
 
-
-        const reels = [{
-            id: 1,
-            userName: 'Noura',
-            profilePictureUrl: 'https://loremflickr.com/32/32/woman',
-            expiringAt: '',
-            seen: false,
-            items: [{
-                index: 0,
-                type: 'image',
-                mediaUrl:
-                    "https://loremflickr.com/490/870/car",
-                title: "Legendary A"
-            },],
-            mediaCount: 1
-        },
-        ]
-
-        // Constants, bad practice. TODO: Move constants into their own files
-        const TIMER_VALUE = 10 // 10
-        const PROGRESS_INITIAL_VALUE = 0
-        const INITIAL_SLIDE_INDEX = 0
-        const MAX_REELS_INDEX = reels.length - 1
+        /**
+         * TODO: Make the story handle video play and pause and mutes as well
+         * TODO: Decompose the project
+         */
+        const stories = ref<StoryCarousel[]>([
+            {
+                id: 0,
+                userName: 'Noura',
+                profilePictureUrl: 'https://loremflickr.com/32/32/woman',
+                expiringAt: '',
+                seen: false,
+                items: [
+                    {
+                        index: 0,
+                        type: 'image',
+                        mediaUrl:
+                            "https://loremflickr.com/490/870/car",
+                        title: "Legendary A"
+                    }
+                ],
+                hasLiked: false,
+                mediaCount: 1
+            },
+            {
+                id: 1,
+                userName: 'Noura',
+                profilePictureUrl: 'https://loremflickr.com/32/32/woman',
+                expiringAt: '',
+                seen: false,
+                items: [
+                    {
+                        index: 0,
+                        type: 'video',
+                        mediaUrl:
+                            "https://assets.mixkit.co/videos/download/mixkit-eastern-egg-picnic-in-the-garden-48599.mp4",
+                        title: "Legendary A"
+                    }
+                ],
+                hasLiked: false,
+                mediaCount: 1
+            },
+            {
+                id: 3,
+                userName: 'Noura',
+                profilePictureUrl: 'https://loremflickr.com/32/32/woman',
+                expiringAt: '',
+                seen: false,
+                items: [
+                    {
+                        index: 0,
+                        type: 'image',
+                        mediaUrl:
+                            "https://loremflickr.com/490/870/love",
+                        title: "Legendary A"
+                    }
+                ],
+                hasLiked: false,
+                mediaCount: 1
+            },
+        ])
 
         // Data
-        const timerCount = ref(TIMER_VALUE)
-        const progressCount = ref(PROGRESS_INITIAL_VALUE)
-        const currentSlideIndex = ref(INITIAL_SLIDE_INDEX)
-        const carousel = ref<InstanceType<typeof Carousel3d>>()
+        const progressPercentage = ref(0)
+        const progressBar = ref(null)
+        // const carousel = ref<InstanceType<typeof Carousel3d>>()
+
+        // Trackers
+        const activeSwiperInstance = ref<SwiperInstance>()
+        const activeStory = ref<HTMLVideoElement | HTMLImageElement>()
+        const activeStoryType = ref<'Image' | 'Video' | null>(null)
 
         // Checkers
         const isToggled = ref<boolean>(false)
-        const isTimerEnabled = ref(false)
+        const isCommentInputFocused = ref(false)
+        const isStoryPlaying = ref(true) // All stories are playing by default
+        const isStoryMuted = ref(false)
 
         // Services
         const router = useRouter()
@@ -195,68 +275,127 @@ export default defineComponent({
             isToggled.value = !isToggled.value
         }
 
-
-        const resetToInitialValues = (index?: number) => {
-            if (index != currentSlideIndex.value && index) {
-                currentSlideIndex.value = index
-            }
-            progressCount.value = 0
-            timerCount.value = TIMER_VALUE
+        /**
+         * Play from beginning or Resume story progress
+         */
+        const resumeStory = () => {
+            activeSwiperInstance.value?.autoplay.resume()
         }
 
-        const startTimer = () => {
-            setTimeout(() => {
-                timerCount.value--
-                progressCount.value++
-            }, 1000)
+        /**
+         * Pause story progress
+         */
+        const pauseStory = () => {
+            activeSwiperInstance.value?.autoplay.pause()
         }
 
-        const completeTimer = () => {
-            if (isTimerEnabled.value) {
-                progressCount.value++
-                currentSlideIndex.value++
-            }
+        const onNextStory = () => {
+            activeSwiperInstance.value?.slideNext()
         }
+        const onPrevStory = () => {
+            activeSwiperInstance.value?.slidePrev()
+        }
+
+        const updateProgressPercentage = (percentage: number) => {
+            const newPercentage = (1 - percentage) * 100
+            progressPercentage.value = newPercentage >= 100 ? 100 : newPercentage
+        }
+
+        const updateLikeStatus = (story: StoryCarousel) => {
+            story.hasLiked = !story.hasLiked
+        }
+
+        const onAutoplayTimeLeft = (swiper: SwiperInstance, timeLeft: number, percentage: number) => {
+            updateProgressPercentage(percentage)
+        }
+
+        const onCommentFocus = () => {
+            isCommentInputFocused.value = !isCommentInputFocused.value
+        }
+
+        const onStoryPlay = () => {
+            isStoryPlaying.value = !isStoryPlaying.value
+        }
+
+        const onStoryMute = () => {
+            isStoryMuted.value = !isStoryMuted.value
+        }
+
+        /**
+         * Assign the first media slide when swiper is fully mounted
+         * @param swiper The first swiper slide
+         */
+        const initializeSlideInstance = (swiper: SwiperInstance) => {
+            activeSwiperInstance.value = swiper
+        }
+
+        /**
+         * Update the current active video variable to match that of the active slide
+         * @param currentSlide Current active slide show
+         */
+         const updateActiveStory = (currentSlide: HTMLElement) => {
+            const video = currentSlide.querySelector('video') as HTMLVideoElement
+            const image = currentSlide.querySelector('img') as HTMLImageElement
+
+            activeStory.value = image || video
+            activeStoryType.value = image ? 'Image' : 'Video'
+
+        }
+
+
+        /**
+         * Update active swiper slide and video
+         * @param swiper The new active swiper slide
+         */
+        const updateActiveSlideInstance = (swiper: SwiperInstance) => {
+            activeSwiperInstance.value = swiper // Update active swiper slide to current one
+            const currentIndex = swiper.activeIndex
+            const currenSlide = swiper.slides[currentIndex]
+            updateActiveStory(currenSlide) // Update active story to current one
+        }
+
 
         // Watchers
-        watch(isTimerEnabled, (timerEnabled: boolean) => {
-            if (timerEnabled) {
-                setTimeout(() => {
-                    timerCount.value--
-                    progressCount.value++
-                }, 1000)
+        /**
+         * Reset or set percentage progress based on slide index
+         */
+        watch(progressPercentage, (newProgressPercentage: number) => {
+            if (newProgressPercentage >= 100) {
+                const swiper = activeSwiperInstance.value
+                if (!swiper?.isEnd) {
+                    updateProgressPercentage(0) // Rset percentage
+                    onNextStory()
+                }
             }
-        }
-        )
-        
-        watch(currentSlideIndex, (newIndex: number) => {
-            if (newIndex > MAX_REELS_INDEX) {
-                currentSlideIndex.value = 0
-                newIndex = 0
-            }
-            carousel.value.goSlide(newIndex)
         })
 
-        watch(timerCount, (newTime: number) => {
-            if (newTime > 0 && isTimerEnabled.value) {
-                startTimer()
+        /**
+         * Pause story progress when comment input is focused
+         */
+        watch(isCommentInputFocused, (commentFocused: boolean) => {
+            if (commentFocused) {
+                pauseStory()
+            } else {
+                resumeStory()
             }
-            else {
-                completeTimer()
+        })
+
+        /**
+         * Handle story pauses and play
+         */
+        watch(isStoryPlaying, (isStoryPlaying) => {
+            // Pause story slider
+            if (!isStoryPlaying) {
+                pauseStory()
+            } else {
+                resumeStory()
             }
-        },
-            { immediate: true }
-        )
+        })
+
+        // Computed
+        const commentFocused = computed(() => isCommentInputFocused.value ? 'brightness-50' : '')
 
         // Event Listeners
-        const onSlideJump = (slideIndex: number) => {
-            if (slideIndex != currentSlideIndex.value) {
-                carousel.value.goSlide(slideIndex)
-                currentSlideIndex.value = slideIndex
-                resetToInitialValues()
-            }
-        }
-
         /**
          * Emit signal when the modal is closed
          * @event modal-closed
@@ -264,44 +403,59 @@ export default defineComponent({
         const onModalClosed = () => {
             setTimeout(() => {
                 router.push({ path: '/' })
-            }, 1000)
+            }, 100)
         }
 
-        // Computed Properties
-        const progressBar = computed(() => {
-            return progressCount.value < TIMER_VALUE
-                ? (progressCount.value / TIMER_VALUE) * 100
-                : 100
-        })
 
 
         onMounted(() => {
-            isTimerEnabled.value = true
         })
 
         return {
             isToggled,
-            currentSlideIndex,
-            reels,
+            isStoryMuted,
+            isStoryPlaying,
+            isCommentInputFocused,
+            stories,
             progressBar,
-            carousel,
-            TIMER_VALUE,
+            progressPercentage,
+            // carousel,
             toggleModel,
-            onAfterSlideChange: resetToInitialValues,
-            onSlideJump,
-            onModalClosed
+            commentFocused,
+            updateLikeStatus,
+            updateActiveSlideInstance,
+            initializeSlideInstance,
+            onPrevStory,
+            onNextStory,
+            onModalClosed,
+            onCommentFocus,
+            onAutoplayTimeLeft,
+            onStoryPlay,
+            onStoryMute,
+            modules: [
+                Mousewheel,
+                Pagination,
+                EffectCube,
+                Autoplay,
+                Navigation
+            ],
         }
     },
     components: {
         MediaCarousel,
+        SwiperContainer: Swiper,
+        SwiperSlide,
         SVGLoader,
         CommentModal,
-        Carousel3d,
-        Slide
+        // Carousel3d,
+        // Slide
     }
 })
 </script>
 
-
 <style>
+/* Hide next/back controllers */
+.swiper-button-next, .swiper-button-prev {
+    color: transparent;
+}
 </style>
