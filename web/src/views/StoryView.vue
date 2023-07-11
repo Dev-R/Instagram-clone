@@ -25,11 +25,11 @@
                 v-for="(story, index) in stories"
                 :key="index">
                 <!-- Story Container -->
-                <figure class="relative sm:w-full sm:h-full h-screen w-screen transition-all duration-300 mx-auto">
+                <div class="relative sm:w-full sm:h-full h-screen w-screen transition-all duration-300 mx-auto">
                     <!-- Story Progress -->
 
                     <!-- Progress Bar -->
-                    <figcaption 
+                    <div 
                         class="absolute inset-x-3 
                         top-2 w-11/12 bg-gray-400 
                         rounded-full h-0.5">
@@ -38,12 +38,12 @@
                                 rounded-full" 
                                 :style="{ 'width': progressPercentage + '%' }">
                             </div>
-                    </figcaption>
+                    </div>
 
 
                     <!-- Story Header -->
                     <!-- Info Bar -->
-                    <figcaption 
+                    <div 
                         class="absolute py-2 p-3 text-lg top-5 flex flex-row flex-nowrap justify-between w-11/12">
 
                         <!-- User Info -->
@@ -98,7 +98,7 @@
                                 class="fa-solid fa-x self-center cursor-pointer block sm:hidden"></i>
                         </div>
 
-                    </figcaption>
+                    </div>
 
                     
                     <!-- Story Body -->
@@ -126,7 +126,7 @@
                     </video>
 
                     <!-- Comment Form -->
-                    <figcaption class="absolute inset-x-3 bottom-6 w-11/12 rounded-full h-11 flex space-x-3">
+                    <div class="absolute inset-x-3 bottom-6 w-11/12 rounded-full h-11 flex space-x-3">
                         <input
                             @focus="onCommentFocus"
                             @focusout="onCommentFocus"
@@ -150,9 +150,9 @@
                         <SVGLoader 
                             :icon="'direct'" :class="'self-center hover:cursor-pointer hover:scale-90'" /> 
 
-                    </figcaption>
+                    </div>
 
-                </figure>
+                </div>
             </swiper-slide>
         </SwiperContainer>
 
