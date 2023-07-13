@@ -68,9 +68,9 @@
                         <!-- Story Controllers -->
                         <div class="flex flex-row space-x-4 pt-2 text-white self-end">
                             <!-- Players -->
-                            <span @click="onStoryPlay">
+                            <span @click="">
                                 <i 
-                                    v-if="isStoryPlaying"
+                                    v-if="1"
                                     class="fa-solid fa-pause
                                     cursor-pointer"></i>
                                 <i 
@@ -80,9 +80,9 @@
                             </span>
 
                             <!-- Muters -->
-                            <span @click="onStoryMute">
+                            <span @click="">
                                 <i 
-                                    v-if="isStoryMuted"
+                                    v-if="1"
                                     class="fa-solid fa-volume-xmark
                                     Mutecursor-pointer"></i>
                                 <i 
@@ -128,8 +128,8 @@
                     <!-- Comment Form -->
                     <div class="absolute inset-x-3 bottom-6 w-11/12 rounded-full h-11 flex space-x-3">
                         <input
-                            @focus="onCommentFocus"
-                            @focusout="onCommentFocus"
+                            @focus=""
+                            @focusout=""
                             @keyup.enter="sendMessage"
                             tabindex="1"
                             type="text" 
@@ -218,9 +218,9 @@ export default defineComponent({
 
         // Checkers
         const isToggled = ref<boolean>(false)
-        const isCommentInputFocused = ref(false)
-        const isStoryPlaying = ref(true) // All stories are playing by default
-        const isStoryMuted = ref(true)
+        // const isCommentInputFocused = ref(false)
+        // const isStoryPlaying = ref(true) // All stories are playing by default
+        // const isStoryMuted = ref(true)
 
         // Services
         const router = useRouter()
@@ -235,13 +235,13 @@ export default defineComponent({
         /**
          * Play story video if the current story contains a video
          */
-        const playStoryVideo = () => {
-            if (activeStoryType.value === 'Video') {
-                const video = activeStory.value as HTMLVideoElement
-                video?.play()
-                matchStoryVideoMute(video)
-            }
-        }
+        // const playStoryVideo = () => {
+        //     if (activeStoryType.value === 'Video') {
+        //         const video = activeStory.value as HTMLVideoElement
+        //         video?.play()
+        //         matchStoryVideoMute(video)
+        //     }
+        // }
 
         /**
          * Pause story video if the current story contains a video
@@ -256,15 +256,15 @@ export default defineComponent({
         /**
          * Mute story video if the current story contains a video
          */
-        const invertMuteStoryVideo = () => {
-            if (activeStoryType.value === 'Video') {
-                const video = activeStory.value as HTMLVideoElement
-                video.muted = !video.muted
-                matchStoryVideoMute(video)
-            } else {
-                unsupportedMediaMute()
-            }
-        }
+        // const invertMuteStoryVideo = () => {
+        //     if (activeStoryType.value === 'Video') {
+        //         const video = activeStory.value as HTMLVideoElement
+        //         video.muted = !video.muted
+        //         matchStoryVideoMute(video)
+        //     } else {
+        //         unsupportedMediaMute()
+        //     }
+        // }
 
         // Story controllers
         /**
@@ -272,8 +272,9 @@ export default defineComponent({
          */
         const resumeStory = () => {
             activeSwiperInstance.value?.autoplay.resume()
-            isStoryPlaying.value = true
-            activeStoryType.value === 'Video' && playStoryVideo()
+            // TODO: Figure away to call this function
+            // isStoryPlaying.value = true
+            // activeStoryType.value === 'Video' && playStoryVideo()
         }
 
         /**
@@ -281,21 +282,21 @@ export default defineComponent({
          */
         const pauseStory = () => {
             activeSwiperInstance.value?.autoplay.pause()
-            isStoryPlaying.value = false
+            // isStoryPlaying.value = false // TODO: Figure away to call this
             pauseStoryVideo()
         }
 
-        const matchStoryVideoMute = (video: HTMLVideoElement) => {
-            isStoryMuted.value = video.muted
-        }
+        // const matchStoryVideoMute = (video: HTMLVideoElement) => {
+        //     isStoryMuted.value = video.muted
+        // }
 
-        const muteStory = () => {
-            isStoryMuted.value = true
-        }
+        // const muteStory = () => {
+        //     isStoryMuted.value = true
+        // }
 
-        const unmuteStory = () => {
-            isStoryMuted.value = false
-        }
+        // const unmuteStory = () => {
+        //     isStoryMuted.value = false
+        // }
 
         const onNextStory = () => {
             activeSwiperInstance.value?.slideNext()
@@ -309,17 +310,17 @@ export default defineComponent({
             updateProgressPercentage(percentage)
         }
 
-        const onCommentFocus = () => {
-            isCommentInputFocused.value = !isCommentInputFocused.value
-        }
+        // const onCommentFocus = () => {
+        //     isCommentInputFocused.value = !isCommentInputFocused.value
+        // }
 
-        const onStoryPlay = () => {
-            isStoryPlaying.value = !isStoryPlaying.value
-        }
+        // const onStoryPlay = () => {
+        //     isStoryPlaying.value = !isStoryPlaying.value
+        // }
 
-        const onStoryMute = () => {
-            invertMuteStoryVideo()
-        }
+        // const onStoryMute = () => {
+        //     invertMuteStoryVideo()
+        // }
 
         // Others
         /**
@@ -365,9 +366,9 @@ export default defineComponent({
             }
         }
 
-        const unsupportedMediaMute = () => {
-            toast.info('Video has no sound.')
-        }
+        // const unsupportedMediaMute = () => {
+        //     toast.info('Video has no sound.')
+        // }
 
         const updateProgressPercentage = (percentage: number) => {
             const newPercentage = (1 - percentage) * 100
@@ -400,16 +401,16 @@ export default defineComponent({
         })
 
 
-        /**
-         * Handle story pauses and plays
-         */
-        watchEffect(() => {
-            isStoryPlaying.value ? resumeStory() : pauseStory()
-        })
+        // /**
+        //  * Handle story pauses and plays
+        //  */
+        // watchEffect(() => {
+        //     isStoryPlaying.value ? resumeStory() : pauseStory()
+        // })
 
-        watchEffect(() => {
-            activeStoryType.value === 'Video' ? playStoryVideo() : muteStory()
-        })
+        // watchEffect(() => {
+        //     activeStoryType.value === 'Video' ? playStoryVideo() : muteStory()
+        // })
 
 
 
@@ -434,8 +435,8 @@ export default defineComponent({
 
         return {
             isToggled,
-            isStoryMuted,
-            isStoryPlaying,
+            // isStoryMuted,
+            // isStoryPlaying,
             isCommentInputFocused,
             stories,
             progressBar,
@@ -451,10 +452,10 @@ export default defineComponent({
             onPrevStory,
             onNextStory,
             onModalClosed,
-            onCommentFocus,
+            // onCommentFocus,
             onAutoplayTimeLeft,
-            onStoryPlay,
-            onStoryMute,
+            // onStoryPlay,
+            // onStoryMute,
             modules: [
                 Mousewheel,
                 Pagination,
