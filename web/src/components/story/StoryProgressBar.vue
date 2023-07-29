@@ -8,17 +8,13 @@
 
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
 
-
-export default defineComponent({
-name: 'StoryProgressBar',
-props: {
+defineProps({
     progressPercentage: { 
         type: Number,
         required: true
     }
-}
 })
+
 </script>
