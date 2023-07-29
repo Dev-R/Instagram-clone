@@ -9,8 +9,7 @@
             type="text" 
             class="z-50 bg-transparent border border-gray-300 text-white focus:outline-none text-sm rounded-full
             block w-full p-2.5" 
-            :placeholder="placeHolder" 
-            v-model="modalValue" />
+            :placeholder="placeHolder" />
         <span 
             @click="onLikeStatus(story)"
             class="self-center hover:cursor-pointer hover:scale-90">
@@ -28,60 +27,67 @@
 </template>
 
 
-<script lang="ts">
-import { defineComponent, computed } from 'vue'
+<script setup lang="ts">
+import { 
+    computed, 
+    ref
+} from 'vue'
+
+import { useToast } from 'vue-toastification'
 
 import type {
     StoryCarousel
 } from '@/common'
 
-export default defineComponent({
-    name: 'StoryCommentInput',
-    setup(prop, context) {
-        
+import {
+    SVGLoader,
+} from '@/components'
 
-        /**
-         * Emit Comment Focus event
-         */
-        const onCommentFocus = () => {
-            context.emit("onCommentFocus")
-        }
+const emit = defineEmits([
+    'onSendMessage',
+    'onCommentFocus',
+    'onLikeStatus',
+])
 
-        /**
-         * Emit Story Send event
-         */
-        const onSendMessage = () => {
-            context.emit("onSendMessage")
-        }
-
-        /**
-         * Emit Story like event
-         */
-         const onLikeStatus = (story: StoryCarousel) => {
-            context.emit("onLikeStatus", story)
-        }
-
-        return {
-            onCommentFocus,
-            onSendMessage,
-            onLikeStatus,
-            placeHolder: computed(() => 'Reply to' + ' ' + prop.story.userName)
-        }
-    },
-    props: {
-        modalValue: {
-            type: String as () => string | number | string[] | undefined,
-            default: undefined
-        },
-        story: {
-            type: Object as () => StoryCarousel,
-            required: true
-        }
-    },
-    emits: [
-        'onSendMessage',
-        'onCommentFocus',
-		'onLikeStatus',
-	],
+const prop = defineProps({
+    story: {
+        type: Object as () => StoryCarousel,
+        required: true
+    }
 })
+
+const commentMessageInput = ref<string | null>(null)
+
+// Services
+const toast = useToast()
+
+/**
+ * Emit Comment Focus event
+ */
+const onCommentFocus = () => {
+    emit("onCommentFocus")
+}
+
+/**
+ * Emit Story Send event
+ */
+const onSendMessage = () => {
+    const message = commentMessageInput.value
+    commentMessageInput.value = '' // Clear message area 
+    // Prevent spacing values
+    if (message?.trim() != '') {
+        toast.info('Sent')
+        emit("onSendMessage", message)
+    }
+}
+
+/**
+ * Emit Story like event
+ */
+    const onLikeStatus = (story: StoryCarousel) => {
+    emit("onLikeStatus", story)
+}
+
+const placeHolder = computed(() => 'Reply to' + ' ' + prop.story.userName)
+
 </script>
