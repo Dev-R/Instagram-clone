@@ -1,5 +1,5 @@
 <template>
-    <div class="min-h-screen min-w-screen bg-black">
+    <div class="sm:min-h-screen min-w-screen bg-black">
         <TopNavBar 
             v-if="!topNavBarHiddenRoutes.includes(routeName)"/>
         <RouterView />
