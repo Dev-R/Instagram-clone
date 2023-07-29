@@ -1,8 +1,9 @@
 <template>
     <!-- Image -->
+    <!-- TODO: Improve array accessing -->
     <img
         v-if="story.items[0]?.type === 'image'" 
-        class="rounded-lg sm:w-full sm:h-full h-screen w-screen" 
+        class="rounded-lg sm:w-full sm:h-full w-screen" 
         :class="commentFocused"
         :src="story.items[0]?.mediaUrl" 
         :alt="story.items[0]?.title" />
@@ -13,7 +14,7 @@
         :src="story.items[0].mediaUrl"
         :controls="false"
         :class="commentFocused"
-        class="h-dynamic-screen sm:h-auto"
+        class="sm:h-auto"
         loop
         defaultMuted
         playsinline
@@ -23,29 +24,25 @@
 </template>
 
 
-<script lang="ts">
-import { defineComponent, computed } from 'vue'
+<script setup lang="ts">
+import { 
+    computed 
+} from 'vue'
 
 import type {
     StoryCarousel
 } from '@/common'
 
-export default defineComponent({
-    name: 'StoryMediaDisplay',
-    setup(prop, context) {
-        return {
-            commentFocused: computed(() => prop.isCommentInputFocused ? 'brightness-50' : '')
-        }
-    },
-    props: {
-        story: {
+
+const prop = defineProps({
+    story: {
             type: Object as () => StoryCarousel,
             required: true
         },
-        isCommentInputFocused: {
-            type: Boolean,
-            required: true
-        }
+    isCommentInputFocused: {
+        type: Boolean,
+        required: true
     }
 })
+const commentFocused = computed(() => prop.isCommentInputFocused ? 'brightness-50' : '')
 </script>
