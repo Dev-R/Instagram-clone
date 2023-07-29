@@ -1,13 +1,18 @@
 <template>
-    <div class="relative sm:w-full sm:h-full h-screen w-screen transition-all duration-300 mx-auto">
+    <div class="relative sm:w-full sm:h-full w-screen transition-all duration-300 mx-auto bg-gray-700">
 
         <StoryProgressBar 
             :progress-percentage="progressPercentage" />
 
         <StoryHeader 
+            ref="storyHeaderRef"
             @on-modal-closed="$emit('onModalClosed')"
+            @on-pause-story="pauseStory"
+            @on-resume-story="resumeStory"
+
             :story="story"
-            :active-story="activeStory"
+            :is-comment-input-focused="isCommentInputFocused"
+            :active-story-media="activeStoryMedia"
             :active-story-type="activeStoryType" />
 
         <StoryMediaDisplay 
@@ -17,17 +22,25 @@
         <StoryCommentInput 
             @on-comment-focus="onCommentFocus"
             @on-like-status="$emit('onLikeStatus', $event)"
-            @on-send-message="$emit('onSendMessage')"
-            :modal-value="modalValue"
+            @on-send-message="$emit('onSendMessage', $event)"
             :story="story" />
 
     </div>
 </template>
 
 <script setup lang="ts">
-import { ref, watchEffect, type PropType } from 'vue'
+import { 
+    ref,
+    watchEffect, 
+    inject, 
+    type PropType 
+} from 'vue'
 
-import type { StoryCarousel } from '@/common'
+import type {
+    StoryCarousel,
+    StoryType,
+    StoryMedia
+} from '@/common'
 
 import {
     StoryProgressBar,
@@ -37,64 +50,69 @@ import {
 }
 from '@/components'
 
-import { useToast } from 'vue-toastification'
-
-// Story handlers
-const isCommentInputFocused = ref(false)
-
-
 // Props
 const prop = defineProps({
     story: {
-        type: Object as PropType<StoryCarousel>,
+        type: Object as PropType<StoryCarousel> ,
         required: true
     },
-    activeStory: {
-		type: null as unknown as PropType<HTMLVideoElement | HTMLImageElement | undefined>,
-		required: true
-	},
+    activeStoryMedia: {
+        type: null as unknown as PropType<StoryMedia> ,
+        required: true
+    },
     activeStoryType: {
-        type: Object as PropType<'Image' | 'Video' | null>,
-		required: true
-	},
-    modalValue: {
-        type: [String, Number, Array] as PropType<string | number | string[] | undefined>,
-        default: undefined
+        type: null as unknown as PropType<StoryType> ,
+        required: true
     },
     progressPercentage: {
         type: Number,
-        required: true
-    },
-    isCommentInputFocused: {
-        type: Boolean,
         required: true
     }
 })
 
 // Emitters
 defineEmits([
-    'onStoryMute',
-    'onStoryPlay',
     'onModalClosed',
     'onSendMessage',
     'onLikeStatus',
 ])
 
+// Accessing parent functions
+const triggerPauseStory = inject('pauseStory') as() => void
+const triggerResumeStory = inject('resumeStory') as() => void
+
+// Refs
+const isCommentInputFocused = ref(false)
+const storyHeaderRef = ref<InstanceType<typeof StoryHeader>>()
+
+// Methods
+const resumeStory = () => {
+    const storyHeaderMethods = storyHeaderRef.value
+    if (storyHeaderMethods) {
+        triggerResumeStory()
+        storyHeaderMethods.playStory()
+        prop.activeStoryType === 'Video' && storyHeaderMethods.playStoryVideo()
+    }
+}
+
+const pauseStory = () => {
+    const storyHeaderMethods = storyHeaderRef.value
+    if (storyHeaderMethods) {
+        triggerPauseStory()
+        storyHeaderMethods.pauseStory()
+        storyHeaderMethods.pauseStoryVideo()
+    }
+}
 
 const onCommentFocus = () => {
     isCommentInputFocused.value = !isCommentInputFocused.value
 }
 
+// Watchers
 /**
  * Pause story progress when comment input is focused
  */
-    watchEffect(() => {
+watchEffect(() => {
     isCommentInputFocused.value ? pauseStory() : resumeStory()
 })
-
-/**
- * TODO: 
- * Figure away to pass call parent function from child
- * Continue your journey..          
- */
 </script>
