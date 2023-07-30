@@ -2,7 +2,7 @@
 	<!-- Desktop Modal Header -->
 	<div 
 		:class="postComment.isToggled ? 'md:block' : ''"
-		class="hidden absolute inset-x-0 top-5 right-0">
+		class="hidden fixed inset-x-0 top-5 right-0">
 		<div class="md:mr-12 flex items-center justify-between cursor-pointer">
 			<span class="ml-auto inline-flex text-white">
 				<SVGLoader
@@ -13,7 +13,7 @@
 	</div>
 
 	<div
-		class="w-full z-50 absolute h-screen md:h-auto
+		class="w-full z-50 fixed h-screen md:h-auto
         top-1/2 left-1/2 transform -translate-x-1/2 
         -translate-y-1/2
         "

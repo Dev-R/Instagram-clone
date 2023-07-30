@@ -4,7 +4,7 @@
         class="lg:block hidden pt-3"
         :class="{ 
             'lg:hidden md:hidden sm:hidden': !isModalToggled || isModalToggled && currentModalStage === PhotoStage.SharingPost}">
-        <div class="absolute top-0 right-6 z-50 hover:cursor-pointer lg:mr-12 lg:mt-5">
+        <div class="fixed top-0 right-6 z-50 hover:cursor-pointer lg:mr-12 lg:mt-5">
             <SVGLoader :icon="'cross-large'"  @click="onModalClosed()"/>
         </div>
     </div>
@@ -12,7 +12,7 @@
     <!-- Photo-modal for screens > sm -->
     <div 
         id="photo-modal"
-        class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
+        class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
         rounded-lg shadow overflow-hidden bg-slate-1100 z-50 hidden md:block
         lg:h-auto lg:pt-0 lg:z-0 lg:w-screen w-4/5 h-3/5 max-h-md sm:max-h-fit
         md:max-w-none max-w-md"
@@ -628,6 +628,7 @@ export default defineComponent({
          */
         const onModalClosed = () => {
             context.emit('onModalClosed')
+            resetModalState()
         }
 
         /**
@@ -670,7 +671,7 @@ export default defineComponent({
         /**
          * Reset preview image to null
          */
-        const clearPreviewImage = () => {
+        const resetPreviewImage = () => {
             previewImage.value = null
         }
 
@@ -694,6 +695,16 @@ export default defineComponent({
             router.go(0)
         }
 
+        const resetModalStage = () => {
+            currentModalStage.value = 'create-post'
+        } 
+
+        const resetModalState = () => {
+            // Reset Store
+            photoStore.$reset()
+            // Reset Stage
+            resetModalStage()
+        }
 
         // Watchers
         watch(currentModalStage, () => {
@@ -887,7 +898,7 @@ export default defineComponent({
             triggerFileUpload,
             updatePreviewImageFitler,
             filterTabSwitcher,
-            clearPreviewImage,
+            resetPreviewImage,
             updateModalStage,
             onFileUpload,
             refreshPage
