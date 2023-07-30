@@ -131,7 +131,7 @@
         </fieldset>
 
         <router-link 
-            class="text-sm font-semibold font-sans hover:text-gray-400 mx-auto"
+            class="text-sm font-semibold font-sans sm:hover:text-gray-400 mx-auto"
             to="login">
             Sign in
         </router-link> 

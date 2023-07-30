@@ -8,7 +8,7 @@
 
             <div 
                 class="group cursor-pointer rounded-full 
-                flex space-x-4 hover:bg-slate-1000 hover:delay-100 
+                flex space-x-4 sm:hover:bg-slate-1000 sm:hover:delay-100 
                 p-3 xl:justify-start justify-center">
 
                 <span 
@@ -35,7 +35,7 @@
                 <div 
                     @click="triggerDropDown"
                     class="group cursor-pointer rounded-full 
-                    flex space-x-4 hover:bg-slate-1000 hover:delay-100 
+                    flex space-x-4 sm:hover:bg-slate-1000 sm:hover:delay-100 
                     pt-3 xl:justify-start justify-center">
                     <SVGLoader 
                         :icon="'create'" 
@@ -44,8 +44,8 @@
 
                 <div 
                     class="group cursor-pointer rounded-full 
-                    flex space-x-4 hover:bg-slate-1000 
-                    hover:delay-100 p-3 xl:justify-start 
+                    flex space-x-4 sm:hover:bg-slate-1000 
+                    sm:hover:delay-100 p-3 xl:justify-start 
                     justify-center">
                     <SVGLoader 
                         :icon="'like'" 

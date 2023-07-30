@@ -29,7 +29,7 @@
         type="button" 
         class="flex-inital self-end text-gray-900 
         border border-gray-200 font-semibold 
-        bg-white hover:bg-gray-100 rounded-lg 
+        bg-white sm:hover:bg-gray-100 rounded-lg 
         text-sm p-1.5 px-6 py-1.5">
             <slot name="button-name"></slot>
     </button>

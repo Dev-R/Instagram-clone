@@ -22,9 +22,9 @@
 			</h3>
 
 			<button
-				class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900
-                    rounded-lg text-sm p-1 inline-flex items-center dark:hover:bg-gray-600 
-                    dark:hover:text-white"
+				class="text-gray-400 bg-transparent sm:hover:bg-gray-200 sm:hover:text-gray-900
+                    rounded-lg text-sm p-1 inline-flex items-center dark:sm:hover:bg-gray-600 
+                    dark:sm:hover:text-white"
 				@click="onModalClosed()">
 				<SVGLoader :icon="'cross'" />
 			</button>

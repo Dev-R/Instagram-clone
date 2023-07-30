@@ -8,7 +8,7 @@
             <router-link
                 to="home" 
                 class="group cursor-pointer rounded-full 
-                flex space-x-4 hover:bg-slate-1000 hover:delay-100
+                flex space-x-4 sm:hover:bg-slate-1000 sm:hover:delay-100
                 p-3 xl:justify-start justify-center">
                 <SVGLoader 
                     :icon="'home'" 
@@ -18,7 +18,7 @@
             <router-link 
                 to="explore"
                 class="group cursor-pointer rounded-full 
-                flex space-x-4 hover:bg-slate-1000 hover:delay-100
+                flex space-x-4 sm:hover:bg-slate-1000 sm:hover:delay-100
                     p-3 xl:justify-start justify-center">
                 <SVGLoader 
                     :icon="'mobile-explore'" 
@@ -28,8 +28,8 @@
             <router-link
                 to="reels" 
                 class="group cursor-pointer rounded-full 
-                flex space-x-4 hover:bg-slate-1000 
-                hover:delay-100 p-3 xl:justify-start 
+                flex space-x-4 sm:hover:bg-slate-1000 
+                sm:hover:delay-100 p-3 xl:justify-start 
                 justify-center">
                 <SVGLoader 
                     :icon="'reels'" 
@@ -40,8 +40,8 @@
             <router-link
                 to="direct" 
                 class="group cursor-pointer rounded-full 
-                flex space-x-4 hover:bg-slate-1000 
-                hover:delay-100 p-3 xl:justify-start 
+                flex space-x-4 sm:hover:bg-slate-1000 
+                sm:hover:delay-100 p-3 xl:justify-start 
                 justify-center">
                 <SVGLoader 
                     :icon="'direct'" 
@@ -51,7 +51,7 @@
             <router-link 
                 to="profile"
                 class="group cursor-pointer rounded-full 
-                flex space-x-4 hover:bg-slate-1000 hover:delay-100 
+                flex space-x-4 sm:hover:bg-slate-1000 sm:hover:delay-100 
                 p-3 xl:justify-start justify-center">
 
                 <img 

@@ -25,7 +25,7 @@
 					:to="item.path"
 					:class="{ 'xl:justify-center': isNavBarCollapsed }"
 					class="group cursor-pointer rounded-full 
-                    flex space-x-4 hover:bg-slate-1000 hover:delay-100 
+                    flex space-x-4 sm:hover:bg-slate-1000 sm:hover:delay-100 
                     p-3 xl:justify-start justify-center"
 					@click="item.onClick">
 					<SVGLoader 
@@ -54,7 +54,7 @@
 		<!-- C -->
 		<div 
 			class="cursor-pointer pt-10 rounded-full 
-            flex space-x-4 absolute inset-x-0 -bottom-80 md:p-5">
+            flex space-x-4 absolute inset-x-0 -bottom-full md:px-5">
 			<SVGLoader :icon="'more'" />
 			<span 
 				:class="isNavBarCollapsed ? 'xl:hidden block' : 'block'"

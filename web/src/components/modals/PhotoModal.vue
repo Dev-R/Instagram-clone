@@ -4,7 +4,7 @@
         class="lg:block hidden pt-3"
         :class="{ 
             'lg:hidden md:hidden sm:hidden': !isModalToggled || isModalToggled && currentModalStage === PhotoStage.SharingPost}">
-        <div class="fixed top-0 right-6 z-50 hover:cursor-pointer lg:mr-12 lg:mt-5">
+        <div class="fixed top-0 right-6 z-50 sm:hover:cursor-pointer lg:mr-12 lg:mt-5">
             <SVGLoader :icon="'cross-large'"  @click="onModalClosed()"/>
         </div>
     </div>
@@ -26,7 +26,7 @@
                 <!-- Header -->
                 <div 
                     class="flex border-b border-gray-700
-                    justify-center md:p-3 p-2.5 hover:cursor-pointer"
+                    justify-center md:p-3 p-2.5 sm:hover:cursor-pointer"
                     :class="{
                         'justify-between' : isFileUploaded && isFileValid,
                         'justify-center' : !(isFileUploaded && isFileValid)
@@ -51,7 +51,7 @@
                         @click="updateModalStage(PhotoStage.EditPostForm)"
                         class="font-sans text-sm font-semibold text-sky-500 
                         justify-self-end cursor-pointer pt-1
-                        hover:text-white">
+                        sm:hover:text-white">
                         Next
                     </span>
 
@@ -60,7 +60,7 @@
                         @click="updateModalStage(PhotoStage.SharingPost)"
                         class="font-sans text-sm font-semibold text-sky-500 
                         justify-self-end cursor-pointer pt-1
-                        hover:text-white">
+                        sm:hover:text-white">
                         Share
                     </span>
 
@@ -99,7 +99,7 @@
                                     @click="triggerFileUpload"
                                     type="button" 
                                     class="w-auto mx-auto font-semibold text-sm 
-                                    text-white bg-[#0095f6] hover:bg-sky-700 rounded-lg 
+                                    text-white bg-[#0095f6] sm:hover:bg-sky-700 rounded-lg 
                                     lg:px-3 lg:py-1.5 px-3 py-1.5 lg:w-auto">
                                     Select from computer
                                 </button>
@@ -162,7 +162,7 @@
                             <div
                                 @click="filterTabSwitcher(PhotoTab.FiltersTab)" 
                                 class="basis-1/2 font-normal p-3
-                                text-center text-sm hover:cursor-pointer 
+                                text-center text-sm sm:hover:cursor-pointer 
                                 border-b-2 border-gray-300"
                                 :class="currentActiveFilterTab === PhotoTab.FiltersTab ? 'text-white' : 'border-transparent text-gray-500'">
                                 Filters
@@ -172,7 +172,7 @@
                                 @click="filterTabSwitcher(PhotoTab.AdjustmentsTab)" 
                                 class="basis-1/2 font-normal p-3
                                 text-center  text-sm 
-                                hover:cursor-pointer
+                                sm:hover:cursor-pointer
                                 border-b-2 border-gray-300"
                                 :class="currentActiveFilterTab === PhotoTab.AdjustmentsTab ? 'text-white' : 'border-transparent text-gray-500'">
                                 Adjustments
@@ -194,7 +194,7 @@
                                     :key="filter.filterName"
                                     @click="updatePreviewImageFitler(filter.filterName, filter.filterClass)"
                                     class="flex flex-col pt-2 lg:w-[88px] w-20 
-                                    hover:cursor-pointer active:scale-95 
+                                    sm:hover:cursor-pointer active:scale-95 
                                     active:brightness-75">
 
                                     <div
@@ -358,8 +358,8 @@
 
                 <div 
                     class="group cursor-pointer rounded-full 
-                    flex space-x-4 hover:bg-slate-1000
-                    hover:delay-100 p-3 xl:justify-start justify-center">
+                    flex space-x-4 sm:hover:bg-slate-1000
+                    sm:hover:delay-100 p-3 xl:justify-start justify-center">
 
                     <div
                         class="rotate-[270deg]"
@@ -391,7 +391,7 @@
                         class="font-sans text-md font-semibold text-sky-500 
                         group flex space-x-4 pt-3 xl:justify-start
                         justify-center justify-self-end cursor-pointer 
-                        hover:delay-100 hover:text-white"
+                        sm:hover:delay-100 sm:hover:text-white"
                         :class="{'invisible': currentModalStage === PhotoStage.SharingPost}">
 
                         {{ smallModalButtonName }}

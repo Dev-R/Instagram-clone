@@ -7,7 +7,7 @@
         @click="emitSelectConversation(convo)">
         <div 
             :class="{ 'bg-slate-1100': convo.uuid === activeConversationId }"
-            class="flex p-3 space-x-3 hover:bg-slate-1100 w-full cursor-pointer">
+            class="flex p-3 space-x-3 sm:hover:bg-slate-1100 w-full cursor-pointer">
             <!-- Profile Image -->
             <img 
                 :src="convo.user.profilePictureUrl"

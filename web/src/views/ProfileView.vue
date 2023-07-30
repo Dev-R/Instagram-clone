@@ -51,7 +51,7 @@
                                     <div class="md:pl-0 pl-6">
                                         <button 
                                             type="button" 
-                                            class="text-gray-900 bg-white hover:bg-gray-100 
+                                            class="text-gray-900 bg-white sm:hover:bg-gray-100 
                                             border border-gray-200 font-semibold w-auto rounded-lg text-xs md:p-1.5 
                                             md:px-3 md:py-1.5 px-20 py-1 md:w-auto">
                                             Edit Profile
@@ -63,7 +63,7 @@
                                         <SVGLoader 
                                             @click="triggerSmallModal(ModalType.Setting, 'Followers')"
                                             :icon="'profile-options'" 
-                                            :class="'md:block hidden hover:cursor-pointer'"/>
+                                            :class="'md:block hidden sm:hover:cursor-pointer'"/>
                                     </div>
                                 </div>
 
@@ -77,7 +77,7 @@
                                             :key="index"
                                             @click="element.onClick"
                                             class="font-sans text-sm font-normal 
-                                          text-white hover:cursor-pointer">
+                                          text-white sm:hover:cursor-pointer">
                                             <span class="font-sans text-sm font-bold text-white">
                                                 {{ element.value }}
                                             </span>
@@ -102,7 +102,7 @@
                                     v-for="(element, index) of profileInfoElements"
                                     :key="index"
                                     @click="element.onClick"
-                                    class="flex flex-col hover:cursor-pointer">
+                                    class="flex flex-col sm:hover:cursor-pointer">
 
                                     <span class="text-sm subpixel-antialiase text-white">
                                         {{ element.value }}
@@ -127,7 +127,7 @@
                                     v-for="(tab, index) in tabElements" 
                                     :key="index" 
                                     @click="navBarTabSwitcher(tab.name as navBarTabs)" 
-                                    class="hover:cursor-pointer"
+                                    class="sm:hover:cursor-pointer"
                                     :class="{'md:hidden block' : tab.name === ProfileTab.Peeds}">
                                     <div 
                                         :class="getTabClass(tab.name)">
@@ -344,13 +344,13 @@ export default defineComponent({
 
         const getTabClass = (tabName: string) => {
             return {
-                'flex items-center space-x-2 inline-block py-4 p-1 border-t-2 border-gray-300 hover:border-gray-300': true,
+                'flex items-center space-x-2 inline-block py-4 p-1 border-t-2 border-gray-300 sm:hover:border-gray-300': true,
                 'border-transparent text-gray-200': currentActiveTab.value !== tabName && tabName !==
                     ProfileTab.Saved && tabName !== ProfileTab.Tagged,
                 'border-transparent text-gray-300': currentActiveTab.value !== tabName && (tabName ===
                     ProfileTab.Saved || tabName === ProfileTab.Tagged),
                 'text-white': currentActiveTab.value === tabName,
-                'hover:text-gray-300': currentActiveTab.value !== tabName && (tabName === ProfileTab.Saved ||
+                'sm:hover:text-gray-300': currentActiveTab.value !== tabName && (tabName === ProfileTab.Saved ||
                     tabName === ProfileTab.Tagged),
             }
         }
