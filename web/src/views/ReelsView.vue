@@ -35,7 +35,7 @@
 							@active-index-change="updateActiveSlideInstance">
 							<swiper-slide
 								v-for="reel of reelItems"
-								:class="'flex flex-col relative max-w-lg sm:max-h-[868.5px]'">
+								:class="'flex flex-col relative max-w-lg sm:max-h-screen'">
 								<ReelCard 
 									:reel="reel"
 									:active-video="activeVideo"
