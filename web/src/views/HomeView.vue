@@ -2,7 +2,7 @@
     <div class="bg-black">
         <section 
             class="container max-w-full mx-auto text-center"
-            :class="{ 'brightness-50 pointer-events-none': commentModal.isToggled || photoModal.isToggled }">
+            :class="{ 'brightness-50 pointer-events-none overflow-y-hidden h-screen': commentModal.isToggled || photoModal.isToggled }">
             <div class="grid grid-cols-12">
                 <!-- Left bar: Navigation -->
                 <div 
