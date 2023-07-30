@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col space-y-4 pt-2 h-screen">
+    <div class="flex flex-col space-y-4 pt-2">
 
         <!-- Header-->
         <div class="flex rounded-lg space-x--1 justify-between">
