@@ -38,7 +38,7 @@
 		</SwiperContainer>
 
 		<!-- Close mark -->
-		<div class="absolute right-6 z-50 hover:cursor-pointer md:block hidden">
+		<div class="absolute right-6 z-50 sm:hover:cursor-pointer md:block hidden">
 			<SVGLoader
 				:icon="'cross-large'"
 				@click="onModalClosed()" />
@@ -52,7 +52,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, provide, watchEffect } from 'vue'
+import { defineComponent, ref, provide, watchEffect, onMounted } from 'vue'
 
 import { useRouter } from 'vue-router'
 
@@ -183,6 +183,11 @@ export default defineComponent({
 			resumeStory()
 		}
 
+		const validateStoryLength = () => {
+			if(stories.value.length === 0 ) {
+				router.push({ path: '/' })
+			}
+		}
 		// Watchers
 		/**
          * Reset or set percentage progress based on slide index
@@ -208,6 +213,9 @@ export default defineComponent({
 			}, 100)
 		}
 
+		onMounted(() => {
+			validateStoryLength()
+		})
 		// Providers
 		provide(
 			'pauseStory', pauseStory
