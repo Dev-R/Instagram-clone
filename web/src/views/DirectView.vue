@@ -1,5 +1,5 @@
 <template>
-	<div class="bg-[#121212]">
+	<div class="bg-slate-1000">
 		<section 
 			class="container max-w-full mx-auto
 			scrollbar scrollbar-thumb-gray-900">
