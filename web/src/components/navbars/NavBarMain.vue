@@ -19,12 +19,16 @@
 		</div>
 		<!-- Side NavBar Items Rendering -->
 		<div class="p-1 md:pl-3 flex flex-col space-y-2">
-			<template 
-				v-for="item in menuItems">
+			<div 
+				v-for="item in menuItems"
+				@click="updateActiveNavBar(item.name)">
 				<router-link
 					:to="item.path"
-					:class="{ 'xl:justify-center': isNavBarCollapsed }"
-					class="group cursor-pointer rounded-full 
+					:class="{ 
+						'xl:justify-center': isNavBarCollapsed,
+						'bg-slate-1000 animate-pulse': item.name === activeNavBar
+					}"
+					class="group cursor-pointer rounded-full
                     flex space-x-4 sm:hover:bg-slate-1000 sm:hover:delay-100 
                     p-3 xl:justify-start justify-center"
 					@click="item.onClick">
@@ -45,7 +49,7 @@
 						{{ item.title }}
 					</span>
 				</router-link>
-			</template>
+			</div>
 		</div>
 		<!-- Temp-solution -->
 		<div class="pt-10 invisible">
@@ -67,7 +71,7 @@
 </template>
 
 <script lang="ts">
-import { onMounted, defineComponent, computed } from 'vue'
+import { onMounted, defineComponent, computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import SVGLoader from '@/components/basics/SVGLoader.vue'
@@ -79,6 +83,7 @@ export default defineComponent({
 		// Services
 		const router = useRouter()
 		const route = useRoute()
+		const activeNavBar = ref<NavBarItem['name']>()
 
 		const menuItems: NavBarItem[] = [
 			{
@@ -162,6 +167,10 @@ export default defineComponent({
 			return topNavBarHiddenRoutes.includes(routeName.value)
 		})
 
+		const updateActiveNavBar = (navBarTab: NavBarItem['name']) => {
+			activeNavBar.value = navBarTab
+		}
+		
 		/**
          * Emit signal when the modal is closed
          */
@@ -180,14 +189,17 @@ export default defineComponent({
 		}
 
 		onMounted(() => {
-			// console.log('Mounted NavBarMain')
+			console.log('Mounted NavBarMain')
+			updateActiveNavBar(routeName.value)
 		})
 
 		return {
 			topNavBarHiddenRoutes,
+			activeNavBar,
 			menuItems,
 			routeName,
 			isNavBarCollapsed,
+			updateActiveNavBar,
 			onProfileOpen,
 			onCreate
 		}
