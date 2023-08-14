@@ -42,7 +42,7 @@
                                 @on-open-comment-modal="triggerCommentModal"
                                 @on-post-like="changeLikeState"
                                 :post-item="item"
-                                :key="index"/>
+                                :key="index" />
                         </div>
 
                     </div>
@@ -244,7 +244,6 @@ export default defineComponent({
                 followedBy: 'imamomarsuleiman + 1 more'
             }]
         }
-
         const reels = [{
             id: 1,
             userName: 'Noura',
@@ -252,7 +251,8 @@ export default defineComponent({
             expiringAt: '',
             seen: false,
             items: mediasArraySampleA,
-            mediaCount: mediasArraySampleA.length
+            mediaCount: mediasArraySampleA.length,
+            hasLiked: false
         },
         {
             id: 2,
@@ -261,10 +261,11 @@ export default defineComponent({
             expiringAt: '',
             seen: false,
             items: mediasArraySampleA,
-            mediaCount: mediasArraySampleA.length
+            mediaCount: mediasArraySampleA.length,
+            hasLiked: false
+            
         }
         ]
-
         /**
          * Update like state of a post.
          * @param id Liked / Unliked post ID
