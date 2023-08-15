@@ -105,7 +105,7 @@
                         <!-- Profile Info Rendering: Mobile -->
                         <div 
                             class="text-center border-t 
-                            md:hidden blockborder-slate-1100 mt-2">
+                            md:hidden block border-slate-1100 mt-2">
                             <ul 
                                 class="flex space-x-14 flex-wrap 
                                 justify-around pt-3 pl-4 pr-4">
@@ -130,7 +130,7 @@
                         </div>
 
                         <!-- Tab bar Rendering Section-->
-                        <div class="text-center border-tborder-slate-1100">
+                        <div class="text-center border-t border-slate-1100">
                             <ul 
                                 class="flex space-x-14 flex-wrap -mb-px 
                                 md:justify-center justify-between sm:px-6">
