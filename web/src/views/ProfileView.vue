@@ -59,6 +59,17 @@
                                         </TheButton>
                                     </div>
 
+                                    <div class="md:pl-0 pl-6 hidden sm:block">
+                                        <TheButton 
+                                            :color="'dark'" 
+                                            :size="'md'" 
+                                            :is-full="true">
+                                            <span class="sm:text-md text-xs font-semibold">
+                                                View Archive
+                                            </span>
+                                        </TheButton>
+                                    </div>
+
                                     <!-- Logged-in user Options -->
                                     <div>
                                         <SVGLoader 
