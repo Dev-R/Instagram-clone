@@ -4,7 +4,7 @@
         class="flex flex-inital flex-row text-center space-x-1">
         <img 
             :src="profileImage" 
-            class="w-8 h-8 rounded-full">
+            class="w-10 h-10 rounded-full">
         
         <div class="flex pl-1.5 pt-2 space-x-2">
             <a 
