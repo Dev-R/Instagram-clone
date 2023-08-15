@@ -88,7 +88,7 @@
                                         v-for="(element, index) of profileInfoElements"
                                             :key="index"
                                             @click="element.onClick"
-                                            class="font-sans text-sm font-normal 
+                                            class="font-sans text-md font-normal 
                                           text-white sm:hover:cursor-pointer">
                                             <span class="font-sans text-sm font-bold text-white">
                                                 {{ element.value }}
