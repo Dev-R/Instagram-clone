@@ -258,6 +258,7 @@
         <!-- Followers/ Following Modal -->
         <FollowModal 
             @on-modal-closed="triggerSmallModal"
+		    :modal-size="ModalSize.Medium"
             :title="smallModal.title" 
             :items="smallModal.items" :is-toggled="smallModal.isToggled && smallModal.name === ModalType.Follow" />
 
@@ -292,7 +293,8 @@ import type {
 
 import {
     ProfileTab,
-    ModalType
+    ModalType,
+    ModalSize
 } from '@/common'
 
 export default defineComponent({
@@ -526,6 +528,7 @@ export default defineComponent({
             // Enums
             ProfileTab,
             ModalType,
+            ModalSize,
 
             // Computed
             emptyTabBarBodyMessage,
