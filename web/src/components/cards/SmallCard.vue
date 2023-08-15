@@ -4,12 +4,12 @@
         class="flex flex-inital flex-row text-center space-x-1">
         <img 
             :src="profileImage" 
-            class="w-10 h-10 rounded-full">
+            class="w-10 h-10 rounded-full cursor-pointer">
         
         <div class="flex pl-1.5 pt-2 space-x-2">
             <a 
                 :href="profileLink"
-                class="font-sans text-md text-white self-start">
+                class="font-sans text-md text-white self-start cursor-pointer">
                 <slot name="user-name"></slot>
             </a>
             <span class="font-sans text-md text-white self-start">
