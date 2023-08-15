@@ -39,7 +39,7 @@
 					v-for="item of <SuggestionCard[]> items"
 					v-if="modalType === ModalType.Follow"
 					class="rounded-lg flex justify-between space-x-2 py-2 px-4">
-					<SmallCard 
+					<FollowCard 
 						:show-button="true"
 						:profile-image="item.profilePictureUrl">
 						<template #user-name>
@@ -53,7 +53,7 @@
 						<template #button-name>
 							Remove
 						</template>
-					</SmallCard>
+					</FollowCard>
 				</div>
 
 				<!-- Comment Modal -->
@@ -93,7 +93,7 @@ import {
 } from '@/common'
 
 import {
-	SmallCard,
+	SmallCard as FollowCard,
 	SVGLoader,
 	CommentCard
 } from '@/components'
@@ -124,7 +124,7 @@ export default defineComponent({
 		}
 	},
 	components: {
-		SmallCard,
+		FollowCard,
 		SVGLoader,
 		CommentCard
 	},
