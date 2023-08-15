@@ -53,7 +53,7 @@
                                             :color="'dark'" 
                                             :size="'md'" 
                                             :is-full="true">
-                                            <span class="text-md font-semibold">
+                                            <span class="sm:text-md text-xs font-semibold">
                                                 Edit Profile
                                             </span>
                                         </TheButton>
