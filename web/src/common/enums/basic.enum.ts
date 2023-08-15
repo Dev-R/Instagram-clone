@@ -29,7 +29,10 @@ export enum BasicColor {
     OUTLINE  = 'outline', 
     
     /** Light color */
-    LIGHT = 'light'
+    LIGHT = 'light',
+
+    /** Dark color */
+    DARK = 'dark'
 }
 
 /** Enum for modal size */
