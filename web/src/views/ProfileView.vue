@@ -49,13 +49,14 @@
 
                                     <!-- Options -->
                                     <div class="md:pl-0 pl-6">
-                                        <button 
-                                            type="button" 
-                                            class="text-gray-900 bg-white sm:hover:bg-gray-100 
-                                            border border-gray-200 font-semibold w-auto rounded-lg text-xs md:p-1.5 
-                                            md:px-3 md:py-1.5 px-20 py-1 md:w-auto">
-                                            Edit Profile
-                                        </button>
+                                        <TheButton 
+                                            :color="'dark'" 
+                                            :size="'md'" 
+                                            :is-full="true">
+                                            <span class="text-md font-semibold">
+                                                Edit Profile
+                                            </span>
+                                        </TheButton>
                                     </div>
 
                                     <!-- Logged-in user Options -->
@@ -267,7 +268,8 @@ import {
     SmallModal as FollowModal,
     SettingModal,
     CommentModal,
-    PhotoModal
+    PhotoModal,
+    TheButton
 } from '@/components'
 
 import type {
@@ -533,11 +535,12 @@ export default defineComponent({
     components: {
         SVGLoader,
         NavBarMain,
-        CommentModal,
+        TheButton,
         PostCard,
         FollowModal,
         SettingModal,
-        PhotoModal
+        PhotoModal,
+        CommentModal
     }
 })
 </script>
