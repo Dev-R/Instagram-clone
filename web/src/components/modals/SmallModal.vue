@@ -15,7 +15,7 @@
 		<div class="flex p-2 border-b border-gray-600 rounded-t justify-between">
 			<div></div>
 
-			<h3 class="font-sans text-md font-bold text-white">
+			<h3 class="font-sans text-md font-semibold text-gray-300">
 				{{ title }}
 			</h3>
 
@@ -59,6 +59,7 @@
 					<CommentCard v-for="item of <PostCommentCard[]>items" v-else :comment="item" />
 				</div>
 
+				<!-- Gender Modal -->
 				<div 
 					v-else-if="modalType === ModalType.Gender"
 					class="flex flex-col p-5">
@@ -66,17 +67,31 @@
 					<div 
 						v-for="item of <Gender[]>items"
 						:key="item.name"
-						class="flex items-center mb-4">
+						class="flex items-center mb-4 mx-2">
+						<!-- TODO: Replace with TheInput -->
+						<!-- TODO: Improve logic -->
 						<input 
-							@click="$emit('onGenderSelected', item.name)"
+							@click="onGenderSelected(item.name)"
+							:checked="activeGender === item.name"
 							type="radio"
-							class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 
-							dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+							:value="item.name"
+							class="w-4 h-4 text-gray-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 
+							dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+
 						<label 
-							class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300 capitalize">
+							class="ml-2 text-sm font-sans font-semibold text-gray-200 capitalize">
 							{{ item.name }}
 						</label>
+
 					</div>
+					
+					<TheButton
+						@click="onModalClosed()"
+						:size="'md'">
+						<span class="sm:text-md sm:font-semibold">
+							Done
+						</span>
+					</TheButton>
 
 				</div>
 
@@ -86,7 +101,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, computed } from 'vue'
+import { defineComponent, onMounted, computed, ref } from 'vue'
 
 import type {
 	SuggestionCard,
@@ -102,16 +117,29 @@ import {
 import {
 	SmallCard as FollowCard,
 	SVGLoader,
-	CommentCard
+	CommentCard,
+	// TheButton,
+	// TheInput
 } from '@/components'
 
+// TODO: Check why the above import is not working
+import TheButton from '../basics/TheButton.vue'
 
 export default defineComponent({
 	name: 'SmallModal',
 	setup(prop, context) {
+
+		const activeGender = ref('')
+		
 		const shouldDisplayNoComments = computed(() => {
 			return !prop.items || prop.items.length === 0
 		})
+
+		
+		const onGenderSelected = (gender: string) => {
+			activeGender.value = gender
+			// context.emit('onGenderSelected', gender)
+		}
 
 		/**
 		 * Emit signal when the modal is closed
@@ -125,16 +153,20 @@ export default defineComponent({
 		})
 		return {
 			shouldDisplayNoComments,
+			activeGender,
 			ModalSize,
 			ModalType,
-			onModalClosed
+			onModalClosed,
+			onGenderSelected
 		}
 	},
 	components: {
-		FollowCard,
-		SVGLoader,
-		CommentCard
-	},
+    FollowCard,
+    SVGLoader,
+    CommentCard,
+	TheButton
+    // TheInput
+},
 	props: {
 		title: {
 			type: String,
