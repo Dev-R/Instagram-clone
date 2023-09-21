@@ -49,6 +49,12 @@ const router = createRouter({
           meta: { title: 'Reels' }
         },
         {
+          path: '/settings',
+          name: 'setting',
+          component: () => import('@/views/SettingView.vue'),
+          meta: { title: 'Setting' }
+        },
+        {
           path: '/create',
           name: 'create',
           children: [
