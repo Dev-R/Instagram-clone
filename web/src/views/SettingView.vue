@@ -14,14 +14,18 @@
 				</div>
 
 				<div 
-					class="xl:col-span-8 lg:flex lg:flex-row md:col-span-10 bg-black border-2 border-[#363636]
-					scrollbar scrollbar-thumb-gray-900 md:col-start-2 md:p-0 col-span-12 p-2 max-w-4xl h-4/5">
+					class="xl:col-span-8 md:col-span-10 col-span-12 md:justify-self-end md:place-self-center md:flex md:flex-row bg-black border-2 border-[#363636]
+					scrollbar scrollbar-thumb-gray-900 md:col-start-2 md:p-0 sm:p-2 w-full md:max-w-4xl h-4/5">
 
                     <!-- Navigator -->
-                    <div class="flex flex-col  h-full basis-1/5 font-sans font-normal text-xs text-white border-r border-[#363636]">
+                    <div 
+                        :class="{
+                            'hidden': isMobileScreen && activeSettingTab !== null,
+                        }"
+                        class="flex flex-col h-full basis-2/6 font-sans font-normal text-xs text-white border-r border-[#363636]">
 
                         <!-- Information / Guide -->
-                        <div class="flex flex-col bg-black p-5 space-y-4">
+                        <div class="flex flex-col bg-black p-5 space-y-4 border-b-2 border-[#363636]">
                             <!-- TODO: Replace Icon -->
                             <svg aria-label="Facebook wordmark and family of apps logo" height="12" role="img"
                                 viewBox="0 0 500 100" width="60">
@@ -63,30 +67,42 @@
                                         fill="url(#d)"></path>
                                 </g>
                             </svg>
+                            
+                            <div class="text-md md:text-lg font-semibold text-white">
+                                Accounts Center
+                            </div>
 
                             <div>
                                 Manage your connected experiences and account settings across Meta technologies.
                             </div>
 
-                            <div>
+                            <div class="space-x-2">
                                 <i class="fa-solid fa-user text-white"></i>
-                                Personal Details
+                                <span>
+                                    Personal Details
+                                </span>
                             </div>
 
-                            <div>
+                            <div class="space-x-1 flex flex-nowrap">
                                 <i class="fa-solid fa-shield text-white"></i>
-                                Password and Security
+                                <span>
+                                    Password and Security
+                                </span>
                             </div>
 
-                            <div>
+                            <div class="space-x-2">
                                 <i class="fa-solid fa-newspaper text-white"></i>
-                                Ad preferences
+                                <span>
+                                    Ad preferences
+                                </span>
                             </div>
 
                         </div>
 
                         <!-- Tabs -->
-                        <div class="p-4 border-l-2 focus:border-[#fafafa] 
+                        <div 
+                        @click="toggleSettingTab('edit-profile')"
+                        class="p-4 border-l-2 focus:border-[#fafafa] 
                         hover:bg-[#121212] hover:border-[#363636] cursor-pointer">
                             Edit Profile
                         </div>
@@ -102,14 +118,18 @@
                     </div>
 
                     <!-- Active Setting View -->
-                    <div class="flex flex-col h-full grow font-sans font-normal text-white p-5 space-y-5">
+                    <div 
+                        :class="{
+                            'hidden': isMobileScreen && activeSettingTab !== 'edit-profile',
+                        }"
+                        class="sm:flex flex-col h-screen sm:h-full grow font-sans font-normal text-white p-5 space-y-5">
 
                         <!-- Title -->
-                        <div class="md:text-2xl">
+                        <div class="md:text-2xl text-2xl text-gray-200">
                             Edit profile
                         </div>
 
-                        <div class="flex flex-col space-y-4 p-11 md:max-w-lg mx-auto w-4/5">
+                        <div class="flex flex-col space-y-4 sm:p-11 md:max-w-lg mx-auto sm:w-4/5">
                             
                             <!-- Profile Image -->
                             <div class="flex space-x-4 justify-between">
@@ -120,9 +140,10 @@
                                     <div class="text-md">
                                         memesgod840
                                     </div>
-                                    <div class="text-sm font-semibold text-[#0095f6] hover:text-white cursor-pointer">
+                                    <!-- TODO: Complete Photo Change Feature -->
+                                    <!-- <div class="text-sm font-semibold text-[#0095f6] hover:text-white cursor-pointer">
                                         Change Profile Photo
-                                    </div>
+                                    </div> -->
                                 </div>
 
                                 <!-- Left empty to Help center the above -->
@@ -180,7 +201,7 @@
 </template>
 
 <script lang="ts">
-import { onMounted, defineComponent, ref, computed } from 'vue'
+import { onMounted, defineComponent, ref, computed, watch } from 'vue'
 import { 
     NavBarMain,
     SmallModal as GenderModal,
@@ -211,6 +232,10 @@ export default defineComponent({
     name: 'SettingView  ',
     setup() {
 
+        // Screen size flags
+        const screenWidth = ref<number>(window.innerWidth) // Current window width
+
+        const activeSettingTab = ref<null | string>(null)
         const genderModal = ref({
             name: '',
             title: 'Gender',
@@ -230,27 +255,40 @@ export default defineComponent({
         })
 
         // Suggest a better name
-
         const toggleGenderModal = () => {
             genderModal.value.isToggled = !genderModal.value.isToggled
+        }
+
+        const toggleSettingTab = (setting: string) => {
+            activeSettingTab.value = setting
+            console.log('Setting: ', setting)
         }
 
         const isModalToggled = computed(() => {
             return genderModal.value.isToggled 
         })
-
+        
+        const isMobileScreen = computed(() => {
+            console.log("Screen width: ", screenWidth.value)
+            return screenWidth.value <= ScreenBreakpoint.Medium
+        })
 
         onMounted(() => {
+            screenWidth.value = window.innerWidth // Set initial value to current screen size
             // console.log('SettingView mounted')
         })
 
         return {
             genderModal,
             toggleGenderModal,
+            toggleSettingTab,
+            activeSettingTab,
             unavailableSettingSections,
             isModalToggled,
+            isMobileScreen,
             ModalSize,
-            ModalType
+            ModalType,
+            screenWidth
         }
     },
     components: {
