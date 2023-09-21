@@ -926,7 +926,7 @@ export default defineComponent({
 
 
 
-<style>
+<style scoped>
 #photo-modal {
     transition:250ms linear;
 }

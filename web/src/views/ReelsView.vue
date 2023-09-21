@@ -276,7 +276,7 @@ export default defineComponent({
 })
 </script>
 
-<style>
+<style scoped>
 .blur-filter {
     filter: blur(30px);
 }

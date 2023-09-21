@@ -258,7 +258,7 @@ export default defineComponent({
 })
 </script>
 
-<style>
+<style scoped>
 /* Hide next/back controllers */
 .swiper-button-next, .swiper-button-prev {
     color: transparent;

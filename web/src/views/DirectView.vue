@@ -388,6 +388,5 @@ export default defineComponent({
 
 
 
-<style>
-
+<style scoped>
 </style>

@@ -72,7 +72,7 @@ export default defineComponent({
 })
 </script>
 
-<style>
+<style scoped>
 .story-avatar {
     position: relative;
     border-radius: 50%;
