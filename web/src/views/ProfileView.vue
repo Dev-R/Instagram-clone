@@ -53,7 +53,9 @@
                                             :color="'dark'" 
                                             :size="'md'" 
                                             :is-full="true">
-                                            <span class="sm:text-md text-xs font-semibold">
+                                            <span 
+                                                @click="goToSettingsRoute"
+                                                class="sm:text-md text-xs font-semibold">
                                                 Edit Profile
                                             </span>
                                         </TheButton>
@@ -272,6 +274,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, onMounted, onUnmounted } from 'vue'
+import { useRouter } from 'vue-router'
 
 import {
     SVGLoader,
@@ -338,6 +341,9 @@ export default defineComponent({
         const savedItems = ref<Object[]>([])
         const taggedItems = ref<Object[]>([])
 
+        // Services
+        const router = useRouter()
+
         // Handlers
         const navBarTabSwitcher = (currentTab: navBarTabs) => {
             currentActiveTab.value = currentTab
@@ -369,7 +375,11 @@ export default defineComponent({
                     tabName === ProfileTab.Tagged),
             }
         }
-        
+
+        const goToSettingsRoute = () => {
+            router.push({ name: 'setting' })
+        }
+
         // Listeners
         const onWidthChange = () => windowWidth.value = window.innerWidth
 
@@ -543,6 +553,7 @@ export default defineComponent({
             triggerSmallModal,
             triggerPhotoModal,
             getTabClass,
+            goToSettingsRoute,
             navBarTabSwitcher,
         }
     },
