@@ -103,15 +103,24 @@
 import { onMounted, defineComponent, computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-import SVGLoader from '@/components/basics/SVGLoader.vue'
-import type { NavBarItem } from '@/common/models/navbar.model' 
+import { useToast } from 'vue-toastification'
+
+import {
+	SVGLoader
+} from '@/components'
+
+import type {
+	NavBarItem
+} from '@/common'
 
 export default defineComponent({
 	name: 'NavBarMain',
 	setup(prop, context) {
 		// Services
 		const router = useRouter()
-		const route = useRoute()
+		const route = useRoute() // TODO: Remove either route or router
+		const toast = useToast()
+		
 		const activeNavBar = ref<NavBarItem['name']>()
 		const isMoreModalOpen = ref(true)
 
@@ -218,7 +227,7 @@ export default defineComponent({
         {
             name: 'Log Out',
 			iconName: 'fa-solid fa-sign-out',
-            action: () => router.push('/logout')
+            action: () => logout()
         }
       ]
 
@@ -230,6 +239,16 @@ export default defineComponent({
 			isMoreModalOpen.value = !isMoreModalOpen.value
 			console.log('Toggle More Modal')
 		}
+
+		const logout = () => {
+        // TODO: Add logout logic and make a universal logout function
+          toast.success('Logout successful');
+		//   Sleep for 2 seconds
+		  setTimeout(() => {
+			  router.push('/accounts/login');
+		  }, 2000)
+
+      	}
 
 		// Computed
 		const routeName = computed(()=> {

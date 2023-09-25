@@ -21,7 +21,6 @@
                     </div>
                 </div>
         </div>
-        
     </div>
 </template>
 
@@ -29,14 +28,19 @@
 import { defineComponent, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 
-import SmallCard from '@/components/cards/SmallCard.vue';
-import SVGLoader from '@/components/basics/SVGLoader.vue';
+import { useToast } from 'vue-toastification';
+
+import {
+    SmallCard,
+    SVGLoader
+} from '@/components';
 
 export default defineComponent({
     name: "settingModal",
     setup(prop, context) {
 
       const router = useRouter();
+      const toast = useToast();
 
       const settings = [
         {
@@ -86,8 +90,13 @@ export default defineComponent({
       }
 
       const logout = () => {
-        // TODO: Add logout logic
-          router.push('/logout');
+        // TODO: Add logout logic and make a universal logout function
+          toast.success('Logout successful');
+		//   Sleep for 2 seconds
+		  setTimeout(() => {
+			  router.push('/accounts/login');
+		  }, 2000)
+
       }
 
       /**
