@@ -3,6 +3,7 @@
 @import './icons.css';
 @import './carousel.css';
 @import './toastification.css';
+@import './nprogress.css';
 /* @import './swiper.css'; */
 
 @tailwind base;
