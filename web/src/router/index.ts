@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { usePhotoStore } from '@/stores'
+import NProgress from 'nprogress'
 
 const ROOT_ROUTE = '/home'
 
@@ -123,6 +124,12 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   const photoStore = usePhotoStore()
 
+  // If this isn't an initial page load.
+  if (to.name) {
+      // Start the route progress bar.
+      NProgress.start()
+  }
+
   // User shouldn't be able to access create route without preview image
   if (to.path.startsWith('/create') && !photoStore.previewImage) {
     console.log('Here')
@@ -137,5 +144,8 @@ router.afterEach((to, from, failure) => {
     // Only update page title if no failure
     document.title = `PhotoFlow - ${ to.meta.title }`
   }
+
+  // Complete the animation of the route progress bar.
+  NProgress.done()
 })
 export default router
