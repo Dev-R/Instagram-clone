@@ -10,7 +10,6 @@
 					md:block hidden space-y-12 h-screen 
 					sticky top-0 border-r border-gray-900">
                     
-                    <!-- A -->
                     <NavBarMain
                         @on-create="triggerPhotoModal"/>
                     
