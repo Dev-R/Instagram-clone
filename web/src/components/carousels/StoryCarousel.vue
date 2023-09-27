@@ -1,5 +1,5 @@
 <template>
-    <div class="max-w-md mx-auto bg-transparent shadow-xl min-w-0 p-1.5">
+    <div class="max-w-md mx-auto bg-transparent shadow-xl min-w-0 p-1.5 sm:p-0">
         <div 
             class="overflow-x-auto flex space-x-6 
             scrollbar-thin scrollbar-thumb-gray-900 
