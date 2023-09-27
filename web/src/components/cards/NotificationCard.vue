@@ -1,5 +1,5 @@
 <template>
-    <div class="flex rounded-lg items-center space-x-2 w-full p-2 h-12 cursor-pointer sm:mx-auto
+    <div class="flex rounded-lg items-center space-x-2 w-full p-2 h-12 cursor-pointer
          justify-between sm:max-w-sm md:max-w-md sm:hover:bg-slate-1000">
         <div class="flex-inital flex-none">
             <img 
