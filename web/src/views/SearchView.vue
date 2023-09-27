@@ -44,14 +44,15 @@
                     No recent searches.
                 </div>      
 
-                <SearchSkeleton 
-                    :is-loading="isSearchLoading" />
-                
-                <SearchCard 
-                    v-for="result in searchResults"
-                    :key="result.userName"
-                    :search-result="result" />
-              </div> 
+                  <UserProfileSkeleton 
+                      :is-loading="isSearchLoading" />
+                  
+                  <SearchCard 
+                      v-for="result in searchResults"
+                      :key="result.userName"
+                      :search-result="result" />
+                  
+                </div>  
 
 					</div>
 
@@ -81,7 +82,7 @@ import {
 	PostCard as PostCardModal,
   PostCoverCard,
   TheInput,
-  SearchSkeleton,
+  UserProfileSkeleton,
   SearchCard,
   SearchBar
 } from '@/components'
@@ -194,7 +195,7 @@ export default defineComponent({
     PostCardModal,
     PostCoverCard,
     TheInput,
-    SearchSkeleton,
+    UserProfileSkeleton,
     SearchCard,
     SearchBar
 },

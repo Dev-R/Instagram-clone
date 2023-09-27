@@ -167,7 +167,7 @@ export default defineComponent({
 			},
 			{
 				title: 'Notifications',
-				path: '/',
+				path: '/notifications',
 				name: 'notifications',
 				customClass: '',
 				iconName: 'notifications',
