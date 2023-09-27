@@ -68,42 +68,42 @@
         </div>
     </div>
     <!-- Drop Down menu -->
-    <div
-        :class="{
-            'hidden': !isDropDownTriggered
-        }"
-        class="absolute right-5 z-50 md:hidden bg-slate-1100 
-        divide-y divide-gray-100 rounded-lg shadow w-24">
+    <Transition>
+        <div    
+            v-show="!isDropDownTriggered"
+            class="absolute right-5 z-50 md:hidden bg-slate-1100 
+            divide-y divide-gray-100 rounded-lg shadow w-24">
 
-        <div class="flex flex-col pt-2 pb-2 text-sm text-gray-200 space-y-3">
-            
-            <div
-                @click="onToggle"
-                class="flex justify-evenly">
-                <span>
-                    Post
-                </span>
+            <div class="flex flex-col pt-2 pb-2 text-sm text-gray-200 space-y-3">
+                
+                <div
+                    @click="onToggle"
+                    class="flex justify-evenly cursor-pointer">
+                    <span>
+                        Post
+                    </span>
 
-                <SVGLoader 
-                    :icon="'create-small'" 
-                    :class="'group-hover:scale-100 self-end'"/>
+                    <SVGLoader 
+                        :icon="'create-small'" 
+                        :class="'group-hover:scale-100 self-end'"/>
 
+                </div>
+                
+                <div
+                    @click="unsupportedFeature"
+                    class="flex justify-evenly">
+                    <span>
+                        Story
+                    </span>
+
+                    <SVGLoader 
+                        :icon="'new-story-small'" 
+                        :class="'group-hover:scale-100 self-end'"/>
+
+                </div>
             </div>
-            
-            <router-link 
-                class="flex justify-evenly" 
-                to="create/story">
-                <span>
-                    Story
-                </span>
-
-                <SVGLoader 
-                    :icon="'new-story-small'" 
-                    :class="'group-hover:scale-100 self-end'"/>
-
-            </router-link>
-        </div>
-    </div>
+        </div>    
+    </Transition>
 </template>
 
 <script lang="ts">
@@ -117,6 +117,7 @@ import {
 import { 
     usePhotoStore 
 } from '@/stores';
+import { useToast } from 'vue-toastification'
 
 // import type { 
 //     NavBarItem 
@@ -138,6 +139,7 @@ export default defineComponent({
         const route = useRoute()
         const router = useRouter()
         const photoStore = usePhotoStore()
+        const toast = useToast()
 
         // TODO: Make this dynamic
         // const menuItems: NavBarItem[] = [
@@ -165,7 +167,11 @@ export default defineComponent({
          * Change store state to open file upload dialog
          */
          const onToggle = () => {
-            photoStore.isFileUploadDialogOpen = true
+            photoStore.isFileUploadDialogOpen = !photoStore.isFileUploadDialogOpen
+        }
+
+        const unsupportedFeature = () => {
+            toast.warning('This feature is not supported yet')
         }
 
          const onPageBack= () => {
@@ -188,6 +194,7 @@ export default defineComponent({
             routeName,
             isDropDownTriggered,
             triggerDropDown,
+            unsupportedFeature,
             onPageBack,
             onToggle
         }
@@ -200,3 +207,16 @@ export default defineComponent({
     ]
 })
 </script>
+
+<style scoped>
+/* we will explain what these classes do next! */
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+</style>
