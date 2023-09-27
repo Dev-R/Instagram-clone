@@ -70,7 +70,7 @@
     <!-- Drop Down menu -->
     <Transition>
         <div    
-            v-show="!isDropDownTriggered"
+            v-show="isDropDownTriggered"
             class="absolute right-5 z-50 md:hidden bg-slate-1100 
             divide-y divide-gray-100 rounded-lg shadow w-24">
 
