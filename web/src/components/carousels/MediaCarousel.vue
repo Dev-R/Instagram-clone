@@ -31,7 +31,7 @@
                 <img
                     v-if="media.type === 'image'" 
                     :src="media.mediaUrl" 
-                    class="absolute block w-full -translate-x-1/2 
+                    class="absolute block w-full -translate-x-1/2 rounded
                     -translate-y-1/2 top-1/2 left-1/2" 
                     :alt="media.title" />
 
