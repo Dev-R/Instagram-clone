@@ -99,6 +99,7 @@
             <div class="grid grid-cols-12 border-b border-slate-800 p-2">
                 <span class="col-span-10">
                     <textarea
+                        @keypress.enter.prevent="onPostComment"
                         v-model="comment"
                         rows="1"
                         class="outline-none resize-none border-none text-white
@@ -175,6 +176,7 @@ export default defineComponent({
          * @event on-post-comment
          */
         const onPostComment = () => {
+            comment.value = '';
             console.log("Emitting signal:", comment.value)
             context.emit('onPostComment', comment, props.postItem.id);
         };
