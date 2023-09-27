@@ -14,45 +14,40 @@
 
 				<div class="bg-black scrollbar scrollbar-thumb-gray-900 md:p-0 p-2 w-full max-w-4xl mx-auto">
           
-					<!-- Explore Section -->
+					<!-- Notification Section -->
 					<div 
 						class="flex flex-col sm:border-r-2 border-gray-900 rounded-xl
 						flex-nowrap space-y-4 pt-2 md:pt-5 justify-self-end h-full
 						md:ml-5 lg:ml-0">
 
-                <!-- Title -->
-                <div class="text-xl font-sans sm:text-2xl text-white font-semibold hidden sm:block">
-                    Search
+                <!-- Section Title -->
+                <div class="text-xl font-sans sm:text-2xl text-white font-bold hidden sm:block">
+                    Notifications
                 </div>
 
-                <!-- Search Bar -->                        
-                <SearchBar 
-                    :is-search-loading="isSearchLoading"
-                    :search-form="searchForm"
-                    @onSearchQuery="searchForUser" />
-
                 <div class="flex pt-4 border-t-2 border-gray-900">
-                    <div class="text-md font-sans sm:text-xl text-white font-semibold">
-                        {{ searchTitle }}
+                    <div class="text-md font-sans sm:text-xl text-white font-bold">
+                        This Week
                     </div>
                 </div>
 
                 <div class="flex flex-col space-y-8">
 
                   <div 
-                      v-show="isSearchResultsEmpty && !isSearchLoading"
+                      v-show="isNotificationsEmpty && !isNotificationsLoading"
                       class="text-md font-sans sm:text-xl text-gray-500 self-center">
-                      No recent searches.
+                      No Notifications yet.
                   </div>      
 
                   <UserProfileSkeleton 
-                      :is-loading="isSearchLoading" />
+                      :is-loading="isNotificationsLoading" />
                   
-                  <SearchCard 
-                      v-for="result in searchResults"
-                      :key="result.userName"
-                      :search-result="result" />
-                  
+
+                  <NotificationCard 
+                      v-for="notification in notifications"
+                      :key="notification.userName"
+                      :notification="notification" />
+ 
                 </div>  
 
 					</div>
@@ -85,62 +80,52 @@ import {
   TheInput,
   UserProfileSkeleton,
   SearchCard,
-  SearchBar
+  SearchBar,
+  TheButton,
+  NotificationCard
 } from '@/components'
 
 import type {
-  SearchCard as SearchResult
+  NotificationCard as NotificationResult,
 } from '@/common'
 
 export default defineComponent({
   name: 'Search',
   setup() {
 
-    const searchForm = ref<string>('')
-    const searchResults = ref<SearchResult[]>([])
-    const isSearchLoading = ref<boolean>(false)
+    const notifications = ref<NotificationResult[]>([])
+    const isNotificationsLoading = ref<boolean>(false)
 
 
     /**
      * Assigns demo search results.
      * For demo only.
      */
-    const assignDemoSearchResults = () => {
-      searchResults.value = [
+    const assignDemoNotifications = () => {
+      notifications.value = [
         {
           userName: 'John Doe',
-          bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae nisi eget nunc aliquam aliquet. Sed vitae nisi eget nunc aliquam aliquet.',
+          type: 'follow',
+          isFollowing: false,
+          caption: 'John Doe followed you.',
           profilePictureUrl: 'https://loremflickr.com/1024/1280/cat'
         },
         {
           userName: 'Jane Doe',
-          bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae nisi eget nunc aliquam aliquet. Sed vitae nisi eget nunc aliquam aliquet.',
+          type: 'follow',
+          caption: 'Jane Doe followed you.',
+          isFollowing: false,
           profilePictureUrl: 'https://loremflickr.com/1024/1280/dog'
         }
       ]
     }
 
-    /**
-     * Searches for a user.
-     * @param payload The event payload.
-     */
-    const searchForUser = (payload: Event) => {
-      const searchQuery = payload?.target as HTMLInputElement
-      searchForm.value = searchQuery.value
-      searchResults.value = []
-      console.log('search query', searchQuery.value)
-
-      isSearchLoading.value = true
-      if (searchQuery.value.trim() != '') {
-        // Search for user  
-        // searchResults.value = await searchForUser(searchQuery.value) // TODO: Implement searchForUser
-        // console.log('search results', searchResults.value)
-        // For demo only
-        setTimeout(() => {
-          assignDemoSearchResults()
-          isSearchLoading.value = false
-        }, 1000)
-      }
+    const loadNotifications = () => {
+      isNotificationsLoading.value = true
+      setTimeout(() => {
+        assignDemoNotifications()
+        isNotificationsLoading.value = false
+      }, 1000)
     }
 
     /**
@@ -167,13 +152,13 @@ export default defineComponent({
     // Computed
     const windowWidth = ref(window.innerWidth) // Current window width
     const screenSizeType = computed(() => (windowWidth.value < 550 ? 'xs' : false))
-    // const isSearchLoading = computed(() => searchForm.value.length > 0)
-    const isSearchResultsEmpty = computed(() => searchResults.value.length === 0)
-    const searchTitle = computed(() => searchResults.value.length > 0 ? `Search results for "${searchForm.value}"` : 'Recent')
+    // const isNotificationsLoading = computed(() => notifications.value.length > 0)
+    const isNotificationsEmpty = computed(() => notifications.value.length === 0)
 
     // Lifecycle Hooks
     onMounted(() => {
       addResizeListener()
+      loadNotifications()
     })
 
     onUnmounted(() => {
@@ -181,12 +166,9 @@ export default defineComponent({
     })
 
     return {
-      searchForm,
-      searchResults,
-      searchForUser,
-      searchTitle,
-      isSearchLoading,
-      isSearchResultsEmpty
+      notifications,
+      isNotificationsLoading,
+      isNotificationsEmpty
     }
   },
   components: {
@@ -196,9 +178,11 @@ export default defineComponent({
     PostCardModal,
     PostCoverCard,
     TheInput,
+    TheButton,
     UserProfileSkeleton,
     SearchCard,
-    SearchBar
+    SearchBar,
+    NotificationCard
 },
 })
 
