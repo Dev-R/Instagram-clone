@@ -13,7 +13,7 @@
                         @on-create="triggerPhotoModal" />
                 </div>
 
-                <div class="flex justify-center bg-black scrollbar scrollbar-thumb-gray-900 w-full">
+                <div class="flex justify-center bg-black scrollbar scrollbar-thumb-gray-900 mx-auto sm:mt-10 space-x-12">
  
                     <!-- Center: Posts -->
                     <div 
@@ -43,7 +43,7 @@
                     </div>
 
                     <!-- Right bar: Suggestions -->
-                    <div class="lg:block hidden max-w-xs">
+                    <div class="lg:block hidden max-w-xs pt-8">
                         <SuggestionCard 
                             :card-item="suggested" />
                     </div>
@@ -228,11 +228,11 @@ export default defineComponent({
         ])
 
         const suggested = {
-            userName: 'Rabee',
-            profilePictureUrl: 'http://via.placeholder.com/32x32',
+            userName: 'memesgod840',
+            profilePictureUrl: 'https://loremflickr.com/1024/1280/girl',
             suggested: [{
                 userName: 'Rabee',
-                profilePictureUrl: 'http://via.placeholder.com/32x32',
+                profilePictureUrl: 'https://loremflickr.com/1024/1280/botanical',
                 followedBy: 'imamomarsuleiman + 1 more'
             }]
         }
