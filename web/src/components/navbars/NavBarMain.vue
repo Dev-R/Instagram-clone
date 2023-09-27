@@ -187,7 +187,7 @@ export default defineComponent({
 				name: 'profile',
 				customClass: '',
 				iconName: '',
-				img: 'http://via.placeholder.com/26x26',
+				img: 'https://avatars.githubusercontent.com/u/83784102?v=4',
 				onClick: () => {}
 			}
 		]
