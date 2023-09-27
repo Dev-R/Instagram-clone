@@ -139,7 +139,7 @@ export default defineComponent({
 				name: 'search',
 				customClass: '',
 				iconName: 'search',
-				onClick: () => {}
+				onClick: () => router.push('/search')
 			},
 			{
 				title: 'Explore',
