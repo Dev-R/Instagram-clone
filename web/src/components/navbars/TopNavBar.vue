@@ -3,8 +3,7 @@
         class="flex flex-col space-x-2 justify-around 
         sticky top-0 md:hidden z-50 bg-black border-gray-800 
         border-t border-b">
-        <div 
-            class="flex space-x-2 justify-between relative">
+        <div class="flex space-x-2 justify-between relative">
 
             <div 
                 class="group cursor-pointer rounded-full 
@@ -39,18 +38,19 @@
                     pt-3 xl:justify-start justify-center">
                     <SVGLoader 
                         :icon="'create'" 
-                        :class="'group-hover:scale-110'"/>
+                        :class="'group-hover:scale-110'" />
                 </div>
 
-                <div 
+                <router-link 
+                    to="/notifications"
                     class="group cursor-pointer rounded-full 
                     flex space-x-4 sm:hover:bg-slate-1000 
                     sm:hover:delay-100 p-3 xl:justify-start 
                     justify-center">
                     <SVGLoader 
                         :icon="'like'" 
-                        :class="'group-hover:scale-110'"/>
-                </div>
+                        :class="'group-hover:scale-110'" />
+                </router-link>
 
             </div>
 
@@ -64,7 +64,6 @@
                         {{ routeName }}
                     </span>
             </div>
-            
 
         </div>
     </div>
@@ -76,9 +75,7 @@
         class="absolute right-5 z-50 md:hidden bg-slate-1100 
         divide-y divide-gray-100 rounded-lg shadow w-24">
 
-        <div 
-            class="flex flex-col pt-2 pb-2 text-sm 
-            text-gray-200 space-y-3">
+        <div class="flex flex-col pt-2 pb-2 text-sm text-gray-200 space-y-3">
             
             <div
                 @click="onToggle"
@@ -113,8 +110,17 @@
 import { onMounted, defineComponent, computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
-import { usePhotoStore } from '@/stores';
-import SVGLoader from '@/components/basics/SVGLoader.vue';
+import {
+    SVGLoader
+} from '@/components';
+
+import { 
+    usePhotoStore 
+} from '@/stores';
+
+// import type { 
+//     NavBarItem 
+// } from '@/common';
 
 export default defineComponent({
     name: 'TopNavBar',
@@ -132,6 +138,28 @@ export default defineComponent({
         const route = useRoute()
         const router = useRouter()
         const photoStore = usePhotoStore()
+
+        // TODO: Make this dynamic
+        // const menuItems: NavBarItem[] = [
+        //     {
+		// 		title: 'Home',
+		// 		path: '/home',
+		// 		name: 'home',
+		// 		customClass: '',
+		// 		iconName: 'home',
+		// 		onClick: () => {}
+		// 	},
+        //     {
+        //         name: 'Post',
+        //         iconName: 'create-small',
+        //         path: 'create/post'
+        //     },
+        //     {
+        //         name: 'Story',
+        //         iconName: 'new-story-small',
+        //         route: 'create/story'
+        //     }
+        // ]
 
         /**
          * Change store state to open file upload dialog
