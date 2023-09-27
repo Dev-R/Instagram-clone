@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col space-y-4 flex-nowrap top-0 w-80">
+    <div class="flex flex-col space-y-4 flex-nowrap top-0 max-w-sm">
 
         <!-- A: Current User Data -->
         <div class="rounded-lg flex items-center space-x-2">
@@ -7,7 +7,7 @@
             <div class="flex-inital">
                 <img 
                     :src="cardItem.profilePictureUrl" 
-                    class="w-14 h-14 rounded-full">
+                    class="w-11 h-11 rounded-full">
             </div>
 
             <div class="flex-inital ">
