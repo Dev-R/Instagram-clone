@@ -9,6 +9,10 @@
                 v-for="item in menuItems"
                 :key="item.title"
                 :to="item.path"
+                @click="updateActiveNavBar(item.path)"
+                :class="{ 
+                    'bg-slate-1000 animate-pulse': item.path === activeNavBar
+                }"
                 class="group cursor-pointer rounded-full 
                 flex space-x-4 sm:hover:bg-slate-1000 sm:hover:delay-100
                 p-3 xl:justify-start justify-center">
@@ -32,8 +36,15 @@
 
 <script lang="ts">
 import {
-    defineComponent 
+    defineComponent,
+    ref,
+    onMounted,
+    computed
 } from 'vue'
+
+import { 
+    useRoute 
+} from 'vue-router'
 
 import {
     SVGLoader
@@ -46,6 +57,13 @@ import type {
 export default defineComponent({
     name: 'BottomNavBar',
     setup() {
+
+        const activeNavBar = ref<NavBarItem['path']>()
+        const route = useRoute()
+
+        const updateActiveNavBar = (navBarTab: NavBarItem['path']) => {
+			activeNavBar.value = navBarTab
+		}
 
         const menuItems: NavBarItem[] = [
             {
@@ -80,8 +98,18 @@ export default defineComponent({
             }
         ]
 
+        const routeName = computed(()=> {
+			return route.name ? route.name.toString() : ''
+		})
+
+        onMounted(() => {
+			updateActiveNavBar(routeName.value)
+		})
+
         return {
-            menuItems
+            menuItems,
+            updateActiveNavBar,
+            activeNavBar
         }
     },
     components: {
