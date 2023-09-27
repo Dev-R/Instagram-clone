@@ -9,7 +9,7 @@ export interface BaseCard {
     /** Username of the user */
     userName: string
   
-    /** URL of the of profile picture */
+    /** URL of the profile picture */
     profilePictureUrl: string
 
     /** Unix timestamp representing when the current card was created */
@@ -49,6 +49,10 @@ export interface SearchCard extends BaseCard {
  * Interface for notification card
  */
 export interface NotificationCard extends BaseCard{
+
   /** Notification type */
-  type: 'like' | 'follow' | 'comment'
+  type: 'like' | 'follow' | 'comment',
+
+  /** Whether the user is following the current user  */
+  isFollowing?: boolean
 }
