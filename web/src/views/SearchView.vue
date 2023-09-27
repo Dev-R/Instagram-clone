@@ -14,46 +14,44 @@
 
 				<div class="bg-black scrollbar scrollbar-thumb-gray-900 md:p-0 p-2 w-full max-w-4xl mx-auto">
           
-					<!-- Explore Section -->
+					<!-- Search Section -->
 					<div 
-						class="flex flex-col sm:border-r-2 border-gray-900 rounded-xl
-						flex-nowrap space-y-4 pt-2 md:pt-5 justify-self-end h-full
-						md:ml-5 lg:ml-0">
+              class="flex flex-col sm:border-r-2 border-gray-900 rounded-xl
+              flex-nowrap space-y-4 pt-2 md:pt-5 justify-self-end h-full
+              md:ml-5 lg:ml-0">
 
                 <!-- Title -->
-                <div class="text-xl font-sans sm:text-2xl text-white font-semibold hidden sm:block">
-                    Search
-                </div>
+              <div class="text-xl font-sans sm:text-2xl text-white font-semibold hidden sm:block">
+                  Search
+              </div>
 
-                <!-- Search Bar -->                        
-                <SearchBar 
-                    :is-search-loading="isSearchLoading"
-                    :search-form="searchForm"
-                    @onSearchQuery="searchForUser" />
+              <!-- Search Bar -->                        
+              <SearchBar 
+                  :is-search-loading="isSearchLoading"
+                  :search-form="searchForm"
+                  @onSearchQuery="searchForUser" />
 
-                <div class="flex pt-4 border-t-2 border-gray-900">
-                    <div class="text-md font-sans sm:text-xl text-white font-semibold">
-                        {{ searchTitle }}
-                    </div>
-                </div>
+              <div class="flex pt-4 border-t-2 border-gray-900">
+                  <div class="text-md font-sans sm:text-xl text-white font-semibold">
+                      {{ searchTitle }}
+                  </div>
+              </div>
 
-                <div class="flex flex-col space-y-8">
+              <div class="flex flex-col space-y-8">
+                <div 
+                    v-show="isSearchResultsEmpty && !isSearchLoading"
+                    class="text-md font-sans sm:text-xl text-gray-500 self-center">
+                    No recent searches.
+                </div>      
 
-                  <div 
-                      v-show="isSearchResultsEmpty && !isSearchLoading"
-                      class="text-md font-sans sm:text-xl text-gray-500 self-center">
-                      No recent searches.
-                  </div>      
-
-                  <SearchSkeleton 
-                      :is-loading="isSearchLoading" />
-                  
-                  <SearchCard 
-                      v-for="result in searchResults"
-                      :key="result.userName"
-                      :search-result="result" />
-                  
-                </div>  
+                <SearchSkeleton 
+                    :is-loading="isSearchLoading" />
+                
+                <SearchCard 
+                    v-for="result in searchResults"
+                    :key="result.userName"
+                    :search-result="result" />
+              </div> 
 
 					</div>
 
