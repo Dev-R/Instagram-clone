@@ -7,9 +7,11 @@
 			<div class="flex">
 				<!-- Left bar: Navigation -->
 				<div 
-					class="basis-1/6 bg-black md:block hidden space-y-12 h-screen
-					sticky top-0 border-r border-gray-900">
-					<NavBarMain />
+            class="basis-1/6 bg-black md:block hidden space-y-12 h-screen
+            sticky top-0 border-r border-gray-900">
+
+					  <NavBarMain />
+
 				</div>
 
 				<div class="bg-black scrollbar scrollbar-thumb-gray-900 md:p-0 p-2 w-full max-w-4xl mx-auto">
