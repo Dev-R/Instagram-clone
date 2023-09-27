@@ -36,7 +36,7 @@
 						@click="item.onClick">
 						<SVGLoader 
 							v-if="item.name != 'profile'"
-							:icon="item.iconName" 
+							:icon="item.iconSvgName!" 
 							:class="'group-hover:scale-110 group-active:scale-90 delay-100'" />
 
 						<img 
@@ -84,7 +84,7 @@
 					sm:hover:bg-[#343434] sm:hover:delay-100  cursor-pointer rounded-full">
 
 					<i 
-						:class="setting.iconName"
+						:class="setting.iconSvgName"
 						class="text-white self-end">
 					</i>
 					<span class="font-sans text-sm font-thin text-white">
@@ -130,7 +130,7 @@ export default defineComponent({
 				path: '/home',
 				name: 'home',
 				customClass: '',
-				iconName: 'home',
+				iconSvgName: 'home',
 				onClick: () => {}
 			},
 			{
@@ -138,7 +138,7 @@ export default defineComponent({
 				path: '/',
 				name: 'search',
 				customClass: '',
-				iconName: 'search',
+				iconSvgName: 'search',
 				onClick: () => router.push('/search')
 			},
 			{
@@ -146,7 +146,7 @@ export default defineComponent({
 				path: '/explore',
 				name: 'explore',
 				customClass: '',
-				iconName: 'explore',
+				iconSvgName: 'explore',
 				onClick: () => {}
 			},
 			{
@@ -154,7 +154,7 @@ export default defineComponent({
 				path: '/reels',
 				name: 'reels',
 				customClass: '',
-				iconName: 'reels',
+				iconSvgName: 'reels',
 				onClick: () => {}
 			},
 			{
@@ -162,7 +162,7 @@ export default defineComponent({
 				path: '/direct',
 				name: 'direct',
 				customClass: '',
-				iconName: 'direct',
+				iconSvgName: 'direct',
 				onClick: () => {}
 			},
 			{
@@ -170,7 +170,7 @@ export default defineComponent({
 				path: '/notifications',
 				name: 'notifications',
 				customClass: '',
-				iconName: 'notifications',
+				iconSvgName: 'notifications',
 				onClick: () => {}
 			},
 			{
@@ -178,7 +178,7 @@ export default defineComponent({
 				path: '/create',
 				name: 'create',
 				customClass: '',
-				iconName: 'create',
+				iconSvgName: 'create',
 				onClick: () => onCreate()
 			},
 			{
@@ -186,7 +186,7 @@ export default defineComponent({
 				path: '/profile',
 				name: 'profile',
 				customClass: '',
-				iconName: '',
+				iconSvgName: '',
 				img: 'https://avatars.githubusercontent.com/u/83784102?v=4',
 				onClick: () => {}
 			}
@@ -196,37 +196,37 @@ export default defineComponent({
 		const settings = [
         {
             name: 'Settings',
-			iconName: 'fa-solid fa-gear',
+			iconSvgName: 'fa-solid fa-gear',
             action: () => router.push('/settings')
         },
         {
             name: 'Your activity',
-			iconName: 'fa-solid fa-clock-rotate-left',
+			iconSvgName: 'fa-solid fa-clock-rotate-left',
             action: () => router.push('/settings')
         },
         {
             name: 'Saved',
-			iconName: 'fa-regular fa-bookmark',
+			iconSvgName: 'fa-regular fa-bookmark',
             action: () => 1
         },
         {
             name: 'Switch Appreance',
-			iconName: 'fa-solid fa-moon',
+			iconSvgName: 'fa-solid fa-moon',
             action: () => 1
         },
 		{
             name: 'Report a problem',
-			iconName: 'fa-solid fa-triangle-exclamation',
+			iconSvgName: 'fa-solid fa-triangle-exclamation',
             action: () => router.push('/settings')
         },
         {
             name: 'Switch accounts',
-			iconName: 'fa-solid fa-user-circle',
+			iconSvgName: 'fa-solid fa-user-circle',
             action: () => 1
         },
         {
             name: 'Log Out',
-			iconName: 'fa-solid fa-sign-out',
+			iconSvgName: 'fa-solid fa-sign-out',
             action: () => logout()
         }
       ]
