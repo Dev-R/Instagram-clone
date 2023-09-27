@@ -15,8 +15,7 @@
 	<div
 		class="w-full z-50 fixed h-screen md:h-auto
         top-1/2 left-1/2 transform -translate-x-1/2 
-        -translate-y-1/2
-        "
+        -translate-y-1/2"
 		:class="{
 			'hidden': !postComment.isToggled,
 			'max-w-xs': modalSize === ModalSize.SuperSmall,
@@ -70,27 +69,30 @@
 						<div class="sm:block hidden">
 							<div class="flex justify-between border-b border-slate-800 p-3">
 								<div class="flex space-x-2">
-									<img 
-										:src="postComment.post.profilePictureUrl"
-										class="cursor-pointer h-8 w-8 rounded-full shadow-lg" />
 
+									<div class="story-avatar">
+											<a href="#" class="block bg-white rounded-full relative">
+												<img 
+													class="w-8 h-8 rounded-full object-cover p-0.5 bg-black"
+													:src="postComment.post.profilePictureUrl"/>
+											</a>
+									</div>
+										
 									<div class="flex pt-1">
-										<!-- Username -->
-										<div class="cursor-pointer font-sans text-sm font-semibold text-white">
+										<div class="cursor-pointer font-sans text-sm font-semibold text-white self-center">
 											{{ postComment.post.userName }}
-											<i class="fa-solid fa-circle-check"></i>
+											<!-- <i class="fa-solid fa-circle-check"></i> -->
 										</div>
 
-										<!-- Space -->
-										<div class="pl-2 w-5 font-sans text-md font-semibold text-white">
+										<div class="text-gray-500 w-5 font-sans text-md font-semibold self-center px-2">
 											•
 										</div>
 
-										<!-- Follow -->
-										<div class="font-sans font-semibold text-sm text-sky-500 justify-self-end">
-											Follow
+										<div class="font-sans text-sm font-light text-[#949494] self-center">
+											{{ postComment.post.createdAt }}
 										</div>
 									</div>
+
 								</div>
 
 								<div class="cursor-pointer">
@@ -212,20 +214,19 @@
 					<!-- 5: Comment Form > 640px: -->
 					<div class="sm:block hidden">
 						<div class="flex justify-between border-t border-slate-800 p-2 pb-0">
-							<span class="flex space-x-4">
-								<span class="hover:cursor-pointer">
-									<SVGLoader :icon="'emoji'" />
-								</span>
-								<textarea 
+							<span class="hover:cursor-pointer self-center">
+								<SVGLoader 
+									:icon="'emoji'" />
+							</span>
+
+							<textarea 
 									ref="commentFormElementRef"
 									v-model="commentForm"
 									rows="1"
-									class="focus:outline-none resize-none 
-                                    block w-full text-sm bg-black text-white"
+									class="focus:outline-none resize-none placeholder:text-gray-1100
+                                    block w-full text-md bg-black text-white border-none mx-5"
 									placeholder="Add a comment..."
 									@keypress.enter.prevent="onAddComment"></textarea>
-							</span>
-
 							<span
 								:class="commentForm ? 'text-sky-500 sm:cursor-pointer' : 'text-white'"
 								class="font-sans text-md text-white justify-self-end mb-2 cursor-default"
