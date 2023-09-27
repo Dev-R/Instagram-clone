@@ -3,7 +3,7 @@
         <div class="flex-inital">
             <img 
                 :src="searchResult.profilePictureUrl"
-                class="w-8 h-8 lg:w-14 lg:h-14 rounded-full">
+                class="w-20 h-10 sm:h-14 rounded-full">
         </div>
 
         <div class="flex flex-inital flex-col">
