@@ -21,7 +21,7 @@
 						md:ml-5 lg:ml-0">
 
                 <!-- Title -->
-                <div class="text-xl font-sans sm:text-2xl text-white font-semibold">
+                <div class="text-xl font-sans sm:text-2xl text-white font-semibold hidden sm:block">
                     Search
                 </div>
 
@@ -33,11 +33,11 @@
 
                 <div class="flex pt-4 border-t-2 border-gray-900">
                     <div class="text-md font-sans sm:text-xl text-white font-semibold">
-                        Recent
+                        {{ searchTitle }}
                     </div>
                 </div>
 
-                <div class="flex flex-col space-y-4">
+                <div class="flex flex-col space-y-8">
 
                   <div 
                       v-show="isSearchResultsEmpty && !isSearchLoading"
@@ -126,6 +126,7 @@ export default defineComponent({
      */
     const searchForUser = (payload: Event) => {
       const searchQuery = payload?.target as HTMLInputElement
+      searchForm.value = searchQuery.value
       searchResults.value = []
       console.log('search query', searchQuery.value)
 
@@ -168,6 +169,7 @@ export default defineComponent({
     const screenSizeType = computed(() => (windowWidth.value < 550 ? 'xs' : false))
     // const isSearchLoading = computed(() => searchForm.value.length > 0)
     const isSearchResultsEmpty = computed(() => searchResults.value.length === 0)
+    const searchTitle = computed(() => searchResults.value.length > 0 ? `Search results for "${searchForm.value}"` : 'Recent')
 
     // Lifecycle Hooks
     onMounted(() => {
@@ -182,6 +184,7 @@ export default defineComponent({
       searchForm,
       searchResults,
       searchForUser,
+      searchTitle,
       isSearchLoading,
       isSearchResultsEmpty
     }
