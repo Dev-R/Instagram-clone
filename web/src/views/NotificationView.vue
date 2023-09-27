@@ -16,7 +16,7 @@
 					<!-- Notification Section -->
 					<div 
               class="flex flex-col sm:border-r-2 border-gray-900 rounded-xl
-              flex-nowrap space-y-4 pt-2 md:pt-5 justify-self-end h-full
+              flex-nowrap sm:space-y-4 pt-2 md:pt-5 justify-self-end h-full
               md:ml-5 lg:ml-0">
 
                 <!-- Section Title -->
@@ -25,7 +25,7 @@
                 </div>
 
                 <div 
-                     class="text-md font-sans sm:text-xl text-white font-bold pt-4 
+                     class="text-md font-sans sm:text-xl text-white font-bold sm:pt-4 
                      sm:border-t-2 border-gray-900 text-center sm:text-left">
                     Latest
                 </div>
