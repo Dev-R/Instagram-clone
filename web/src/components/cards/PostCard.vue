@@ -99,12 +99,14 @@
             <div class="grid grid-cols-12 border-b border-slate-800 p-2">
                 <span class="col-span-10">
                     <textarea
+                        v-model="comment"
                         rows="1"
-                        class="focus:outline-none resize-none border-none
-                        block w-full text-sm bg-black text-gray-600"
+                        class="outline-none resize-none border-none text-white
+                        block w-full text-sm bg-black placeholder:text-gray-1100"
                         placeholder="Add a comment..."></textarea>
                 </span>
                 <span
+                    @click="onPostComment"
                     class="font-sans text-xs text-sky-500
                     justify-self-end cursor-pointer
                     hover:text-white h-6">
@@ -146,6 +148,9 @@ export default defineComponent({
     name: 'PostCard',
     setup(props, context) {
 
+        // Form
+        const comment = ref('');
+
         // Flags
         const isCommentModalOpen = ref(false);
 
@@ -164,10 +169,21 @@ export default defineComponent({
             console.log("Emitting signal:", postId)
             context.emit('onOpenCommentModal', postId);
         };
+
+        /**
+         * Emit signal when post button is clicked
+         * @event on-post-comment
+         */
+        const onPostComment = () => {
+            console.log("Emitting signal:", comment.value)
+            context.emit('onPostComment', comment, props.postItem.id);
+        };
         
         return {
+            comment,
             isCommentModalOpen,
             onOpenCommentModal,
+            onPostComment,
             findNumberOfLikes
         }
     },
@@ -183,12 +199,13 @@ export default defineComponent({
     },
     emits: [
         'onOpenCommentModal',
-        'onPostLike'
+        'onPostLike',
+        'onPostComment'
     ]
 })
 </script>
 
-<style scoped>
+<style>
 .story-avatar {
     position: relative;
     border-radius: 50%;
