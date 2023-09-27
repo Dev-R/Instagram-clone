@@ -1,9 +1,9 @@
 <template>
     <div class="rounded-lg flex items-center space-x-2 w-full p-2 h-12">
-        <div class="flex-inital">
+        <div class="flex-inital flex-none">
             <img 
                 :src="searchResult.profilePictureUrl"
-                class="w-20 h-10 sm:h-14 rounded-full">
+                class="w-14 h-14 sm:h-16 sm:w-16 rounded-full">
         </div>
 
         <div class="flex flex-inital flex-col">
@@ -12,9 +12,9 @@
                 {{ searchResult.userName }}
             </span>
             
-            <span class="font-sans text-xs font-semibold text-gray-400 self-start">
+            <div class="font-sans text-xs font-semibold text-gray-400 text-ellipsis overflow-hidden self-start">
                 {{ searchResult.bio }}
-            </span>
+            </div>
 
         </div>
     </div>
