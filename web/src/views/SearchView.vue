@@ -16,7 +16,7 @@
           
 					<!-- Explore Section -->
 					<div 
-						class="flex flex-col border-r-2 border-gray-900 rounded-xl
+						class="flex flex-col sm:border-r-2 border-gray-900 rounded-xl
 						flex-nowrap space-y-4 pt-2 md:pt-5 justify-self-end h-full
 						md:ml-5 lg:ml-0">
 
@@ -40,10 +40,9 @@
                 <div class="flex flex-col space-y-4">
 
                   <div 
-                      v-if="isSearchResultsEmpty"
+                      v-show="isSearchResultsEmpty && !isSearchLoading"
                       class="text-md font-sans sm:text-xl text-gray-500 self-center">
                       No recent searches.
-                      {{ searchResults.length }}
                   </div>      
 
                   <SearchSkeleton 
@@ -168,7 +167,7 @@ export default defineComponent({
     const windowWidth = ref(window.innerWidth) // Current window width
     const screenSizeType = computed(() => (windowWidth.value < 550 ? 'xs' : false))
     // const isSearchLoading = computed(() => searchForm.value.length > 0)
-    const isSearchResultsEmpty = computed(() => searchResults.value.length === 0 && !isSearchLoading)
+    const isSearchResultsEmpty = computed(() => searchResults.value.length === 0)
 
     // Lifecycle Hooks
     onMounted(() => {
