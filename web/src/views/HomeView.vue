@@ -1,26 +1,21 @@
 <template>
-    <div class="bg-black">
+    <div class="bg-black h-screen">
         <section 
-            class="container max-w-full mx-auto text-center"
+            class="container md:max-w-full mx-auto h-screen 
+            scrollbar scrollbar-thumb-gray-900"
             :class="{ 'brightness-50 pointer-events-none overflow-y-hidden h-screen': commentModal.isToggled || photoModal.isToggled }">
-            <div class="grid grid-cols-12">
-                <!-- Left bar: Navigation -->
-                <div 
-					class="xl:col-span-2 col-span-1 bg-black
-					md:block hidden space-y-12 h-screen 
-					sticky top-0 border-r border-gray-900">
-                    
+            <div class="flex">
+
+				<div 
+                    class="basis-1/6 bg-black md:block hidden space-y-12 h-screen
+                    sticky top-0 border-r border-gray-900">
                     <NavBarMain
-                        @on-create="triggerPhotoModal"/>
-                    
+                        @on-create="triggerPhotoModal" />
                 </div>
 
-                <!-- Center: Posts -->
-                <div 
-                    class="lg:col-span-6 lg:grid md:col-span-6 
-                    md:col-start-4 md:mt-8
-                    col-span-12 bg-black">
+                <div class="flex justify-center bg-black scrollbar scrollbar-thumb-gray-900 w-full">
  
+                    <!-- Center: Posts -->
                     <div 
                         class="md:w-[470px] flex flex-col 
                         space-y-4 flex-nowrap lg:max-w-lg
@@ -31,7 +26,8 @@
                             class="mb-6 relative md:rounded-xl md:bg-current 
                             overflow-auto md:border-current border-gray-800 
                             bg-slate-1000 border-t border-b">
-                            <StoryCarousel :reels="reels"/>
+                            <StoryCarousel 
+                                :reels="reels" />
                         </div>
 
                         <!-- Posters -->
@@ -45,18 +41,15 @@
                         </div>
 
                     </div>
-                    
-                </div>
 
-                <!-- Right bar: Suggestions -->
-                <div 
-                    class="col-span-4 bg-black md:mt-8
-                    lg:block hidden w-80">
-                
-                    <SuggestionCard 
-                        :card-item="suggested"/>
+                    <!-- Right bar: Suggestions -->
+                    <div class="lg:block hidden max-w-xs">
+                        <SuggestionCard 
+                            :card-item="suggested" />
+                    </div>
                     
                 </div>
+                
             </div>
         </section>
         <!-- Modals -->
