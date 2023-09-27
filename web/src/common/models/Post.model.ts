@@ -89,6 +89,20 @@ export interface SuggestionCard {
     }[]
 }
 
+/**
+ * Interface for search card
+ */
+export interface SearchCard {
+
+  /** Username of the user matching the search query */
+  userName: string
+
+  /** URL of the user's profile picture */
+  profilePictureUrl: string
+
+  /** User's bio */
+  bio: string
+}
 
 /**
  * Interface for comment card
