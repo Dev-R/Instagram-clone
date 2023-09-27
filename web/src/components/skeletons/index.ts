@@ -1,5 +1,5 @@
-import SearchSkeleton from './SearchSkeleton.vue'
+import UserProfileSkeleton from './UserProfileSkeleton.vue'
 
 export { 
-    SearchSkeleton 
+    UserProfileSkeleton 
 }

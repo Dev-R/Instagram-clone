@@ -45,7 +45,7 @@
                       No recent searches.
                   </div>      
 
-                  <SearchSkeleton 
+                  <UserProfileSkeleton 
                       :is-loading="isSearchLoading" />
                   
                   <SearchCard 
@@ -83,7 +83,7 @@ import {
 	PostCard as PostCardModal,
   PostCoverCard,
   TheInput,
-  SearchSkeleton,
+  UserProfileSkeleton,
   SearchCard,
   SearchBar
 } from '@/components'
@@ -196,7 +196,7 @@ export default defineComponent({
     PostCardModal,
     PostCoverCard,
     TheInput,
-    SearchSkeleton,
+    UserProfileSkeleton,
     SearchCard,
     SearchBar
 },
