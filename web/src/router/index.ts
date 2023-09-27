@@ -50,6 +50,12 @@ const router = createRouter({
           meta: { title: 'Reels' }
         },
         {
+          path: '/search',
+          name: 'search',
+          component: () => import('@/views/SearchView.vue'),
+          meta: { title: 'Search' }
+        },
+        {
           path: '/settings',
           name: 'setting',
           component: () => import('@/views/SettingView.vue'),
