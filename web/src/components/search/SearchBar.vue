@@ -1,8 +1,8 @@
 <template>
     <div class="flex justify-end items-center relative p-1">
         <TheInput 
-            :value="modalValue" 
             @keyup="emitSearchQuery"
+            v-model="searchQuery"
             placeholder="Search..."
             class="!rounded-lg !bg-[#262626] \
             border-1 focus:bg-black border !border-slate-800 !text-white text-sm \
@@ -15,6 +15,7 @@
                 :is-loading="true" />
 
             <i v-else 
+                @click="emitClearSearchQuery"
                 class="hover:cursor-pointer fa-solid fa-xmark rounded-full 
                 text-white w-4 h-4 mr-4">
             </i>
@@ -25,15 +26,15 @@
 
 <script setup lang="ts">
 import { 
+    ref 
+} from 'vue'
+
+import { 
     TheInput,
     LoadingSpinner
 } from '@/components'
 
 defineProps({
-    modalValue: {
-        type: String as () => string | number | string[] | undefined,
-        default: undefined
-    },
     isSearchLoading: {
         type: Boolean as () => boolean | undefined,
         default: false
@@ -41,8 +42,12 @@ defineProps({
 })
 
 const emit = defineEmits([
-    'onSearchQuery'
+    'onSearchQuery',
+    'onClearSearchQuery'
 ])
+
+// Data
+const searchQuery = ref("")
 
 /**
  * Emit search query
@@ -51,5 +56,11 @@ const emitSearchQuery = (payload: KeyboardEvent) => {
     emit("onSearchQuery", payload)
 }
 
-
+/**
+ * Emit clear search query
+ */
+const emitClearSearchQuery = () => {
+    searchQuery.value = ""
+    emit("onClearSearchQuery")
+}
 </script>

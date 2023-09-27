@@ -14,12 +14,12 @@
 
 				</div>
 
-				<div class="bg-black scrollbar scrollbar-thumb-gray-900 md:p-0 p-2 w-full max-w-4xl mx-auto">
+				<div class="bg-black scrollbar scrollbar-thumb-gray-900 md:p-0 w-full max-w-4xl mx-auto">
           
 					<!-- Search Section -->
 					<div 
               class="flex flex-col sm:border-r-2 border-gray-900 rounded-xl
-              flex-nowrap space-y-4 pt-2 md:pt-5 justify-self-end h-full
+              flex-nowrap sm:space-y-4 sm:pt-2 md:pt-5 justify-self-end h-full
               md:ml-5 lg:ml-0">
 
                 <!-- Title -->
@@ -31,7 +31,8 @@
               <SearchBar 
                   :is-search-loading="isSearchLoading"
                   :search-form="searchForm"
-                  @onSearchQuery="searchForUser" />
+                  @onSearchQuery="searchForUser"
+                  @on-clear-search-query="clearSearchQuery" />
 
               <div class="flex pt-4 border-t-2 border-gray-900">
                   <div class="text-md font-sans sm:text-xl text-white font-semibold">
@@ -100,6 +101,7 @@ export default defineComponent({
     const searchForm = ref<string>('')
     const searchResults = ref<SearchResult[]>([])
     const isSearchLoading = ref<boolean>(false)
+    const searchInput = ref<HTMLInputElement | null>(null)
 
 
     /**
@@ -126,15 +128,15 @@ export default defineComponent({
      * @param payload The event payload.
      */
     const searchForUser = (payload: Event) => {
-      const searchQuery = payload?.target as HTMLInputElement
-      searchForm.value = searchQuery.value
+      const searchInput = payload?.target as HTMLInputElement
+      searchForm.value = searchInput.value
       searchResults.value = []
-      console.log('search query', searchQuery.value)
+      console.log('search query', searchInput.value)
 
       isSearchLoading.value = true
-      if (searchQuery.value.trim() != '') {
+      if (searchInput.value.trim() != '') {
         // Search for user  
-        // searchResults.value = await searchForUser(searchQuery.value) // TODO: Implement searchForUser
+        // searchResults.value = await searchForUser(searchInput.value) // TODO: Implement searchForUser
         // console.log('search results', searchResults.value)
         // For demo only
         setTimeout(() => {
@@ -142,6 +144,15 @@ export default defineComponent({
           isSearchLoading.value = false
         }, 1000)
       }
+    }
+
+    /**
+     * Clears the search query.
+     */
+    const clearSearchQuery = () => {
+      console.log('clear search query', searchInput)
+      // searchInput.value!.value = ''
+      searchResults.value = []
     }
 
     /**
@@ -185,6 +196,7 @@ export default defineComponent({
       searchForm,
       searchResults,
       searchForUser,
+      clearSearchQuery,
       searchTitle,
       isSearchLoading,
       isSearchResultsEmpty
