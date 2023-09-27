@@ -23,7 +23,7 @@
  
                     <div 
                         class="md:w-[470px] flex flex-col 
-                        space-y-4 flex-nowrap lg:w-[470px] 
+                        space-y-4 flex-nowrap lg:max-w-lg
                         justify-self-end lg:mr-[64px]">
 
                         <!-- Stories -->
@@ -35,7 +35,7 @@
                         </div>
 
                         <!-- Posters -->
-                        <div class="flex flex-col space-y-8 sm:p-0 p-2.5">
+                        <div class="flex flex-col space-y-8 sm:p-0 p-2.5 max-w-md mx-auto">
                             <PostCard 
                                 v-for="(item, index) of postItems"
                                 @on-open-comment-modal="triggerCommentModal"
@@ -197,13 +197,13 @@ export default defineComponent({
             {
                 id: '0',
                 userName: 'Rabee',
-                createdAt: 'February 24',
+                createdAt: '20h',
                 likeCount: 0,
                 hasLiked: true,
                 caption: ' Sh. @abdullah_oduro and I getting that Saturday morning work in the gym and talking over @yaqeeninstitute Quran 30 ',
                 carouselMedia: mediasArraySampleA,
                 commentCount: 0,
-                profilePictureUrl: 'https://loremflickr.com/32/32/bird',
+                profilePictureUrl: 'https://loremflickr.com/1024/1280/bird',
                 isFollowed: false,
                 comments: [
                     {
@@ -229,7 +229,7 @@ export default defineComponent({
                 caption: 'Be like a tree. Stay grounded. Connect with your roots. Turn over a new leaf. Bend before you break. Enjoy your unique natural beauty. Keep growing.',
                 carouselMedia: mediasArraySampleB,
                 commentCount: 5,
-                profilePictureUrl: 'https://loremflickr.com/32/32/girl',
+                profilePictureUrl: 'https://loremflickr.com/1024/1280/girl',
                 isFollowed: false
             }
         ])
