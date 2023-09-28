@@ -2,13 +2,13 @@
 	<div class="flex flex-row m-auto space-x-1">
 		<div class="relative hidden md:block">
 			<img src="https://i.ibb.co/FX9V57c/img-c.png" />
-			<transition name="fade">
+			<Transition name="fade">
 				<img
 					id="dynamic"
 					:key="currentImage"
 					class="absolute top-6 right-14"
 					:src="currentImage" />
-			</transition>
+			</Transition>
 		</div>
 
 		<!-- Mobile Welcome Screen -->
@@ -268,7 +268,7 @@ export default defineComponent({
 })
 </script>
 
-<style>
+<style scoped>
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.5s ease;

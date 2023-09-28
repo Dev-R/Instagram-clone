@@ -17,10 +17,15 @@
 				<div 
 					class="xl:col-span-8 lg:grid md:col-span-10 bg-black
 					scrollbar scrollbar-thumb-gray-900
-					md:col-start-2 md:p-0 col-span-12 p-2">
+					md:col-start-2 md:p-0 col-span-12">
+          
+          <!-- Search Bar -->
+          <MobileSearchBar 
+            @on-search-query="navigateToSearch" />
+
 					<!-- Profile Info -->
 					<div 
-						class="flex flex-col md:w-[935px] 
+						class="flex flex-col md:w-[935px] p-2
 						flex-nowrap space-y-4 pt-2 md:pt-5 justify-self-end 
 						md:ml-5 lg:ml-0 ">
 						<!-- Image Rendering Section -->
@@ -58,7 +63,6 @@
 </template>
  
 <script lang="ts">
-
 import {
 	onMounted,
 	defineComponent,
@@ -67,13 +71,17 @@ import {
 onUnmounted
 } from 'vue'
 
+import { 
+  useRouter 
+} from 'vue-router'
 
 import {
 	NavBarMain,
 	CommentModal,
 	SVGLoader,
 	PostCard as PostCardModal,
-  PostCoverCard
+  PostCoverCard,
+  MobileSearchBar
 } from '@/components'
 
 
@@ -152,6 +160,9 @@ export default defineComponent({
       }
     ])
 
+    // Services
+    const router = useRouter()
+
     // Modals data
     const activeModal = ref({
       name: '' as ModalName,
@@ -178,6 +189,14 @@ export default defineComponent({
     const handlePostLike = () => {
       posts.value[activePostId.value].hasLiked = !posts.value[activePostId.value].hasLiked
       console.log("Post has been liked ...")
+    }
+
+    /**
+     * Navigates to search page.
+     */
+    const navigateToSearch = () => {
+      console.log("Navigating to search page ...")
+      router.push('/search')
     }
 
     /**
@@ -248,6 +267,7 @@ export default defineComponent({
       posts,
       ModalType,
       activeModal,
+      navigateToSearch,
       isModalToggled
     }
   },
@@ -256,11 +276,12 @@ export default defineComponent({
     SVGLoader,
     CommentModal,
     PostCardModal,
-    PostCoverCard
-  },
+    PostCoverCard,
+    MobileSearchBar
+},
 })
 
 </script>
 
-<style>
+<style scoped>
 </style>

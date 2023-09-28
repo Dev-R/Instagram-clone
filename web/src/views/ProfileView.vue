@@ -5,12 +5,12 @@
             class="container max-w-full mx-auto text-center 
             h-screen scrollbar scrollbar-thumb-gray-900"
             :class="{ 'brightness-50 pointer-events-none': isModalToggled }">
-            <div class=" grid grid-cols-12">
+            <div class="grid grid-cols-12">
                 <!-- Left bar: Navigation -->
                 <div 
-                    class="bg-black pt-5 col-span-1 xl:col-span-2
-                    h-screen space-y-12 hidden md:block
-                    sticky top-0 border-r border-gray-900">
+					class="xl:col-span-2 col-span-1 bg-black 
+					md:block hidden space-y-12 h-screen 
+					sticky top-0 border-r border-gray-900">
                     <NavBarMain
                         @on-create="triggerPhotoModal"/>
                     
@@ -49,13 +49,27 @@
 
                                     <!-- Options -->
                                     <div class="md:pl-0 pl-6">
-                                        <button 
-                                            type="button" 
-                                            class="text-gray-900 bg-white hover:bg-gray-100 
-                                            border border-gray-200 font-semibold w-auto rounded-lg text-xs md:p-1.5 
-                                            md:px-3 md:py-1.5 px-20 py-1 md:w-auto">
-                                            Edit Profile
-                                        </button>
+                                        <TheButton 
+                                            :color="'dark'" 
+                                            :size="'md'" 
+                                            :is-full="true">
+                                            <span 
+                                                @click="goToSettingsRoute"
+                                                class="sm:text-md text-xs font-semibold">
+                                                Edit Profile
+                                            </span>
+                                        </TheButton>
+                                    </div>
+
+                                    <div class="md:pl-0 pl-6 hidden sm:block">
+                                        <TheButton 
+                                            :color="'dark'" 
+                                            :size="'md'" 
+                                            :is-full="true">
+                                            <span class="sm:text-md text-xs font-semibold">
+                                                View Archive
+                                            </span>
+                                        </TheButton>
                                     </div>
 
                                     <!-- Logged-in user Options -->
@@ -63,7 +77,7 @@
                                         <SVGLoader 
                                             @click="triggerSmallModal(ModalType.Setting, 'Followers')"
                                             :icon="'profile-options'" 
-                                            :class="'md:block hidden hover:cursor-pointer'"/>
+                                            :class="'md:block hidden sm:hover:cursor-pointer'"/>
                                     </div>
                                 </div>
 
@@ -76,8 +90,8 @@
                                         v-for="(element, index) of profileInfoElements"
                                             :key="index"
                                             @click="element.onClick"
-                                            class="font-sans text-sm font-normal 
-                                          text-white hover:cursor-pointer">
+                                            class="font-sans text-md font-normal 
+                                          text-white sm:hover:cursor-pointer">
                                             <span class="font-sans text-sm font-bold text-white">
                                                 {{ element.value }}
                                             </span>
@@ -93,7 +107,7 @@
                         <!-- Profile Info Rendering: Mobile -->
                         <div 
                             class="text-center border-t 
-                            md:hidden blockborder-slate-1100 mt-2">
+                            md:hidden block border-slate-1100 mt-2">
                             <ul 
                                 class="flex space-x-14 flex-wrap 
                                 justify-around pt-3 pl-4 pr-4">
@@ -102,7 +116,7 @@
                                     v-for="(element, index) of profileInfoElements"
                                     :key="index"
                                     @click="element.onClick"
-                                    class="flex flex-col hover:cursor-pointer">
+                                    class="flex flex-col sm:hover:cursor-pointer">
 
                                     <span class="text-sm subpixel-antialiase text-white">
                                         {{ element.value }}
@@ -118,7 +132,7 @@
                         </div>
 
                         <!-- Tab bar Rendering Section-->
-                        <div class="text-center border-tborder-slate-1100">
+                        <div class="text-center border-t border-slate-1100">
                             <ul 
                                 class="flex space-x-14 flex-wrap -mb-px 
                                 md:justify-center justify-between sm:px-6">
@@ -127,7 +141,7 @@
                                     v-for="(tab, index) in tabElements" 
                                     :key="index" 
                                     @click="navBarTabSwitcher(tab.name as navBarTabs)" 
-                                    class="hover:cursor-pointer"
+                                    class="sm:hover:cursor-pointer"
                                     :class="{'md:hidden block' : tab.name === ProfileTab.Peeds}">
                                     <div 
                                         :class="getTabClass(tab.name)">
@@ -246,6 +260,7 @@
         <!-- Followers/ Following Modal -->
         <FollowModal 
             @on-modal-closed="triggerSmallModal"
+		    :modal-size="ModalSize.Medium"
             :title="smallModal.title" 
             :items="smallModal.items" :is-toggled="smallModal.isToggled && smallModal.name === ModalType.Follow" />
 
@@ -259,6 +274,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, onMounted, onUnmounted } from 'vue'
+import { useRouter } from 'vue-router'
 
 import {
     SVGLoader,
@@ -267,7 +283,8 @@ import {
     SmallModal as FollowModal,
     SettingModal,
     CommentModal,
-    PhotoModal
+    PhotoModal,
+    TheButton
 } from '@/components'
 
 import type {
@@ -279,7 +296,8 @@ import type {
 
 import {
     ProfileTab,
-    ModalType
+    ModalType,
+    ModalSize
 } from '@/common'
 
 export default defineComponent({
@@ -323,6 +341,9 @@ export default defineComponent({
         const savedItems = ref<Object[]>([])
         const taggedItems = ref<Object[]>([])
 
+        // Services
+        const router = useRouter()
+
         // Handlers
         const navBarTabSwitcher = (currentTab: navBarTabs) => {
             currentActiveTab.value = currentTab
@@ -344,17 +365,21 @@ export default defineComponent({
 
         const getTabClass = (tabName: string) => {
             return {
-                'flex items-center space-x-2 inline-block py-4 p-1 border-t-2 border-gray-300 hover:border-gray-300': true,
+                'flex items-center space-x-2 inline-block py-4 p-1 border-t-2 border-gray-300 sm:hover:border-gray-300': true,
                 'border-transparent text-gray-200': currentActiveTab.value !== tabName && tabName !==
                     ProfileTab.Saved && tabName !== ProfileTab.Tagged,
                 'border-transparent text-gray-300': currentActiveTab.value !== tabName && (tabName ===
                     ProfileTab.Saved || tabName === ProfileTab.Tagged),
                 'text-white': currentActiveTab.value === tabName,
-                'hover:text-gray-300': currentActiveTab.value !== tabName && (tabName === ProfileTab.Saved ||
+                'sm:hover:text-gray-300': currentActiveTab.value !== tabName && (tabName === ProfileTab.Saved ||
                     tabName === ProfileTab.Tagged),
             }
         }
-        
+
+        const goToSettingsRoute = () => {
+            router.push({ name: 'setting' })
+        }
+
         // Listeners
         const onWidthChange = () => windowWidth.value = window.innerWidth
 
@@ -513,6 +538,7 @@ export default defineComponent({
             // Enums
             ProfileTab,
             ModalType,
+            ModalSize,
 
             // Computed
             emptyTabBarBodyMessage,
@@ -527,17 +553,19 @@ export default defineComponent({
             triggerSmallModal,
             triggerPhotoModal,
             getTabClass,
+            goToSettingsRoute,
             navBarTabSwitcher,
         }
     },
     components: {
         SVGLoader,
         NavBarMain,
-        CommentModal,
+        TheButton,
         PostCard,
         FollowModal,
         SettingModal,
-        PhotoModal
+        PhotoModal,
+        CommentModal
     }
 })
 </script>

@@ -72,7 +72,7 @@
             </fieldset>
 
             <router-link 
-                class="text-sm font-semibold font-sans hover:text-gray-400 mx-auto "
+                class="text-sm font-semibold font-sans sm:hover:text-gray-400 mx-auto "
                 to="signup">
                 Create new account
             </router-link> 
@@ -82,7 +82,7 @@
         <!-- Footer -->
         <div class="pt-2 pb-2 w-full text-center self-center border">
             <router-link 
-                class="text-sm font-semibold font-sans hover:text-gray-400"
+                class="text-sm font-semibold font-sans sm:hover:text-gray-400"
                 to="login">
                 Back to login
             </router-link> 

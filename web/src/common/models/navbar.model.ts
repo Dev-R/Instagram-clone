@@ -3,22 +3,28 @@
  */
 export interface NavBarItem {
     /** Page Title */
-    title: string
+    title?: string
 
     /** Page Path */
     path: string
 
-    /** Page Name */
-    name: string
+    /** Page Name in router */
+    name?: string
 
     /** Custome CSS class if any for the item */
-    customClass: string
+    customClass?: string
 
     /** Icon name if any for the item */
-    iconName: string
+    iconName?: string
+    
+    /** Icon fontawesome class if any for the item */
+    iconFaClass?: string
+
+    /** Icon svg name if any for the item */
+    iconSvgName?: string
 
     /** Event listener if any for the item */
-    onClick: () => void
+    onClick?: () => void
 
     /** Image if any for the item */
     img?: string

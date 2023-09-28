@@ -27,7 +27,7 @@
                 type="text"
                 class="bg-black border border-[#262626] text-white 
                 rounded-full text-sm focus:outline-none
-                block w-full p-2.5 lg:pb-0 resize-none"
+                block w-full p-2.5 resize-none"
                 placeholder="Message..."
                 :class="{ 'rounded-lg ': !isChatEmpty }"
                 :value="modalValue" 

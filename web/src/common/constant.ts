@@ -1,0 +1,2 @@
+export const ZERO_PERCENTAGE = 0
+export const ONE_HUNDRED_PERCENTAGE = 100

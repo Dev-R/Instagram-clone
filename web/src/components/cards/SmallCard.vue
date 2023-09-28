@@ -4,12 +4,12 @@
         class="flex flex-inital flex-row text-center space-x-1">
         <img 
             :src="profileImage" 
-            class="w-8 h-8 rounded-full">
+            class="w-10 h-10 rounded-full cursor-pointer">
         
         <div class="flex pl-1.5 pt-2 space-x-2">
             <a 
                 :href="profileLink"
-                class="font-sans text-md text-white self-start">
+                class="font-sans text-md text-white self-start cursor-pointer">
                 <slot name="user-name"></slot>
             </a>
             <span class="font-sans text-md text-white self-start">
@@ -29,7 +29,7 @@
         type="button" 
         class="flex-inital self-end text-gray-900 
         border border-gray-200 font-semibold 
-        bg-white hover:bg-gray-100 rounded-lg 
+        bg-white sm:hover:bg-gray-100 rounded-lg 
         text-sm p-1.5 px-6 py-1.5">
             <slot name="button-name"></slot>
     </button>

@@ -1,30 +1,24 @@
 <template>
     <div class="bg-black">
         <section 
-            class="container max-w-full mx-auto text-center"
-            :class="{ 'brightness-50 pointer-events-none': commentModal.isToggled || photoModal.isToggled }">
-            <div class="md:pt-5 grid grid-cols-12">
-                <!-- Left bar: Navigation -->
-                <div 
-                    class="xl:col-span-2 col-span-1 bg-black 
-                    md:block hidden space-y-12 relative h-screen 
+            class="container md:max-w-full mx-auto sm:h-screen 
+            scrollbar scrollbar-thumb-gray-900"
+            :class="{ 'brightness-50 pointer-events-none overflow-y-hidden h-screen': commentModal.isToggled || photoModal.isToggled }">
+            <div class="flex">
+
+				<div 
+                    class="basis-1/6 bg-black md:block hidden space-y-12
                     sticky top-0 border-r border-gray-900">
-                    
-                    <!-- A -->
                     <NavBarMain
-                        @on-create="triggerPhotoModal"/>
-                    
+                        @on-create="triggerPhotoModal" />
                 </div>
 
-                <!-- Center: Posts -->
-                <div 
-                    class="lg:col-span-6 lg:grid md:col-span-6 
-                    md:col-start-4 md:mt-8
-                    col-span-12 bg-black">
+                <div class="flex justify-center bg-black mx-auto sm:mt-10 space-x-12">
  
+                    <!-- Center: Posts -->
                     <div 
                         class="md:w-[470px] flex flex-col 
-                        space-y-4 flex-nowrap lg:w-[470px] 
+                        space-y-4 flex-nowrap lg:max-w-lg
                         justify-self-end lg:mr-[64px]">
 
                         <!-- Stories -->
@@ -32,32 +26,30 @@
                             class="mb-6 relative md:rounded-xl md:bg-current 
                             overflow-auto md:border-current border-gray-800 
                             bg-slate-1000 border-t border-b">
-                            <StoryCarousel :reels="reels"/>
+                            <StoryCarousel 
+                                :reels="reels" />
                         </div>
 
                         <!-- Posters -->
-                        <div class="flex flex-col space-y-8 sm:p-0 p-2.5">
+                        <div class="flex flex-col space-y-8 sm:p-0 p-2.5 max-w-md mx-auto">
                             <PostCard 
                                 v-for="(item, index) of postItems"
                                 @on-open-comment-modal="triggerCommentModal"
                                 @on-post-like="changeLikeState"
                                 :post-item="item"
-                                :key="index"/>
+                                :key="index" />
                         </div>
 
                     </div>
-                    
-                </div>
 
-                <!-- Right bar: Suggestions -->
-                <div 
-                    class="col-span-4 bg-black md:mt-8
-                    lg:block hidden w-80">
-                
-                    <SuggestionCard 
-                        :card-item="suggested"/>
+                    <!-- Right bar: Suggestions -->
+                    <div class="lg:block hidden max-w-xs pt-8">
+                        <SuggestionCard 
+                            :card-item="suggested" />
+                    </div>
                     
                 </div>
+                
             </div>
         </section>
         <!-- Modals -->
@@ -198,13 +190,13 @@ export default defineComponent({
             {
                 id: '0',
                 userName: 'Rabee',
-                createdAt: 'February 24',
+                createdAt: '20h',
                 likeCount: 0,
                 hasLiked: true,
                 caption: ' Sh. @abdullah_oduro and I getting that Saturday morning work in the gym and talking over @yaqeeninstitute Quran 30 ',
                 carouselMedia: mediasArraySampleA,
                 commentCount: 0,
-                profilePictureUrl: 'https://loremflickr.com/32/32/bird',
+                profilePictureUrl: 'https://loremflickr.com/1024/1280/bird',
                 isFollowed: false,
                 comments: [
                     {
@@ -230,21 +222,20 @@ export default defineComponent({
                 caption: 'Be like a tree. Stay grounded. Connect with your roots. Turn over a new leaf. Bend before you break. Enjoy your unique natural beauty. Keep growing.',
                 carouselMedia: mediasArraySampleB,
                 commentCount: 5,
-                profilePictureUrl: 'https://loremflickr.com/32/32/girl',
+                profilePictureUrl: 'https://loremflickr.com/1024/1280/girl',
                 isFollowed: false
             }
         ])
 
         const suggested = {
-            userName: 'Rabee',
-            profilePictureUrl: 'http://via.placeholder.com/32x32',
+            userName: 'memesgod840',
+            profilePictureUrl: 'https://loremflickr.com/1024/1280/girl',
             suggested: [{
                 userName: 'Rabee',
-                profilePictureUrl: 'http://via.placeholder.com/32x32',
+                profilePictureUrl: 'https://loremflickr.com/1024/1280/botanical',
                 followedBy: 'imamomarsuleiman + 1 more'
             }]
         }
-
         const reels = [{
             id: 1,
             userName: 'Noura',
@@ -252,7 +243,8 @@ export default defineComponent({
             expiringAt: '',
             seen: false,
             items: mediasArraySampleA,
-            mediaCount: mediasArraySampleA.length
+            mediaCount: mediasArraySampleA.length,
+            hasLiked: false
         },
         {
             id: 2,
@@ -261,10 +253,11 @@ export default defineComponent({
             expiringAt: '',
             seen: false,
             items: mediasArraySampleA,
-            mediaCount: mediasArraySampleA.length
+            mediaCount: mediasArraySampleA.length,
+            hasLiked: false
+            
         }
         ]
-
         /**
          * Update like state of a post.
          * @param id Liked / Unliked post ID

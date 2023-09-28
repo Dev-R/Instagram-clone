@@ -1,16 +1,18 @@
 <template>
-    <div class="max-w-md mx-auto bg-transparent shadow-xl min-w-0 p-1.5">
+    <div class="max-w-md mx-auto bg-transparent shadow-xl min-w-0 p-1.5 sm:p-0">
         <div 
             class="overflow-x-auto flex space-x-6 
             scrollbar-thin scrollbar-thumb-gray-900 
             scrollbar-track-gray-100">
             <li 
-                class="flex flex-none flex-col items-center space-y-1"
+                class="flex flex-none flex-col items-center space-y-1 active:scale-95"
                 v-for="(reel, index) of reels" 
                 @click="loadStory(reel.id)"
                 :key="index">
                 
                 <div 
+                    :class="{ 'animate-pulse': isRotating && index === activeIndex }"
+                    @click="rotateAvatar(index)"
                     class="story-avatar">
                     <a href="#" class="block bg-white rounded-full relative">
                         <img 
@@ -26,7 +28,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from 'vue'
+import { defineComponent, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 import type { StoryCarousel } from '@/common'
@@ -35,9 +37,18 @@ export default defineComponent({
     name: 'StoryCarousel',
     setup(reels) {
 
+        const isRotating = ref(false)
+        const activeIndex = ref<number>()
+
         // Services
         const router = useRouter()
 
+
+        const rotateAvatar = (number: number) => {
+            isRotating.value = !isRotating.value;
+            activeIndex.value = number
+        }
+        
         const loadStory = (id: string | number) => {
             console.log("ID:", id)
             router.push({ name: 'stories', params: { reels_id: id } })
@@ -45,7 +56,12 @@ export default defineComponent({
         onMounted(() => {
         })
 
-        return { loadStory }
+        return { 
+            loadStory, 
+            rotateAvatar, 
+            isRotating, 
+            activeIndex 
+        }
     },
     props: {
         reels: {
@@ -56,7 +72,7 @@ export default defineComponent({
 })
 </script>
 
-<style>
+<style scoped>
 .story-avatar {
     position: relative;
     border-radius: 50%;

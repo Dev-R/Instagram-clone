@@ -3,12 +3,11 @@
         class="flex flex-col space-x-2 justify-around 
         sticky top-0 md:hidden z-50 bg-black border-gray-800 
         border-t border-b">
-        <div 
-            class="flex space-x-2 justify-between relative">
+        <div class="flex space-x-2 justify-between relative">
 
             <div 
                 class="group cursor-pointer rounded-full 
-                flex space-x-4 hover:bg-slate-1000 hover:delay-100 
+                flex space-x-4 sm:hover:bg-slate-1000 sm:hover:delay-100 
                 p-3 xl:justify-start justify-center">
 
                 <span 
@@ -35,22 +34,23 @@
                 <div 
                     @click="triggerDropDown"
                     class="group cursor-pointer rounded-full 
-                    flex space-x-4 hover:bg-slate-1000 hover:delay-100 
+                    flex space-x-4 sm:hover:bg-slate-1000 sm:hover:delay-100 
                     pt-3 xl:justify-start justify-center">
                     <SVGLoader 
                         :icon="'create'" 
-                        :class="'group-hover:scale-110'"/>
+                        :class="'group-hover:scale-110'" />
                 </div>
 
-                <div 
+                <router-link 
+                    to="/notifications"
                     class="group cursor-pointer rounded-full 
-                    flex space-x-4 hover:bg-slate-1000 
-                    hover:delay-100 p-3 xl:justify-start 
+                    flex space-x-4 sm:hover:bg-slate-1000 
+                    sm:hover:delay-100 p-3 xl:justify-start 
                     justify-center">
                     <SVGLoader 
                         :icon="'like'" 
-                        :class="'group-hover:scale-110'"/>
-                </div>
+                        :class="'group-hover:scale-110'" />
+                </router-link>
 
             </div>
 
@@ -64,57 +64,64 @@
                         {{ routeName }}
                     </span>
             </div>
-            
 
         </div>
     </div>
     <!-- Drop Down menu -->
-    <div
-        :class="{
-            'hidden': !isDropDownTriggered
-        }"
-        class="absolute right-5 z-50 md:hidden bg-slate-1100 
-        divide-y divide-gray-100 rounded-lg shadow w-24">
+    <Transition>
+        <div    
+            v-show="isDropDownTriggered"
+            class="absolute right-5 z-50 md:hidden bg-slate-1100 
+            divide-y divide-gray-100 rounded-lg shadow w-24">
 
-        <div 
-            class="flex flex-col pt-2 pb-2 text-sm 
-            text-gray-200 space-y-3">
-            
-            <div
-                @click="onToggle"
-                class="flex justify-evenly">
-                <span>
-                    Post
-                </span>
+            <div class="flex flex-col pt-2 pb-2 text-sm text-gray-200 space-y-3">
+                
+                <div
+                    @click="onToggle"
+                    class="flex justify-evenly cursor-pointer">
+                    <span>
+                        Post
+                    </span>
 
-                <SVGLoader 
-                    :icon="'create-small'" 
-                    :class="'group-hover:scale-100 self-end'"/>
+                    <SVGLoader 
+                        :icon="'create-small'" 
+                        :class="'group-hover:scale-100 self-end'"/>
 
+                </div>
+                
+                <div
+                    @click="unsupportedFeature"
+                    class="flex justify-evenly">
+                    <span>
+                        Story
+                    </span>
+
+                    <SVGLoader 
+                        :icon="'new-story-small'" 
+                        :class="'group-hover:scale-100 self-end'"/>
+
+                </div>
             </div>
-            
-            <router-link 
-                class="flex justify-evenly" 
-                to="create/story">
-                <span>
-                    Story
-                </span>
-
-                <SVGLoader 
-                    :icon="'new-story-small'" 
-                    :class="'group-hover:scale-100 self-end'"/>
-
-            </router-link>
-        </div>
-    </div>
+        </div>    
+    </Transition>
 </template>
 
 <script lang="ts">
 import { onMounted, defineComponent, computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
-import { usePhotoStore } from '@/stores';
-import SVGLoader from '@/components/basics/SVGLoader.vue';
+import {
+    SVGLoader
+} from '@/components';
+
+import { 
+    usePhotoStore 
+} from '@/stores';
+import { useToast } from 'vue-toastification'
+
+// import type { 
+//     NavBarItem 
+// } from '@/common';
 
 export default defineComponent({
     name: 'TopNavBar',
@@ -132,17 +139,58 @@ export default defineComponent({
         const route = useRoute()
         const router = useRouter()
         const photoStore = usePhotoStore()
+        const toast = useToast()
+
+        // TODO: Make this dynamic
+        // const menuItems: NavBarItem[] = [
+        //     {
+		// 		title: 'Home',
+		// 		path: '/home',
+		// 		name: 'home',
+		// 		customClass: '',
+		// 		iconName: 'home',
+		// 		onClick: () => {}
+		// 	},
+        //     {
+        //         name: 'Post',
+        //         iconName: 'create-small',
+        //         path: 'create/post'
+        //     },
+        //     {
+        //         name: 'Story',
+        //         iconName: 'new-story-small',
+        //         route: 'create/story'
+        //     }
+        // ]
 
         /**
          * Change store state to open file upload dialog
          */
          const onToggle = () => {
-            photoStore.isFileUploadDialogOpen = true
+            photoStore.isFileUploadDialogOpen = !photoStore.isFileUploadDialogOpen
+        }
+
+        const unsupportedFeature = () => {
+            toast.warning('This feature is not supported yet')
         }
 
          const onPageBack= () => {
+            // structuredclone
+            const historyCount = structuredClone(window.history.length)
+
             setTimeout(() => {
-                router.back()
+                /**
+                 * Cheap way to check if user is coming from another website
+                 * Users arriving from another website have a value higher than 0
+                 * We want to redirect them to the home page
+                 * Otherwise, we want to go back to the previous page
+                 * https://stackoverflow.com/questions/62358716/check-if-there-is-a-previous-page-in-vue-route
+                 */
+                if (historyCount > 0) {
+                    router.push('/home')
+                } else {
+                    router.back()
+                }
             }, 1000)
         }
 
@@ -160,6 +208,7 @@ export default defineComponent({
             routeName,
             isDropDownTriggered,
             triggerDropDown,
+            unsupportedFeature,
             onPageBack,
             onToggle
         }
@@ -172,3 +221,16 @@ export default defineComponent({
     ]
 })
 </script>
+
+<style scoped>
+/* we will explain what these classes do next! */
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+</style>

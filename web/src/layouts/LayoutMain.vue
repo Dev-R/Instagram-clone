@@ -1,5 +1,5 @@
 <template>
-    <div class="min-h-screen min-w-screen bg-black">
+    <div class="sm:min-h-screen h-screen min-w-screen bg-black">
         <TopNavBar 
             v-if="!topNavBarHiddenRoutes.includes(routeName)"/>
         <RouterView />
@@ -25,8 +25,8 @@ export default defineComponent({
     setup() {
 
         // Routes without no top/bottom navbars
-        const topNavBarHiddenRoutes = ['style', 'stories', 'direct', 'reels']
-        const bottomNavBarHiddenRoutes = ['stories', 'style', 'direct', 'reels']
+        const topNavBarHiddenRoutes = ['style', 'stories', 'direct', 'reels', 'explore']
+        const bottomNavBarHiddenRoutes = ['stories', 'style', 'direct']
 
         // Services
         const route = useRoute()

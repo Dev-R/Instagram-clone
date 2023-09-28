@@ -29,7 +29,10 @@ export enum BasicColor {
     OUTLINE  = 'outline', 
     
     /** Light color */
-    LIGHT = 'light'
+    LIGHT = 'light',
+
+    /** Dark color */
+    DARK = 'dark'
 }
 
 /** Enum for modal size */
@@ -60,4 +63,5 @@ export enum ModalType {
     Profile = 'profile-modal', // Represents the profile modal
     Setting = 'setting-modal', // Represents the setting modal
     Comment = 'comment-modal', // Represents the comment modal
+    Gender = 'gender-modal' // Represents the gender modal
 }

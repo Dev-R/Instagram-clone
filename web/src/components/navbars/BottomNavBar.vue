@@ -6,77 +6,111 @@
         <div class="flex space-x-2 justify-around">
 
             <router-link
-                to="home" 
+                v-for="item in menuItems"
+                :key="item.title"
+                :to="item.path"
+                @click="updateActiveNavBar(item.path)"
+                :class="{ 
+                    'bg-slate-1000 animate-pulse': item.path === activeNavBar
+                }"
                 class="group cursor-pointer rounded-full 
-                flex space-x-4 hover:bg-slate-1000 hover:delay-100
-                p-3 xl:justify-start justify-center">
-                <SVGLoader 
-                    :icon="'home'" 
-                    :class="'group-hover:scale-110'"/>
-            </router-link>
-
-            <router-link 
-                to="explore"
-                class="group cursor-pointer rounded-full 
-                flex space-x-4 hover:bg-slate-1000 hover:delay-100
-                    p-3 xl:justify-start justify-center">
-                <SVGLoader 
-                    :icon="'mobile-explore'" 
-                    :class="'group-hover:scale-110'"/>
-            </router-link>
-
-            <router-link
-                to="reels" 
-                class="group cursor-pointer rounded-full 
-                flex space-x-4 hover:bg-slate-1000 
-                hover:delay-100 p-3 xl:justify-start 
-                justify-center">
-                <SVGLoader 
-                    :icon="'reels'" 
-                    :class="'group-hover:scale-110'"/>
-            </router-link>
-
-
-            <router-link
-                to="direct" 
-                class="group cursor-pointer rounded-full 
-                flex space-x-4 hover:bg-slate-1000 
-                hover:delay-100 p-3 xl:justify-start 
-                justify-center">
-                <SVGLoader 
-                    :icon="'direct'" 
-                    :class="'group-hover:scale-110'"/>
-            </router-link>
-
-            <router-link 
-                to="profile"
-                class="group cursor-pointer rounded-full 
-                flex space-x-4 hover:bg-slate-1000 hover:delay-100 
+                flex space-x-4 sm:hover:bg-slate-1000 sm:hover:delay-100
                 p-3 xl:justify-start justify-center">
 
                 <img 
-                class="w-6 h-6 rounded-full shadow-lg 
-                group-hover:scale-110"
-                src="https://i.ibb.co/JQVbxyH/img.jpg">
-            </router-link >
+                    v-if="item.img"
+                    class="w-6 h-6 rounded-full shadow-lg 
+                    group-hover:scale-110"
+                    :src="item.img" />
+
+                <SVGLoader 
+                    v-else-if="item.iconSvgName"
+                    :icon="item.iconSvgName" 
+                    :class="'group-hover:scale-110'" />
+
+            </router-link>
 
         </div>
-        <!-- <div class="h-8">
-        </div> -->
     </div>
 </template>
 
 <script lang="ts">
-import { onMounted, defineComponent } from 'vue'
-import SVGLoader from "@/components/basics/SVGLoader.vue"
+import {
+    defineComponent,
+    ref,
+    onMounted,
+    computed
+} from 'vue'
+
+import { 
+    useRoute 
+} from 'vue-router'
+
+import {
+    SVGLoader
+} from '@/components'
+
+import type { 
+    NavBarItem 
+} from '@/common'
+
 export default defineComponent({
     name: 'BottomNavBar',
     setup() {
-        onMounted(() => {
-            // console.log('Mounted BottomNavBarMobile')
-        })
 
-        return {}
+        const activeNavBar = ref<NavBarItem['path']>()
+        const route = useRoute()
+
+        const updateActiveNavBar = (navBarTab: NavBarItem['path']) => {
+			activeNavBar.value = navBarTab
+		}
+
+        const menuItems: NavBarItem[] = [
+            {
+                title: 'Home',
+                path: 'home',
+                customClass: 'group-hover:scale-110',
+                iconSvgName: 'home'
+            },
+            {
+                title: 'Explore',
+                path: 'explore',
+                customClass: 'group-hover:scale-110',
+                iconSvgName: 'mobile-explore'
+            },
+            {
+                title: 'Reels',
+                path: 'reels',
+                customClass: 'group-hover:scale-110',
+                iconSvgName: 'reels'
+            },
+            {
+                title: 'Direct',
+                path: 'direct',
+                customClass: 'group-hover:scale-110',
+                iconSvgName: 'direct'
+            },
+            {
+                title: 'Profile',
+                path: 'profile',
+                customClass: 'group-hover:scale-110',
+                img: 'https://i.ibb.co/JQVbxyH/img.jpg',
+            }
+        ]
+
+        const routeName = computed(()=> {
+			return route.name ? route.name.toString() : ''
+		})
+
+        onMounted(() => {
+			updateActiveNavBar(routeName.value)
+		})
+
+        return {
+            menuItems,
+            updateActiveNavBar,
+            activeNavBar
+        }
     },
     components: {
         SVGLoader
