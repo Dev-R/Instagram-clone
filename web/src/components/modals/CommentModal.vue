@@ -214,9 +214,9 @@
 					<!-- 5: Comment Form > 640px: -->
 					<div class="sm:block hidden">
 						<div class="flex justify-between border-t border-slate-800 p-2 pb-0">
-							<span class="hover:cursor-pointer self-center">
+							<span class="hover:cursor-pointer self-center relative">
 								<EmojiPickerModal
-									@select-emoji="onSelectEmoji" />
+									@select-emoji="appendEmoji" />
 							</span>
 
 							<textarea 
@@ -263,7 +263,7 @@ export default defineComponent({
 	name: 'CommentModal',
 	setup(props, context) {
 		// Forms 
-		const commentForm = ref<string | undefined>()
+		const commentForm = ref<string>('')
 
 		// DOM Refs
 		const commentFormElementRef = ref<HTMLAreaElement>()
@@ -277,8 +277,8 @@ export default defineComponent({
 		 * Select emoji when user click on the emoji icon
 		 * @param {Emoji} emoji - The emoji selected
 		 */
-		const onSelectEmoji = (emoji: Emoji) => {
-			console.log('emojissssssss', emoji)
+		const appendEmoji = (emoji: Emoji) => {
+			commentForm.value += emoji.i
 		}
 
 		/**
@@ -292,7 +292,7 @@ export default defineComponent({
        * Reset comment value
        */
 		const resetCommentValue = () => {
-			commentForm.value = undefined
+			commentForm.value = ''
 		}
 
 		/**
@@ -354,7 +354,7 @@ export default defineComponent({
 			onPostLike,
 			onAddComment,
 			onCommentLiked,
-			onSelectEmoji,
+			appendEmoji,
 			ModalSize,
 			numberOfLikes,
 			commentFormElementRef,
