@@ -1,36 +1,21 @@
 <template>
-    <div class="absolute inset-x-3 md:bottom-2 bottom-8 rounded-full flex md:space-x-3">
-            <div class="cursor-pointer absolute inset-y-0 left-0 \
+    <div class="flex absolute inset-x-3 md:bottom-2 bottom-8 rounded-full space-x-3">
+            <!-- Emojis -->
+            <div class="cursor-pointer inset-y-0 left-0 \
                     flex items-center">
                 <span class="relative">
-                    <EmojiPickerModal 
+                    <EmojiPickerModal
+                        :toggleDirection="'left'" 
                         @selectEmoji="appendEmoji" />
                 </span>
-            </div>
-
-            <div
-                :class="{ 'hidden': !isChatEmpty }"
-                @click="emitFileUpload">
-                <SVGLoader
-                    :icon="'gallery'" 
-                    :class="'cursor-pointer absolute inset-y-0 right-14 \
-                    flex items-center'" /> 
-            </div>
-
-            <div
-                :class="{ 'hidden': !isChatEmpty }"
-                @click="emitLikeIcon()">
-                <SVGLoader
-                    :icon="'like'" 
-                    :class="'cursor-pointer absolute inset-y-0 right-4 \
-                    flex items-center'" />     
             </div>                             
                 
+            <!-- Chat Area -->
             <textarea
                 ref="textArea"
                 tabindex="1"
                 rows="1"
-                maxlength="2200"
+                maxlength="100"
                 type="text"
                 class="bg-black border border-[#262626] text-white 
                 rounded-full text-sm focus:outline-none
@@ -39,6 +24,28 @@
                 :class="{ 'rounded-lg ': !isChatEmpty }"
                 :value="modalValue" 
                 @keyup.enter="emitSendMessage" />
+            
+            <!-- Gallery -->
+            <div
+                class="self-center"
+                :class="{ 'hidden': !isChatEmpty }"
+                @click="emitFileUpload">
+                <SVGLoader
+                    :icon="'gallery'" 
+                    :class="'cursor-pointer md:absolute inset-y-0 right-20 \
+                    flex items-center'" /> 
+            </div>
+
+            <!-- Like/Heart -->
+            <div
+                class="self-center"
+                :class="{ 'hidden': !isChatEmpty }"
+                @click="emitLikeIcon()">
+                <SVGLoader
+                    :icon="'like'" 
+                    :class="'cursor-pointer md:absolute inset-y-0 right-12 \
+                    flex items-center'" />     
+            </div>
     </div>
 </template>
 
