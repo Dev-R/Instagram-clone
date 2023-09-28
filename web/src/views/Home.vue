@@ -90,7 +90,7 @@ import type { PostCard as PostCardType, PostMedia } from '@/common'
 import { usePhotoStore } from '@/stores'
 
 export default defineComponent({
-    name: 'HomeView',
+    name: 'Home',
     setup(props, context) {
 
 
