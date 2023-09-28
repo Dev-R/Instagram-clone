@@ -3,7 +3,7 @@
         @click="openEmojiPicker"
         :icon="'emoji'" />
         
-    <div class="absolute bottom-12">
+    <div class="absolute bottom-12 right-0 z-50">
         <Transition>
             <EmojiPicker 
                 v-show="isToggled"
@@ -26,6 +26,10 @@ import {
     SVGLoader
 } from '@/components'
 
+import type  {
+    Emoji
+} from '@/common'
+
 const emit = defineEmits(
     ['selectEmoji']
 )
@@ -38,7 +42,7 @@ const openEmojiPicker = () => {
     isToggled.value = !isToggled.value
 }
 
-const emitSelectEmoji = (emoji: object) => {
+const emitSelectEmoji = (emoji: Emoji) => {
     emit('selectEmoji', emoji)
 }
 
