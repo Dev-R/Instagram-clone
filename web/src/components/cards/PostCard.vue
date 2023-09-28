@@ -96,8 +96,8 @@
             </div>
             
             <!-- 6: Comment Form -->
-            <div class="grid grid-cols-12 border-b border-slate-800 p-2">
-                <span class="col-span-10">
+            <div class="flex border-b border-slate-800 justify-between  ">
+                <span class="basis-4/5">
                     <textarea
                         @keypress.enter.prevent="onPostComment"
                         v-model="comment"
@@ -107,16 +107,16 @@
                         placeholder="Add a comment..."></textarea>
                 </span>
                 <span
+                    v-show="comment.length > 0"
                     @click="onPostComment"
-                    class="font-sans text-xs text-sky-500
-                    justify-self-end cursor-pointer
+                    class="font-sans text-md text-sky-500
+                    cursor-pointer
                     hover:text-white h-6">
                     Post
                 </span>
-                <span
-                    class="text-gray-600 justify-self-end
-                    cursor-pointer fa-regular fa-face-smile
-                    w-3 h-3">
+                <span class="relative">
+                    <EmojiPickerModal 
+                        @select-emoji="appendEmoji"/>
                 </span>
             </div>
         </div>
@@ -132,18 +132,16 @@ import {
     computed 
 } from 'vue'
 
-import {
-    // SVGLoader,
-    // MediaCarousel
-} from '@/components'
+
+import EmojiPickerModal from '@/components/modals/EmojiPickerModal.vue'
 
 import SVGLoader from '@/components/basics/SVGLoader.vue'
 import MediaCarousel from '@/components/carousels/MediaCarousel.vue'
 
 import type { 
-    PostCard 
+    PostCard,
+    Emoji
 } from '@/common'
-
 
 export default defineComponent({
     name: 'PostCard',
@@ -181,18 +179,28 @@ export default defineComponent({
             context.emit('onPostComment', comment, props.postItem.id);
         };
         
+        /**
+         * Append emoji to comment
+         * @param emoji - The emoji object
+         */
+        const appendEmoji = (emoji: Emoji) => {
+            comment.value += emoji.i;
+        }
+
         return {
             comment,
             isCommentModalOpen,
             onOpenCommentModal,
+            appendEmoji,
             onPostComment,
             findNumberOfLikes
         }
     },
     components: {
-        SVGLoader,
-        MediaCarousel,
-    },
+    SVGLoader,
+    MediaCarousel,
+    EmojiPickerModal
+},
     props: {
         postItem: {
             type: Object as () => PostCard,
@@ -202,7 +210,7 @@ export default defineComponent({
     emits: [
         'onOpenCommentModal',
         'onPostLike',
-        'onPostComment'
+        'onPostComment',
     ]
 })
 </script>
