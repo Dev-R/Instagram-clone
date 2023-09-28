@@ -72,7 +72,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch, computed } from 'vue'
+import { 
+    defineComponent, 
+    computed,
+    watch,
+    ref,  
+} from 'vue'
+
 import { useRouter } from 'vue-router'
 
 import {
@@ -86,7 +92,11 @@ import {
     PhotoModal
 } from '@/components'
 
-import type { PostCard as PostCardType, PostMedia } from '@/common'
+import type {
+    PostCard as PostCardType, 
+    PostMedia 
+} from '@/common'
+
 import { usePhotoStore } from '@/stores'
 
 export default defineComponent({
