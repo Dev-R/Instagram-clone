@@ -26,7 +26,7 @@ export default defineComponent({
 
         // Routes without no top/bottom navbars
         const topNavBarHiddenRoutes = ['style', 'stories', 'direct', 'reels', 'explore']
-        const bottomNavBarHiddenRoutes = ['stories', 'style', 'direct', 'reels']
+        const bottomNavBarHiddenRoutes = ['stories', 'style', 'direct']
 
         // Services
         const route = useRoute()

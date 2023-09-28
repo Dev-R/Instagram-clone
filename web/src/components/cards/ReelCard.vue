@@ -65,7 +65,7 @@
 		</button>
 
         <!-- Meta card -->
-		<div class="absolute bottom-3 left-5 flex flex-col space-y-3 basis-full">
+		<div class="absolute bottom-3 left-5 flex flex-col space-y-3 basis-full mb-11 sm:mb-0">
             <!-- Simple User card -->
 			<UserCard
 				:profile-link="reel.userName"
