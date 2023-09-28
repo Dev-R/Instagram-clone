@@ -1,19 +1,19 @@
 <template>
-    <div class="bg-black h-screen">
+    <div class="bg-black">
         <section 
-            class="container md:max-w-full mx-auto h-screen 
+            class="container md:max-w-full mx-auto sm:h-screen 
             scrollbar scrollbar-thumb-gray-900"
             :class="{ 'brightness-50 pointer-events-none overflow-y-hidden h-screen': commentModal.isToggled || photoModal.isToggled }">
             <div class="flex">
 
 				<div 
-                    class="basis-1/6 bg-black md:block hidden space-y-12 h-screen
+                    class="basis-1/6 bg-black md:block hidden space-y-12
                     sticky top-0 border-r border-gray-900">
                     <NavBarMain
                         @on-create="triggerPhotoModal" />
                 </div>
 
-                <div class="flex justify-center bg-black scrollbar scrollbar-thumb-gray-900 mx-auto sm:mt-10 space-x-12">
+                <div class="flex justify-center bg-black mx-auto sm:mt-10 space-x-12">
  
                     <!-- Center: Posts -->
                     <div 
