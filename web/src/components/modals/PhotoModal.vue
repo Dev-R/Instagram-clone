@@ -294,7 +294,7 @@
                                     rows="8"
                                     maxlength="2200"
                                     class="block w-full text-md bg-slate-1100 
-                                    text-white focus:outline-none 
+                                    text-white focus:outline-none border-none
                                     resize-none placeholder:text-gray-1100"
                                     placeholder="Write a caption..."/>
 
@@ -319,10 +319,10 @@
                                         maxlength="50"
                                         class="block w-full text-md bg-slate-1100 
                                         text-white focus:outline-none resize-none 
-                                        placeholder:text-gray-1100"
+                                        placeholder:text-gray-1100 border-none"
                                         placeholder="Add location"/>
                 
-                                    <i class="fa-solid fa-location-dot fa-beat-fade text-white"></i>
+                                    <i class="fa-solid fa-location-dot fa-beat-fade text-white self-center"></i>
 
                                 </div>
 
