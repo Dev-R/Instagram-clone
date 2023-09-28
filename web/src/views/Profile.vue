@@ -301,7 +301,7 @@ import {
 } from '@/common'
 
 export default defineComponent({
-    name: 'ProfileView',
+    name: 'Profile',
     setup() {
 
         // Selectors
