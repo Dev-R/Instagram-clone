@@ -2,17 +2,17 @@ import type { BaseUser } from "./user.model"
 
 /**
  * Represents an emoji reaction.
- */
-export interface Emoji {
-    /** Timestamp of the emoji reaction */
-    timeStamp: number
+//  */
+// export interface Emoji {
+//     /** Timestamp of the emoji reaction */
+//     timeStamp: number
 
-    /** ID of the sender */
-    senderId: string
+//     /** ID of the sender */
+//     senderId: string
 
-    /** Emoji value */
-    emoji: string
-}
+//     /** Emoji value */
+//     emoji: string
+// }
 
 /**
  * Represents reactions associated with a chat item.
@@ -25,7 +25,7 @@ export interface Reactions {
     likesCount: number
 
     /** Array of emoji reactions */
-    Emojis: Emoji[]
+    // Emojis: Emoji[]
 }
 
 /**
