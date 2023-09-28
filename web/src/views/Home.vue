@@ -1,74 +1,64 @@
 <template>
-    <div class="bg-black">
-        <section 
-            class="container md:max-w-full mx-auto sm:h-screen 
-            scrollbar scrollbar-thumb-gray-900"
-            :class="{ 'brightness-50 pointer-events-none overflow-y-hidden h-screen': commentModal.isToggled || photoModal.isToggled }">
-            <div class="flex">
-
+	<div class="bg-black">
+		<section 
+			class="container md:max-w-full mx-auto sm:h-screen scrollbar scrollbar-thumb-gray-900"
+			:class="{ 'brightness-50 pointer-events-none overflow-y-hidden h-screen': isModalToggled }">
+			<div class="flex">
 				<div 
-                    class="basis-1/6 bg-black md:block hidden space-y-12
+					class="basis-1/6 md:block hidden space-y-12
                     sticky top-0 border-r border-gray-900">
-                    <NavBarMain
-                        @on-create="triggerPhotoModal" />
-                </div>
+					<NavBarMain
+						@on-create="triggerPhotoModal" />
+				</div>
 
-                <div class="flex justify-center bg-black mx-auto sm:mt-10 space-x-12">
- 
-                    <!-- Center: Posts -->
-                    <div 
-                        class="md:w-[470px] flex flex-col 
+				<div class="flex justify-center mx-auto sm:mt-10 space-x-12">
+					<!-- Center: Posts -->
+					<div 
+						class="md:w-[470px] flex flex-col 
                         space-y-4 flex-nowrap lg:max-w-lg
                         justify-self-end lg:mr-[64px]">
-
-                        <!-- Stories -->
-                        <div 
-                            class="mb-6 relative md:rounded-xl md:bg-current 
+						<!-- Stories -->
+						<div 
+							class="mb-6 relative md:rounded-xl md:bg-current 
                             overflow-auto md:border-current border-gray-800 
                             bg-slate-1000 border-t border-b">
-                            <StoryCarousel 
-                                :reels="stories" />
-                        </div>
+							<StoryCarousel 
+								:reels="stories" />
+						</div>
 
-                        <!-- Posters -->
-                        <div class="flex flex-col space-y-8 sm:p-0 p-2.5 max-w-md mx-auto">
-                            <PostCard 
-                                v-for="(item, index) of posts"
-                                @on-open-comment-modal="triggerCommentModal"
-                                @on-post-like="changeLikeState"
-                                :post-item="item"
-                                :key="index" />
-                        </div>
+						<!-- Posters -->
+						<div class="flex flex-col space-y-8 sm:p-0 p-2.5 max-w-md mx-auto">
+							<PostCard 
+								v-for="(item, index) of posts"
+								:key="index"
+								:post-item="item"
+								@on-open-comment-modal="triggerCommentModal"
+								@on-post-like="changeLikeState" />
+						</div>
+					</div>
 
-                    </div>
+					<!-- Right bar: Suggestions -->
+					<div class="lg:block hidden max-w-xs pt-8">
+						<SuggestionCard 
+							:card-item="suggested" />
+					</div>
+				</div>
+			</div>
+		</section>
 
-                    <!-- Right bar: Suggestions -->
-                    <div class="lg:block hidden max-w-xs pt-8">
-                        <SuggestionCard 
-                            :card-item="suggested" />
-                    </div>
-                    
-                </div>
-                
-            </div>
-        </section>
-        <!-- Modals -->
-
-        <!-- Comment Modal -->
-        <CommentModal
-            @on-modal-closed="triggerCommentModal" 
-            :post-comment="{
-                isToggled: commentModal.isToggled,
-                post: posts[commentModal.postId],
-            }"/>
+		<CommentModal
+			:post-comment="{
+				isToggled: commentModal.isToggled,
+				post: posts[commentModal.postId],
+			}" 
+			@on-modal-closed="triggerCommentModal" />
         
-        <!-- Photo Modal -->
-        <PhotoModal 
-            @on-modal-closed="triggerPhotoModal"
-            @on-file-upload="uploadedFileData"  
-            :is-toggled="photoModal.isToggled" />  
-
-    </div>
+        <!-- TODO: Remove to layout -->
+		<PhotoModal 
+			:is-toggled="photoModal.isToggled"
+			@on-modal-closed="triggerPhotoModal"  
+			@on-file-upload="uploadedFileData" />
+	</div>
 </template>
 
 <script setup lang="ts">
@@ -266,6 +256,13 @@ const uploadedFileData = () => {
 const windowType = computed(() => {
     if (windowWidth.value < 550) return 'xs'
     return null
+})
+
+/**
+ * Check if a modal is toggled or not
+ */
+const isModalToggled = computed(() => {
+    return commentModal.value.isToggled || photoModal.value.isToggled
 })
 
 // Disable scrolling when a modal is open
