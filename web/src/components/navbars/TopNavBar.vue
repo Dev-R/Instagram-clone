@@ -175,8 +175,22 @@ export default defineComponent({
         }
 
          const onPageBack= () => {
+            // structuredclone
+            const historyCount = structuredClone(window.history.length)
+
             setTimeout(() => {
-                router.back()
+                /**
+                 * Cheap way to check if user is coming from another website
+                 * Users arriving from another website have a value higher than 0
+                 * We want to redirect them to the home page
+                 * Otherwise, we want to go back to the previous page
+                 * https://stackoverflow.com/questions/62358716/check-if-there-is-a-previous-page-in-vue-route
+                 */
+                if (historyCount > 0) {
+                    router.push('/home')
+                } else {
+                    router.back()
+                }
             }, 1000)
         }
 
