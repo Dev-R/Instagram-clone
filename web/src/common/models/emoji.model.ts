@@ -33,6 +33,9 @@ export interface Group {
 }
 
 export interface Emoji {
+    /** Emoji icon */
+    i?: string
+    
     [EMOJI_NAME_KEY]: string[]
     [EMOJI_UNICODE_KEY]: string
     [EMOJI_VARIATIONS_KEY]?: string[]
