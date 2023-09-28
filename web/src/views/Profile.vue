@@ -3,7 +3,6 @@
 		<section 
 			v-if="!activeModal.isToggled"
             class="container text-center md:max-w-full mx-auto sm:h-screen scrollbar scrollbar-thumb-gray-900"
-
 			:class="{ 'brightness-50 pointer-events-none': isModalToggled }">
 			<div class="flex">
 				<div 
@@ -215,7 +214,7 @@
 		<!-- Modals -->
 		<div 
 			v-if="activeModal.name === ModalType.Profile"
-			class="md:w-[470px] justify-self-end p-2">
+			class="md:max-w-md justify-self-end p-2">
 			<PostCard
 				:post-item="postItems[activeModal.postId]" />
 		</div>
