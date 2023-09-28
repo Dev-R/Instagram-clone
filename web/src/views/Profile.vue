@@ -272,9 +272,17 @@
     </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, computed, onMounted, onUnmounted } from 'vue'
-import { useRouter } from 'vue-router'
+<script setup lang="ts">
+import {
+    ref,
+    computed,
+    onMounted,
+    onUnmounted
+} from 'vue'
+
+import {
+    useRouter
+} from 'vue-router'
 
 import {
     SVGLoader,
@@ -287,292 +295,268 @@ import {
     TheButton
 } from '@/components'
 
+import {
+    ProfileTab,
+    ModalType,
+    ModalSize
+} from '@/common/enums'
+
 import type {
     navBarTabs,
     ModalName,
     User,
     PostMedia
-} from '@/common'
+} from '@/common/models'
 
-import {
-    ProfileTab,
-    ModalType,
-    ModalSize
-} from '@/common'
 
-export default defineComponent({
-    name: 'Profile',
-    setup() {
+// TODO: Remove this sample data
+const mediasArraySampleA: PostMedia[] = [{
+        index: 0,
+        type: 'image',
+        mediaUrl: "https://loremflickr.com/1024/1280/cat",
+        title: "Legendary A"
+    },
+    {
+        index: 1,
+        type: 'image',
+        mediaUrl: "https://loremflickr.com/1024/1280/nature",
+        title: "Legendary A"
+    }
+]
 
-        // Selectors
-        const currentActiveTab = ref<navBarTabs>(ProfileTab.Posts) // Select profile-posts as default active tab
+// Data
+const currentActiveTab = ref<navBarTabs>(ProfileTab.Posts) // Select profile-posts as default active tab
+const windowWidth = ref(window.innerWidth) // Current window width
 
-        // Modals data
-        const activeModal = ref({
-            name: '' as ModalName,
-            isToggled: false,
-            postId: 0
-        })
-        const photoModal = ref({
-            isToggled: false,
-            currentStep: ''
-        })
-        const smallModal = ref({
-            name: '',
-            title: '',
-            items: [] as any,
-            isToggled: false
-        })
+const activeModal = ref({
+    name: '' as ModalName,
+    isToggled: false,
+    postId: 0
+})
+const photoModal = ref({
+    isToggled: false,
+    currentStep: ''
+})
+const smallModal = ref({
+    name: '',
+    title: '',
+    items: [] as any,
+    isToggled: false
+})
 
-        // Others
-        let windowWidth = ref(window.innerWidth) // Current window width
-        const profileInfo = ref<User>({
-            id: '0',
-            firstName: 'Alex',
-            lastName: 'Boo',
-            userName: 'Alex_boo',
-            profilePictureUrl: 'https://loremflickr.com/1024/1280/holiday',
-            dateJoined: '01-01-2012',
-            followerCount: 0,
-            followingCount: 0,
-            mediaCount: 50,
-            mediaItems: [],
-        })
-        const savedItems = ref<Object[]>([])
-        const taggedItems = ref<Object[]>([])
+const profileInfo = ref<User>({
+    id: '0',
+    firstName: 'Alex',
+    lastName: 'Boo',
+    userName: 'Alex_boo',
+    profilePictureUrl: 'https://loremflickr.com/1024/1280/holiday',
+    dateJoined: '01-01-2012',
+    followerCount: 0,
+    followingCount: 0,
+    mediaCount: 50,
+    mediaItems: [],
+})
 
-        // Services
-        const router = useRouter()
+const savedItems = ref<Object[]>([])
+const taggedItems = ref<Object[]>([])
+const postItems = [{
+    id: '0',
+    userName: 'Rabee',
+    createdAt: 'February 24',
+    likeCount: 2456,
+    hasLiked: true,
+    caption: ' Sh. @abdullah_oduro and I getting that Saturday morning work in the gym and talking over @yaqeeninstitute Quran 30 ',
+    carouselMedia: mediasArraySampleA,
+    commentCount: 2456,
+    profilePictureUrl: 'https://loremflickr.com/32/32/bird',
+    isFollowed: false
+}]
 
-        // Handlers
-        const navBarTabSwitcher = (currentTab: navBarTabs) => {
-            currentActiveTab.value = currentTab
-        }
+// Services
+const router = useRouter()
 
-        const triggerCommentModal = (id: number | undefined) => {
-            // If screen size > 768 open comment Modal else open Profile Modal
-            const modalName = screenSizeType.value === 'xs' ? ModalType.Profile : ModalType.Comment
-            activeModal.value = { name: modalName, isToggled: !activeModal.value.isToggled, postId: id ? id : 0 }
-        }
+// Methods
+/**
+ * Switch between profile tabs
+ * @param currentTab Current active tab
+ */
+const navBarTabSwitcher = (currentTab: navBarTabs) => {
+    currentActiveTab.value = currentTab
+}
 
-        const triggerPhotoModal = () => {
-            photoModal.value.isToggled = !photoModal.value.isToggled
-        }
+/**
+ * Update like state of a post.
+ * @param id Liked / Unliked post ID
+ */
+const triggerCommentModal = (id: number | undefined) => {
+    // If screen size > 768 open comment Modal else open Profile Modal
+    const modalName = screenSizeType.value === 'xs' ? ModalType.Profile : ModalType.Comment
+    activeModal.value = {
+        name: modalName,
+        isToggled: !activeModal.value.isToggled,
+        postId: id ? id : 0
+    }
+}
 
-        const triggerSmallModal = (name: string | undefined, title: string | undefined) => {
-            smallModal.value = { name: name ? name : '', title: title ? title : '', isToggled: !smallModal.value.isToggled, items: suggested }
-        }
+/**
+ * Trigger photo modal
+ */
+const triggerPhotoModal = () => {
+    photoModal.value.isToggled = !photoModal.value.isToggled
+}
 
-        const getTabClass = (tabName: string) => {
-            return {
-                'flex items-center space-x-2 inline-block py-4 p-1 border-t-2 border-gray-300 sm:hover:border-gray-300': true,
-                'border-transparent text-gray-200': currentActiveTab.value !== tabName && tabName !==
-                    ProfileTab.Saved && tabName !== ProfileTab.Tagged,
-                'border-transparent text-gray-300': currentActiveTab.value !== tabName && (tabName ===
-                    ProfileTab.Saved || tabName === ProfileTab.Tagged),
-                'text-white': currentActiveTab.value === tabName,
-                'sm:hover:text-gray-300': currentActiveTab.value !== tabName && (tabName === ProfileTab.Saved ||
-                    tabName === ProfileTab.Tagged),
-            }
-        }
-
-        const goToSettingsRoute = () => {
-            router.push({ name: 'setting' })
-        }
-
-        // Listeners
-        const onWidthChange = () => windowWidth.value = window.innerWidth
-
-        // Computed
-        const screenSizeType = computed(() => {
-            if (windowWidth.value < 550) return 'xs'
-            return false
-        })
-
-        const emptyTabBarBodyMessage = computed(() => {
-            switch (currentActiveTab.value) {
-                case ProfileTab.Posts:
-                case ProfileTab.Peeds:
-                    return {
-                        icon: 'fa-solid fa-photo-film',
-                        top: 'Share Photos',
-                        body: 'When you share photos, they will appear on your profile.',
-                        footer: 'Share your first photo',
-                        isEmpty: postItems === undefined || postItems.length == 0
-                    }
-                case ProfileTab.Tagged:
-                    return {
-                        icon: 'fa-solid fa-users-viewfinder',
-                        top: 'Start Saving',
-                        body: 'Save photos and videos to your collection.',
-                        footer: 'Add to collection',
-                        isEmpty: taggedItems === undefined || taggedItems.value.length == 0
-
-                    }
-                case ProfileTab.Saved:
-                    return {
-                        icon: 'fa-regular fa-bookmark',
-                        top: 'Photos of you',
-                        body: "When people tag you in photos, they'll appear here.",
-                        footer: '',
-                        isEmpty: savedItems === undefined || savedItems.value.length == 0
-                    }
-                default:
-                    return {}
-            }
-        })
-
-        const isModalToggled = computed(() => {
-            return activeModal.value.isToggled || smallModal.value.isToggled || photoModal.value.isToggled
-        })
-
-        // Dynamic elements array
-        const tabElements = [
-            {
-                name: ProfileTab.Posts,
-                label: 'POSTS',
-                iconLarge: 'profile-posts-large',
-                iconSmall: 'profile-posts-small',
-                onClick: () => navBarTabSwitcher(ProfileTab.Posts)
-            },
-            {
-                name: ProfileTab.Peeds,
-                label: 'Peeds',
-                iconLarge: '',
-                iconSmall: 'profile-peed-small',
-                onClick: () => navBarTabSwitcher(ProfileTab.Peeds)
-            },
-            {
-                name: ProfileTab.Saved,
-                label: 'SAVED',
-                iconLarge: 'profile-saved-large',
-                iconSmall: 'profile-saved-small',
-                onClick: () => navBarTabSwitcher(ProfileTab.Saved)
-            },
-            {
-                name: ProfileTab.Tagged,
-                label: 'TAGGED',
-                iconLarge: 'profile-tagged-large',
-                iconSmall: 'profile-tagged-small',
-                onClick: () => navBarTabSwitcher(ProfileTab.Tagged)
-            },
-        ]
-
-        const profileInfoElements = [
-            {
-                title: 'posts',
-                value: profileInfo.value.mediaCount,
-                onClick: () => {},
-            },
-            {
-                title: 'followers',
-                value: profileInfo.value.followerCount,
-                onClick: () => triggerSmallModal(ModalType.Follow, 'Followers'),
-            },
-            {
-                title: 'following',
-                value: profileInfo.value.followingCount,
-                onClick: () => triggerSmallModal(ModalType.Follow, 'Following'),
-            }
-        ]
-
-        // Lifecycle Hooks 
-        onMounted(() => window.addEventListener('resize', onWidthChange))
-        onUnmounted(() => window.removeEventListener('resize', onWidthChange))
-        
-        // Sample Data
-        const mediasArraySampleA: PostMedia[] = [
-            {
-                index: 0,
-                type: 'image',
-                mediaUrl:
-                    "https://loremflickr.com/1024/1280/cat",
-                title: "Legendary A"
-            },
-            {
-                index: 1,
-                type: 'image',
-                mediaUrl:
-                    "https://loremflickr.com/1024/1280/nature",
-                title: "Legendary A"
-            }
-        ]
-
-        const postItems = [
-            {
-                id: '0',
-                userName: 'Rabee',
-                createdAt: 'February 24',
-                likeCount: 2456,
-                hasLiked: true,
-                caption: ' Sh. @abdullah_oduro and I getting that Saturday morning work in the gym and talking over @yaqeeninstitute Quran 30 ',
-                carouselMedia: mediasArraySampleA,
-                commentCount: 2456,
-                profilePictureUrl: 'https://loremflickr.com/32/32/bird',
-                isFollowed: false
-            }
-        ]
-        const suggested = [
-            {
+/**
+ * Trigger small modal
+ * @param name Modal name (i.e: Follow, Setting)
+ * @param title Modal title 
+ */
+ const triggerSmallModal = (name: string | undefined, title: string | undefined) => {
+    smallModal.value = {
+        name: name ? name : '',
+        title: title ? title : '',
+        isToggled: !smallModal.value.isToggled,
+        items: [{
+            userName: 'Rabee',
+            profilePictureUrl: 'https://loremflickr.com/1024/1080/bird',
+            suggested: [{
                 userName: 'Rabee',
                 profilePictureUrl: 'https://loremflickr.com/1024/1080/bird',
-                suggested: [{
-                    userName: 'Rabee',
-                    profilePictureUrl: 'https://loremflickr.com/1024/1080/bird',
-                    followedBy: 'imamomarsuleiman + 1 more'
-                }]
+                followedBy: 'imamomarsuleiman + 1 more'
+            }]
+        }]
+    }
+}
+
+/**
+ * Return tab class based on current active tab
+ * @param tabName Current tab name
+ */
+const getTabClass = (tabName: string) => {
+    return {
+        'flex items-center space-x-2 inline-block py-4 p-1 border-t-2 border-gray-300 sm:hover:border-gray-300': true,
+        'border-transparent text-gray-200': currentActiveTab.value !== tabName && tabName !==
+            ProfileTab.Saved && tabName !== ProfileTab.Tagged,
+        'border-transparent text-gray-300': currentActiveTab.value !== tabName && (tabName ===
+            ProfileTab.Saved || tabName === ProfileTab.Tagged),
+        'text-white': currentActiveTab.value === tabName,
+        'sm:hover:text-gray-300': currentActiveTab.value !== tabName && (tabName === ProfileTab.Saved ||
+            tabName === ProfileTab.Tagged),
+    }
+}
+
+/**
+ * Go to settings route
+ */
+const goToSettingsRoute = () => {
+    router.push({
+        name: 'setting'
+    })
+}
+
+/**
+ * Get current screen width
+ */
+const onWidthChange = () => windowWidth.value = window.innerWidth
+
+/** 
+ * Return current screen size type
+ */
+const screenSizeType = computed(() => {
+    if (windowWidth.value < 550) return 'xs'
+    return false
+})
+
+/**
+ * Return message based on current active tab for empty tab bar body
+ */
+const emptyTabBarBodyMessage = computed(() => {
+    switch (currentActiveTab.value) {
+        case ProfileTab.Posts:
+        case ProfileTab.Peeds:
+            return {
+                icon: 'fa-solid fa-photo-film',
+                    top: 'Share Photos',
+                    body: 'When you share photos, they will appear on your profile.',
+                    footer: 'Share your first photo',
+                    isEmpty: postItems === undefined || postItems.length == 0
             }
-        ]
+        case ProfileTab.Tagged:
+            return {
+                icon: 'fa-solid fa-users-viewfinder',
+                    top: 'Start Saving',
+                    body: 'Save photos and videos to your collection.',
+                    footer: 'Add to collection',
+                    isEmpty: taggedItems === undefined || taggedItems.value.length == 0
 
-        return {
-            // Data
-            suggested,
-            postItems,
-            savedItems,
-            taggedItems,
-            activeModal,
-            smallModal,
-            photoModal,
-            tabElements,
-
-            // Enums
-            ProfileTab,
-            ModalType,
-            ModalSize,
-
-            // Computed
-            emptyTabBarBodyMessage,
-            isModalToggled,
-
-            currentActiveTab,
-            profileInfo,
-            profileInfoElements,
-
-            // Methods
-            triggerCommentModal,
-            triggerSmallModal,
-            triggerPhotoModal,
-            getTabClass,
-            goToSettingsRoute,
-            navBarTabSwitcher,
-        }
-    },
-    components: {
-        SVGLoader,
-        NavBarMain,
-        TheButton,
-        PostCard,
-        FollowModal,
-        SettingModal,
-        PhotoModal,
-        CommentModal
+            }
+        case ProfileTab.Saved:
+            return {
+                icon: 'fa-regular fa-bookmark',
+                    top: 'Photos of you',
+                    body: "When people tag you in photos, they'll appear here.",
+                    footer: '',
+                    isEmpty: savedItems === undefined || savedItems.value.length == 0
+            }
+        default:
+            return {}
     }
 })
+
+/**
+ * Return true if any modal is toggled
+ */
+const isModalToggled = computed(() => {
+    return activeModal.value.isToggled || smallModal.value.isToggled || photoModal.value.isToggled
+})
+
+// Constants
+const tabElements = [{
+        name: ProfileTab.Posts,
+        label: 'POSTS',
+        iconLarge: 'profile-posts-large',
+        iconSmall: 'profile-posts-small',
+        onClick: () => navBarTabSwitcher(ProfileTab.Posts)
+    },
+    {
+        name: ProfileTab.Peeds,
+        label: 'Peeds',
+        iconLarge: '',
+        iconSmall: 'profile-peed-small',
+        onClick: () => navBarTabSwitcher(ProfileTab.Peeds)
+    },
+    {
+        name: ProfileTab.Saved,
+        label: 'SAVED',
+        iconLarge: 'profile-saved-large',
+        iconSmall: 'profile-saved-small',
+        onClick: () => navBarTabSwitcher(ProfileTab.Saved)
+    },
+    {
+        name: ProfileTab.Tagged,
+        label: 'TAGGED',
+        iconLarge: 'profile-tagged-large',
+        iconSmall: 'profile-tagged-small',
+        onClick: () => navBarTabSwitcher(ProfileTab.Tagged)
+    },
+]
+const profileInfoElements = [{
+        title: 'posts',
+        value: profileInfo.value.mediaCount,
+        onClick: () => {},
+    },
+    {
+        title: 'followers',
+        value: profileInfo.value.followerCount,
+        onClick: () => triggerSmallModal(ModalType.Follow, 'Followers'),
+    },
+    {
+        title: 'following',
+        value: profileInfo.value.followingCount,
+        onClick: () => triggerSmallModal(ModalType.Follow, 'Following'),
+    }
+]
+
+// Lifecycle Hooks 
+onMounted(() => window.addEventListener('resize', onWidthChange))
+onUnmounted(() => window.removeEventListener('resize', onWidthChange))
 </script>
-
-
-
-
-<style>
-
-</style>
