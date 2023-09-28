@@ -215,8 +215,8 @@
 					<div class="sm:block hidden">
 						<div class="flex justify-between border-t border-slate-800 p-2 pb-0">
 							<span class="hover:cursor-pointer self-center">
-								<SVGLoader 
-									:icon="'emoji'" />
+								<EmojiPickerModal
+									@select-emoji="onSelectEmoji" />
 							</span>
 
 							<textarea 
@@ -247,13 +247,16 @@ import { defineComponent, onMounted, computed, ref } from 'vue'
 import {
 	SVGLoader,
 	CommentCard,
-	MediaCarousel
+	MediaCarousel,
 } from '@/components'
+
+import EmojiPickerModal from '@/components/modals/EmojiPickerModal.vue'
 
 import { 
 	ModalSize,
 	type PostCommentModal,
-	type PostCommentCard
+	type PostCommentCard,
+	type Emoji
 } from '@/common'
 
 export default defineComponent({
@@ -269,6 +272,14 @@ export default defineComponent({
 		const numberOfLikes = computed(() => {
 			return props.postComment.post.likeCount >= 1 ? `${ props.postComment.post.likeCount } Likes` : 'Be the first to like this' 
 		})
+
+		/**
+		 * Select emoji when user click on the emoji icon
+		 * @param {Emoji} emoji - The emoji selected
+		 */
+		const onSelectEmoji = (emoji: Emoji) => {
+			console.log('emojissssssss', emoji)
+		}
 
 		/**
        * Focus on text area when user click on the comment icon
@@ -343,6 +354,7 @@ export default defineComponent({
 			onPostLike,
 			onAddComment,
 			onCommentLiked,
+			onSelectEmoji,
 			ModalSize,
 			numberOfLikes,
 			commentFormElementRef,
@@ -352,7 +364,8 @@ export default defineComponent({
     components: { 
 		MediaCarousel,
 		SVGLoader,
-		CommentCard
+		CommentCard,
+		EmojiPickerModal
 	},
 	props: {
 		postComment: {
