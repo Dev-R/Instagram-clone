@@ -425,7 +425,7 @@
                 class="basis-2/4"/>
 
             <!-- Filters Tab -->
-            <div class="p-5 flex flex-row overflow-x-auto space-x-2 pt-2">
+            <div class="p-5 flex flex-row overflow-x-auto space-x-2 pt-2 bg-black">
 
                 <div
                     v-for="filter in filters"
