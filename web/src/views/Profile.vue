@@ -2,24 +2,19 @@
 	<div class="bg-black">
 		<section 
 			v-if="!activeModal.isToggled"
-			class="container max-w-full mx-auto text-center 
-            h-screen scrollbar scrollbar-thumb-gray-900"
+            class="container text-center md:max-w-full mx-auto sm:h-screen scrollbar scrollbar-thumb-gray-900"
+
 			:class="{ 'brightness-50 pointer-events-none': isModalToggled }">
-			<div class="grid grid-cols-12">
-				<!-- Left bar: Navigation -->
+			<div class="flex">
 				<div 
-					class="xl:col-span-2 col-span-1 bg-black 
-					md:block hidden space-y-12 h-screen 
-					sticky top-0 border-r border-gray-900">
+					class="basis-1/6 md:block hidden space-y-12
+                    sticky top-0 border-r border-gray-900">
 					<NavBarMain
 						@on-create="triggerPhotoModal" />
 				</div>
                 
 				<!-- Center -->
-				<div 
-					class="lg:col-span-8 lg:grid md:col-span-6 scrollbar
-                  scrollbar-thumb-gray-900 md:ml-5 lg:ml-0 md:col-start-2 
-                    md:mt-8 md:p-0 col-span-12 p-2">
+                <div class="lg:max-w-4xl h-screen sm:h-auto w-full mx-auto sm:mt-10">
 					<!-- Profile Info -->
 					<div 
 						class="flex flex-col md:w-[935px] flex-nowrap space-y-4 
@@ -203,7 +198,9 @@
 									</div>
 								</div>
 
-								<img :src="post.carouselMedia[0]?.mediaUrl" />
+								<img 
+									v-if="post.carouselMedia"
+									:src="post.carouselMedia[0]?.mediaUrl" />
 							</div>
 						</div>
 
@@ -280,7 +277,8 @@ import type {
     navBarTabs,
     ModalName,
     User,
-    PostMedia
+    PostMedia,
+    PostCard as PostCardType
 } from '@/common/models'
 
 
@@ -334,7 +332,7 @@ const profileInfo = ref<User>({
 
 const savedItems = ref<Object[]>([])
 const taggedItems = ref<Object[]>([])
-const postItems = [{
+const postItems = ref<PostCardType[]>([{
     id: '0',
     userName: 'Rabee',
     createdAt: 'February 24',
@@ -345,7 +343,7 @@ const postItems = [{
     commentCount: 2456,
     profilePictureUrl: 'https://loremflickr.com/32/32/bird',
     isFollowed: false
-}]
+}])
 
 // Services
 const router = useRouter()
@@ -453,7 +451,7 @@ const emptyTabBarBodyMessage = computed(() => {
                     top: 'Share Photos',
                     body: 'When you share photos, they will appear on your profile.',
                     footer: 'Share your first photo',
-                    isEmpty: postItems === undefined || postItems.length == 0
+                    isEmpty: postItems === undefined || postItems.value.length == 0
             }
         case ProfileTab.Tagged:
             return {
