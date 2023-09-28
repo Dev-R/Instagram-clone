@@ -1,275 +1,250 @@
 <template>
-    <div class="bg-black">
-        <section 
-            v-if="!activeModal.isToggled"
-            class="container max-w-full mx-auto text-center 
+	<div class="bg-black">
+		<section 
+			v-if="!activeModal.isToggled"
+			class="container max-w-full mx-auto text-center 
             h-screen scrollbar scrollbar-thumb-gray-900"
-            :class="{ 'brightness-50 pointer-events-none': isModalToggled }">
-            <div class="grid grid-cols-12">
-                <!-- Left bar: Navigation -->
-                <div 
+			:class="{ 'brightness-50 pointer-events-none': isModalToggled }">
+			<div class="grid grid-cols-12">
+				<!-- Left bar: Navigation -->
+				<div 
 					class="xl:col-span-2 col-span-1 bg-black 
 					md:block hidden space-y-12 h-screen 
 					sticky top-0 border-r border-gray-900">
-                    <NavBarMain
-                        @on-create="triggerPhotoModal"/>
-                    
-                </div>
+					<NavBarMain
+						@on-create="triggerPhotoModal" />
+				</div>
                 
-                <!-- Center -->
-                <div 
-                    class="lg:col-span-8 lg:grid md:col-span-6 scrollbar
+				<!-- Center -->
+				<div 
+					class="lg:col-span-8 lg:grid md:col-span-6 scrollbar
                   scrollbar-thumb-gray-900 md:ml-5 lg:ml-0 md:col-start-2 
                     md:mt-8 md:p-0 col-span-12 p-2">
-            
-                    <!-- Profile Info -->
-                    <div 
-                        class="flex flex-col md:w-[935px] flex-nowrap space-y-4 
+					<!-- Profile Info -->
+					<div 
+						class="flex flex-col md:w-[935px] flex-nowrap space-y-4 
                         pt-2 md:pt-0 justify-self-end lg:mr-[64px]">            
-                        <div class="flex md:space-x-14 md:pl-14 md:pb-8">
-                            <!-- User Profile image -->
-                            <div>
-                                <img 
-                                    :src="profileInfo.profilePictureUrl" 
-                                    class="md:w-36 md:h-36 h-20 w-20 rounded-full">
-                            </div>
+						<div class="flex md:space-x-14 md:pl-14 md:pb-8">
+							<!-- User Profile image -->
+							<div>
+								<img 
+									:src="profileInfo.profilePictureUrl" 
+									class="md:w-36 md:h-36 h-20 w-20 rounded-full" />
+							</div>
 
-                            <!-- Profile data -->
-                            <div class="md:pl-20 bg-black flex flex-col space-y-6">
-
-                                <div 
-                                    class="md:flex md:flex-row flex-col md:space-x-4 
+							<!-- Profile data -->
+							<div class="md:pl-20 bg-black flex flex-col space-y-6">
+								<div 
+									class="md:flex md:flex-row flex-col md:space-x-4 
                                     space-y-3 items-center">
-                                    <!-- User name -->
-                                    <div 
-                                        class="md:pl-0 pl-6 font-sans text-lg font-normal
+									<!-- User name -->
+									<div 
+										class="md:pl-0 pl-6 font-sans text-lg font-normal
                                       text-white text-left md:mt-4">
-                                        {{ profileInfo.userName }}
-                                    </div>
+										{{ profileInfo.userName }}
+									</div>
 
-                                    <!-- Options -->
-                                    <div class="md:pl-0 pl-6">
-                                        <TheButton 
-                                            :color="'dark'" 
-                                            :size="'md'" 
-                                            :is-full="true">
-                                            <span 
-                                                @click="goToSettingsRoute"
-                                                class="sm:text-md text-xs font-semibold">
-                                                Edit Profile
-                                            </span>
-                                        </TheButton>
-                                    </div>
+									<!-- Options -->
+									<div class="md:pl-0 pl-6">
+										<TheButton 
+											:color="'dark'" 
+											:size="'md'" 
+											:is-full="true">
+											<span 
+												class="sm:text-md text-xs font-semibold"
+												@click="goToSettingsRoute">
+												Edit Profile
+											</span>
+										</TheButton>
+									</div>
 
-                                    <div class="md:pl-0 pl-6 hidden sm:block">
-                                        <TheButton 
-                                            :color="'dark'" 
-                                            :size="'md'" 
-                                            :is-full="true">
-                                            <span class="sm:text-md text-xs font-semibold">
-                                                View Archive
-                                            </span>
-                                        </TheButton>
-                                    </div>
+									<div class="md:pl-0 pl-6 hidden sm:block">
+										<TheButton 
+											:color="'dark'" 
+											:size="'md'" 
+											:is-full="true">
+											<span class="sm:text-md text-xs font-semibold">
+												View Archive
+											</span>
+										</TheButton>
+									</div>
 
-                                    <!-- Logged-in user Options -->
-                                    <div>
-                                        <SVGLoader 
-                                            @click="triggerSmallModal(ModalType.Setting, 'Followers')"
-                                            :icon="'profile-options'" 
-                                            :class="'md:block hidden sm:hover:cursor-pointer'"/>
-                                    </div>
-                                </div>
+									<!-- Logged-in user Options -->
+									<div>
+										<SVGLoader 
+											:icon="'profile-options'"
+											:class="'md:block hidden sm:hover:cursor-pointer'" 
+											@click="triggerSmallModal(ModalType.Setting, 'Followers')" />
+									</div>
+								</div>
 
-                                <!-- Profile Info Rendering: Desktop -->
-                                <div class="md:block hidden">
-
-                                    <div class="flex space-x-10">
-
-                                        <div 
-                                        v-for="(element, index) of profileInfoElements"
-                                            :key="index"
-                                            @click="element.onClick"
-                                            class="font-sans text-md font-normal 
-                                          text-white sm:hover:cursor-pointer">
-                                            <span class="font-sans text-sm font-bold text-white">
-                                                {{ element.value }}
-                                            </span>
-                                            {{ element.title }}
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-                        </div>
-                        <!-- Profile Info Rendering: Mobile -->
-                        <div 
-                            class="text-center border-t 
+								<!-- Profile Info Rendering: Desktop -->
+								<div class="md:block hidden">
+									<div class="flex space-x-10">
+										<div 
+											v-for="(element, index) of profileInfoElements"
+											:key="index"
+											class="font-sans text-md font-normal 
+                                          text-white sm:hover:cursor-pointer"
+											@click="element.onClick">
+											<span class="font-sans text-sm font-bold text-white">
+												{{ element.value }}
+											</span>
+											{{ element.title }}
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- Profile Info Rendering: Mobile -->
+						<div 
+							class="text-center border-t 
                             md:hidden block border-slate-1100 mt-2">
-                            <ul 
-                                class="flex space-x-14 flex-wrap 
+							<ul 
+								class="flex space-x-14 flex-wrap 
                                 justify-around pt-3 pl-4 pr-4">
+								<div 
+									v-for="(element, index) of profileInfoElements"
+									:key="index"
+									class="flex flex-col sm:hover:cursor-pointer"
+									@click="element.onClick">
+									<span class="text-sm subpixel-antialiase text-white">
+										{{ element.value }}
+									</span>
 
-                                <div 
-                                    v-for="(element, index) of profileInfoElements"
-                                    :key="index"
-                                    @click="element.onClick"
-                                    class="flex flex-col sm:hover:cursor-pointer">
+									<span class="text-sm subpixel-antialiase text-gray-400">
+										{{ element.title }}
+									</span>
+								</div>
+							</ul>
+						</div>
 
-                                    <span class="text-sm subpixel-antialiase text-white">
-                                        {{ element.value }}
-                                    </span>
-
-                                    <span class="text-sm subpixel-antialiase text-gray-400">
-                                        {{ element.title }}
-                                    </span>
-
-                                </div>
-
-                            </ul>
-                        </div>
-
-                        <!-- Tab bar Rendering Section-->
-                        <div class="text-center border-t border-slate-1100">
-                            <ul 
-                                class="flex space-x-14 flex-wrap -mb-px 
+						<!-- Tab bar Rendering Section-->
+						<div class="text-center border-t border-slate-1100">
+							<ul 
+								class="flex space-x-14 flex-wrap -mb-px 
                                 md:justify-center justify-between sm:px-6">
+								<li 
+									v-for="(tab, index) in tabElements" 
+									:key="index" 
+									class="sm:hover:cursor-pointer" 
+									:class="{ 'md:hidden block' : tab.name === ProfileTab.Peeds }"
+									@click="navBarTabSwitcher(tab.name as navBarTabs)">
+									<div 
+										:class="getTabClass(tab.name)">
+										<SVGLoader 
+											:icon="tab.iconLarge" 
+											:class="'md:block hidden'" />
+										<SVGLoader 
+											:icon="tab.iconSmall" 
+											:class="'md:hidden block'" />
+										<span class="text-xs subpixel-antialiased hidden md:block">
+											{{ tab.label }}
+										</span>
+									</div>
+								</li>
+							</ul>
+						</div>
 
-                                <li 
-                                    v-for="(tab, index) in tabElements" 
-                                    :key="index" 
-                                    @click="navBarTabSwitcher(tab.name as navBarTabs)" 
-                                    class="sm:hover:cursor-pointer"
-                                    :class="{'md:hidden block' : tab.name === ProfileTab.Peeds}">
-                                    <div 
-                                        :class="getTabClass(tab.name)">
-                                        <SVGLoader 
-                                            :icon="tab.iconLarge" 
-                                            :class="'md:block hidden'"/>
-                                        <SVGLoader 
-                                            :icon="tab.iconSmall" 
-                                            :class="'md:hidden block'"/>
-                                        <span class="text-xs subpixel-antialiased hidden md:block">
-                                            {{ tab.label }}
-                                        </span>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
+						<!-- Empty Section Messages Rendering Section -->
+						<div 
+							v-if="emptyTabBarBodyMessage.isEmpty"
+							class="flex flex-col space-y-2 self-center pt-14 h-screen">
+							<i 
+								class="text-slate-1100 text-6xl pb-2"
+								:class="emptyTabBarBodyMessage.icon"></i>
 
-                        <!-- Empty Section Messages Rendering Section -->
-                        <div 
-                            v-if="emptyTabBarBodyMessage.isEmpty"
-                            class="flex flex-col space-y-2 self-center pt-14 h-screen">
-                            <i 
-                                class="text-slate-1100 text-6xl pb-2"
-                                :class="emptyTabBarBodyMessage.icon"></i>
+							<div class="flex flex-col space-y-4">
+								<span class="font-sans text-3xl text-white font-extrabold">
+									{{ emptyTabBarBodyMessage.top }}
+								</span>
 
-                            <div class="flex flex-col space-y-4">
-                                <span class="font-sans text-3xl text-white font-extrabold">
-                                    {{ emptyTabBarBodyMessage.top }}
-                                </span>
+								<span class="font-sans text-sm text-white font-normal">
+									{{ emptyTabBarBodyMessage.body }}
+								</span>
 
-                                <span class="font-sans text-sm text-white font-normal">
-                                    {{ emptyTabBarBodyMessage.body }}
-                                </span>
-
-                                <span class="font-sans text-sm text-sky-600 font-semibold">
-                                    {{ emptyTabBarBodyMessage.footer }}
-                                </span>
-                            </div>
-                            <i class="fa-regular fa-bookmark"></i>
-                        </div>
+								<span class="font-sans text-sm text-sky-600 font-semibold">
+									{{ emptyTabBarBodyMessage.footer }}
+								</span>
+							</div>
+							<i class="fa-regular fa-bookmark"></i>
+						</div>
                         
-                        <!-- Image Rendering Section -->
-                        <div 
-                            v-if="currentActiveTab === ProfileTab.Posts"
-                            class="flex flex-wrap">
-                            
-                            <div 
-                                v-for="(post, index) of postItems"
-                                @click="triggerCommentModal(index)"
-                                class="h-fit w-fit basis-1/3 p-0.5 
+						<!-- Image Rendering Section -->
+						<div 
+							v-if="currentActiveTab === ProfileTab.Posts"
+							class="flex flex-wrap">
+							<div 
+								v-for="(post, index) of postItems"
+								class="h-fit w-fit basis-1/3 p-0.5 
                                 relative hover:brightness-75 group 
-                                hover:cursor-pointer">
-                                <div 
-                                    class="flex absolute space-x-4 top-1/2 
+                                hover:cursor-pointer"
+								@click="triggerCommentModal(index)">
+								<div 
+									class="flex absolute space-x-4 top-1/2 
                                     left-1/2 transform -translate-x-1/2 -translate-y-1/2 
                                     md:group-hover:visible invisible">
-                                    <div 
-                                        class="flex font-bold text-white 
+									<div 
+										class="flex font-bold text-white 
                                         text-md space-x-1">
-                                        <i class="fa-solid fa-heart mt-1"></i>
+										<i class="fa-solid fa-heart mt-1"></i>
 
-                                        <span>
-                                            {{ post.likeCount }}
-                                        </span>
-                                    </div>
+										<span>
+											{{ post.likeCount }}
+										</span>
+									</div>
 
-                                    <div class="flex font-bold text-white text-md space-x-1">
-                                        <i class="fa-solid fa-comment mt-1"></i>
+									<div class="flex font-bold text-white text-md space-x-1">
+										<i class="fa-solid fa-comment mt-1"></i>
 
-                                        <span>
-                                            {{ post.commentCount }}
-                                        </span>
-                                    </div>
+										<span>
+											{{ post.commentCount }}
+										</span>
+									</div>
+								</div>
 
-                                </div>
+								<img :src="post.carouselMedia[0]?.mediaUrl" />
+							</div>
+						</div>
 
-                                <img :src="post.carouselMedia[0]?.mediaUrl">
-                            </div>
+						<div class="p-5 text-sm subpixel-antialiase text-white md:block hidden">
+							© 2023 PhotoFlow
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
 
-                        </div>
+		<!-- Modals -->
+		<div 
+			v-if="activeModal.name === ModalType.Profile"
+			class="md:w-[470px] justify-self-end p-2">
+			<PostCard
+				:post-item="postItems[activeModal.postId]" />
+		</div>
 
-                        <div class="p-5 text-sm subpixel-antialiase text-white md:block hidden">
-                            © 2023 PhotoFlow
-                        </div>
-
-                    </div>
-                    
-                </div>
-                
-            </div>
-        </section>
-
-        <!-- Modals -->
-
-        <!-- PostCard Modal -->
-        <div 
-            v-if="activeModal.name === ModalType.Profile"
-            class="md:w-[470px] justify-self-end p-2">
-            <PostCard
-                :post-item="postItems[activeModal.postId]"/>
-        </div>
-
-        <!-- Comment Modal -->
-        <CommentModal
-            @on-modal-closed="triggerCommentModal" 
-            :post-comment="{
-                isToggled: activeModal.isToggled && activeModal.name === ModalType.Comment,
-                post: postItems[activeModal.postId],
-            }"/>
+		<CommentModal
+			:post-comment="{
+				isToggled: activeModal.isToggled && activeModal.name === ModalType.Comment,
+				post: postItems[activeModal.postId],
+			}" 
+			@on-modal-closed="triggerCommentModal" />
         
-        <!-- Photo Modal -->
-        <PhotoModal
-            @on-modal-closed="triggerPhotoModal"
-            :is-toggled="photoModal.isToggled" />
+		<PhotoModal
+			:is-toggled="photoModal.isToggled"
+			@on-modal-closed="triggerPhotoModal" />
 
-        <!-- Followers/ Following Modal -->
-        <FollowModal 
-            @on-modal-closed="triggerSmallModal"
-		    :modal-size="ModalSize.Medium"
-            :title="smallModal.title" 
-            :items="smallModal.items" :is-toggled="smallModal.isToggled && smallModal.name === ModalType.Follow" />
+		<FollowModal 
+			:modal-size="ModalSize.Medium"
+			:title="smallModal.title"
+			:items="smallModal.items" 
+			:is-toggled="smallModal.isToggled && smallModal.name === ModalType.Follow"
+			@on-modal-closed="triggerSmallModal" />
 
-        <!-- Quick Setting Modal -->
-        <SettingModal
-            @on-modal-closed="triggerSmallModal"
-            :is-toggled="smallModal.isToggled && smallModal.name === ModalType.Setting"/>
-
-    </div>
+		<SettingModal
+			:is-toggled="smallModal.isToggled && smallModal.name === ModalType.Setting"
+			@on-modal-closed="triggerSmallModal" />
+	</div>
 </template>
 
 <script setup lang="ts">
