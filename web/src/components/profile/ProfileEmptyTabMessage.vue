@@ -47,7 +47,11 @@ const prop = defineProps({
         type: Boolean as PropType<boolean>,
         required: true
     },
-    isPostOrPeedTabEmpty: {
+    isPostTabEmpty: {
+        type: Boolean as PropType<boolean>,
+        required: true
+    },
+    isPeedTabEmpty: {
         type: Boolean as PropType<boolean>,
         required: true
     }
@@ -59,13 +63,20 @@ const prop = defineProps({
 const emptyTabBarBodyMessage = computed(() => {
     switch (prop.currentActiveTab) {
         case ProfileTab.Posts:
+            return {
+                icon: 'fa-solid fa-photo-film',
+                top: 'Share Photos',
+                body: 'When you share photos, they will appear on your profile.',
+                footer: 'Share your first photo',
+                isEmpty: prop.isPostTabEmpty
+            }
         case ProfileTab.Peeds:
             return {
                 icon: 'fa-solid fa-photo-film',
-                    top: 'Share Photos',
-                    body: 'When you share photos, they will appear on your profile.',
-                    footer: 'Share your first photo',
-                    isEmpty: prop.isPostOrPeedTabEmpty
+                top: 'Share Photos',
+                body: 'When you share photos, they will appear on your profile.',
+                footer: 'Share your first photo',
+                isEmpty: prop.isPeedTabEmpty
             }
         case ProfileTab.Tagged:
             return {
