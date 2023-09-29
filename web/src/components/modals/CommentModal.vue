@@ -69,13 +69,14 @@
 						<div class="sm:block hidden">
 							<div class="flex justify-between border-b border-slate-800 p-3">
 								<div class="flex space-x-2">
-
 									<div class="story-avatar">
-											<a href="#" class="block bg-white rounded-full relative">
-												<img 
-													class="w-8 h-8 rounded-full object-cover p-0.5 bg-black"
-													:src="postComment.post.profilePictureUrl"/>
-											</a>
+										<a
+											href="#"
+											class="block bg-white rounded-full relative">
+											<img 
+												class="w-8 h-8 rounded-full object-cover p-0.5 bg-black"
+												:src="postComment.post.profilePictureUrl" />
+										</a>
 									</div>
 										
 									<div class="flex pt-1">
@@ -92,7 +93,6 @@
 											{{ postComment.post.createdAt }}
 										</div>
 									</div>
-
 								</div>
 
 								<div class="cursor-pointer">
@@ -116,12 +116,12 @@
 
 								<div class="flex w-full relative">
 									<input 
-										@click="onAddComment()"
 										v-model="commentForm"
-										type="text" 
+										type="text"
 										class="bg-black border border-slate-800
                                         text-white text-sm rounded-full w-full p-3" 
-										placeholder="Add a comment..." />
+										placeholder="Add a comment..." 
+										@click="onAddComment()" />
 									<div 
 										:class="commentForm ? 'text-sky-500 sm:cursor-pointer' : 'text-white'"
 										class="absolute inset-y-0 right-5 
@@ -141,6 +141,7 @@
                         scrollbar-none">
 						<CommentCard 
 							v-for="comment of postComment.post.comments" 
+							:key="comment.id"
 							v-if="postComment.post.comments && postComment.post.comments.length >= 1"
 							:comment="comment"
 							@on-comment-like="onCommentLiked" />
@@ -220,13 +221,13 @@
 							</span>
 
 							<textarea 
-									ref="commentFormElementRef"
-									v-model="commentForm"
-									rows="1"
-									class="focus:outline-none resize-none placeholder:text-gray-1100
+								ref="commentFormElementRef"
+								v-model="commentForm"
+								rows="1"
+								class="focus:outline-none resize-none placeholder:text-gray-1100
                                     block w-full text-md bg-black text-white border-none mx-5"
-									placeholder="Add a comment..."
-									@keypress.enter.prevent="onAddComment"></textarea>
+								placeholder="Add a comment..."
+								@keypress.enter.prevent="onAddComment"></textarea>
 							<span
 								:class="commentForm ? 'text-sky-500 sm:cursor-pointer' : 'text-white'"
 								class="font-sans text-md text-white justify-self-end mb-2 cursor-default"
@@ -241,150 +242,145 @@
 	</div>
 </template>
 
-<script lang="ts">
-import { defineComponent, onMounted, computed, ref } from 'vue'
+<script setup lang="ts">
+import {
+    computed,
+    ref
+} from 'vue'
 
 import {
-	SVGLoader,
-	CommentCard,
-	MediaCarousel,
+    SVGLoader,
+    CommentCard,
+    MediaCarousel,
+	EmojiPickerModal
 } from '@/components'
 
-import EmojiPickerModal from '@/components/modals/EmojiPickerModal.vue'
 
-import { 
-	ModalSize,
-	type PostCommentModal,
-	type PostCommentCard,
-	type Emoji
+import {
+    ModalSize,
+    type PostCommentModal,
+    type PostCommentCard,
+    type Emoji
 } from '@/common'
 
-export default defineComponent({
-	name: 'CommentModal',
-	setup(props, context) {
-		// Forms 
-		const commentForm = ref<string>('')
+import {
+    useModalManagerStore
+} from '@/stores'
 
-		// DOM Refs
-		const commentFormElementRef = ref<HTMLAreaElement>()
-    
-		// Computed
-		const numberOfLikes = computed(() => {
-			return props.postComment.post.likeCount >= 1 ? `${ props.postComment.post.likeCount } Likes` : 'Be the first to like this' 
-		})
 
-		/**
-		 * Select emoji when user click on the emoji icon
-		 * @param {Emoji} emoji - The emoji selected
-		 */
-		const appendEmoji = (emoji: Emoji) => {
-			commentForm.value += emoji.i
-		}
-
-		/**
-       * Focus on text area when user click on the comment icon
-       */
-		const focusTextArea = () => {
-			commentFormElementRef.value?.focus()
-		}
-
-	   /**
-       * Reset comment value
-       */
-		const resetCommentValue = () => {
-			commentForm.value = ''
-		}
-
-		/**
-       * Emit signal to add new comment
-       * @param {string} commentText - The text of the new comment
-       */
-		const onAddComment = () => {
-			if(commentForm.value) {
-				context.emit('onAddComment', commentForm.value)
-				resetCommentValue()      
-			}
-		}
-
-	   /**
-       * Emit signal to delete existing comment
-       * @param {number} commentId - The ID of the comment to be deleted
-       */
-		const onDeleteComment = (commentId: number) => {
-			context.emit('onDeleteComment', commentId)
-		}
-
-	   /**
-       * Emit signal when the modal is opened
-       * @event modal-opened
-       */
-		const onModalOpened = () => {
-			context.emit('onModalOpened')
-		}
-
-	   /**
-       * Emit signal when the modal is closed
-       * @event modal-closed
-       */
-		const onModalClosed = () => {
-			context.emit('onModalClosed')
-		}
-
-	   /**
-       * Emit signal when a comment is liked
-       * @event comment-liked
-       * @param {number} commentId - The ID of the comment being liked
-       */
-		const onCommentLiked = (commentId: PostCommentCard['id']) => {
-			context.emit('onCommentLiked', commentId)
-		}
-
-	   /**
-       * Emit signal when a post is liked
-       */
-		const onPostLike = () => {
-			context.emit('onPostLiked')
-		}
-
-		onMounted(() => {
-		})
-		return {
-			focusTextArea,
-			onModalClosed,
-			onPostLike,
-			onAddComment,
-			onCommentLiked,
-			appendEmoji,
-			ModalSize,
-			numberOfLikes,
-			commentFormElementRef,
-			commentForm
-		}
-	},
-    components: { 
-		MediaCarousel,
-		SVGLoader,
-		CommentCard,
-		EmojiPickerModal
-	},
-	props: {
-		postComment: {
-			type: Object as () => PostCommentModal,
-			required: true
-		},
-		modalSize: {
-			type: String,
-			default: ModalSize.ExtraLarge
-		}
-	},
-	emits: [
-		'onAddComment',
-		'onDeleteComment',
-		'onModalOpened',
-		'onModalClosed',
-		'onCommentLiked',
-		'onPostLiked'
-	],
+const prop = defineProps({
+    postComment: {
+        type: Object as() => PostCommentModal,
+        required: true,
+    },
+    modalSize: {
+        type: String,
+        default: ModalSize.ExtraLarge
+    }
 })
+
+const emit = defineEmits([
+    'onAddComment',
+    'onDeleteComment',
+    'onModalOpened',
+    'onModalClosed',
+    'onCommentLiked',
+    'onPostLiked'
+])
+
+// Forms 
+const commentForm = ref<string>('')
+
+// DOM Refs
+const commentFormElementRef = ref<HTMLAreaElement>()
+
+// Stores
+const modalManagerStore = useModalManagerStore()
+
+// Computed
+const numberOfLikes = computed(() => {
+    return prop.postComment.post.likeCount >= 1 ? `${ prop.postComment.post.likeCount } Likes` : 'Be the first to like this'
+})
+
+/**
+ * Select emoji when user click on the emoji icon
+ * @param {Emoji} emoji - The emoji selected
+ */
+const appendEmoji = (emoji: Emoji) => {
+    commentForm.value += emoji.i
+}
+
+/**
+ * Focus on text area when user click on the comment icon
+ */
+const focusTextArea = () => {
+    commentFormElementRef.value?.focus()
+}
+
+/**
+ * Reset comment value
+ */
+const resetCommentValue = () => {
+    commentForm.value = ''
+}
+
+/**
+ * Emit signal to add new comment
+ * @param {string} commentText - The text of the new comment
+ */
+const onAddComment = () => {
+    if (commentForm.value) {
+        emit('onAddComment', commentForm.value)
+        resetCommentValue()
+    }
+}
+
+/**
+ * Emit signal to delete existing comment
+ * @param {number} commentId - The ID of the comment to be deleted
+ */
+const onDeleteComment = (commentId: number) => {
+    emit('onDeleteComment', commentId)
+}
+
+//    /**
+//    * Emit signal when the modal is opened
+//    * @event modal-opened
+//    */
+// 	const onModalOpened = () => {
+// 		emit('onModalOpened')
+// 	}
+
+/**
+ * Emit signal when the modal is closed
+ * @event modal-closed
+ */
+const onModalClosed = () => {
+    emit('onModalClosed')
+    closeCommentModal()
+}
+
+/**
+ * Emit signal when a comment is liked
+ * @event comment-liked
+ * @param {number} commentId - The ID of the comment being liked
+ */
+const onCommentLiked = (commentId: PostCommentCard['id']) => {
+    emit('onCommentLiked', commentId)
+}
+
+/**
+ * Emit signal when a post is liked
+ */
+const onPostLike = () => {
+    emit('onPostLiked')
+}
+
+/**
+ * Close the comment modal from the modal manager store
+ */
+const closeCommentModal = () => {
+        modalManagerStore.modalName = null
+}
 </script>
 
