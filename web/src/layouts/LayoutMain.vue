@@ -10,46 +10,33 @@
     </div>
 </template>
 
-<script lang="ts">
-import { onMounted, defineComponent, computed } from 'vue';
-import { useRoute } from 'vue-router';
+<script setup lang="ts">
+import {
+    onMounted,
+    computed
+} from 'vue';
+import {
+    useRoute
+} from 'vue-router';
 
-import BottomNavBar from '@/components/navbars/BottomNavBar.vue';
-import SVGLoader from '@/components/basics/SVGLoader.vue';
-import TopNavBar from '@/components/navbars/TopNavBar.vue';
+import {
+    TopNavBar,
+    BottomNavBar
+} from '@/components'
 
+// Routes without no top/bottom navbars
+const topNavBarHiddenRoutes = ['style', 'stories', 'direct', 'reels', 'explore']
+const bottomNavBarHiddenRoutes = ['stories', 'style', 'direct']
 
+// Services
+const route = useRoute()
 
-export default defineComponent({
-    name: 'LayoutMain',
-    setup() {
+// Computed
+const routeName = computed(() => {
+    return route.name ? route.name.toString() : ''
+})
 
-        // Routes without no top/bottom navbars
-        const topNavBarHiddenRoutes = ['style', 'stories', 'direct', 'reels', 'explore']
-        const bottomNavBarHiddenRoutes = ['stories', 'style', 'direct']
-
-        // Services
-        const route = useRoute()
-
-        // Computed
-        const routeName = computed(()=> {
-            return route.name ? route.name.toString() : ''
-        })
-
-        onMounted(() => {
-            // console.log('Mounted LayoutMain')
-        })
-
-        return {
-            routeName,
-            topNavBarHiddenRoutes,
-            bottomNavBarHiddenRoutes
-        }
-    },
-    components: {
-        BottomNavBar,
-        SVGLoader,
-        TopNavBar
-    }
+onMounted(() => {
+    // console.log('Mounted LayoutMain')
 })
 </script>
