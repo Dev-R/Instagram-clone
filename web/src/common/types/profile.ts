@@ -53,12 +53,12 @@ export interface ProfileTabElement {
     /**
      * Icon for the tab
      */
-    iconLarge?: ProfileTabIconSize
+    iconLarge: ProfileTabIconSize
 
     /**
      * Small icon for the tab if any
      */
-    iconSmall?: ProfileTabIconSize
+    iconSmall: ProfileTabIconSize
 
     /**
      * Action to be performed when the tab is clicked
