@@ -1,7 +1,7 @@
 <template>
 	<div class="text-center border-t border-slate-1100">
 		<ul 
-			class="flex space-x-14 flex-wrap -mb-px 
+			class="flex sm:space-x-14 flex-wrap -mb-px 
             md:justify-center justify-between sm:px-6">
 			<li 
 				v-for="(tab, index) in tabElements" 
@@ -12,11 +12,9 @@
 				<div 
 					:class="getTabClass(tab.name)">
 					<SVGLoader 
-                        v-if="tab.iconLarge"
 						:icon="tab.iconLarge" 
 						:class="'md:block hidden'" />
 					<SVGLoader 
-                        v-else-if="tab.iconSmall"
 						:icon="tab.iconSmall" 
 						:class="'md:hidden block'" />
 					<span class="text-xs subpixel-antialiased hidden md:block">
@@ -62,6 +60,7 @@ const tabElements: ProfileTabElement[] = [{
     {
         name: ProfileTab.Peeds,
         label: 'PEEDS',
+        iconLarge: 'profile-peed-large',
         iconSmall: 'profile-peed-small',
         action: () => emitTabSwitch(ProfileTab.Peeds)
     },
