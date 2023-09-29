@@ -1,0 +1,36 @@
+<template>
+	<div class="flex md:space-x-14 md:pl-14 md:pb-8">
+		<!-- User Profile image -->
+		<div>
+			<img 
+				:src="user.profilePictureUrl" 
+				class="md:w-36 md:h-36 h-20 w-20 rounded-full" />
+		</div>
+
+		<!-- User profile stats -->
+		<ProfileStats
+			:user="user" 
+			@open-modal="$emit('open-modal', $event)" />
+	</div>
+</template>
+
+<script setup lang="ts">
+import type {
+    PropType
+} from 'vue'
+
+import type {
+    User
+} from '@/common'
+
+import {
+    ProfileStats
+} from '@/components'
+
+defineProps({
+    user: {
+        type: Object as PropType<User>,
+        required: true
+    }
+})
+</script>
