@@ -29,7 +29,7 @@
 				<div class="flex flex-col space-y-5 lg:max-h-80 
 						max-h-full overflow-y-scroll scrollbar">
 					<!-- Suggestion Card Modal -->
-					<div v-for="item of <SuggestionCard[]>items" v-if="modalType === ModalType.Follow"
+					<div v-for="item of <SuggestionCard[]>items" v-if="modalType === ModalName.FOLLOW"
 						class="rounded-lg flex justify-between space-x-2 py-2 px-4">
 						<FollowCard :show-button="true" :profile-image="item.profilePictureUrl">
 							<template #user-name>
@@ -44,7 +44,7 @@
 						</FollowCard>
 					</div>
 					<!-- Comment Modal -->
-					<div v-else-if="modalType === ModalType.Comment" class="p-5">
+					<div v-else-if="modalType === ModalName.COMMENT" class="p-5">
 						<div v-if="shouldDisplayNoComments" class="flex flex-col place-self-center space-y-2">
 							<span class="font-sans text-2xl text-white font-bold mx-auto">
 								No comments yet.
@@ -54,7 +54,7 @@
 					</div>
 					<!-- Gender Modal -->
 					<div
-						v-else-if="modalType === ModalType.Gender"
+						v-else-if="modalType === ModalName.GENDER"
 						class="flex flex-col p-5">
 						<div
 							v-for="item of <Gender[]>items"
@@ -99,7 +99,7 @@ import type {
 } from '@/common'
 
 import {
-	ModalType,
+	ModalName,
 	ModalSize
 } from '@/common'
 
@@ -144,7 +144,7 @@ export default defineComponent({
 			shouldDisplayNoComments,
 			activeGender,
 			ModalSize,
-			ModalType,
+			ModalName,
 			onModalClosed,
 			onGenderSelected
 		}
@@ -174,8 +174,8 @@ export default defineComponent({
 			default: ModalSize.Large
 		},
 		modalType: {
-			type: String as () => ModalType,
-			default: ModalType.Follow
+			type: String as () => ModalName,
+			default: ModalName.FOLLOW
 		}
 	},
 	emits: [

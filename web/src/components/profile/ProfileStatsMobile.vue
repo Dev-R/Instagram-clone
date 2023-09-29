@@ -28,7 +28,8 @@ import type {
 } from 'vue'
 
 import {
-    ModalType,
+    ModalName,
+    type ModalType,
     type User,
 } from '@/common'
 
@@ -49,12 +50,12 @@ const userProfileStats = [{
     {
         title: 'followers',
         count: prop.user.followerCount,
-        action: () => emitModal(ModalType.Follow, 'Followers'),
+        action: () => emitModal(ModalName.FOLLOW, 'Followers'),
     },
     {
         title: 'following',
         count: prop.user.followingCount,
-        action: () => emitModal(ModalType.Follow, 'Following'),
+        action: () => emitModal(ModalName.FOLLOW, 'Following'),
     }
 ]
 

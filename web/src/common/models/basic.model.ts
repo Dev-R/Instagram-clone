@@ -1,7 +1,7 @@
 /**
  * Type alias for the differet type acceptable by the modal.
  */
-export type ModalType = 'comment-modal' | 'follow-modal'
+export type ModalType = 'comment-modal' | 'follow-modal' | 'setting-modal' | 'gender-modal' | 'profile-modal';
 
 /**
  * Interface for the different gender acceptable by the modal.
