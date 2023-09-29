@@ -15,25 +15,22 @@
 					<div 
 						class="flex flex-col md:w-[935px] flex-nowrap space-y-4 
                         pt-2 md:pt-0 justify-self-end lg:mr-[64px]">
-						<!-- TODO: Event listeners -->
+                        
 						<ProfileHeader 
-							:user="profileInfo" />
-						
-						<!-- TODO: Event listeners	-->
-						<ProfileStatsMobile 
-                            @open-modal="triggerSmallModal"
-							:user="profileInfo" />
+                            @open-modal="toggleStatsModal"
+							:user="profile" />
 
-						
 						<ProfileTabBar 
-							@switch-tab="navBarTabSwitcher" />
+                            :current-tab="activeTab"
+							@switch-tab="switchActiveTab" />
 
 						<!-- TODO: Remove hard codded boolean -->
 						<ProfileEmptyTabMessage 
-							:current-active-tab="currentActiveTab"
-							:is-saved-tab-empty="false"
-							:is-post-or-peed-tab-empty="false"
-							:is-tagged-tab-empty="false" />
+							:current-active-tab="activeTab"
+                            :is-post-tab-empty="false"
+							:is-saved-tab-empty="true"
+                            :is-peed-tab-empty="true"
+							:is-tagged-tab-empty="true" />
                         
 
 						<!-- TODO: Post Card Modal 
@@ -56,8 +53,8 @@
                             onUnmounted(() => window.removeEventListener('resize', onWidthChange))
                         -->
 						<PostCoverCard
-							v-if="currentActiveTab === ProfileTab.Posts"
-							:posts="postItems" />
+							v-if="activeTab === ProfileTab.Posts"
+							:posts="posts" />
 
 						<ProfileFooter />
 					</div>
@@ -66,12 +63,12 @@
 		</section>
 
 		<!-- Modals -->    
-		<FollowModal 
+		<StatsModal 
 			:modal-size="ModalSize.Medium"
-			:title="smallModal.title"
-			:items="smallModal.items" 
-			:is-toggled="smallModal.isToggled && smallModal.name === ModalType.Follow"
-			@on-modal-closed="triggerSmallModal" />
+			:title="statsModal.title"
+			:items="statsModal.stats" 
+			:is-toggled="statsModal.isToggled"
+			@on-modal-closed="toggleStatsModal" />
 	</div>
 </template>
 
@@ -83,9 +80,8 @@ import {
 
 import {
     NavBarMain,
-    SmallModal as FollowModal,
+    SmallModal as StatsModal,
 	ProfileHeader,
-	ProfileStatsMobile,
     ProfileTabBar,
     ProfileEmptyTabMessage,
     PostCoverCard,
@@ -94,17 +90,12 @@ import {
 
 import {
     ProfileTab,
-    ModalType,
-    ModalSize
-} from '@/common/enums'
-
-import type {
-    NavBarTabs,
-    User,
-    PostMedia,
-    PostCard as PostCardType
-} from '@/common/models'
-
+    ModalSize,
+    type NavBarTabs,
+    type User,
+    type PostMedia,
+    type PostCard as PostCardType
+} from '@/common'
 
 // TODO: Remove this sample data
 const mediasArraySampleA: PostMedia[] = [{
@@ -122,16 +113,16 @@ const mediasArraySampleA: PostMedia[] = [{
 ]
 
 // Data
-const currentActiveTab = ref<NavBarTabs>(ProfileTab.Posts) // Select profile-posts as default active tab
+const activeTab = ref<NavBarTabs>(ProfileTab.Posts) // Select profile-posts as default active tab
 
-const smallModal = ref({
+const statsModal = ref({
     name: '',
     title: '',
-    items: [] as any,
+    stats: [] as any, // Stats i.e current followers, following data of the user
     isToggled: false
 })
 
-const profileInfo = ref<User>({
+const profile = ref<User>({
     id: '0',
     firstName: 'Alex',
     lastName: 'Boo',
@@ -144,7 +135,7 @@ const profileInfo = ref<User>({
     mediaItems: [],
 })
 
-const postItems = ref<PostCardType[]>([{
+const posts = ref<PostCardType[]>([{
     id: '0',
     userName: 'Rabee',
     createdAt: 'February 24',
@@ -162,8 +153,8 @@ const postItems = ref<PostCardType[]>([{
  * Switch between profile tabs
  * @param currentTab Current active tab
  */
-const navBarTabSwitcher = (currentTab: NavBarTabs) => {
-    currentActiveTab.value = currentTab
+const switchActiveTab = (currentTab: NavBarTabs) => {
+    activeTab.value = currentTab
 }
 
 /**
@@ -171,20 +162,18 @@ const navBarTabSwitcher = (currentTab: NavBarTabs) => {
  * @param name Modal name (i.e: Follow, Setting)
  * @param title Modal title 
  */
- const triggerSmallModal = (name: string | undefined, title: string | undefined) => {
-    smallModal.value = {
-        name: name ? name : '',
-        title: title ? title : '',
-        isToggled: !smallModal.value.isToggled,
-        items: [{
-            userName: 'Rabee',
-            profilePictureUrl: 'https://loremflickr.com/1024/1080/bird',
-            suggested: [{
-                userName: 'Rabee',
-                profilePictureUrl: 'https://loremflickr.com/1024/1080/bird',
-                followedBy: 'imamomarsuleiman + 1 more'
-            }]
-        }]
+ const toggleStatsModal = ({
+    modalName,
+    modalTitle
+}: {
+    modalName ? : string,
+    modalTitle ? : string
+} = {}) => {
+    statsModal.value = {
+        name: modalName ? modalName : '',
+        title: modalTitle ? modalTitle : '',
+        isToggled: !statsModal.value.isToggled,
+        stats: [profile]
     }
 }
 
@@ -192,6 +181,6 @@ const navBarTabSwitcher = (currentTab: NavBarTabs) => {
  * Return true if any modal is toggled
  */
 const isModalToggled = computed(() => {
-    return smallModal.value.isToggled
+    return statsModal.value.isToggled
 })
 </script>
