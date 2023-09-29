@@ -12,6 +12,9 @@
 			:user="user" 
 			@open-modal="$emit('open-modal', $event)" />
 	</div>
+	<ProfileStatsMobile
+		@open-modal="$emit('open-modal', $event)"
+		:user="user" />
 </template>
 
 <script setup lang="ts">
@@ -24,7 +27,8 @@ import type {
 } from '@/common'
 
 import {
-    ProfileStats
+    ProfileStats,
+	ProfileStatsMobile
 } from '@/components'
 
 defineProps({
@@ -33,4 +37,8 @@ defineProps({
         required: true
     }
 })
+
+defineEmits([
+	'open-modal'
+])
 </script>
