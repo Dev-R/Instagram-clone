@@ -1,10 +1,10 @@
 <template>
-	<div class="flex md:space-x-14 md:pl-14 md:pb-8">
+	<div class="flex md:space-x-14 md:pl-14 md:pb-8 space-x-7">
 		<!-- User Profile image -->
 		<div>
 			<img 
 				:src="user.profilePictureUrl" 
-				class="md:w-36 md:h-36 h-20 w-20 rounded-full" />
+				class="md:w-36 md:h-36 h-20 w-20 rounded-full ml-9" />
 		</div>
 
 		<!-- User profile stats -->
