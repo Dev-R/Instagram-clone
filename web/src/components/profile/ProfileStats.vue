@@ -122,7 +122,7 @@ const router = useRouter()
  */
 const goToSettingsRoute = () => {
     router.push({
-        name: 'Settings'
+        name: 'settings'
     })
 }
 
