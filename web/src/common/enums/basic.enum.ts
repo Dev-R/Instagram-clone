@@ -57,7 +57,7 @@ export enum ModalSize {
 }
 
 
-/** Enum for modal names */
+/** Enum for modal types */
 export enum ModalName {
     FOLLOW = 'follow-modal', // Represents the follow modal
     PROFILE = 'profile-modal', // Represents the profile modal

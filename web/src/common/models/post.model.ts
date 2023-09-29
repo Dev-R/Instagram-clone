@@ -83,7 +83,7 @@ export interface PostComment {
  */
 export interface PostCommentModal {
   /** Flag to toggle the visibility of the modal */
-  isToggled : boolean
+  isToggled?: boolean
 
   /** The post associated with the comment modal */
   post: PostCard
