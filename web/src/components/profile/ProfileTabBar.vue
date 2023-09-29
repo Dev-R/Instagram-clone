@@ -12,9 +12,11 @@
 				<div 
 					:class="getTabClass(tab.name)">
 					<SVGLoader 
+                        v-if="tab.iconLarge"
 						:icon="tab.iconLarge" 
 						:class="'md:block hidden'" />
 					<SVGLoader 
+                        v-else-if="tab.iconSmall"
 						:icon="tab.iconSmall" 
 						:class="'md:hidden block'" />
 					<span class="text-xs subpixel-antialiased hidden md:block">
@@ -27,9 +29,13 @@
 </template>
 
 <script setup lang="ts">
-import {
-    ref,
+import type {
+    PropType
 } from 'vue'
+
+import {
+    SVGLoader
+} from '@/components'
 
 import {
     type NavBarTabs,
@@ -37,9 +43,14 @@ import {
     ProfileTab,
 } from '@/common'
 
+const prop = defineProps({
+    currentTab: {
+        type: String as PropType<NavBarTabs>,
+        required: true
+    }
+})
 const emit = defineEmits(['switchTab'])
 
-const currentActiveTab = ref<NavBarTabs>(ProfileTab.Posts) // Select profile-posts as default active tab
 
 const tabElements: ProfileTabElement[] = [{
         name: ProfileTab.Posts,
@@ -81,12 +92,12 @@ const emitTabSwitch = (currentTab: NavBarTabs) => {
 const getTabClass = (tabName: string) => {
     return {
         'flex items-center space-x-2 inline-block py-4 p-1 border-t-2 border-gray-300 sm:hover:border-gray-300': true,
-        'border-transparent text-gray-200': currentActiveTab.value !== tabName && tabName !==
+        'border-transparent text-gray-200': prop.currentTab !== tabName && tabName !==
             ProfileTab.Saved && tabName !== ProfileTab.Tagged,
-        'border-transparent text-gray-300': currentActiveTab.value !== tabName && (tabName ===
+        'border-transparent text-gray-300': prop.currentTab !== tabName && (tabName ===
             ProfileTab.Saved || tabName === ProfileTab.Tagged),
-        'text-white': currentActiveTab.value === tabName,
-        'sm:hover:text-gray-300': currentActiveTab.value !== tabName && (tabName === ProfileTab.Saved ||
+        'text-white': prop.currentTab === tabName,
+        'sm:hover:text-gray-300': prop.currentTab !== tabName && (tabName === ProfileTab.Saved ||
             tabName === ProfileTab.Tagged),
     }
 }
