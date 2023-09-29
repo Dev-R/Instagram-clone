@@ -36,25 +36,8 @@
 
         </div>
     </div>
-		<CommentModal
-            v-if="activePost && isModalToggled"
-			:post-comment="{
-				isToggled: isModalToggled,
-				post : activePost,
-			}" 
-			@on-comment-liked="$emit('on-comment-liked', $event)"
-			@on-add-comment="$emit('on-add-comment', $event)"
-			@on-post-liked="$emit('on-post-liked', $event)"
-			@on-modal-closed="triggerCommentModal" />
 
-        <!-- TODO: Figure this shit out -->
-        <!-- <div class="md:max-w-md justify-self-end p-2">
-            <PostCard
-                v-if="activeModal.name === ModalType.Profile"
-                :post-item="postItems[activeModal.postId]" />
-        </div> -->
 </template>
-
 <script setup lang="ts">
 import {
     ref,
@@ -62,16 +45,17 @@ import {
 } from 'vue'
 
 import {
-    CommentModal
-} from '@/components'
-
-import type {
-    PostCard
+    type PostCard as PostCardType,
+    ModalName
 } from '@/common'
+
+import { 
+    useModalManagerStore 
+} from '@/stores'
 
 defineProps({
     posts: {
-        type: Object as PropType<PostCard[]> ,
+        type: Object as PropType<PostCardType[]> ,
         required: true,
     }
 })
@@ -80,16 +64,28 @@ const emit = defineEmits([
     'on-add-comment',
     'on-post-liked'
 ])
-const activePost = ref<PostCard | undefined>(undefined)
 
-const isModalToggled = ref(false)
+// Data
+const activePost = ref<PostCardType | undefined>(undefined)
 
-const triggerCommentModal = () => {
-    isModalToggled.value = !isModalToggled.value
+// Services
+const modalStoreManager = useModalManagerStore()
+
+/**
+ * Open comment modal and set active post
+ */
+const openCommentModal = () => {
+    modalStoreManager.openModal(ModalName.COMMENT)
+    modalStoreManager.setActivePost(activePost.value)
 }
 
-const handlePostCover = (post: PostCard) => {
+/**
+ * Handle post cover click
+ * @param post 
+ */
+const handlePostCover = (post: PostCardType) => {
     activePost.value = post
-    triggerCommentModal()
+    openCommentModal()
 }
+
 </script>
