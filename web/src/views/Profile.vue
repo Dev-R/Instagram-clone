@@ -10,7 +10,6 @@
 					<NavBarMain />
 				</div>
                 
-				<!-- Center -->
 				<div class="lg:max-w-4xl h-screen sm:h-auto w-full mx-auto sm:mt-10">
 					<div 
 						class="flex flex-col md:w-[935px] flex-nowrap space-y-4 
@@ -32,26 +31,6 @@
                             :is-peed-tab-empty="true"
 							:is-tagged-tab-empty="true" />
                         
-
-						<!-- TODO: Post Card Modal 
-                            // If screen size > 768 open comment Modal else open Profile Modal
-                            const modalName = screenSizeType.value === 'xs' ? ModalType.Profile : ModalType.Comment
-                            /** 
-                            * Return current screen size type
-                            */
-                            const screenSizeType = computed(() => {
-                                if (windowWidth.value < 550) return 'xs'
-                                return false
-                            })
-                            const windowWidth = ref(window.innerWidth) // Current window width
-                            /**
-                            * Get current screen width
-                            */
-                            const onWidthChange = () => windowWidth.value = window.innerWidth
-                            // Lifecycle Hooks 
-                            onMounted(() => window.addEventListener('resize', onWidthChange))
-                            onUnmounted(() => window.removeEventListener('resize', onWidthChange))
-                        -->
 						<PostCoverCard
 							v-if="activeTab === ProfileTab.Posts"
 							:posts="posts" />
