@@ -5,34 +5,37 @@
             space-y-3 items-center">
 			<!-- User name -->
 			<div 
-				class="md:pl-0 pl-6 font-sans text-lg font-normal
+				class="md:pl-0 font-sans text-lg font-normal
                 text-white text-left md:mt-4">
 				{{ user.userName }}
 			</div>
 
-			<!-- Personal logged-in user Options -->
-			<div class="md:pl-0 pl-6">
-				<TheButton 
-					:color="'dark'" 
-					:size="'md'" 
-					:is-full="true">
-					<span 
-						class="sm:text-md text-xs font-semibold"
-						@click="goToSettingsRoute">
-						Edit Profile
-					</span>
-				</TheButton>
+			<div class="flex flex-row space-x-6">
+				<!-- Personal logged-in user Options -->
+				<div class="md:pl-0">
+					<TheButton 
+						:color="'dark'" 
+						:size="'sm'" 
+						:is-full="true">
+						<span 
+							class="sm:text-md text-sm font-semibold"
+							@click="goToSettingsRoute">
+							Edit Profile
+						</span>
+					</TheButton>
+				</div>
+				<div class="md:pl-0">
+					<TheButton 
+						:color="'dark'" 
+						:size="'sm'" 
+						:is-full="true">
+						<span class="sm:text-md text-sm font-semibold">
+							View Archive
+						</span>
+					</TheButton>
+				</div>
 			</div>
-			<div class="md:pl-0 pl-6 hidden sm:block">
-				<TheButton 
-					:color="'dark'" 
-					:size="'md'" 
-					:is-full="true">
-					<span class="sm:text-md text-xs font-semibold">
-						View Archive
-					</span>
-				</TheButton>
-			</div>
+
 
 			<!-- Logged-in user Options -->
 			<div>
