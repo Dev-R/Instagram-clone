@@ -127,14 +127,11 @@
 <script setup lang="ts">
 import {
     ref,
-    computed
+    computed,
+	onMounted,
+    onUnmounted
 } from 'vue'
 
-
-// import EmojiPickerModal from '@/components/modals/EmojiPickerModal.vue'
-
-// import SVGLoader from '@/components/basics/SVGLoader.vue'
-// import MediaCarousel from '@/components/carousels/MediaCarousel.vue'
 import {
 	SVGLoader,
 	EmojiPickerModal,
@@ -145,6 +142,8 @@ import {
     type PostCard,
     type Emoji,
     ModalName,
+	type PostCard as PostCardType,
+    ScreenBreakpoint
 } from '@/common'
 
 import {
@@ -180,7 +179,8 @@ const findNumberOfLikes = computed(() => {
  * @param {string} postId - The ID of the post
  */
 const onOpenCommentModal = (post: PostCard) => {
-    modalStoreManager.openModal(ModalName.COMMENT);
+    const modalName = screenSizeType.value === 'xs' ? ModalName.PROFILE : ModalName.COMMENT;
+    modalStoreManager.openModal(modalName);
     modalStoreManager.setActivePost(post);
 };
 
@@ -201,4 +201,24 @@ const onPostComment = () => {
 const appendEmoji = (emoji: Emoji) => {
     comment.value += emoji.i;
 }
+
+/** 
+* Return current screen size type
+*/
+const screenSizeType = computed(() => (windowWidth.value < ScreenBreakpoint.Small ? 'xs' : false))
+
+/**
+ * Return current screen width
+ */
+const windowWidth = ref(window.innerWidth) // Current window width
+
+
+/**
+* Get current screen width
+*/
+const onWidthChange = () => windowWidth.value = window.innerWidth
+
+// Lifecycle Hooks 
+onMounted(() => window.addEventListener('resize', onWidthChange))
+onUnmounted(() => window.removeEventListener('resize', onWidthChange))
 </script>

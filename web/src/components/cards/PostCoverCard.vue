@@ -41,11 +41,15 @@
 <script setup lang="ts">
 import {
     ref,
+    computed,
+    onMounted,
+    onUnmounted,
     type PropType
 } from 'vue'
 
 import {
     type PostCard as PostCardType,
+    ScreenBreakpoint,
     ModalName
 } from '@/common'
 
@@ -75,7 +79,8 @@ const modalStoreManager = useModalManagerStore()
  * Open comment modal and set active post
  */
 const openCommentModal = () => {
-    modalStoreManager.openModal(ModalName.COMMENT)
+    const modalName = screenSizeType.value === 'xs' ? ModalName.PROFILE : ModalName.COMMENT
+    modalStoreManager.openModal(modalName)
     modalStoreManager.setActivePost(activePost.value)
 }
 
@@ -87,5 +92,25 @@ const handlePostCover = (post: PostCardType) => {
     activePost.value = post
     openCommentModal()
 }
+
+/** 
+* Return current screen size type
+*/
+const screenSizeType = computed(() => (windowWidth.value < ScreenBreakpoint.Small ? 'xs' : false))
+
+/**
+ * Return current screen width
+ */
+const windowWidth = ref(window.innerWidth) // Current window width
+
+
+/**
+* Get current screen width
+*/
+const onWidthChange = () => windowWidth.value = window.innerWidth
+
+// Lifecycle Hooks 
+onMounted(() => window.addEventListener('resize', onWidthChange))
+onUnmounted(() => window.removeEventListener('resize', onWidthChange))
 
 </script>
