@@ -51,210 +51,214 @@
 	</div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, provide, watchEffect, onMounted } from 'vue'
-
-import { useRouter } from 'vue-router'
-
-import SwiperInstance, {
-	Mousewheel,
-	Pagination,
-	EffectCube,
-	Autoplay,
-	Navigation
-} from 'swiper'
-
-import {
-	Swiper,
-	SwiperSlide
-} from 'swiper/vue'
-
+<script setup lang="ts">
+// Swiper styles
 import 'swiper/css/bundle'
 import 'swiper/css'
 import 'swiper/css/pagination'
 import 'swiper/css/navigation'
 
 import {
-	SVGLoader,
-	StoryCard
+    ref,
+    provide,
+    watchEffect,
+    onMounted
+} from 'vue'
+
+import SwiperInstance, {
+    Mousewheel,
+    Pagination,
+    EffectCube,
+    Autoplay,
+    Navigation
+} from 'swiper'
+
+import {
+	Swiper as SwiperContainer,
+    SwiperSlide
+} from 'swiper/vue'
+
+import {
+    useRouter
+} from 'vue-router'
+
+import {
+    SVGLoader,
+    StoryCard
 } from '@/components'
 
 import {
-	type StoryCarousel,
-	type StoryType,
-	type StoryMedia,
-	StoryTypeEnum,
-	ZERO_PERCENTAGE,
-	ONE_HUNDRED_PERCENTAGE
+    type StoryCarousel,
+    type StoryType,
+    type StoryMedia,
+    StoryTypeEnum,
+    ZERO_PERCENTAGE,
+    ONE_HUNDRED_PERCENTAGE
 } from '@/common'
 
-export default defineComponent({
-	name: 'StoryView',
-	setup() {
-        const stories = ref<StoryCarousel[]>([])
+// Swiper modules
+const modules = [
+    Mousewheel,
+    Pagination,
+    EffectCube,
+    Autoplay,
+    Navigation
+]
 
-		// Data
-		const progressPercentage = ref(ZERO_PERCENTAGE)
 
-		// Trackers
-		const activeSwiperInstance = ref<SwiperInstance>()
-		const activeStoryMedia = ref<StoryMedia>(undefined)
-		const activeStoryType = ref<StoryType>(null)
+// Data
+const progressPercentage = ref(ZERO_PERCENTAGE)
+const stories = ref<StoryCarousel[]>([])
 
-		// Checkers
-		const isToggled = ref<boolean>(false)
-		const isStoryPlaying = ref<boolean>(false)
+// Trackers
+const activeSwiperInstance = ref<SwiperInstance>()
+const activeStoryMedia = ref<StoryMedia>(undefined)
+const activeStoryType = ref<StoryType>(null)
 
-		// Services
-		const router = useRouter()
+// Checkers
+const isToggled = ref<boolean>(false)
+const isStoryPlaying = ref<boolean>(false)
 
-		// Methods 
-		const toggleModel = () => {
-			isToggled.value = !isToggled.value
-		}
+// Services
+const router = useRouter()
 
-		const updateProgressPercentage = (percentage: number) => {
-			const newPercentage = (1 - percentage) * ONE_HUNDRED_PERCENTAGE
-			progressPercentage.value = newPercentage >= ONE_HUNDRED_PERCENTAGE ? ONE_HUNDRED_PERCENTAGE : newPercentage
-		}
+// Methods 
+const toggleModel = () => {
+    isToggled.value = !isToggled.value
+}
 
-		const updateLikeStatus = (story: StoryCarousel) => {
-			story.hasLiked = !story.hasLiked
-		}
+/**
+ * Update the progress percentage of the story
+ * @param percentage The percentage of the story
+ */
+const updateProgressPercentage = (percentage: number) => {
+    const newPercentage = (1 - percentage) * ONE_HUNDRED_PERCENTAGE
+    progressPercentage.value = newPercentage >= ONE_HUNDRED_PERCENTAGE ? ONE_HUNDRED_PERCENTAGE : newPercentage
+}
 
-		// Story controllers
-		const resumeStory = () => {
-			activeSwiperInstance.value?.autoplay.resume()
-		}
+/**
+ * Update the like status of the story
+ * @param story The story to update
+ */
+const updateLikeStatus = (story: StoryCarousel) => {
+    story.hasLiked = !story.hasLiked
+}
 
-		const pauseStory = () => {
-			activeSwiperInstance.value?.autoplay.pause()
-		}
+// Story controllers
+const resumeStory = () => {
+    activeSwiperInstance.value?.autoplay.resume()
+}
 
-		const onNextStory = () => {
-			activeSwiperInstance.value?.slideNext()
-		}
+const pauseStory = () => {
+    activeSwiperInstance.value?.autoplay.pause()
+}
 
-		const onPrevStory = () => {
-			activeSwiperInstance.value?.slidePrev()
-		}
+const onNextStory = () => {
+    activeSwiperInstance.value?.slideNext()
+}
 
-		const onAutoplayTimeLeft = (_: SwiperInstance, __: number, percentage: number) => {
-			updateProgressPercentage(percentage)
-		}
+const onPrevStory = () => {
+    activeSwiperInstance.value?.slidePrev()
+}
 
-		const pauseStoryVideo = () => {
-			if (activeStoryType.value === StoryTypeEnum.Video) {
-				const video = activeStoryMedia.value as HTMLVideoElement
-				video?.pause()
-			}
-		}
+/**
+ * Update the progress percentage of the story
+ * @param _ 
+ * @param __  
+ * @param percentage The percentage of the story 
+ */
+const onAutoplayTimeLeft = (_: SwiperInstance, __: number, percentage: number) => {
+    updateProgressPercentage(percentage)
+}
 
-		/**
-         * Assign the first media slide when swiper is fully mounted
-         * @param swiper The first swiper slide
-         */
-		const initializeSlideInstance = (swiper: SwiperInstance) => {
-			activeSwiperInstance.value = swiper
-		}
+const pauseStoryVideo = () => {
+    if (activeStoryType.value === StoryTypeEnum.Video) {
+        const video = activeStoryMedia.value as HTMLVideoElement
+        video?.pause()
+    }
+}
 
-		/**
-         * Update the current active video variable to match that of the active slide
-         * @param currentSlide Current active slide show
-         */
-		const updateActiveStory = (currentSlide: HTMLElement) => {
-			const image = currentSlide.querySelector('img') as HTMLImageElement
-			const video = currentSlide.querySelector('video') as HTMLVideoElement
+/**
+ * Assign the first media slide when swiper is fully mounted
+ * @param swiper The first swiper slide
+ */
+const initializeSlideInstance = (swiper: SwiperInstance) => {
+    activeSwiperInstance.value = swiper
+}
 
-			activeStoryMedia.value = video || image
-			activeStoryType.value = video ? StoryTypeEnum.Video : StoryTypeEnum.Image
-		}
+/**
+ * Update the current active video variable to match that of the active slide
+ * @param currentSlide Current active slide show
+ */
+const updateActiveStory = (currentSlide: HTMLElement) => {
+    const image = currentSlide.querySelector('img') as HTMLImageElement
+    const video = currentSlide.querySelector('video') as HTMLVideoElement
 
-		/**
-         * Update active swiper slide and video
-         * @param swiper The new active swiper slide
-         */
-		const updateActiveSlideInstance = (swiper: SwiperInstance) => {
-			activeSwiperInstance.value = swiper // Update active swiper slide to current one
-			const currentIndex = swiper.activeIndex
-			const currenSlide = swiper.slides[currentIndex]
-			pauseStoryVideo()
-			updateActiveStory(currenSlide)
-			resumeStory()
-		}
+    activeStoryMedia.value = video || image
+    activeStoryType.value = video ? StoryTypeEnum.Video : StoryTypeEnum.Image
+}
 
-		const validateStoryLength = () => {
-			if(stories.value.length === 0 ) {
-				router.push({ path: '/' })
-			}
-		}
-		// Watchers
-		/**
-         * Reset or set percentage progress based on slide index
-         */
-		watchEffect(() => {
-			if (progressPercentage.value >= ONE_HUNDRED_PERCENTAGE) {
-				const swiper = activeSwiperInstance.value
-				if (swiper && !swiper.isEnd) {
-					updateProgressPercentage(ZERO_PERCENTAGE)
-					onNextStory()
-				}
-			}
-		})
+/**
+ * Update active swiper slide and video
+ * @param swiper The new active swiper slide
+ */
+const updateActiveSlideInstance = (swiper: SwiperInstance) => {
+    activeSwiperInstance.value = swiper // Update active swiper slide to current one
+    const currentIndex = swiper.activeIndex
+    const currenSlide = swiper.slides[currentIndex]
+    pauseStoryVideo()
+    updateActiveStory(currenSlide)
+    resumeStory()
+}
 
-		// Event Listeners
-		/**
-         * Emit signal when the modal is closed
-         * @event modal-closed
-         */
-		const onModalClosed = () => {
-			setTimeout(() => {
-				router.push({ path: '/' })
-			}, 100)
-		}
+/**
+ * Validate the length of the stories array and redirect to home if empty
+ */
+const validateStoryLength = () => {
+    if (stories.value.length === 0) {
+        router.push({
+            path: '/'
+        })
+    }
+}
+// Watchers
+/**
+ * Reset or set percentage progress based on slide index
+ */
+watchEffect(() => {
+    if (progressPercentage.value >= ONE_HUNDRED_PERCENTAGE) {
+        const swiper = activeSwiperInstance.value
+        if (swiper && !swiper.isEnd) {
+            updateProgressPercentage(ZERO_PERCENTAGE)
+            onNextStory()
+        }
+    }
+})
 
-		onMounted(() => {
-			validateStoryLength()
-		})
-		// Providers
-		provide(
-			'pauseStory', pauseStory
-		)
+// Event Listeners
+/**
+ * Emit signal when the modal is closed
+ * @event modal-closed
+ */
+const onModalClosed = () => {
+    setTimeout(() => {
+        router.push({
+            path: '/'
+        })
+    }, 100)
+}
 
-		provide(
-			'resumeStory', resumeStory
-		)
+// Providers for child components
+provide(
+    'pauseStory', pauseStory
+)
 
-		return {
-			isToggled,
-			isStoryPlaying,
-			stories,
-			activeStoryMedia,
-			activeStoryType,
-			progressPercentage,
-			toggleModel,
-			updateLikeStatus,
-			updateActiveSlideInstance,
-			initializeSlideInstance,
-			onPrevStory,
-			onNextStory,
-			onModalClosed,
-			onAutoplayTimeLeft,
-			modules: [
-				Mousewheel,
-				Pagination,
-				EffectCube,
-				Autoplay,
-				Navigation
-			]
-		}
-	},
-	components: {
-		SwiperContainer: Swiper,
-		SwiperSlide,
-		SVGLoader,
-		StoryCard
-	},
+provide(
+    'resumeStory', resumeStory
+)
+
+onMounted(() => {
+    validateStoryLength()
 })
 </script>
 
