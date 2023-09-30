@@ -11,7 +11,7 @@
         <div role="status" class="absolute">
 
             <LoadingSpinner
-                v-if="isSearchLoading"
+                v-if="isLoading"
                 :is-loading="true" />
 
             <i v-else 
@@ -35,7 +35,7 @@ import {
 } from '@/components'
 
 defineProps({
-    isSearchLoading: {
+    isLoading: {
         type: Boolean as () => boolean | undefined,
         default: false
     }
