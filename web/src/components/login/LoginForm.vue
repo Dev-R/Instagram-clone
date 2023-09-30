@@ -1,6 +1,10 @@
 <template>
+	<MobileWelcomeScreen 
+		:is-mobile-login="isMobileLogin"
+		@mobile-login="triggerMobileLogin"/>
+		
 	<div 
-		:class="isMobile ? '' : 'hidden'"
+		:class="isMobileLogin ? '' : 'hidden'"
 		class="sm:flex sm:flex-col space-y-3 m-8">
 		<form 
 			class="flex flex-col sm:w-80 w-screen border rounded-sm p-8 md:h-fit"
@@ -104,19 +108,13 @@ import {
 import {
     TheInput,
     TheButton,
-    LoginFooter
+    LoginFooter,
+	MobileWelcomeScreen
 } from '@/components'
 
 import type {
     LoginInput
 } from '@/common'
-
-defineProps({
-    isMobile: {
-        type: Boolean,
-        required: true
-    }
-})
 
 // Form
 const loginForm = ref<LoginInput>({
@@ -124,6 +122,8 @@ const loginForm = ref<LoginInput>({
     password: null
 })
 
+// Checkers
+const isMobileLogin = ref<boolean>(false)
 const isLoading = ref<boolean>(false)
 
 //  Computed
@@ -162,4 +162,11 @@ const login = () => {
         isLoading.value = false
     }, 1000)
 }
+
+
+// A simple and a lazy solution to display login form in mobile screens
+const triggerMobileLogin = () => {
+    isMobileLogin.value = !isMobileLogin.value
+}
+
 </script>
