@@ -194,7 +194,7 @@
             :title="genderModal.title"
             :is-toggled="genderModal.isToggled" 
             :items="genderModal.items"
-            :modal-type="ModalType.Gender" 
+            :modal-type="ModalName.GENDER" 
             :modal-size="ModalSize.Medium"
             @on-modal-closed="toggleGenderModal" />
 	</div>
@@ -211,7 +211,7 @@ import {
  import {
 	ScreenBreakpoint,
 	ModalSize,
-	ModalType,
+	ModalName,
     type Gender,
 } from '@/common'
 
@@ -287,7 +287,7 @@ export default defineComponent({
             isModalToggled,
             isMobileScreen,
             ModalSize,
-            ModalType,
+            ModalName,
             screenWidth
         }
     },

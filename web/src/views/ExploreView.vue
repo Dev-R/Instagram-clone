@@ -43,7 +43,7 @@
 
 		<!-- PostCard Modal -->
 		<div 
-			v-show="activeModal.name === ModalType.Profile"
+			v-show="activeModal.name === ModalName.PROFILE"
 			class="md:w-[470px] justify-self-end p-2">
 			<PostCardModal
 				:post-item="posts[activeModal.postId]" />
@@ -52,7 +52,7 @@
 		<!-- Comment Modal -->
 		<CommentModal
 			:post-comment="{
-				isToggled: activeModal.isToggled && activeModal.name === ModalType.Comment,
+				isToggled: activeModal.isToggled && activeModal.name === ModalName.COMMENT,
 				post : posts[activeModal.postId],
 			}" 
 			@on-comment-liked="handleCommentLike"
@@ -87,9 +87,8 @@ import {
 
 import {
 	type PostCard as PostCardType,
-	type ModalName,
 	type PostMedia,
-	ModalType
+	ModalName
 } from '@/common'
 
 // Sample Data
@@ -176,7 +175,7 @@ export default defineComponent({
      * @param postId The ID of the post.
      */
     const triggerCommentModal = (postId: number | undefined) => {
-      const modalName = screenSizeType.value === 'xs' ? ModalType.Profile : ModalType.Comment
+      const modalName = screenSizeType.value === 'xs' ? ModalName.PROFILE : ModalName.COMMENT
       activeModal.value = { name: modalName, isToggled: !activeModal.value.isToggled, postId: postId ? postId : 0 }
 
       console.log("Triggering the following modal:", modalName)
@@ -265,7 +264,7 @@ export default defineComponent({
       handleCommentLike,
       handlePostLike,
       posts,
-      ModalType,
+      ModalName,
       activeModal,
       navigateToSearch,
       isModalToggled

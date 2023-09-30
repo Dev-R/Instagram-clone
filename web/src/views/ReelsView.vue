@@ -54,7 +54,7 @@
 		:title="commentModal.title"
 		:is-toggled="commentModal.isToggled" 
 		:items="commentModal.items"
-		:modal-type="ModalType.Comment" 
+		:modal-type="ModalName.COMMENT" 
 		:modal-size="ModalSize.Medium"
 		@on-modal-closed="toggleCommentModal" />
 
@@ -94,7 +94,7 @@ import {
 import {
 	ScreenBreakpoint,
 	ModalSize,
-	ModalType,
+	ModalName,
     type PostComment,
     type ReelMedia,
     type ReelPost,
@@ -260,7 +260,7 @@ export default defineComponent({
 			activeVideo,
             isMobileScreen,
 			commentModal,
-			ModalType,
+			ModalName,
 			ModalSize
 		}
 	},

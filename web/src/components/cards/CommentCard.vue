@@ -35,8 +35,8 @@
 		</div>
         
 		<div 
-			@click="triggerCommentLike"
-			class="text-gray-400 text-xs sm:text-xs cursor-pointer">
+			class="text-gray-400 text-xs sm:text-xs cursor-pointer"
+			@click="triggerCommentLike">
 			<SVGLoader 
 				v-if="isCommentLiked"
 				:icon="'like'" />
@@ -48,38 +48,38 @@
 	</div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from 'vue'
-import type { PostCommentCard } from '@/common'
-import { SVGLoader } from '@/components'
+<script setup lang="ts">
+import {
+    ref
+} from 'vue'
 
-export default defineComponent({
-    name: 'CommentCard',
-    setup(props, context) {
-		
-		const isCommentLiked = ref<boolean>(false)
-		
-		const triggerCommentLike = () => {
-			isCommentLiked.value = !isCommentLiked.value // TODO: Remove only for demo
-			context.emit('onCommentLike', props.comment.id)
-		}
-        return {
-			triggerCommentLike,
-			isCommentLiked
-        }
-    },
-    components: {
-        SVGLoader,
-    },
-    props: {
-		comment: {
-		type: Object as () => PostCommentCard,
-		required: true
-	}
-    },
-    emits: [
-        'onOpenCommentModal',
-        'onCommentLike'
-    ]
+import {
+    SVGLoader
+} from '@/components'
+
+import type {
+    PostCommentCard
+} from '@/common'
+
+
+const prop = defineProps({
+    comment: {
+        type: Object as() => PostCommentCard,
+        required: true
+    }
 })
+
+const emit = defineEmits([
+    'onOpenCommentModal',
+    'onCommentLike'
+])
+
+
+const isCommentLiked = ref < boolean > (false)
+
+const triggerCommentLike = () => {
+    isCommentLiked.value = !isCommentLiked.value // TODO: Remove only for demo
+    emit('onCommentLike', prop.comment.id)
+}
+
 </script>

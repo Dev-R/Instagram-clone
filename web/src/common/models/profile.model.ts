@@ -21,7 +21,7 @@ export type HTMLInputElementRef = InstanceType<typeof HTMLInputElement>;
 /**
  * Type alias representing the available tab options for the navigation bar.
  */
-export type navBarTabs = 'profile-posts' | 'profile-tagged' | 'profile-saved' | 'profile-peed'
+export type NavBarTabs = 'profile-posts' | 'profile-tagged' | 'profile-saved' | 'profile-peed'
 /**
  * Type alias representing the available modal options for the application.
  */

@@ -46,12 +46,13 @@
 			</div>
 		</section>
 
-		<CommentModal
+        <!-- TODO: Remove -->
+		<!-- <CommentModal
 			:post-comment="{
 				isToggled: commentModal.isToggled,
 				post: posts[commentModal.postId],
 			}" 
-			@on-modal-closed="triggerCommentModal" />
+			@on-modal-closed="triggerCommentModal" /> -->
         
         <!-- TODO: Remove to layout -->
 		<PhotoModal 

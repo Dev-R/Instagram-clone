@@ -27,8 +27,8 @@ const router = createRouter({
         },
         {
           path: '/profile',
-          name: 'profile',
-          component: () => import('@/views/ProfileView.vue'),
+          name: 'Alex_boo', // TODO: Change to dynamic
+          component: () => import('@/views/Profile.vue'),
           meta: { title: 'Profile' }
         },
         {
@@ -63,7 +63,7 @@ const router = createRouter({
         },
         {
           path: '/settings',
-          name: 'setting',
+          name: 'settings',
           component: () => import('@/views/SettingView.vue'),
           meta: { title: 'Setting' }
         },

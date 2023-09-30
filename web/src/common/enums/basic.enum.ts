@@ -58,10 +58,11 @@ export enum ModalSize {
 
 
 /** Enum for modal types */
-export enum ModalType {
-    Follow = 'follow-modal', // Represents the follow modal
-    Profile = 'profile-modal', // Represents the profile modal
-    Setting = 'setting-modal', // Represents the setting modal
-    Comment = 'comment-modal', // Represents the comment modal
-    Gender = 'gender-modal' // Represents the gender modal
+export enum ModalName {
+    FOLLOW = 'follow-modal', // Represents the follow modal
+    PROFILE = 'profile-modal', // Represents the profile modal
+    SETTING = 'setting-modal', // Represents the setting modal
+    COMMENT = 'comment-modal', // Represents the comment modal
+    GENDER = 'gender-modal', // Represents the gender modal,
+    PROFILE_SETTING = 'profile-setting-modal' // Represents the profile setting modal
 }
