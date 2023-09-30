@@ -1,7 +1,5 @@
 <template>
-    <div class="flex flex-col max-w-sm w-full border rounded-sm m-auto">
-        <ResetPasswordForm />
-    </div>
+    <ResetPasswordForm />
 </template>
 
 <script setup lang="ts">
