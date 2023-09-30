@@ -17,15 +17,13 @@
 			:navigation="{
 				enabled: true
 			}"
-			:class="'sm:w-3/12 sm:h-5/6 sm:rounded-lg w-screen self-center swiper-container'"
+			:class="'sm:max-w-md lg:max-w-lg sm:rounded-lg w-screen self-center swiper-container'"
 			@autoplayTimeLeft="onAutoplayTimeLeft"
 			@after-init="initializeSlideInstance"
 			@active-index-change="updateActiveSlideInstance">
-
 			<StorySlide
 				v-for="(story, index) in stories"
 				:key="index">
-
 				<StoryCard
 					:story="story"
 					:active-story-media="activeStoryMedia"
@@ -35,9 +33,7 @@
 					@on-like-status="updateLikeStatus"
 					@on-modal-closed="onModalClosed"
 					@on-send-message="" />
-                    
 			</StorySlide>
-
 		</StoryContainer>
 
 		<!-- Close mark -->
@@ -111,7 +107,62 @@ const modules = [
 
 // Data
 const progressPercentage = ref(ZERO_PERCENTAGE)
-const stories = ref<StoryCarousel[]>([])
+const stories = ref<StoryCarousel[]>([
+    {
+        id: 0,
+        userName: '3_st',
+        profilePictureUrl: 'https://loremflickr.com/1024/1080/dog',
+        expiringAt: '',
+        seen: false,
+        items: [
+            {
+                index: 0,
+                type: 'image',
+                mediaUrl:
+                    "https://i.ibb.co/H2jnhww/story-Demo.jpg",
+                title: "Legendary A"
+            }
+        ],
+        hasLiked: false,
+        mediaCount: 1
+    },
+    {
+        id: 1,
+        userName: 'Noura',
+        profilePictureUrl: 'https://loremflickr.com/32/32/woman',
+        expiringAt: '',
+        seen: false,
+        items: [
+            {
+                index: 0,
+                type: 'video',
+                mediaUrl:
+                    "https://assets.mixkit.co/videos/download/mixkit-eastern-egg-picnic-in-the-garden-48599.mp4",
+                title: "Legendary A"
+            }
+        ],
+        hasLiked: false,
+        mediaCount: 1
+    },
+    {
+        id: 3,
+        userName: 'Noura',
+        profilePictureUrl: 'https://loremflickr.com/32/32/woman',
+        expiringAt: '',
+        seen: false,
+        items: [
+            {
+                index: 0,
+                type: 'image',
+                mediaUrl:
+                    "https://loremflickr.com/490/870/love",
+                title: "Legendary A"
+            }
+        ],
+        hasLiked: false,
+        mediaCount: 1
+    },
+])
 
 // Trackers
 const activeSwiperInstance = ref<SwiperInstance>()
