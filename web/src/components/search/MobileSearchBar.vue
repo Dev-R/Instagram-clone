@@ -17,10 +17,6 @@ import {
     useRouter
 } from 'vue-router'
 
-const emit = defineEmits([
-    'on-search-query'
-])
-
 const navigateToSearch = () => {
     useRouter().push('/search')
 }
