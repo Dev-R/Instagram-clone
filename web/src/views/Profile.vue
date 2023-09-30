@@ -159,7 +159,6 @@ const switchActiveTab = (currentTab: NavBarTabs) => {
         isToggled: !statsModal.value.isToggled,
         stats: [profile]
     }
-    console.log(statsModal.value)
 }
 
 /**
