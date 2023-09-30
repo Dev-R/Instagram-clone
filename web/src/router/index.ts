@@ -46,7 +46,7 @@ const router = createRouter({
         {
           path: '/reels',
           name: 'reels',
-          component: () => import('@/views/ReelsView.vue'),
+          component: () => import('@/views/Reels.vue'),
           meta: { title: 'Reels' }
         },
         {
