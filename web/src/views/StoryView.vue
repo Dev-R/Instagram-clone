@@ -1,6 +1,6 @@
 <template>
 	<div class="container flex max-w-full w-full sm:h-screen bg-[#1a1a1a] space-y-5 sm:p-2">
-		<SwiperContainer
+		<StoryContainer
 			:centered-slides="true"
 			:modules="modules"
 			:effect="'cube'"
@@ -17,14 +17,15 @@
 			:navigation="{
 				enabled: true
 			}"
-			:class="'sm:w-3/12 sm:h-5/6 sm:rounded-lg  w-screen self-center swiper-container'"
+			:class="'sm:w-3/12 sm:h-5/6 sm:rounded-lg w-screen self-center swiper-container'"
 			@autoplayTimeLeft="onAutoplayTimeLeft"
 			@after-init="initializeSlideInstance"
 			@active-index-change="updateActiveSlideInstance">
-			<swiper-slide
+
+			<StorySlide
 				v-for="(story, index) in stories"
 				:key="index">
-				<!-- Story Container -->
+
 				<StoryCard
 					:story="story"
 					:active-story-media="activeStoryMedia"
@@ -34,8 +35,10 @@
 					@on-like-status="updateLikeStatus"
 					@on-modal-closed="onModalClosed"
 					@on-send-message="" />
-			</swiper-slide>
-		</SwiperContainer>
+                    
+			</StorySlide>
+
+		</StoryContainer>
 
 		<!-- Close mark -->
 		<div class="absolute right-6 z-50 sm:hover:cursor-pointer md:block hidden">
@@ -74,8 +77,8 @@ import SwiperInstance, {
 } from 'swiper'
 
 import {
-	Swiper as SwiperContainer,
-    SwiperSlide
+	Swiper as StoryContainer,
+    SwiperSlide as StorySlide
 } from 'swiper/vue'
 
 import {
