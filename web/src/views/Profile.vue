@@ -1,7 +1,7 @@
 <template>
 	<div class="bg-black">
 		<section 
-			class="container text-center md:max-w-full mx-auto sm:h-screen scrollbar scrollbar-thumb-gray-900"
+			class="container text-center md:max-w-full mx-auto sm:h-screen scrollbar scrollbar-thumb-gray-900 z-0"
 			:class="{ 'brightness-50 pointer-events-none': isModalToggled }">
 			<div class="flex">
 				<div 
@@ -41,13 +41,16 @@
 			</div>
 		</section>
 
-		<!-- Modals -->    
 		<StatsModal 
 			:modal-size="ModalSize.Medium"
 			:title="statsModal.title"
 			:items="statsModal.stats" 
-			:is-toggled="statsModal.isToggled"
+			:is-toggled="statsModal.type === ModalName.FOLLOW"
 			@on-modal-closed="toggleStatsModal" />
+
+        <ProfileSettingModal
+            v-show="statsModal.type === ModalName.PROFILE_SETTING"
+            @on-modal-closed="toggleStatsModal" />
 	</div>
 </template>
 
@@ -64,12 +67,14 @@ import {
     ProfileTabBar,
     ProfileEmptyTabMessage,
     PostCoverCard,
-    ProfileFooter
+    ProfileFooter,
+    ProfileSettingModal
 } from '@/components'
 
 import {
     ProfileTab,
     ModalSize,
+    ModalName,
     type NavBarTabs,
     type User,
     type PostMedia,
@@ -95,8 +100,8 @@ const mediasArraySampleA: PostMedia[] = [{
 const activeTab = ref<NavBarTabs>(ProfileTab.Posts) // Select profile-posts as default active tab
 
 const statsModal = ref({
-    name: '',
     title: '',
+    type: '',
     stats: [] as any, // Stats i.e current followers, following data of the user
     isToggled: false
 })
@@ -142,18 +147,19 @@ const switchActiveTab = (currentTab: NavBarTabs) => {
  * @param title Modal title 
  */
  const toggleStatsModal = ({
-    modalName,
-    modalTitle
+    modalTitle,
+    modalType
 }: {
-    modalName ? : string,
-    modalTitle ? : string
+    modalTitle ? : string,
+    modalType ? : string
 } = {}) => {
     statsModal.value = {
-        name: modalName ? modalName : '',
         title: modalTitle ? modalTitle : '',
+        type: modalType ? modalType : '',
         isToggled: !statsModal.value.isToggled,
         stats: [profile]
     }
+    console.log(statsModal.value)
 }
 
 /**
