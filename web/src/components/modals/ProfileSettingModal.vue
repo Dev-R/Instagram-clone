@@ -10,7 +10,8 @@
                         v-for="(setting, index) in settings"
                         :key="index"
                         @click="setting.action()"
-                        class="flex w-full border-b border-gray-700 justify-center p-2 hover:cursor-pointer">
+                        :class="setting.name === 'Cancel' ? '' : 'border-b'"
+                        class="flex w-full border-gray-700 justify-center p-2 hover:cursor-pointer">
 
                         <span class="font-sans text-sm font-thin text-white">
                             {{ setting.name }}
