@@ -63,15 +63,11 @@
 			</div>
 		</div>
 	</div>
-	<ProfileSettingModal
-			v-show="isSettingModalToggled"
-			@on-modal-closed="toggleSettingModal" />
 </template>
 
 <script setup lang="ts">
-import {
-	ref,
-    type PropType
+import type{
+	PropType
 } from 'vue'
 
 import {
@@ -81,7 +77,6 @@ import {
 import {
     TheButton,
     SVGLoader,
-	ProfileSettingModal
 } from '@/components'
 
 import {
@@ -99,7 +94,6 @@ const prop = defineProps({
 const emit = defineEmits(['openModal'])
 
 // Data
-const isSettingModalToggled = ref(false)
 const userProfileStats = [{
         title: 'posts',
         count: prop.user.mediaCount, // TODO: Change mediaCount to postCount
@@ -131,7 +125,10 @@ const goToSettingsRoute = () => {
 }
 
 const toggleSettingModal = () => {
-	isSettingModalToggled.value = !isSettingModalToggled.value
+	emit('openModal', {
+		modalType: ModalName.PROFILE_SETTING,
+		modalTitle: ModalName.PROFILE_SETTING
+	})
 }
 
 /**
