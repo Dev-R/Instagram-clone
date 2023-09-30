@@ -101,13 +101,13 @@ const router = createRouter({
           alias: '/accounts',
           path: 'login',
           name: 'login',
-          component: () => import('@/views/auth/LoginView.vue'),
+          component: () => import('@/views/auth/Login.vue'),
           meta: { title: 'Login' }
         },
         {
           path: 'signup',
           name: 'signup',
-          component: () => import('@/views/auth/SignupView.vue'),
+          component: () => import('@/views/auth/Signup.vue'),
           meta: { title: 'Sign up' }
         },
         {

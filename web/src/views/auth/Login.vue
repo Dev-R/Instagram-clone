@@ -1,9 +1,10 @@
 <template>
-    <SignUpForm />
+	<LoginForm />
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
+
 import {
-    SignUpForm
+	LoginForm,
 } from '@/components'
 </script>
