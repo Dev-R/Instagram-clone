@@ -1,7 +1,5 @@
 <template>
-	<div class="flex flex-row m-auto space-x-1">
-		<LoginForm />
-	</div>
+	<LoginForm />
 </template>
 
 <script setup lang="ts">
