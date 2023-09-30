@@ -1,5 +1,5 @@
 <template>
-	<div class="absolute py-2 p-3 text-lg top-5 flex flex-row flex-nowrap justify-between w-11/12">
+	<div class="absolute py-2 text-lg inset-x-3 top-5 flex flex-row flex-nowrap justify-between w-11/12">
 		<!-- User Info -->
 		<div class="flex flex-row space-x-2">
 			<!-- Picture -->

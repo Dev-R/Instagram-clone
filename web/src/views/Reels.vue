@@ -10,10 +10,9 @@
 					<NavBarMain />
 				</div>
 
-				<div 
-					class="sm:max-w-lg self-center mx-auto overflow-auto scrollbar scrollbar-none">
+				<div class="sm:max-w-lg self-center mx-auto overflow-auto scrollbar scrollbar-none">
 					<div class="swiper-container-wrapper">
-						<SwiperContainer
+						<ReelContainer
 							:direction="'vertical'"
 							:centered-slides="true"
 							:space-between="15"
@@ -29,7 +28,7 @@
                             sm:rounded-lg self-center swiper-container'"
 							@afterInit="updateActiveSlideInstance"
 							@active-index-change="updateActiveSlideInstance">
-							<swiper-slide
+							<ReelSlide
 								v-for="reel of reelItems"
                                 :key="reel.id"
 								:class="'flex flex-col relative max-w-lg sm:max-h-screen'">
@@ -39,8 +38,8 @@
 									@on-comments="toggleCommentModal(reel.comments)"
 									@on-follow-request="handleFollowRequest"
 									@on-like-state-change="handleLikeStateChange" />
-							</swiper-slide>
-						</SwiperContainer>
+							</ReelSlide>
+						</ReelContainer>
 					</div>
 				</div>
 			</div>
@@ -74,8 +73,8 @@ import SwiperInstance, {
 } from 'swiper'
 
 import {
-	Swiper as SwiperContainer,
-    SwiperSlide
+	Swiper as ReelContainer,
+    SwiperSlide as ReelSlide
 } from 'swiper/vue'
 
 import {
