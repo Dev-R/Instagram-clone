@@ -102,7 +102,8 @@ const userA: Viewer = {
     profilePictureUrl: 'https://loremflickr.com/1024/1280/life',
     email: 'johndoe@example.com',
     followerCount: 1000,
-    followingCount: 500
+    followingCount: 500,
+    gender: 'Female'
 }
 const userB: Sender = {
     id: '987654321',
@@ -111,7 +112,8 @@ const userB: Sender = {
     userName: 'janesmith',
     profilePictureUrl: 'https://loremflickr.com/1024/1280/car',
     followerCount: 500,
-    followingCount: 1000
+    followingCount: 1000,
+    gender: 'Female'
 }
 const currentUser = userA
 
