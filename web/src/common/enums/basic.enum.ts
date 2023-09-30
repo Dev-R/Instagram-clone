@@ -63,5 +63,6 @@ export enum ModalName {
     PROFILE = 'profile-modal', // Represents the profile modal
     SETTING = 'setting-modal', // Represents the setting modal
     COMMENT = 'comment-modal', // Represents the comment modal
-    GENDER = 'gender-modal' // Represents the gender modal
+    GENDER = 'gender-modal', // Represents the gender modal,
+    PROFILE_SETTING = 'profile-setting-modal' // Represents the profile setting modal
 }
