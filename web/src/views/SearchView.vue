@@ -67,155 +67,78 @@
 	</div>
 </template>
  
-<script lang="ts">
-
+<script setup lang="ts">
 import {
-	onMounted,
-	defineComponent,
-	ref,
-	computed,
-  onUnmounted
+    ref,
+    computed,
 } from 'vue'
 
-
 import {
-	NavBarMain,
-	CommentModal,
-	SVGLoader,
-	PostCard as PostCardModal,
-  PostCoverCard,
-  TheInput,
-  UserProfileSkeleton,
-  SearchCard,
-  SearchBar
-} from '@/components'
-
-import type {
-  SearchCard as SearchResult
-} from '@/common'
-
-export default defineComponent({
-  name: 'Search',
-  setup() {
-
-    const searchForm = ref<string>('')
-    const searchResults = ref<SearchResult[]>([])
-    const isSearchLoading = ref<boolean>(false)
-    const searchInput = ref<HTMLInputElement | null>(null)
-
-
-    /**
-     * Assigns demo search results.
-     * For demo only.
-     */
-    const assignDemoSearchResults = () => {
-      searchResults.value = [
-        {
-          userName: 'John Doe',
-          bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae nisi eget nunc aliquam aliquet. Sed vitae nisi eget nunc aliquam aliquet.',
-          profilePictureUrl: 'https://loremflickr.com/1024/1280/cat'
-        },
-        {
-          userName: 'Jane Doe',
-          bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae nisi eget nunc aliquam aliquet. Sed vitae nisi eget nunc aliquam aliquet.',
-          profilePictureUrl: 'https://loremflickr.com/1024/1280/dog'
-        }
-      ]
-    }
-
-    /**
-     * Searches for a user.
-     * @param payload The event payload.
-     */
-    const searchForUser = (payload: Event) => {
-      const searchInput = payload?.target as HTMLInputElement
-      searchForm.value = searchInput.value
-      searchResults.value = []
-      console.log('search query', searchInput.value)
-
-      isSearchLoading.value = true
-      if (searchInput.value.trim() != '') {
-        // Search for user  
-        // searchResults.value = await searchForUser(searchInput.value) // TODO: Implement searchForUser
-        // console.log('search results', searchResults.value)
-        // For demo only
-        setTimeout(() => {
-          assignDemoSearchResults()
-          isSearchLoading.value = false
-        }, 1000)
-      }
-    }
-
-    /**
-     * Clears the search query.
-     */
-    const clearSearchQuery = () => {
-      console.log('clear search query', searchInput)
-      // searchInput.value!.value = ''
-      searchResults.value = []
-    }
-
-    /**
-     * Adds the resize event listener.
-     */
-    const addResizeListener = () => {
-      window.addEventListener('resize', onWidthChange)
-    }
-
-    /**
-     * Removes the resize event listener.
-     */
-    const removeResizeListener = () => {
-      window.removeEventListener('resize', onWidthChange)
-    }
-
-    /**
-     * Updates the window width on resize.
-     */
-    const onWidthChange = () => {
-      windowWidth.value = window.innerWidth
-    }
-
-    // Computed
-    const windowWidth = ref(window.innerWidth) // Current window width
-    const screenSizeType = computed(() => (windowWidth.value < 550 ? 'xs' : false))
-    // const isSearchLoading = computed(() => searchForm.value.length > 0)
-    const isSearchResultsEmpty = computed(() => searchResults.value.length === 0)
-    const searchTitle = computed(() => searchResults.value.length > 0 ? `Search results for "${searchForm.value}"` : 'Recent')
-
-    // Lifecycle Hooks
-    onMounted(() => {
-      addResizeListener()
-    })
-
-    onUnmounted(() => {
-      removeResizeListener()
-    })
-
-    return {
-      searchForm,
-      searchResults,
-      searchForUser,
-      clearSearchQuery,
-      searchTitle,
-      isSearchLoading,
-      isSearchResultsEmpty
-    }
-  },
-  components: {
     NavBarMain,
-    SVGLoader,
-    CommentModal,
-    PostCardModal,
-    PostCoverCard,
-    TheInput,
     UserProfileSkeleton,
     SearchCard,
     SearchBar
-},
-})
+} from '@/components'
 
+import type {
+    SearchCard as SearchResult
+} from '@/common'
+
+const searchForm = ref<string>('')
+const searchResults = ref<SearchResult[]>([])
+const isSearchLoading = ref<boolean>(false)
+const searchInput = ref<HTMLInputElement | null>(null)
+
+/**
+ * Assigns demo search results.
+ * For demo only.
+ */
+const assignDemoSearchResults = () => {
+    searchResults.value = [{
+            userName: 'John Doe',
+            bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae nisi eget nunc aliquam aliquet. Sed vitae nisi eget nunc aliquam aliquet.',
+            profilePictureUrl: 'https://loremflickr.com/1024/1280/cat'
+        },
+        {
+            userName: 'Jane Doe',
+            bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae nisi eget nunc aliquam aliquet. Sed vitae nisi eget nunc aliquam aliquet.',
+            profilePictureUrl: 'https://loremflickr.com/1024/1280/dog'
+        }
+    ]
+}
+
+/**
+ * Searches for a user based on the search query.
+ * @param payload The event payload.
+ */
+const searchForUser = (payload: Event) => {
+    const searchInput = payload?.target as HTMLInputElement
+    searchForm.value = searchInput.value
+    searchResults.value = []
+
+    isSearchLoading.value = true
+    if (searchInput.value.trim() != '') {
+        // Search for user  
+        // searchResults.value = await searchForUser(searchInput.value) // TODO: Implement searchForUser
+        // console.log('search results', searchResults.value)
+        setTimeout(() => {
+            assignDemoSearchResults()
+            isSearchLoading.value = false
+        }, 1000)
+    }
+}
+
+/**
+ * Clears the search query.
+ */
+const clearSearchQuery = () => {
+    console.log('clear search query', searchInput)
+    // searchInput.value!.value = ''
+    searchResults.value = []
+}
+
+// Computed
+// const isSearchLoading = computed(() => searchForm.value.length > 0)
+const isSearchResultsEmpty = computed(() => searchResults.value.length === 0)
+const searchTitle = computed(() => searchResults.value.length > 0 ? `Search results for "${searchForm.value}"` : 'Recent')
 </script>
-
-<style scoped>
-</style>
