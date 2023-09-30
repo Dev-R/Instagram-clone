@@ -22,8 +22,11 @@
 </template>
 
 <script setup lang="ts">
-    defineProps({
-        isLoading: Boolean,
-        numberOfSkeletons: {type: Number, default: 5}
-    })
+defineProps({
+    isLoading: Boolean,
+    numberOfSkeletons: {
+        type: Number,
+        default: 5
+    }
+})
 </script>
