@@ -78,8 +78,8 @@ defineEmits([
 ])
 
 // Accessing parent functions
-const triggerPauseStory = inject('pauseStory') as() => void
-const triggerResumeStory = inject('resumeStory') as() => void
+const triggerPauseStory = inject('pauseStory') as () => void
+const triggerResumeStory = inject('resumeStory') as () => void
 
 // Refs
 const isCommentInputFocused = ref(false)

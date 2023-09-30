@@ -64,7 +64,7 @@ import type {
 
 const prop = defineProps({
     comment: {
-        type: Object as() => PostCommentCard,
+        type: Object as () => PostCommentCard,
         required: true
     }
 })

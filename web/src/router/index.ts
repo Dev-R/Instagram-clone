@@ -40,7 +40,7 @@ const router = createRouter({
         {
           path: '/direct',
           name: 'direct',
-          component: () => import('@/views/DirectView.vue'),
+          component: () => import('@/views/Direct.vue'),
           meta: { title: 'Direct' }
         },
         {

@@ -1,59 +1,47 @@
 <template>
-    <div 
-        :class="{ 'hidden': activeConversation }"
-        class="bg-black basis-1/5 md:block">
-        <!-- Conversation Rendering Header  -->
-        <MessagesHeader 
-            :current-user="currentUser" />
+	<div 
+		:class="{ 'hidden': activeConversation }"
+		class="bg-black basis-1/5 md:block">
+		<!-- Conversation Header  -->
+		<MessagesHeader 
+			:current-user="currentUser" />
 
-
-        <!-- Conversations rendering -->
-
-        <div class="overflow-auto lg:max-h-[850px]">
-            <!-- Conversation OverView items-->
-            <MessagesList 
-                @on-select-conversation="$emit('onSelectConversation', $event as Conversation)"
-                :active-conversation-id="activeConversation?.uuid"
-                :conversations="conversations" />
-        </div>
-    </div>
+		<!-- Conversations Rendering -->
+		<div class="overflow-auto lg:max-h-[850px]">
+			<!-- Conversation OverView items-->
+			<MessagesList 
+				:active-conversation-id="activeConversation?.uuid"
+				:conversations="conversations"
+				@on-select-conversation="$emit('onSelectConversation', $event as Conversation)" />
+		</div>
+	</div>
 </template>
 
-<script lang="ts">
-import { defineComponent, onMounted } from 'vue'
-import SVGLoader from '../basics/SVGLoader.vue'
-import type { Conversation, Viewer } from '@/common/models'
-import MessagesList from './MessagesList.vue'
-import MessagesHeader from './MessagesHeader.vue'
+<script setup lang="ts">
+import {
+    MessagesList,
+    MessagesHeader
+} from '@/components'
 
+import type {
+    Conversation,
+    Viewer
+} from '@/common'
 
-export default defineComponent({
-    name: "TheMessages",
-    setup(prop, context) {
-        onMounted(() => {
-        });
-        return {};
+defineProps({
+    conversations: {
+        type: Object as() => Conversation[] | undefined,
+        required: true
     },
-    props: {
-        conversations: {
-            type: Object as () => Conversation[] | undefined,
-            required: true
-        },
-        /**
-         * TODO: Fix Vue Warn; Invalid prop: type check failed for prop "activeConversation". Expected Object, got Null
-         */
-        activeConversation: {
-            type: Object as () => Conversation | null,
-            required: true
-        },
-        currentUser: {
-            type: Object as () => Viewer,
-            required: true
-        },
+    activeConversation: {
+        type: Object as() => Conversation | null,
+        required: true
     },
-    emits: [
-        'onSelectConversation'
-    ],
-    components: { SVGLoader, MessagesList, MessagesHeader }
+    currentUser: {
+        type: Object as() => Viewer,
+        required: true
+    },
 })
+
+const emit = defineEmits(['onSelectConversation'])
 </script>
