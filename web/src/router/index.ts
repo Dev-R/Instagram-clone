@@ -34,7 +34,7 @@ const router = createRouter({
         {
           path: '/stories',
           name: 'stories',
-          component: () => import('@/views/StoryView.vue'),
+          component: () => import('@/views/Story.vue'),
           meta: { title: 'Reels' }
         },
         {
