@@ -4,38 +4,36 @@
 			class="container max-w-full mx-auto
 			scrollbar scrollbar-thumb-gray-900">
 			<div class="flex">
-				<!-- Left bar: Navigation -->
 				<div 
 					class="bg-black sm:w-20 md:block hidden space-y-12
 					h-screen sticky top-0 border-r border-gray-900">
 					<NavBarMain />
 				</div>
 
-				<!-- Center: Messages & Chat -->
 				<div 
 					class="lg:grid bg-black basis-full md:border-l border-slate-800">
 					<div class="flex md:flex-row flex-col h-screen">
 						<TheMessages 
-							@on-select-conversation="selectConversation"
 							:active-conversation="activeConversation"
 							:conversations="conversations"
-							:current-user="currentUser" />
+							:current-user="currentUser"
+							@on-select-conversation="selectConversation" />
 
 						<TheChat 
 							v-if="activeConversation"
+							:active-conversation="activeConversation"
+							v-model="chatMessageInput"
+							:current-user="currentUser"
+							:is-chat-loading="isChatLoading"
+							:is-chat-empty="true"
 							@on-chat-back="leaveChat"
 							@on-file-upload="triggerFileUpload"
 							@on-send-message="sendMessage"
-                            @on-like-icon="sendHeartEmoji"
-							:active-conversation="activeConversation"
-							:current-user="currentUser"
-							:is-chat-loading="isChatLoading"
-                            :is-chat-empty="true"
-							v-model="chatMessageInput" />
+							@on-like-icon="sendHeartEmoji" />
 
 						<ChatIntro 
-                            @on-send-message-modal="openSendMessageModal"
-							v-else />
+							v-else
+							@on-send-message-modal="openSendMessageModal" />
 					</div>
 				</div>
 			</div>
@@ -53,8 +51,7 @@
 <script setup lang="ts">
 import {
     ref,
-    watch,
-    onMounted
+    watch
 } from 'vue'
 
 import {
@@ -71,7 +68,6 @@ import {
 import type {
     Viewer,
     Sender,
-    Inbox,
     ChatDialog,
     HTMLInputElementRef,
     PhotoModalImage,
@@ -92,12 +88,10 @@ const chatMessageInput = ref<string | null>(null)
 // Flags for tracking state
 const isFileUploaded = ref<boolean>(false)
 const isFileValid = ref<boolean>(false)
-const isMobileScreenSize = ref<boolean>(false)
 const isChatLoading = ref<boolean>(false)
 
 // Others
 const activeConversation = ref<Conversation | null>(null)
-const screenWidth = ref<number>(window.innerWidth) // Current window width
 
 // Demo data
 const userA: Viewer = {
@@ -228,7 +222,7 @@ const onFileUpload = async (event: Event) => {
 }
 
 /**
- * 
+ * Select conversation from inbox list
  * @param convo - Conversation to be selected
  */
 const selectConversation = (convo: Conversation) => {
@@ -242,10 +236,16 @@ const leaveChat = () => {
     activeConversation.value = null
 }
 
+/**
+ * Show toast message on unsupported feature click
+ */
 const onUnsupportedFeatureClick = () => {
     toast.info('The following feature, is not supported yet.')
 }
 
+/**
+ * Reset chat message object
+ */
 const resetChatMessage = () => {
     chatMessage.value = {
         text: undefined
@@ -290,19 +290,6 @@ const shouldUpdateInbox = () => {
 
 
 // Watchers
-
-/**
- *  Trigger mobile screen flag on screen size change
- */
-watch(() => screenWidth.value, (size) => {
-    const smallScreenWidth = 750
-    if (size <= smallScreenWidth) {
-        isMobileScreenSize.value = true
-    } else {
-        isMobileScreenSize.value = false
-    }
-})
-
 /**
  * Update inbox with latest message
  */
@@ -323,17 +310,4 @@ watch(activeConversation, () => {
         scrollToTheLatestMessage()
     }, WAITING_TIME)
 })
-
-onMounted(() => {
-    // Keep track of screen width
-    window.onresize = () => {
-        screenWidth.value = window.innerWidth
-    }
-})
 </script>
-
-
-
-
-<style scoped>
-</style>
