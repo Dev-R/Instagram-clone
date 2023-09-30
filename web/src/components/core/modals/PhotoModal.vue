@@ -521,9 +521,11 @@ import type {
 } from '@/common'
 import { PhotoTab, PhotoStage } from '@/common'
 
-import SmallCard from '@/components/cards/SmallCard.vue'
-import SVGLoader from '@/components/basics/SVGLoader.vue'
 
+import {
+    SmallCard,
+    SVGLoader
+} from '@/components'
 
 /**
  * TODO:
