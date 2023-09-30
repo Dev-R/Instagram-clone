@@ -87,7 +87,7 @@ import {
 } from '@/common/helpers'
 
 export default defineComponent({
-    name: 'DirectView',
+    name: 'Direct',
     setup() {
 
         // References to DOM element
