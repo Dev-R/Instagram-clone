@@ -56,88 +56,66 @@
 	</div>
 </template>
  
-<script lang="ts">
+<script setup lang="ts">
 import {
-  onMounted,
-  defineComponent,
-  ref,
-  computed,
-  onUnmounted
+    ref,
+    computed,
+    onMounted
 } from 'vue'
 
 import {
-  NavBarMain,
-  SVGLoader,
-  UserProfileSkeleton,
-  NotificationCard
+    NavBarMain,
+    UserProfileSkeleton,
+    NotificationCard
 } from '@/components'
 
 import type {
-  NotificationCard as NotificationResult,
+    NotificationCard as NotificationResult,
 } from '@/common'
 
-export default defineComponent({
-  name: 'Notification',
-  setup() {
 
-    const notifications = ref<NotificationResult[]>([])
-    const isNotificationsLoading = ref<boolean>(false)
+const notifications = ref<NotificationResult[]>([])
+const isNotificationsLoading =ref<boolean>(false)
 
 
-    /**
-     * Assigns demo search results.
-     * For demo only.
-     */
-    const assignDemoNotifications = () => {
-      notifications.value = [
-        {
-          userName: 'John Doe',
-          type: 'follow',
-          isFollowing: false,
-          caption: 'Started following you.',
-          profilePictureUrl: 'https://loremflickr.com/1024/1280/cat'
+/**
+ * Assigns demo search results.
+ * For demo only.
+ */
+const assignDemoNotifications = () => {
+    notifications.value = [{
+            userName: 'John Doe',
+            type: 'follow',
+            isFollowing: false,
+            caption: 'Started following you.',
+            profilePictureUrl: 'https://loremflickr.com/1024/1280/cat'
         },
         {
-          userName: 'Jane Doe',
-          type: 'follow',
-          caption: 'Started following you.',
-          isFollowing: false,
-          profilePictureUrl: 'https://loremflickr.com/1024/1280/dog'
+            userName: 'Jane Doe',
+            type: 'follow',
+            caption: 'Started following you.',
+            isFollowing: false,
+            profilePictureUrl: 'https://loremflickr.com/1024/1280/dog'
         }
-      ]
-    }
-
-    const loadNotifications = () => {
-      isNotificationsLoading.value = true
-      setTimeout(() => {
+    ]
+}
+/**
+ * Loads notifications.
+ * For demo only.
+ */
+const loadNotifications = () => {
+    isNotificationsLoading.value = true
+    setTimeout(() => {
         assignDemoNotifications()
         isNotificationsLoading.value = false
-      }, 1000)
-    }
-    // Computed
-    // const isNotificationsLoading = computed(() => notifications.value.length > 0)
-    const isNotificationsEmpty = computed(() => notifications.value.length === 0)
+    }, 1000)
+}
+// Computed
+// const isNotificationsLoading = computed(() => notifications.value.length > 0)
+const isNotificationsEmpty = computed(() => notifications.value.length === 0)
 
-    // Lifecycle Hooks
-    onMounted(() => {
-      loadNotifications()
-    })
-
-    return {
-      notifications,
-      isNotificationsLoading,
-      isNotificationsEmpty
-    }
-  },
-  components: {
-    NavBarMain,
-    SVGLoader,
-    UserProfileSkeleton,
-    NotificationCard
-  },
+// Lifecycle Hooks
+onMounted(() => {
+    loadNotifications()
 })
-
 </script>
-
-<style scoped>
-</style>
