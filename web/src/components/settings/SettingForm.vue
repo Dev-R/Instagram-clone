@@ -1,6 +1,6 @@
 <template>
     <div 
-        v-show="isMobileScreen && activeSettingTab === 'edit-profile'"
+        v-show="activeSettingTab === 'edit-profile' || !isMobileScreen"
         class="sm:flex flex-col h-screen sm:h-full grow font-sans font-normal text-white p-5 space-y-5">
 
         <!-- Title -->
