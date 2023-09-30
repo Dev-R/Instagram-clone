@@ -270,7 +270,7 @@ import {
 
 const prop = defineProps({
     postComment: {
-        type: Object as() => PostCommentModal,
+        type: Object as () => PostCommentModal,
         required: true,
     },
     modalSize: {

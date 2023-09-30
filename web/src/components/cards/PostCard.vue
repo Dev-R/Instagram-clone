@@ -152,7 +152,7 @@ import {
 
 const prop = defineProps({
     postItem: {
-        type: Object as() => PostCard,
+        type: Object as () => PostCard,
         required: true,
     },
 })
