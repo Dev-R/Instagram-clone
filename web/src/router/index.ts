@@ -27,7 +27,7 @@ const router = createRouter({
         },
         {
           path: '/profile',
-          name: 'profile',
+          name: 'Alex_boo', // TODO: Change to dynamic
           component: () => import('@/views/Profile.vue'),
           meta: { title: 'Profile' }
         },
