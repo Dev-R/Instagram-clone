@@ -3,29 +3,16 @@
 		<section
 			class="container md:max-w-full md:mx-auto h-screen scrollbar scrollbar-thumb-gray-900">
 			<div class="sm:flex justify-center">
-				<!-- Left bar: Navigation -->
 				<div 
 					class="basis-1/6 md:block hidden md:space-y-12
                     sticky top-0 border-r border-gray-900">
 					<NavBarMain />
 				</div>
                     
-                <!-- Search Bar -->
-                <MobileSearchBar />
+				<MobileSearchBar />
 
-				<div class="flex justify-center mx-auto space-x-12">
-					<div 
-						class="flex flex-col md:max-w-4xl p-2
-						flex-nowrap space-y-4 pt-2 md:pt-5 justify-self-end 
-						md:ml-5 lg:ml-0">
-						<!-- Image Rendering Section -->
-						<div
-							class="flex flex-wrap">
-							<PostCoverCard 
-								:posts="posts" />
-						</div>
-					</div>
-				</div>
+				<ExplorePostRenderer 
+					:posts="posts" />
 			</div>
 		</section>
 	</div>
@@ -38,8 +25,8 @@ import {
 
 import {
     NavBarMain,
-    PostCoverCard,
-    MobileSearchBar
+    MobileSearchBar,
+    ExplorePostRenderer
 } from '@/components'
 
 
