@@ -22,7 +22,7 @@ const router = createRouter({
         {
           path: '/explore',
           name: 'explore',
-          component: () => import('@/views/ExploreView.vue'),
+          component: () => import('@/views/Explore.vue'),
           meta: { title: 'Explore' }
         },
         {
