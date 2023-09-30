@@ -1,21 +1,17 @@
 <template>
 	<div class="bg-black">
 		<section 
-			class="container md:max-w-full mx-auto
-			scrollbar scrollbar-thumb-gray-900"
+			class="container text-center md:max-w-full mx-auto sm:h-screen scrollbar scrollbar-thumb-gray-900"
 			:class="{ 'brightness-50 pointer-events-none': commentModal.isToggled }">
-			<div class="md:grid grid-cols-12 flex justify-center">
-				<!-- Left bar: Navigation -->
+			<div class="flex">
 				<div 
-					class="xl:col-span-2 col-span-1 bg-black 
-                    md:block hidden space-y-12 h-screen 
+					class="basis-1/6 md:block hidden space-y-12
                     sticky top-0 border-r border-gray-900">
 					<NavBarMain />
 				</div>
 
 				<div 
-					class="sm:col-span-7 md:col-start-6 sm:max-w-lg self-center 
-                    overflow-auto scrollbar scrollbar-none">
+					class="sm:max-w-lg self-center mx-auto overflow-auto scrollbar scrollbar-none">
 					<div class="swiper-container-wrapper">
 						<SwiperContainer
 							:direction="'vertical'"
@@ -35,6 +31,7 @@
 							@active-index-change="updateActiveSlideInstance">
 							<swiper-slide
 								v-for="reel of reelItems"
+                                :key="reel.id"
 								:class="'flex flex-col relative max-w-lg sm:max-h-screen'">
 								<ReelCard 
 									:reel="reel"
@@ -57,7 +54,6 @@
 		:modal-type="ModalName.COMMENT" 
 		:modal-size="ModalSize.Medium"
 		@on-modal-closed="toggleCommentModal" />
-
 </template>
 
 <script setup lang="ts">
@@ -127,18 +123,20 @@ const commentsSample: PostComment[] = [{
 			Allahu akbar x3",
     createdAt: '2012-02-23'
 }]
-// Trackers
-const activeSwiperInstance = ref<SwiperInstance>()
-const activeVideo = ref<HTMLVideoElement>()
 
-// Others
-const screenWidth = ref<number>(window.innerWidth) // Current window width
 const commentModal = ref({
     name: '',
     title: 'Comments',
     items: [] as PostComment[] | undefined,
     isToggled: false
 })
+
+// Trackers
+const activeSwiperInstance = ref<SwiperInstance>()
+const activeVideo = ref<HTMLVideoElement>()
+
+// Others
+const screenWidth = ref<number>(window.innerWidth) // Current window width
 
 
 /**
