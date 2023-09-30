@@ -23,6 +23,12 @@ import {
     computed
 } from 'vue'
 
+import {
+    UserProfileSkeleton,
+    NotificationCard
+} from '@/components'
+
+
 import type {
     NotificationCard as NotificationResult,
 } from '@/common'

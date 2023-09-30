@@ -19,9 +19,15 @@ import type {
     PropType,
 } from 'vue'
 
+import {
+    NotificationsHeader,
+    NotificationFeed
+} from '@/components'
+
 import type {
     NotificationCard as NotificationResult,
 } from '@/common'
+
 
 defineProps({
     notifications: {
