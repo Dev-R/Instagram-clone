@@ -2,21 +2,18 @@
 	<div class="bg-black h-screen">
 		<section
 			class="container md:max-w-full md:mx-auto h-screen scrollbar scrollbar-thumb-gray-900">
-			<div class="flex justify-center">
+			<div class="sm:flex justify-center">
 				<!-- Left bar: Navigation -->
 				<div 
 					class="basis-1/6 md:block hidden md:space-y-12
                     sticky top-0 border-r border-gray-900">
 					<NavBarMain />
 				</div>
+                    
+                <!-- Search Bar -->
+                <MobileSearchBar />
 
 				<div class="flex justify-center mx-auto space-x-12">
-
-          
-                    <!-- Search Bar -->
-                    <MobileSearchBar />
-
-					<!-- Profile Info -->
 					<div 
 						class="flex flex-col md:max-w-4xl p-2
 						flex-nowrap space-y-4 pt-2 md:pt-5 justify-self-end 
