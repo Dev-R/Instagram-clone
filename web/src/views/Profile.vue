@@ -116,6 +116,7 @@ const profile = ref<User>({
     followerCount: 0,
     followingCount: 0,
     mediaCount: 50,
+    gender: 'Female',
     mediaItems: [],
 })
 

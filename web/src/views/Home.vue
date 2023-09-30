@@ -11,10 +11,10 @@
 						@on-create="triggerPhotoModal" />
 				</div>
 
-				<div class="flex justify-center mx-auto sm:mt-10 space-x-12">
+				<div class="flex justify-center mx-auto sm:mt-10 space-x-12 w-full sm:w-auto">
 					<!-- Center: Posts -->
 					<div 
-						class="md:w-[470px] flex flex-col 
+						class="flex flex-col w-full md:w-[470px] sm:w-auto
                         space-y-4 flex-nowrap lg:max-w-lg
                         justify-self-end lg:mr-[64px]">
 						<!-- Stories -->

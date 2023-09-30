@@ -15,6 +15,9 @@ export interface BaseUser {
   /** User's user name */
   userName: string
 
+  /** User's gender */
+  gender: 'Female' | 'Male' | 'Other'
+
   /** URL of the user's profile picture */
   profilePictureUrl: string
 
