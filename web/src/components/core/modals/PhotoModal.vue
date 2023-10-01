@@ -505,10 +505,17 @@
     
 </template>
 
-<script lang="ts">
-import { defineComponent, onMounted, ref, computed, watch } from 'vue'
-import { useRouter } from 'vue-router'
-import { usePhotoStore } from '@/stores'
+<script setup lang="ts">
+import {
+    ref,
+    watch,
+    onMounted,
+    computed,
+} from 'vue'
+
+import {
+    useRouter
+} from 'vue-router'
 
 import type {
     PhotoModalStage,
@@ -517,15 +524,21 @@ import type {
     PhotoModalImageFilter,
     PhotoModalImageForm,
     PhotoModalAdjustment,
-    HTMLInputElementRef
+    HTMLInputElementRef,
 } from '@/common'
-import { PhotoTab, PhotoStage } from '@/common'
 
+import { 
+    PhotoTab,
+    PhotoStage
+ } from "@/common"
 
 import {
-    SmallCard,
     SVGLoader
 } from '@/components'
+
+import {
+    usePhotoStore
+} from '@/stores'
 
 /**
  * TODO:
@@ -538,395 +551,339 @@ import {
  *      - SmallPhotoModal
  */
 
-export default defineComponent({
-    name: "photoModal",
-    setup(props, context) {
+ const props = defineProps({
+    isToggled: {
+        type: Boolean,
+        required: false,
+        default: false
+    }
+})
 
-        // References to DOM element
-        const fileUpload = ref<HTMLInputElementRef | null>()
-        const previewImage = ref<PhotoModalImage>(null)
-        const activeImageFilter = ref<PhotoModalImageFilter>({
-            filterName: 'original',
-            filterClass: '',
-            displayName: 'Original'
-        })
+const emit = defineEmits([
+    'onModalClosed',
+    'onFileUpload',
+    'onProcessCompleted'
+])
 
-        // Trackers
-        const currentActiveFilterTab = ref<PhotoModalTab>(PhotoTab.FiltersTab)
-        const currentModalStage = ref<PhotoModalStage>(PhotoStage.CreatePost)
+// References to DOM element
+const fileUpload = ref<HTMLInputElementRef | null>()
+const previewImage = ref<PhotoModalImage>(null)
+const activeImageFilter = ref<PhotoModalImageFilter>({
+    filterName: 'original',
+    filterClass: '',
+    displayName: 'Original'
+})
 
-        const editStages: PhotoModalStage[] = [PhotoStage.EditPostAdjustments, PhotoStage.EditPostForm]
-        const nonEditStages: PhotoModalStage[] = [PhotoStage.CreatePost, PhotoStage.SharingPost, 
-            PhotoStage.PostShared, PhotoStage.PostFailed
-        ]
+// Trackers
+const currentActiveFilterTab = ref<PhotoModalTab>(PhotoTab.FiltersTab)
+const currentModalStage = ref<PhotoModalStage>(PhotoStage.CreatePost)
 
-        // Flags for tracking upload status
-        const isFileUploaded = ref<boolean>(false)
-        const isFileValid = ref<boolean>(false)
-        const isFilterApplied = ref<boolean>(false)
+const editStages: PhotoModalStage[] = [PhotoStage.EditPostAdjustments, PhotoStage.EditPostForm]
+const nonEditStages: PhotoModalStage[] = [PhotoStage.CreatePost, PhotoStage.SharingPost, 
+    PhotoStage.PostShared, PhotoStage.PostFailed
+]
 
-        // Others
-        let screenWidth = ref<number>(window.innerWidth) // Current window width
-        const currentImageAdjustments = ref<PhotoModalAdjustment>({
-            brightness: {
-                label: 'Brightness',
-                level: 0 as number | string
-            },
-            contrast: {
-                label: 'Contrast',
-                level: 0 as number | string
-            },
-            saturation: {
-                label: 'Saturation',
-                level: 0 as number | string
-            },
-        })
-        const Imageform = ref<PhotoModalImageForm>({
-            caption: '',
-            location: ''
-        })
+// Flags for tracking upload status
+const isFileUploaded = ref<boolean>(false)
+const isFileValid = ref<boolean>(false)
+const isFilterApplied = ref<boolean>(false)
 
-        const filters: PhotoModalImageFilter[] = [
-            {
-                filterName: 'original',
-                filterClass: '',
-                displayName: 'Original'
-            },
-            {
-                filterName: 'slumber',
-                filterClass: 'saturate-50',
-                displayName: 'Slumber'
-            },
-            {
-                filterName: 'moon',
-                filterClass: 'grayscale',
-                displayName: 'Moon'
-            },
-            {
-                filterName: 'sepia',
-                filterClass: 'sepia',
-                displayName: 'Sepia'
-            },
-            {
-                filterName: 'invert',
-                filterClass: 'invert',
-                displayName: 'Invert'
-            },
-            {
-                filterName: 'juno',
-                filterClass: 'contrast-150',
-                displayName: 'Juno'
-            },
-        ]
+// Others
+let screenWidth = ref<number>(window.innerWidth) // Current window width
+const currentImageAdjustments = ref<PhotoModalAdjustment>({
+    brightness: {
+        label: 'Brightness',
+        level: 0 as number | string
+    },
+    contrast: {
+        label: 'Contrast',
+        level: 0 as number | string
+    },
+    saturation: {
+        label: 'Saturation',
+        level: 0 as number | string
+    },
+})
+const Imageform = ref<PhotoModalImageForm>({
+    caption: '',
+    location: ''
+})
 
-        // Services
-        const router = useRouter()
-        const photoStore = usePhotoStore()
+const filters: PhotoModalImageFilter[] = [
+    {
+        filterName: 'original',
+        filterClass: '',
+        displayName: 'Original'
+    },
+    {
+        filterName: 'slumber',
+        filterClass: 'saturate-50',
+        displayName: 'Slumber'
+    },
+    {
+        filterName: 'moon',
+        filterClass: 'grayscale',
+        displayName: 'Moon'
+    },
+    {
+        filterName: 'sepia',
+        filterClass: 'sepia',
+        displayName: 'Sepia'
+    },
+    {
+        filterName: 'invert',
+        filterClass: 'invert',
+        displayName: 'Invert'
+    },
+    {
+        filterName: 'juno',
+        filterClass: 'contrast-150',
+        displayName: 'Juno'
+    },
+]
+
+// Services
+const router = useRouter()
+const photoStore = usePhotoStore()
 
 
-        // Methods
-        /**
-         * Emit signal when the modal is closed
-         */
-        const onModalClosed = () => {
-            context.emit('onModalClosed')
-            resetModalState()
-        }
+// Methods
+/**
+ * Emit signal when the modal is closed
+ */
+const onModalClosed = () => {
+    emit('onModalClosed')
+    resetModalState()
+}
 
-        /**
-         * Emit signal when file is succcessfully uploaded
-         */
-        const onSuccessFileUpload = () => {
-            context.emit('onFileUpload')
-        }
+/**
+ * Emit signal when file is succcessfully uploaded
+ */
+const onSuccessFileUpload = () => {
+    emit('onFileUpload')
+}
 
-        /**
-         * TODO: Add validation
-         * Handle file uploaded event
-         * @param {Object} event - The event object
-         */
-         const onFileUpload = (event: Event) => {
-            const targetEvent = event.target as HTMLInputElement
-            const file = targetEvent?.files?.item(0) as Blob
+/**
+ * TODO: Add validation
+ * Handle file uploaded event
+ * @param {Object} event - The event object
+ */
+    const onFileUpload = (event: Event) => {
+    const targetEvent = event.target as HTMLInputElement
+    const file = targetEvent?.files?.item(0) as Blob
 
-            // Read the file as data URL to show preview
-            const reader = new FileReader()
-            reader.readAsDataURL(file)
-            reader.onload = (event) => {
-                previewImage.value = event.target?.result as string
-            }
-            isFileValid.value = true
-            isFileUploaded.value = true
-            updateModalStage(PhotoStage.EditPostAdjustments)
-            // console.log("File uploaded", file)
-        }
+    // Read the file as data URL to show preview
+    const reader = new FileReader()
+    reader.readAsDataURL(file)
+    reader.onload = (event) => {
+        previewImage.value = event.target?.result as string
+    }
+    isFileValid.value = true
+    isFileUploaded.value = true
+    updateModalStage(PhotoStage.EditPostAdjustments)
+    // console.log("File uploaded", file)
+}
 
-        /**
-         * Update preview image filter
-         */
-        const updatePreviewImageFitler = (filterName: PhotoModalImageFilter['filterName'],
-            filterClass: PhotoModalImageFilter['filterClass']) => {
-            activeImageFilter.value.filterName = filterName
-            activeImageFilter.value.filterClass = filterClass
-        }
+/**
+ * Update preview image filter
+ */
+const updatePreviewImageFitler = (filterName: PhotoModalImageFilter['filterName'],
+    filterClass: PhotoModalImageFilter['filterClass']) => {
+    activeImageFilter.value.filterName = filterName
+    activeImageFilter.value.filterClass = filterClass
+}
 
-        /**
-         * Reset preview image to null
-         */
-        const resetPreviewImage = () => {
-            previewImage.value = null
-        }
+/**
+ * Reset preview image to null
+ */
+const resetPreviewImage = () => {
+    previewImage.value = null
+}
 
-        /**
-         * Trigger DOM file upload event
-         */
-        const triggerFileUpload = () => {
-            fileUpload.value?.click()
-        }
+/**
+ * Trigger DOM file upload event
+ */
+const triggerFileUpload = () => {
+    fileUpload.value?.click()
+}
 
-        const filterTabSwitcher = (currentTab: PhotoModalTab) => {
-            console.log("Current Tab:", currentTab)
-            currentActiveFilterTab.value = currentTab
-        }
+const filterTabSwitcher = (currentTab: PhotoModalTab) => {
+    console.log("Current Tab:", currentTab)
+    currentActiveFilterTab.value = currentTab
+}
 
-        const updateModalStage = (stage: PhotoModalStage) => {
-            currentModalStage.value = stage
-        }
+const updateModalStage = (stage: PhotoModalStage) => {
+    currentModalStage.value = stage
+}
 
-        const refreshPage = () => {
-            router.go(0)
-        }
+const refreshPage = () => {
+    router.go(0)
+}
 
-        const resetModalStage = () => {
-            currentModalStage.value = 'create-post'
-        } 
+const resetModalStage = () => {
+    currentModalStage.value = 'create-post'
+} 
 
-        const resetModalState = () => {
-            // Reset Store
-            photoStore.$reset()
-            // Reset Stage
-            resetModalStage()
-        }
+const resetModalState = () => {
+    // Reset Store
+    photoStore.$reset()
+    // Reset Stage
+    resetModalStage()
+}
 
-        // Watchers
-        watch(currentModalStage, () => {
-            if (currentModalStage.value === PhotoStage.SharingPost) {
-                console.log("updateSharingStatus ...")
-                setTimeout(() => {
-                    currentModalStage.value = PhotoStage.PostShared
-                    setTimeout(() => {
-                        // Clear photoModal
-                        photoStore.$reset()
-                        // Reset state in parent
-                        onModalClosed()
-                        // Refresh page
-                        refreshPage()
-                        // console.log("Done")
-                    }, 3000)
-                }, 5000)
-            }
-        })
-
-        /**
-         * If any manual adjustments triggered, then disable filter
-         */
-        watch(currentImageAdjustments.value, () => {
-            if (isFilterApplied.value) {
-                isFilterApplied.value = false
-            }
-        })
-
-        /**
-         * If an active image filter triggered, then enable filter
-         */
-        watch(activeImageFilter.value, () => {
-            if (!isFilterApplied.value) {
-                isFilterApplied.value = true
-            }
-        })
-
-        // Trigger file upload dialog based on parent state
-        watch(() => photoStore.isFileUploadDialogOpen, (isFileUpload) => {
-            if (isFileUpload)
-                triggerFileUpload()
-        })
-
-        // Store preview image on store and notify parent of state
-        watch(() => previewImage.value, (file: PhotoModalImage) => {
-            photoStore.previewImage = file
-            onSuccessFileUpload()
-        })
-
-        // Watch screen size to prevent accessing route with large screen
-        watch(() => screenWidth.value, (size) => {
-            const mobileScreenWidth = 550
-            if(size >= mobileScreenWidth && photoStore.isToggled) {
+// Watchers
+watch(currentModalStage, () => {
+    if (currentModalStage.value === PhotoStage.SharingPost) {
+        console.log("updateSharingStatus ...")
+        setTimeout(() => {
+            currentModalStage.value = PhotoStage.PostShared
+            setTimeout(() => {
                 // Clear photoModal
                 photoStore.$reset()
+                // Reset state in parent
+                onModalClosed()
+                // Refresh page
                 refreshPage()
-            }
-        })
+                // console.log("Done")
+            }, 3000)
+        }, 5000)
+    }
+})
 
-        // Computed
-        const characterCount = computed(() => {
-            return Imageform.value.caption ? Imageform.value.caption.length : 0
-        })
+/**
+ * If any manual adjustments triggered, then disable filter
+ */
+watch(currentImageAdjustments.value, () => {
+    if (isFilterApplied.value) {
+        isFilterApplied.value = false
+    }
+})
 
-        const isModalToggled = computed(() => {
-            return props.isToggled ? props.isToggled : photoStore.isToggled ? photoStore.isToggled : false
-        })
+/**
+ * If an active image filter triggered, then enable filter
+ */
+watch(activeImageFilter.value, () => {
+    if (!isFilterApplied.value) {
+        isFilterApplied.value = true
+    }
+})
 
-        const largeModalHeaderName = computed(() => {
-            switch (currentModalStage.value) {
-                case PhotoStage.CreatePost:
-                    return 'Create new post'
-                case PhotoStage.EditPostAdjustments:
-                case PhotoStage.EditPostForm:
-                    return 'Edit'
-                case PhotoStage.SharingPost:
-                    return 'Sharing'
-                case PhotoStage.PostShared:
-                    return 'Post Shared'
-                default:
-                    return {}
-            }
-        })
+// Trigger file upload dialog based on parent state
+watch(() => photoStore.isFileUploadDialogOpen, (isFileUpload) => {
+    if (isFileUpload)
+        triggerFileUpload()
+})
 
-        const smallModalHeaderName = computed(() => {
-            switch (currentModalStage.value) {
-                case PhotoStage.CreatePost:
-                    return 'New Photo Post'
-                case PhotoStage.EditPostForm:
-                    return 'New post'
-                case PhotoStage.SharingPost:
-                    return 'Sharing...'
-                case PhotoStage.PostShared:
-                    return 'Post Shared'
-                default:
-                    return {}
-            }
-        })
+// Store preview image on store and notify parent of state
+watch(() => previewImage.value, (file: PhotoModalImage) => {
+    photoStore.previewImage = file
+    onSuccessFileUpload()
+})
 
-        const smallModalButtonName = computed(() => {
-            return currentModalStage.value === PhotoStage.CreatePost ? 'Next' : currentModalStage.value != PhotoStage.PostShared ? 'Share' : 'Shared'
-        })
+// Watch screen size to prevent accessing route with large screen
+watch(() => screenWidth.value, (size) => {
+    const mobileScreenWidth = 550
+    if(size >= mobileScreenWidth && photoStore.isToggled) {
+        // Clear photoModal
+        photoStore.$reset()
+        refreshPage()
+    }
+})
 
-        const imageFilter = computed(() => {
-            return activeImageFilter.value.filterClass
-        })
+// Computed
+const characterCount = computed(() => {
+    return Imageform.value.caption ? Imageform.value.caption.length : 0
+})
 
-        const imageBrightness = computed(() => {
-            const brightness = currentImageAdjustments.value.brightness.level
+const isModalToggled = computed(() => {
+    return props.isToggled ? props.isToggled : photoStore.isToggled ? photoStore.isToggled : false
+})
 
-            return brightness ? `brightness(${brightness}%)` : ''
-        })
+const largeModalHeaderName = computed(() => {
+    switch (currentModalStage.value) {
+        case PhotoStage.CreatePost:
+            return 'Create new post'
+        case PhotoStage.EditPostAdjustments:
+        case PhotoStage.EditPostForm:
+            return 'Edit'
+        case PhotoStage.SharingPost:
+            return 'Sharing'
+        case PhotoStage.PostShared:
+            return 'Post Shared'
+        default:
+            return {}
+    }
+})
 
-        const imageContrast = computed(() => {
-            const contrast = currentImageAdjustments.value.contrast.level
+const smallModalHeaderName = computed(() => {
+    switch (currentModalStage.value) {
+        case PhotoStage.CreatePost:
+            return 'New Photo Post'
+        case PhotoStage.EditPostForm:
+            return 'New post'
+        case PhotoStage.SharingPost:
+            return 'Sharing...'
+        case PhotoStage.PostShared:
+            return 'Post Shared'
+        default:
+            return {}
+    }
+})
 
-            return contrast ? `contrast(${contrast}%)` : ''
-        })
+const smallModalButtonName = computed(() => {
+    return currentModalStage.value === PhotoStage.CreatePost ? 'Next' : currentModalStage.value != PhotoStage.PostShared ? 'Share' : 'Shared'
+})
+
+const imageFilter = computed(() => {
+    return activeImageFilter.value.filterClass
+})
+
+const imageBrightness = computed(() => {
+    const brightness = currentImageAdjustments.value.brightness.level
+
+    return brightness ? `brightness(${brightness}%)` : ''
+})
+
+const imageContrast = computed(() => {
+    const contrast = currentImageAdjustments.value.contrast.level
+
+    return contrast ? `contrast(${contrast}%)` : ''
+})
 
 
-        const imageSaturation = computed(() => {
-            const saturate = currentImageAdjustments.value.saturation.level
+const imageSaturation = computed(() => {
+    const saturate = currentImageAdjustments.value.saturation.level
 
-            return saturate ? `saturate(${saturate}%)` : ''
-        })
+    return saturate ? `saturate(${saturate}%)` : ''
+})
 
 
-        const filterStyle = computed(() => {
-            return {
-                "filter": `${imageBrightness.value} ${imageContrast.value} ${imageSaturation.value}`
-            }
-        })
+const filterStyle = computed(() => {
+    return {
+        "filter": `${imageBrightness.value} ${imageContrast.value} ${imageSaturation.value}`
+    }
+})
 
-        const isFiltersTabActive = computed(() => {
-            return currentModalStage.value === PhotoStage.EditPostAdjustments && currentActiveFilterTab.value === PhotoTab.FiltersTab
-        })
+const isFiltersTabActive = computed(() => {
+    return currentModalStage.value === PhotoStage.EditPostAdjustments && currentActiveFilterTab.value === PhotoTab.FiltersTab
+})
 
-        const isAdjustmentsTabActive = computed(() => {
-            return currentModalStage.value === PhotoStage.EditPostAdjustments && currentActiveFilterTab.value === PhotoTab.AdjustmentsTab
-        })
+const isAdjustmentsTabActive = computed(() => {
+    return currentModalStage.value === PhotoStage.EditPostAdjustments && currentActiveFilterTab.value === PhotoTab.AdjustmentsTab
+})
 
-        const returnButtonAction = computed(() => {
-            return currentModalStage.value === PhotoStage.EditPostAdjustments ? PhotoStage.CreatePost : PhotoStage.EditPostAdjustments
-        })
+const returnButtonAction = computed(() => {
+    return currentModalStage.value === PhotoStage.EditPostAdjustments ? PhotoStage.CreatePost : PhotoStage.EditPostAdjustments
+})
 
-        onMounted(() => {
-            previewImage.value = photoStore.previewImage ? photoStore.previewImage : null
-            // Keep track of screen width
-            window.onresize = () => {
-                screenWidth.value = window.innerWidth
-            }
-        })
-        return {
-            // Variables
-            currentActiveFilterTab,
-            currentImageAdjustments,
-            currentModalStage,
-            isFileUploaded,
-            isFileValid,
-            isFilterApplied,
-            previewImage,
-            activeImageFilter,
-            Imageform,
-            fileUpload,
-            nonEditStages,
-            editStages,
-            filters,
-
-            // Enums
-            PhotoStage,
-            PhotoTab,
-
-            // Computed
-            imageSaturation,
-            imageContrast,
-            imageBrightness,
-            imageFilter,
-            isFiltersTabActive,
-            isAdjustmentsTabActive,
-            largeModalHeaderName,
-            smallModalHeaderName,
-            characterCount,
-            filterStyle,
-            smallModalButtonName,
-            returnButtonAction,
-            isModalToggled,
-
-            // Methods
-            onModalClosed,
-            triggerFileUpload,
-            updatePreviewImageFitler,
-            filterTabSwitcher,
-            resetPreviewImage,
-            updateModalStage,
-            onFileUpload,
-            refreshPage
-        }
-    },
-    props: {
-        isToggled: {
-            type: Boolean,
-            required: false,
-            default: false
-        }
-    },
-    components: {
-        SmallCard,
-        SVGLoader,
-    },
-    emits: [
-        'onModalClosed',
-        'onFileUpload',
-        'onProcessCompleted'
-    ]
+onMounted(() => {
+    previewImage.value = photoStore.previewImage ? photoStore.previewImage : null
+    // Keep track of screen width
+    window.onresize = () => {
+        screenWidth.value = window.innerWidth
+    }
 })
 </script>
-
-
-
 
 <style scoped>
 #photo-modal {
