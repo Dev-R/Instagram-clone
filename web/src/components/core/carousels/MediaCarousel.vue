@@ -14,7 +14,7 @@
                     'translate-x-0 z-20': currentIndex === media.index,
                     '-translate-x-full z-10': prevIndex === media.index && medias.length > 1,
                     'translate-x-full z-10': nextIndex === media.index,
-                    hidden:
+                    'hidden':
                         nextIndex != media.index &&
                         prevIndex != media.index &&
                         currentIndex != media.index
@@ -36,7 +36,8 @@
                     :alt="media.title" />
 
                 <video
-                    v-else @load="" 
+                    v-else-if="media.type === 'video'" 
+                    @load="" 
                     @canplay="appendToVideoElements(media.index, $event)" 
                     :muted="isVideoMuted" 
                     class="absolute block w-full 
