@@ -30,7 +30,7 @@
 					</div>
 
 					<div class="font-sans font-semibold text-xs text-gray-500 justify-self-end">
-						{{ convo.timeSinceLastMessage }}
+						{{ formatedDate(convo.timeSinceLastMessage) }}
 					</div>
 				</div>
 			</div>
@@ -61,5 +61,9 @@ const emit = defineEmits(['onSelectConversation'])
  */
 const emitSelectConversation = (conversation: Conversation) => {
     emit('onSelectConversation', conversation)
+}
+
+const formatedDate = (date: string) => {
+	return new Date(date).toLocaleDateString()
 }
 </script>

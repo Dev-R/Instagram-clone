@@ -1,5 +1,6 @@
 <template>
-	<div 
+	<div
+		v-if="activeConversation && !isChatLoading"
 		v-for="(dialog, index) of activeConversation?.dialogs"
 		:key="index"
 		class="flex pt-5 space-x-2 m-2"
@@ -42,6 +43,10 @@ defineProps({
     activeConversation: {
         type: Object as() => Conversation,
         required: true
-    }
+    },
+	isChatLoading: {
+		type: Boolean,
+		required: true
+	},
 })
 </script>

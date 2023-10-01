@@ -12,11 +12,11 @@
 
 		<div class="flex space-x-2 items-center">
 			<img 
-				src="https://loremflickr.com/1024/1080/car"
+				:src="viewer?.profilePictureUrl"
 				class="cursor-pointer h-10 w-10 rounded-full shadow-lg" />
 
 			<div class="cursor-pointer font-sans text-sm font-bold text-white pt-1">
-				{{ currentUserName }}
+				{{ viewer?.userName }}
 			</div>
 		</div>
 
@@ -41,12 +41,12 @@ import {
 } from '@/components'
 
 import type {
-    Conversation
+    Viewer
 } from '@/common'
 
 defineProps({
-    currentUserName: {
-        type: String as() => Conversation["user"]["firstName"],
+    viewer: {
+        type: Object as() => Viewer | undefined,
         required: true
     }
 })

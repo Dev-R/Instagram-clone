@@ -34,7 +34,7 @@ defineProps({
         required: true
     },
     activeConversation: {
-        type: Object as() => Conversation | null,
+        type: Object as() => Conversation | undefined,
         required: true
     },
     currentUser: {

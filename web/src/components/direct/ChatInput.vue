@@ -19,11 +19,12 @@
 			maxlength="100"
 			type="text"
 			class="bg-black border border-[#262626] text-white 
-                rounded-full text-sm focus:outline-none
+                rounded-full text-sm focus:outline-none disabled:cursor-not-allowed
                 block w-full p-2.5 resize-none"
 			placeholder="Message..."
 			:class="{ 'rounded-lg ': !isChatEmpty }"
 			:value="modalValue" 
+			:disabled="isChatLoading"
 			@keyup.enter="emitSendMessage"></textarea>
             
 		<!-- Gallery -->
@@ -72,7 +73,11 @@ defineProps({
     isChatEmpty: {
         type: Boolean,
         required: true
-    }
+    },
+	isChatLoading: {
+		type: Boolean,
+		required: true
+	}
 })
 
 const emit = defineEmits([

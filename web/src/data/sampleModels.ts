@@ -42,7 +42,7 @@ export class UserSample implements User {
  */
 export class ChatDialogSample implements ChatDialog {
     utemId = faker.string.uuid()
-    user = new UserSample()
+    user: User
     timestamp = faker.date.recent().getTime()
     itemType = 'text'
     isSentByViewer = faker.datatype.boolean()
@@ -52,6 +52,9 @@ export class ChatDialogSample implements ChatDialog {
     reactions = {
         likes: [],
         likesCount: faker.number.int()
+    }
+    constructor(user: User) {
+        this.user = user
     }
 }
 
@@ -64,6 +67,7 @@ export class ConversationSample implements Conversation {
     user = new UserSample()
     lastMessage = faker.lorem.sentence()
     timeSinceLastMessage = faker.date.recent().toISOString()
-    dialogs = [new ChatDialogSample()]
+    dialogs: ChatDialog[] = []
     isActive = faker.datatype.boolean()
+    
 }

@@ -13,13 +13,16 @@
 				<div 
 					class="lg:grid bg-black basis-full md:border-l border-slate-800">
 					<div class="flex md:flex-row flex-col h-screen">
-						<TheMessages 
+
+                        <!-- Navigation and Messages overview -->
+						<InboxPanel 
 							:active-conversation="activeConversation"
 							:conversations="conversations"
 							:current-user="currentUser"
 							@on-select-conversation="selectConversation" />
 
-						<TheChat 
+                        <!-- Chat input and Dialogs -->
+						<ActiveChat 
 							v-if="activeConversation"
 							:active-conversation="activeConversation"
 							v-model="chatMessageInput"
@@ -30,8 +33,9 @@
 							@on-file-upload="triggerFileUpload"
 							@on-send-message="sendMessage"
 							@on-like-icon="sendHeartEmoji" />
-
-						<ChatIntro 
+                            
+                        <!-- Chat intro -->
+						<ChatIntroMessage 
 							v-else
 							@on-send-message-modal="openSendMessageModal" />
 					</div>
@@ -59,9 +63,9 @@ import {
 } from 'vue-toastification'
 
 import {
-    ChatIntro,
-	TheChat,
-	TheMessages,
+    ChatIntroMessage,
+	ActiveChat,
+	InboxPanel,
     NavBarMain
 } from '@/components'
 
@@ -78,6 +82,13 @@ import {
     getCurrentTimestamp
 } from '@/common/helpers'
 
+// Demo data
+import {
+    ChatDialogSample,
+    ConversationSample, 
+    UserSample
+} from '@/data'
+
 // References to DOM element
 const fileUpload = ref<HTMLInputElementRef | null>()
 
@@ -91,63 +102,25 @@ const isFileValid = ref<boolean>(false)
 const isChatLoading = ref<boolean>(false)
 
 // Others
-const activeConversation = ref<Conversation | null>(null)
+const activeConversation = ref<Conversation | undefined>(undefined)
 
-// Demo data
-const userA: Viewer = {
-    id: '123456789',
-    firstName: 'John',
-    lastName: 'Doe',
-    userName: 'johndoe',
-    profilePictureUrl: 'https://loremflickr.com/1024/1280/life',
-    email: 'johndoe@example.com',
-    followerCount: 1000,
-    followingCount: 500,
-    gender: 'Female'
-}
-const userB: Sender = {
-    id: '987654321',
-    firstName: 'Jane',
-    lastName: 'Smith',
-    userName: 'janesmith',
-    profilePictureUrl: 'https://loremflickr.com/1024/1280/car',
-    followerCount: 500,
-    followingCount: 1000,
-    gender: 'Female'
-}
-const currentUser = userA
+// Sample data
+const viewer = new UserSample()
+const sender = new UserSample()
+
+const conversationSampleA = new ConversationSample()
+const conversationSampleB = new ConversationSample()
+const conversationSampleC = new ConversationSample()
 
 
-// A chat instances between two users
-const chatA = ref<ChatDialog[]>([{
-        utemId: '31054936540680616356189602913976320',
-        user: userA,
-        timestamp: 1683491483190270,
-        itemType: 'text',
-        isSentByViewer: true,
-        uqSeqId: 5136,
-        text: 'Hello, how are you?'
-    },
-    {
-        utemId: '42054936540680616356189602913976320',
-        user: userB,
-        timestamp: 1683491483195270,
-        itemType: 'text',
-        isSentByViewer: false,
-        uqSeqId: 5137,
-        text: 'I\'m good, thanks! How about you?'
-    }
-])
+const currentUser: Sender = sender
 
 // List of all conversations in the inbox
-const conversations = ref<Conversation[]>([{
-    uuid: '1',
-    user: userA,
-    lastMessage: 'Hello World',
-    timeSinceLastMessage: '1w',
-    dialogs: chatA.value,
-    isActive: false
-}])
+const conversations = ref<Conversation[]>([
+    conversationSampleA,
+    conversationSampleB,
+    conversationSampleC
+])
 
 // Active Chat Message
 const chatMessage = ref<ChatDialog>({
@@ -170,7 +143,7 @@ const sendMessage = (payload: Event) => {
     // Prevent spacing values
     if (message.value.trim() != '') {
         chatMessage.value = {
-            user: userA,
+            user: sender,
             itemType: '',
             isSentByViewer: true,
             text: message.value,
@@ -214,7 +187,7 @@ const onFileUpload = async (event: Event) => {
         isFileUploaded.value = true
 
         chatMessage.value = {
-            user: userA,
+            user: sender,
             itemType: 'image',
             isSentByViewer: true,
             img: attachmentImage.value as string,
@@ -228,6 +201,9 @@ const onFileUpload = async (event: Event) => {
  * @param convo - Conversation to be selected
  */
 const selectConversation = (convo: Conversation) => {
+    const dialogA = new ChatDialogSample(sender)
+    const dialogB = new ChatDialogSample(viewer)
+    convo.dialogs.push(dialogA, dialogB)
     activeConversation.value = convo
 }
 
@@ -235,7 +211,7 @@ const selectConversation = (convo: Conversation) => {
  * Go back to conversation list
  */
 const leaveChat = () => {
-    activeConversation.value = null
+    activeConversation.value = undefined
 }
 
 /**
@@ -307,8 +283,10 @@ watch(chatMessage, () => {
  * Scroll to latest message on conversation change
  */
 watch(activeConversation, () => {
-    const WAITING_TIME = 5
+    const WAITING_TIME = 1500
+    isChatLoading.value = true
     setTimeout(() => {
+        isChatLoading.value = false
         scrollToTheLatestMessage()
     }, WAITING_TIME)
 })
