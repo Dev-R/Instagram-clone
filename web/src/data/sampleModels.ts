@@ -1,17 +1,14 @@
-import type {
-    Sender,
-    Viewer,
-    ChatDialog,
-    User,
-    Conversation
-} from '@/common'
 import {
     faker
 } from '@faker-js/faker'
 
-const numberOfConversations = 5; // Change this to the desired number of instances
-
-
+import type {
+    ChatDialog,
+    User,
+    Conversation,
+    PostMedia,
+    PostCard
+} from '@/common'
 /**
  * Represents a fake user model.
  * @implements {User}
@@ -69,5 +66,35 @@ export class ConversationSample implements Conversation {
     timeSinceLastMessage = faker.date.recent().toISOString()
     dialogs: ChatDialog[] = []
     isActive = faker.datatype.boolean()
-    
+}
+
+/**
+ * Represents a fake post media model.
+ * @implements {PostMedia}
+ */
+export class PostMediaSample implements PostMedia {
+    index = faker.number.int()
+    type = 'video' as PostMedia['type']
+    mediaUrl = faker.image.url({width: 1024, height: 1280})
+    width = 1024
+    height = 1280
+    title = faker.lorem.sentence({min: 5, max: 10})
+}
+
+export class SocialPostSample implements PostCard {
+    id = faker.string.uuid()
+    userName = faker.internet.userName()
+    profilePictureUrl = faker.image.avatar()
+    createdAt = faker.date.recent().toISOString()
+    caption = faker.lorem.sentence()
+    likeCount = faker.number.int({min: 2, max: 1000})
+    hasLiked = faker.datatype.boolean()
+    isFollowed = faker.datatype.boolean()
+    commentCount = faker.number.int({min: 2, max: 1000})
+    comments = []
+    carouselMedia = [
+        new PostMediaSample(),
+        new PostMediaSample(),
+        new PostMediaSample(),
+    ]
 }
