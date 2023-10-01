@@ -31,29 +31,16 @@ import {
 } from '@/components'
 
 import {
-    randomIntFromInterval,
-    type PostCard as PostCardType,
+    SampleGenerator
+} from '@/data'
+
+import type {
+	PostCard as PostCardType,
 } from '@/common'
-
-import { 
-    SocialPostSample
- } from '@/data'
-
 
 const posts = ref <PostCardType[] | undefined>(undefined)
 
-/**
- * Generates a random number of posts between MIN and MAX
- * and assigns them to the posts ref variable
- */
-const generateRandomPosts = () => {
-    const MIN_POSTS = 5 // minimum number of posts
-    const MAX_POSTS = 20 // maximum number of posts
-    const numberOfPosts = randomIntFromInterval(MIN_POSTS, MAX_POSTS) 
-    posts.value =  Array.from({ length: numberOfPosts }, () => new SocialPostSample());
-}
-
 onMounted(() => {
-    generateRandomPosts()
+    posts.value = SampleGenerator.generateRandomPosts(5, 20)
 })
 </script>
