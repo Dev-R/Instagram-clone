@@ -73,40 +73,40 @@ defineProps({
         type: Boolean,
         required: true
     }
-});
+})
 
 const emit = defineEmits([
     "onLikeIcon",
     "onSendMessage",
     "onFileUpload"
-]);
+])
 // DOM Refs
 const textArea = ref<HTMLInputElement | null>()
 /**
  * Emit new message
  */
 const emitSendMessage = (payload: KeyboardEvent) => {
-    emit("onSendMessage", payload);
-};
+    emit("onSendMessage", payload)
+}
 /**
  * Emit like icon
  */
 const emitLikeIcon = () => {
-    emit("onLikeIcon");
-};
+    emit("onLikeIcon")
+}
 /**
  * Emit file upload
  */
 const emitFileUpload = () => {
-    emit("onFileUpload");
-};
+    emit("onFileUpload")
+}
 /**
  * Append emoji to textarea
  */
 const appendEmoji = (emoji: Emoji) => {
     if (textArea.value) {
-        textArea.value.focus();
-        textArea.value.value += emoji.i;
+        textArea.value.focus()
+        textArea.value.value += emoji.i
     }
-};
+}
 </script>

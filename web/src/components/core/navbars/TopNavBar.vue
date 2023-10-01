@@ -107,21 +107,21 @@
 </template>
 
 <script lang="ts">
-import { onMounted, defineComponent, computed, ref } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { onMounted, defineComponent, computed, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
 import {
     SVGLoader
-} from '@/components';
+} from '@/components'
 
 import { 
     usePhotoStore 
-} from '@/stores';
+} from '@/stores'
 import { useToast } from 'vue-toastification'
 
 // import type { 
 //     NavBarItem 
-// } from '@/common';
+// } from '@/common'
 
 export default defineComponent({
     name: 'TopNavBar',
@@ -221,16 +221,3 @@ export default defineComponent({
     ]
 })
 </script>
-
-<style scoped>
-/* we will explain what these classes do next! */
-.v-enter-active,
-.v-leave-active {
-  transition: opacity 0.5s ease;
-}
-
-.v-enter-from,
-.v-leave-to {
-  opacity: 0;
-}
-</style>

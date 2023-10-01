@@ -64,12 +64,12 @@ defineProps({
         type: String as () => string | number | string[] | undefined,
         default: undefined
     }
-});
+})
 
 defineEmits([
     "onLikeIcon",
     "onSendMessage",
     "onFileUpload",
     "onChatBack",
-]);
+])
 </script>

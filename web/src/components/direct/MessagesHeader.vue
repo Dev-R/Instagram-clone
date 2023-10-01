@@ -60,16 +60,16 @@ defineProps({
 const emit = defineEmits(["onNewMessage"])
 
 // Services
-const router = useRouter(); 
+const router = useRouter() 
 
 /**
  * Emit new message
  */
 const emitNewMessage = () => {
-    emit("onNewMessage");
-};
+    emit("onNewMessage")
+}
 
 const onPageBack = () => {
-    router.back();
-};
+    router.back()
+}
 </script>

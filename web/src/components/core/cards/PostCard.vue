@@ -163,11 +163,11 @@ const emit = defineEmits([
     'onPostComment',
 ])
 
-const comment = ref('');
+const comment = ref('')
 
 
 // Stores
-const modalStoreManager = useModalManagerStore();
+const modalStoreManager = useModalManagerStore()
 
 // Computed
 const findNumberOfLikes = computed(() => {
@@ -179,27 +179,27 @@ const findNumberOfLikes = computed(() => {
  * @param {string} postId - The ID of the post
  */
 const onOpenCommentModal = (post: PostCard) => {
-    const modalName = screenSizeType.value === 'xs' ? ModalName.PROFILE : ModalName.COMMENT;
-    modalStoreManager.openModal(modalName);
-    modalStoreManager.setActivePost(post);
-};
+    const modalName = screenSizeType.value === 'xs' ? ModalName.PROFILE : ModalName.COMMENT
+    modalStoreManager.openModal(modalName)
+    modalStoreManager.setActivePost(post)
+}
 
 /**
  * Emit signal when post button is clicked
  * @event on-post-comment
  */
 const onPostComment = () => {
-    comment.value = '';
+    comment.value = ''
     console.log("Emitting signal:", comment.value)
-    emit('onPostComment', comment, prop.postItem.id);
-};
+    emit('onPostComment', comment, prop.postItem.id)
+}
 
 /**
  * Append emoji to comment
  * @param emoji - The emoji object
  */
 const appendEmoji = (emoji: Emoji) => {
-    comment.value += emoji.i;
+    comment.value += emoji.i
 }
 
 /** 

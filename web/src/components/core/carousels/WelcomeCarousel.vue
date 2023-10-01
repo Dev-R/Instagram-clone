@@ -38,22 +38,10 @@ let currentImageIndex = ref<number>(0)
 const currentImage = computed(() => images[currentImageIndex.value])
 
 const changeImage = () => {
-    currentImageIndex.value = (currentImageIndex.value + 1) % images.length;
+    currentImageIndex.value = (currentImageIndex.value + 1) % images.length
 }
 
 onMounted(() => {
-    setInterval(changeImage, TIME_INTERVAL); // Change image every N seconds
+    setInterval(changeImage, TIME_INTERVAL) // Change image every N seconds
 })
 </script>
-
-<style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s ease;
-}
-
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
-}
-</style>

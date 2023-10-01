@@ -49,37 +49,37 @@ defineProps({
         type: Object as() => Conversation["user"]["firstName"],
         required: true
     }
-});
+})
 
 const emit = defineEmits([
     "onAudioCall",
     "onVideoCall",
     "onChatInfo",
     "onChatBack"
-]);
+])
 
 /**
  * Emit Audio Call
  */
 const emitAudioCall = () => {
-    emit("onAudioCall");
-};
+    emit("onAudioCall")
+}
 /**
  * Emit Video Call
  */
 const emitVideoCall = () => {
-    emit("onVideoCall");
-};
+    emit("onVideoCall")
+}
 /**
  * Emit Chat Info
  */
 const emitChatInfo = () => {
-    emit("onChatInfo");
-};
+    emit("onChatInfo")
+}
 /**
  * Emit Chat Info
  */
 const emitChatBack = () => {
-    emit("onChatBack");
-};
+    emit("onChatBack")
+}
 </script>

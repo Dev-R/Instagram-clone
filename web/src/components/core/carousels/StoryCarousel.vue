@@ -45,7 +45,7 @@ export default defineComponent({
 
 
         const rotateAvatar = (number: number) => {
-            isRotating.value = !isRotating.value;
+            isRotating.value = !isRotating.value
             activeIndex.value = number
         }
         

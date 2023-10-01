@@ -32,11 +32,11 @@
 <script setup lang="ts">
 import {
     computed,
-} from 'vue';
+} from 'vue'
 
 import {
     useRoute
-} from 'vue-router';
+} from 'vue-router'
 
 import {
     TopNavBar,

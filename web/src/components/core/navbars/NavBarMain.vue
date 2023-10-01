@@ -242,10 +242,10 @@ export default defineComponent({
 
 		const logout = () => {
         // TODO: Add logout logic and make a universal logout function
-          toast.success('Logout successful');
+          toast.success('Logout successful')
 		//   Sleep for 2 seconds
 		  setTimeout(() => {
-			  router.push('/accounts/login');
+			  router.push('/accounts/login')
 		  }, 2000)
 
       	}
