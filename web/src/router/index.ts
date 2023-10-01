@@ -74,7 +74,7 @@ const router = createRouter({
             {
               path: 'style',
               name: 'style',
-              component: () => import('@/components/modals/PhotoModal.vue'),
+              component: () => import('@/components/core/modals/PhotoModal.vue'),
               meta: { title: 'Create Image' }
             },
             {
