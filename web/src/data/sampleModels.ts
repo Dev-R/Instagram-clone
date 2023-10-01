@@ -2,6 +2,10 @@ import {
     faker
 } from '@faker-js/faker'
 
+import {
+    SampleGenerator
+} from '@/data'
+
 import type {
     ChatDialog,
     User,
@@ -24,8 +28,8 @@ export class UserSample implements User {
     userName = faker.internet.userName()
     profilePictureUrl = faker.image.avatar()
     email = faker.internet.email()
-    followerCount = faker.number.int()
-    followingCount = faker.number.int()
+    followerCount = faker.number.int({min: 2, max: 1000})
+    followingCount = faker.number.int({min: 2, max: 1000})
     gender = 'Other' as User['gender']
     friendShip = {
         muting: faker.datatype.boolean(),
@@ -34,7 +38,7 @@ export class UserSample implements User {
         outgoingRequest: faker.datatype.boolean()
     }
     dateJoined = faker.date.past().toISOString()
-    mediaItems = []
+    mediaItems = SampleGenerator.generateRandomPosts(2, 10)
 }
 
 /**
@@ -110,11 +114,7 @@ export class SocialPostSample implements SocialPost {
     isFollowed = faker.datatype.boolean()
     commentCount = faker.number.int({min: 2, max: 1000})
     comments = []
-    carouselMedia = [
-        new PostMediaSample(),
-        new PostMediaSample(),
-        new PostMediaSample(),
-    ]
+    carouselMedia = SampleGenerator.generateRandomPostMedias(1, 5)
 }
 
 /**
@@ -129,11 +129,7 @@ export class StoryCarouselSample implements StoryCarousel {
     seen = faker.datatype.boolean()
     hasLiked = faker.datatype.boolean()
     mediaCount = 1
-    items = [
-        new PostMediaSample(),
-        new PostMediaSample(),
-        new PostMediaSample(),
-    ]
+    items = SampleGenerator.generateRandomPostMedias(1, 5)
 }
 
 /**

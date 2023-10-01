@@ -1,8 +1,10 @@
 import {
+    UserSample,
     SocialPostSample,
     StoryCarouselSample,
     SuggestionSample,
-    NotificationSample
+    NotificationSample,
+    PostMediaSample,
 } from '@/data'
 
 import { randomIntFromInterval } from '@/common/helpers'
@@ -64,5 +66,26 @@ export class SampleGenerator {
         return Array.from({
             length: numberOfNotifications
         }, () => new NotificationSample())
+    }
+
+    /**
+     * Generates a random number of post medias.
+     * @param min The minimum number of post medias to generate.
+     * @param max The maximum number of post medias to generate.
+     * @returns An array of randomly generated post medias.
+     */
+    public static generateRandomPostMedias(min: number, max: number) {
+        const numbeOfPostMedias = randomIntFromInterval(min, max)
+        return Array.from({
+            length: numbeOfPostMedias
+        }, () => new PostMediaSample())
+    }
+
+    /**
+     * Generates a random user.
+     * @returns A randomly generated user.
+     */
+    public static generateRandomUser() {
+        return new UserSample()
     }
 }
