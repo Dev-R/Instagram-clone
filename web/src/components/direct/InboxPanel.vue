@@ -2,14 +2,14 @@
 	<div 
 		:class="{ 'hidden': activeConversation }"
 		class="bg-black basis-1/5 md:block">
-		<!-- Conversation Header  -->
-		<MessagesHeader 
+		<!-- Inbox Deader  -->
+		<InboxHeader 
 			:current-user="currentUser" />
 
-		<!-- Conversations Rendering -->
+		<!-- Inbox Rendering -->
 		<div class="overflow-auto lg:max-h-[850px]">
-			<!-- Conversation OverView items-->
-			<MessagesList 
+			<!-- Inbox items-->
+			<InboxMessages 
 				:active-conversation-id="activeConversation?.uuid"
 				:conversations="conversations"
 				@on-select-conversation="$emit('onSelectConversation', $event as Conversation)" />
@@ -19,8 +19,8 @@
 
 <script setup lang="ts">
 import {
-    MessagesList,
-    MessagesHeader
+    InboxMessages,
+    InboxHeader
 } from '@/components'
 
 import type {

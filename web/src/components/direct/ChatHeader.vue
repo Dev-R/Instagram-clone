@@ -46,7 +46,7 @@ import type {
 
 defineProps({
     currentUserName: {
-        type: Object as() => Conversation["user"]["firstName"],
+        type: String as() => Conversation["user"]["firstName"],
         required: true
     }
 })
