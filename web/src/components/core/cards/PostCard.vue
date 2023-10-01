@@ -25,7 +25,7 @@
 					</div>
 
 					<div class="font-sans text-sm font-light text-[#949494] self-center">
-						{{ postItem.createdAt }}
+						{{ formatDate(postItem.createdAt as string) }}
 					</div>
 				</div>
 			</div>
@@ -206,6 +206,12 @@ const appendEmoji = (emoji: Emoji) => {
 * Return current screen size type
 */
 const screenSizeType = computed(() => (windowWidth.value < ScreenBreakpoint.Small ? 'xs' : false))
+
+const formatDate = (date: string) => {
+	const dateObj = new Date(date)
+	const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' } as Intl.DateTimeFormatOptions
+	return dateObj.toLocaleDateString('en-US', dateOptions)
+}
 
 /**
  * Return current screen width
