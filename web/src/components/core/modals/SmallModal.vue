@@ -89,110 +89,75 @@
 	</Transition>
 </template>
 
-<script lang="ts">
-import { defineComponent, onMounted, computed, ref } from 'vue'
-
-import type {
-	SuggestionCard,
-	PostCommentCard,
-	Gender
-} from '@/common'
+<script setup lang="ts">
+import {
+	ref,
+    computed
+} from 'vue'
 
 import {
-	ModalName,
-	ModalSize
-} from '@/common'
-
-import {
-	SmallCard as FollowCard,
-	SVGLoader,
-	CommentCard,
-	// TheButton,
-	// TheInput
-} from '@/components'
-
-// TODO: Check why the above import is not working
-import TheButton from '../basics/TheButton.vue'
-
-export default defineComponent({
-	name: 'SmallModal',
-	setup(prop, context) {
-
-		const activeGender = ref('')
-		
-		const shouldDisplayNoComments = computed(() => {
-			return !prop.items || prop.items.length === 0
-		})
-
-		
-		const onGenderSelected = (gender: string) => {
-			activeGender.value = gender
-			// context.emit('onGenderSelected', gender)
-		}
-
-		/**
-		 * Emit signal when the modal is closed
-		 * @event modal-closed
-		 */
-		const onModalClosed = () => {
-			context.emit('onModalClosed')
-		}
-		onMounted(() => {
-			console.log('Items loaded', prop.items)
-		})
-		return {
-			shouldDisplayNoComments,
-			activeGender,
-			ModalSize,
-			ModalName,
-			onModalClosed,
-			onGenderSelected
-		}
-	},
-	components: {
-    FollowCard,
+    SmallCard as FollowCard,
     SVGLoader,
     CommentCard,
-	TheButton
-    // TheInput
-},
-	props: {
-		title: {
-			type: String,
-			required: true
-		},
-		items: {
-			type: Object as () => SuggestionCard[] | PostCommentCard[] | Gender[] | undefined,
-			required: false
-		},
-		isToggled: {
-			type: Boolean,
-			required: true
-		},
-		modalSize: {
-			type: String,
-			default: ModalSize.Large
-		},
-		modalType: {
-			type: String as () => ModalName,
-			default: ModalName.FOLLOW
-		}
-	},
-	emits: [
-		'onModalClosed',
-		'onGenderSelected'
-	],
+    TheButton,
+} from '@/components'
+
+import type {
+    SuggestionCard,
+    PostCommentCard,
+    Gender
+} from '@/common'
+
+import {
+    ModalName,
+    ModalSize
+} from '@/common'
+
+// TODO: Check why the above import is not working
+const prop = defineProps({
+    title: {
+        type: String,
+        required: true
+    },
+    items: {
+        type: Object as() => SuggestionCard[] | PostCommentCard[] | Gender[] | undefined,
+        required: false
+    },
+    isToggled: {
+        type: Boolean,
+        required: true
+    },
+    modalSize: {
+        type: String,
+        default: ModalSize.Large
+    },
+    modalType: {
+        type: String as() => ModalName,
+        default: ModalName.FOLLOW
+    }
 })
+
+const emit = defineEmits([
+    'onModalClosed',
+    'onGenderSelected'
+])
+
+const activeGender = ref('')
+
+const shouldDisplayNoComments = computed(() => {
+    return !prop.items || prop.items.length === 0
+})
+
+const onGenderSelected = (gender: string) => {
+    activeGender.value = gender
+    // context.emit('onGenderSelected', gender)
+}
+
+/**
+ * Emit signal when the modal is closed
+ * @event modal-closed
+ */
+const onModalClosed = () => {
+    emit('onModalClosed')
+}
 </script>
-
-<style scoped>
-.v-enter-active,
-.v-leave-active {
-  transition: opacity 0.5s ease;
-}
-
-.v-enter-from,
-.v-leave-to {
-  opacity: 0;
-}
-</style>
