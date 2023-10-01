@@ -67,7 +67,7 @@ export interface User extends BaseUser {
     biography?: string
   
     /** Posts made by the user's */
-    mediaItems: []
+    mediaItems: any[]
   }
   
 
