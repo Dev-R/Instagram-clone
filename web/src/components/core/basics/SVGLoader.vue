@@ -32,14 +32,14 @@ const path = props.src ? props.src : ''
 const file = `${path}icon-${props.icon}`
 
 // Import all SVG files in the icon directory
-const modules = import.meta.glob('../../assets/icons/**/*.svg', {
+const modules = import.meta.glob('../../../assets/icons/**/*.svg', {
     as: 'raw',
     eager: true,
 })
 
 // Compute the SVG content for the specified icon
 const svg = computed(() => {
-    console.log('Loaded.', `../../assets/icons/${file}.svg`)
-    return modules[`../../assets/icons/${file}.svg`] ?? modules['../../assets/icons/icon-logo-cone.svg']
+    console.log('Loaded.', `../../../assets/icons/${file}.svg`)
+    return modules[`../../../assets/icons/${file}.svg`] ?? modules['../../../assets/icons/icon-logo-cone.svg']
 })
 </script>
