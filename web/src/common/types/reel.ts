@@ -1,4 +1,4 @@
-import type { BasePostCard } from "./post.model"
+import type { BasePostCard } from "./post"
 
 
 /** 

@@ -1,4 +1,4 @@
-import type { PhotoModalImage } from '@/common/models/profile.model'
+import type { PhotoModalImage } from '@/common'
 import { defineStore } from 'pinia'
 
 /**

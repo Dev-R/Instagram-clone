@@ -1,4 +1,4 @@
-import type { BaseCard } from "./card.model"
+import type { BaseCard } from "./card"
 
 /**
  * Base interface for Post card models

@@ -1,4 +1,4 @@
-import type { PostMedia } from "./post.model"
+import type { PostMedia } from "./post"
 
 /**
  * Type alias for the supported media elements for a story.
