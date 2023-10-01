@@ -1,4 +1,4 @@
-import type { PostMedia } from "../types"
+import type { PostCard } from "../types"
 
 /**
  * Base Interface for User model
@@ -68,7 +68,7 @@ export interface User extends BaseUser {
     biography?: string
   
     /** Posts made by the user's */
-    mediaItems: PostMedia[]
+    mediaItems: PostCard[]
   }
   
 
