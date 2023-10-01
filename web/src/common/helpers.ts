@@ -20,4 +20,15 @@ export function addIndexToObjects<T extends { index: number }>(arr: T[]): T[] {
 export function getCurrentTimestamp(): number {
     return new Date().getTime()
   }
-  
+
+
+/**
+ * Get a random integer between two numbers.
+ * @param min The minimum number.
+ * @param max The maximum number.
+ * @returns A random integer between the two numbers.
+ * @see https://stackoverflow.com/a/7228322/1109380
+ */
+export function randomIntFromInterval(min: number, max: number) { // min and max included 
+    return Math.floor(Math.random() * (max - min + 1) + min)
+  }

@@ -21,12 +21,6 @@ export interface PostMedia {
 
 
 /**
- * Interface for comment card
- */
-export interface PostCommentCard extends PostComment {
-}
-
-/**
  * Interface for a single post comment
  */
 export interface PostComment {
@@ -44,6 +38,12 @@ export interface PostComment {
 
   /** Unix timestamp representing when the comment was posted */
   createdAt: string | number
+}
+
+/**
+ * Interface for comment card
+ */
+export interface PostCommentCard extends PostComment {
 }
 
 /**
