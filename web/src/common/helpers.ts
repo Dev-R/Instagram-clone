@@ -18,6 +18,6 @@ export function addIndexToObjects<T extends { index: number }>(arr: T[]): T[] {
  * @returns {number} The current Unix timestamp.
  */
 export function getCurrentTimestamp(): number {
-    return new Date().getTime();
+    return new Date().getTime()
   }
   

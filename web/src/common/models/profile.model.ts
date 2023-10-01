@@ -11,12 +11,12 @@ export type PhotoModalTab = 'adjustments-tab' | 'filters-tab'
 /**
  * Type alias for an image in the photo-modal.
  */
-export type PhotoModalImage = string | null;
+export type PhotoModalImage = string | null
 
 /**
  * Type alias representing a reference to an HTML input element.
  */
-export type HTMLInputElementRef = InstanceType<typeof HTMLInputElement>;
+export type HTMLInputElementRef = InstanceType<typeof HTMLInputElement>
 
 /**
  * Type alias representing the available tab options for the navigation bar.

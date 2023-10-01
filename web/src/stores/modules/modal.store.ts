@@ -19,21 +19,21 @@ export const useModalManagerStore = defineStore('modal', {
     },
     actions: {
       openModal(modalName: ModalType) {
-        this.modalName = modalName;
+        this.modalName = modalName
       },
       closeModal() {
-        this.modalName = null;
+        this.modalName = null
       },
       setActivePost(post: any) {
-        this.post = post;
+        this.post = post
       },
       toggleModal(modalName: ModalType ) {
         if (this.modalName === modalName) {
-          this.modalName = null; // Close the currently open modal
+          this.modalName = null // Close the currently open modal
         } else {
-          this.modalName = modalName; // Open the specified modal
+          this.modalName = modalName // Open the specified modal
         }
       },
     },
-  });
+  })
   
