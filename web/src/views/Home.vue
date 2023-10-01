@@ -23,6 +23,7 @@
                             overflow-auto md:border-current border-gray-800 
                             bg-slate-1000 border-t border-b">
 							<StoryCarousel 
+                                v-if="stories"
 								:reels="stories" />
 						</div>
 
@@ -40,6 +41,7 @@
 					<!-- Right bar: Suggestions -->
 					<div class="lg:block hidden max-w-xs pt-8">
 						<SuggestionCard 
+                            v-if="suggested"
 							:card-item="suggested" />
 					</div>
 				</div>
@@ -65,9 +67,10 @@
 <script setup lang="ts">
 // Imports
 import {
-    computed,
-    watch,
     ref,
+    watch,
+    computed,
+    onMounted
 } from 'vue'
 
 import {
@@ -79,20 +82,26 @@ import {
     SuggestionCard,
     PostCard,
     StoryCarousel,
-    CommentModal,
     PhotoModal
 } from '@/components'
 
-import type {
-    PostCard as PostCardType,
-    SuggestionCard as SuggestionCardType,
-    PostMedia,
-    StoryCarousel as StoryCarouselType
-} from '@/common'
+import {
+    SampleGenerator
+} from '@/data'
 
 import {
     usePhotoStore
 } from '@/stores'
+
+import type {
+    PostCard as PostCardType,
+    SuggestionCard as SuggestionCardType,
+    StoryCarousel as StoryCarouselType
+} from '@/common'
+
+const posts = ref<PostCardType[] | undefined>(undefined)
+const stories = ref<StoryCarouselType[] | undefined>(undefined)
+const suggested = ref<SuggestionCardType | undefined>(undefined)
 
 // Data
 const commentModal = ref({
@@ -104,106 +113,6 @@ const photoModal = ref({
     currentStep: '',
     isFileValid: false
 })
-
-// TODO: Remove this sample data
-const mediasArraySampleA: PostMedia[] = [{
-        index: 0,
-        type: 'image',
-        mediaUrl: "https://loremflickr.com/1024/1280/cat",
-        title: "Legendary A"
-    },
-    {
-        index: 1,
-        type: 'image',
-        mediaUrl: "https://loremflickr.com/1024/1280/nature",
-        title: "Legendary A"
-    }
-]
-// TODO: Remove this sample data 
-const mediasArraySampleB: PostMedia[] = [{
-        index: 0,
-        type: 'video',
-        mediaUrl: "https://into-the-program.com/uploads/sample_video02.mp4",
-        title: "Legendary A"
-    },
-    {
-        index: 1,
-        type: 'image',
-        mediaUrl: "https://loremflickr.com/1024/1280/love",
-        title: "Legendary A"
-    }
-]
-
-const posts = ref <PostCardType[]> ([{
-        id: '0',
-        userName: 'Rabee',
-        createdAt: '20h',
-        likeCount: 0,
-        hasLiked: true,
-        caption: ' Sh. @abdullah_oduro and I getting that Saturday morning work in the gym and talking over @yaqeeninstitute Quran 30 ',
-        carouselMedia: mediasArraySampleA,
-        commentCount: 0,
-        profilePictureUrl: 'https://loremflickr.com/1024/1280/bird',
-        isFollowed: false,
-        comments: [{
-            id: 0,
-            userName: 'Sara',
-            profilePictureUrl: 'https://loremflickr.com/1024/1280/woman',
-            content: "\
-                Subhanallah x3 \
-                Alhamdulillah x3 \
-                La ilaha ilallah x3 \
-                Astagfirullah x3Astagfirullah x3 \
-                Allahu akbar x3",
-            createdAt: '2012-02-23'
-        }]
-    },
-    {
-        id: '1',
-        userName: 'Sara',
-        createdAt: 'February 24',
-        likeCount: 10,
-        hasLiked: false,
-        caption: 'Be like a tree. Stay grounded. Connect with your roots. Turn over a new leaf. Bend before you break. Enjoy your unique natural beauty. Keep growing.',
-        carouselMedia: mediasArraySampleB,
-        commentCount: 5,
-        profilePictureUrl: 'https://loremflickr.com/1024/1280/girl',
-        isFollowed: false
-    }
-])
-const suggested = ref<SuggestionCardType>({
-    userName: 'memesgod840',
-    profilePictureUrl: 'https://loremflickr.com/1024/1280/girl',
-    suggested: [{
-        userName: 'Rabee',
-        profilePictureUrl: 'https://loremflickr.com/1024/1280/botanical',
-        followedBy: 'imamomarsuleiman + 1 more'
-    }]
-})
-
-const stories = ref<StoryCarouselType[]>([{
-        id: 1,
-        userName: 'Noura',
-        profilePictureUrl: 'https://loremflickr.com/1024/1280/woman',
-        expiringAt: '',
-        seen: false,
-        items: mediasArraySampleA,
-        mediaCount: mediasArraySampleA.length,
-        hasLiked: false
-    },
-    {
-        id: 2,
-        userName: 'Rabee',
-        profilePictureUrl: 'https://loremflickr.com/1024/1280/man',
-        expiringAt: '',
-        seen: false,
-        items: mediasArraySampleA,
-        mediaCount: mediasArraySampleA.length,
-        hasLiked: false
-
-    }
-])
-
 let windowWidth = ref(window.innerWidth) // Current window width
 
 // Services
@@ -216,6 +125,7 @@ const photoStore = usePhotoStore()
  * @param id Liked / Unliked post ID
  */
  const changeLikeState = (id: number) => {
+    if (!posts.value) return
     const postItem = posts.value[id]
     postItem.hasLiked = !postItem.hasLiked
 }
@@ -276,5 +186,11 @@ watch([photoModal.value, commentModal.value], () => {
         return
     }
     document.documentElement.style.overflow = 'auto'
+})
+
+onMounted(() => {
+    posts.value = SampleGenerator.generateRandomPosts(5, 15)
+    stories.value = SampleGenerator.generateRandomStories(2, 5)
+    suggested.value = SampleGenerator.generateRandomSuggestions(1, 1) as SuggestionCardType
 })
 </script>
