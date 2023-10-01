@@ -3,7 +3,9 @@
 		<MobileWelcomeScreen 
 			:is-mobile-login="isMobileLogin"
 			@mobile-login="triggerMobileLogin"/>
-			
+		
+		<WelcomeCarousel />
+		
 		<div 
 			:class="isMobileLogin ? '' : 'hidden'"
 			class="sm:flex sm:flex-col space-y-3 m-8">
@@ -111,7 +113,8 @@ import {
     TheInput,
     TheButton,
     LoginFooter,
-	MobileWelcomeScreen
+	MobileWelcomeScreen,
+	WelcomeCarousel
 } from '@/components'
 
 import type {
