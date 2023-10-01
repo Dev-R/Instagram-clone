@@ -38,7 +38,7 @@ import type {
 	PostCard as PostCardType,
 } from '@/common'
 
-const posts = ref <PostCardType[] | undefined>(undefined)
+const posts = ref<PostCardType[] | undefined>(undefined)
 
 onMounted(() => {
     posts.value = SampleGenerator.generateRandomPosts(5, 20)

@@ -32,7 +32,7 @@
 							:is-tagged-tab-empty="true" />
                         
 						<PostCoverCard
-							v-if="activeTab === ProfileTab.Posts"
+							v-if="activeTab === ProfileTab.Posts && posts"
 							:posts="posts" />
 
 						<ProfileFooter />
@@ -57,7 +57,8 @@
 <script setup lang="ts">
 import {
     ref,
-    computed
+    computed,
+    onMounted
 } from 'vue'
 
 import {
@@ -77,28 +78,18 @@ import {
     ModalName,
     type NavBarTabs,
     type User,
-    type PostMedia,
     type PostCard as PostCardType
 } from '@/common'
 
-// TODO: Remove this sample data
-const mediasArraySampleA: PostMedia[] = [{
-        index: 0,
-        type: 'image',
-        mediaUrl: "https://loremflickr.com/1024/1280/cat",
-        title: "Legendary A"
-    },
-    {
-        index: 1,
-        type: 'image',
-        mediaUrl: "https://loremflickr.com/1024/1280/nature",
-        title: "Legendary A"
-    }
-]
+import {
+    SampleGenerator
+} from '@/data'
 
 // Data
-const activeTab = ref<NavBarTabs>(ProfileTab.Posts) // Select profile-posts as default active tab
+const profile = ref<User>(SampleGenerator.generateRandomUser())
+const posts = ref<PostCardType[] | undefined>(profile.value.mediaItems)
 
+const activeTab = ref<NavBarTabs>(ProfileTab.Posts) // Select profile-posts as default active tab
 const statsModal = ref({
     title: '',
     type: '',
@@ -106,32 +97,6 @@ const statsModal = ref({
     isToggled: false
 })
 
-const profile = ref<User>({
-    id: '0',
-    firstName: 'Alex',
-    lastName: 'Boo',
-    userName: 'Alex_boo',
-    profilePictureUrl: 'https://loremflickr.com/1024/1280/holiday',
-    dateJoined: '01-01-2012',
-    followerCount: 0,
-    followingCount: 0,
-    mediaCount: 50,
-    gender: 'Female',
-    mediaItems: [],
-})
-
-const posts = ref<PostCardType[]>([{
-    id: '0',
-    userName: 'Rabee',
-    createdAt: 'February 24',
-    likeCount: 2456,
-    hasLiked: true,
-    caption: ' Sh. @abdullah_oduro and I getting that Saturday morning work in the gym and talking over @yaqeeninstitute Quran 30 ',
-    carouselMedia: mediasArraySampleA,
-    commentCount: 2456,
-    profilePictureUrl: 'https://loremflickr.com/32/32/bird',
-    isFollowed: false
-}])
 
 // Methods
 /**
