@@ -37,21 +37,9 @@
     </div>
 </template>
 
-<script lang="ts">
-import { onMounted, defineComponent } from 'vue'
-import NavBarMain from '@/components/navbars/NavBarMain.vue'
-
-export default defineComponent({
-    name: 'Not Found',
-    setup() {
-        onMounted(() => {
-            // console.log('Mounted Chat')
-        })
-
-        return {}
-    },
-    components: {
-        NavBarMain,
-    },
-})
+<script setup lang="ts">
+// TODO: Remove NavBarMain
+import {
+    NavBarMain
+} from '@/components'
 </script>
