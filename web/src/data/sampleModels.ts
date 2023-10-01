@@ -7,8 +7,12 @@ import type {
     User,
     Conversation,
     PostMedia,
-    PostCard
+    PostCard as SocialPost,
+    StoryCarousel,
+    SuggestionCard as Suggestion,
+    NotificationCard as Notification
 } from '@/common'
+
 /**
  * Represents a fake user model.
  * @implements {User}
@@ -73,15 +77,29 @@ export class ConversationSample implements Conversation {
  * @implements {PostMedia}
  */
 export class PostMediaSample implements PostMedia {
-    index = faker.number.int()
-    type = 'video' as PostMedia['type']
+    static index =  0; // TODO: Remove this, after updating MediaCarousel -> BAD PRACTICE
+    index = PostMediaSample.index 
+    type = 'image' as PostMedia['type']
     mediaUrl = faker.image.url({width: 1024, height: 1280})
     width = 1024
     height = 1280
     title = faker.lorem.sentence({min: 5, max: 10})
+    constructor() {
+        // TODO: Remove this, after updating MediaCarousel -> BAD PRACTICE
+        const currentMediaIndex = PostMediaSample.index
+        if (currentMediaIndex === 2) {
+            PostMediaSample.index = 0
+        } else {
+            PostMediaSample.index++
+        }
+    }
 }
 
-export class SocialPostSample implements PostCard {
+/**
+ * Represents a fake post card model.
+ * @implements {SocialPost}
+ */
+export class SocialPostSample implements SocialPost {
     id = faker.string.uuid()
     userName = faker.internet.userName()
     profilePictureUrl = faker.image.avatar()
@@ -97,4 +115,54 @@ export class SocialPostSample implements PostCard {
         new PostMediaSample(),
         new PostMediaSample(),
     ]
+}
+
+/**
+ * Represents a fake story carousel model.
+ * @implements {StoryCarousel}
+ */
+export class StoryCarouselSample implements StoryCarousel {
+    id = faker.number.int()
+    userName = faker.internet.userName()
+    profilePictureUrl = faker.image.avatar()
+    expiringAt = faker.date.recent().toISOString()
+    seen = faker.datatype.boolean()
+    hasLiked = faker.datatype.boolean()
+    mediaCount = 1
+    items = [
+        new PostMediaSample(),
+        new PostMediaSample(),
+        new PostMediaSample(),
+    ]
+}
+
+/**
+ * Represents a fake suggestion model.
+ * @implements {Suggestion}
+ */
+export class SuggestionSample implements Suggestion {
+    id = faker.string.uuid()
+    userName = faker.internet.userName()
+    profilePictureUrl = faker.image.avatar()
+    createdAt = faker.date.recent().toISOString()
+    caption = faker.lorem.sentence()
+    suggested = [{ // TOOD: Extract this to a separate model
+        userName: faker.internet.userName(),
+        profilePictureUrl: faker.image.avatar(),
+        followedBy: faker.internet.userName()
+    }]
+}
+
+/**
+ * Represents a fake notification model.
+ * @implements {Notification}
+ */
+export class NotificationSample implements Notification {
+    id = faker.string.uuid()
+    userName = faker.internet.userName()
+    profilePictureUrl = faker.image.avatar()
+    createdAt = faker.date.recent().toISOString()
+    caption = faker.lorem.sentence()
+    type = faker.helpers.arrayElement(['like', 'comment', 'follow']) as Notification['type']
+    isFollowing = faker.datatype.boolean()
 }
