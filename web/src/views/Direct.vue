@@ -72,7 +72,7 @@ import type {
     HTMLInputElementRef,
     PhotoModalImage,
     Conversation
-} from '@/common/models'
+} from '@/common'
 
 import {
     getCurrentTimestamp
