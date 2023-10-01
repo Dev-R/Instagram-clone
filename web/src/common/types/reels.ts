@@ -1,5 +1,4 @@
-import type { BasePostCard } from "./post"
-
+import type { BasePostCard } from "./cards"
 
 /** 
  * Interface for a single media in a reel 
@@ -31,3 +30,4 @@ export interface ReelMedia {
 export interface ReelPost extends BasePostCard{
     reelMedia : ReelMedia
 }
+

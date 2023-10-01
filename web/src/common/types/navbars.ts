@@ -29,3 +29,8 @@ export interface NavBarItem {
     /** Image if any for the item */
     img?: string
 }
+
+/**
+ * Type alias representing the available tab options for the navigation bar.
+ */
+export type NavBarTabs = 'profile-posts' | 'profile-tagged' | 'profile-saved' | 'profile-peed'

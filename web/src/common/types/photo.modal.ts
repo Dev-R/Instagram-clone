@@ -1,3 +1,5 @@
+import type { PostCard } from "./posts"
+
 /**
  * Type alias for the different stages of the photo-modal.
  */
@@ -12,21 +14,6 @@ export type PhotoModalTab = 'adjustments-tab' | 'filters-tab'
  * Type alias for an image in the photo-modal.
  */
 export type PhotoModalImage = string | null
-
-/**
- * Type alias representing a reference to an HTML input element.
- */
-export type HTMLInputElementRef = InstanceType<typeof HTMLInputElement>
-
-/**
- * Type alias representing the available tab options for the navigation bar.
- */
-export type NavBarTabs = 'profile-posts' | 'profile-tagged' | 'profile-saved' | 'profile-peed'
-/**
- * Type alias representing the available modal options for the application.
- */
-export type ModalName = 'profile-modal' | 'photo-modal' | 'comment-modal' | 'other-modal'
-
 
 /**
  * Interface for  an image filter applied to an image.
@@ -62,3 +49,21 @@ export interface PhotoModalImageForm {
     caption: string // Caption for the image
     location: string // Location of the image
 }
+
+
+
+/**
+ * Interface representing the Post Comment Modal component props
+ */
+export interface PostCommentModal {
+    /** Flag to toggle the visibility of the modal */
+    isToggled?: boolean
+  
+    /** The post associated with the comment modal */
+    post: PostCard
+  }
+
+/**
+ * Type alias representing a reference to an HTML input element.
+ */
+export type HTMLInputElementRef = InstanceType<typeof HTMLInputElement>

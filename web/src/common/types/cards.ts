@@ -1,3 +1,5 @@
+import type { PostComment } from "./posts"
+
 /**
  * Base interface for card models
  */
@@ -18,6 +20,29 @@ export interface BaseCard {
     /** Caption for the current card */
     caption?: string
 }
+
+
+/**
+ * Base interface for Post card models
+ */
+export interface BasePostCard extends BaseCard {
+    
+  /** Number of likes for the current card */
+  likeCount: number
+
+  /** Whether the current user has liked the current card */
+  hasLiked: boolean
+
+  /** Whether the current user follow the uploader of this current card */
+  isFollowed: boolean
+
+  /** Total number of comments on the current card */
+  commentCount: number
+
+  /** An array of comments on the current card */
+  comments?: PostComment[]
+}
+
 
 /**
  * Interface for suggestion card

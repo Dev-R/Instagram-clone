@@ -2,7 +2,7 @@ import type {
     ColorTheme, 
     Emoji, 
     GroupNames 
-} from './types/emoji'
+} from './types/emojis'
 
 export const ZERO_PERCENTAGE = 0
 export const ONE_HUNDRED_PERCENTAGE = 100
@@ -36,6 +36,7 @@ export const DEFAULT_EMOJI: Emoji = {
   [EMOJI_NAME_KEY]: ['grinning face', 'grinning'],
   [EMOJI_UNICODE_KEY]: '1f600',
   [EMOJI_RESULT_KEY]: '1f600',
+  i: '1f600'
 }
 
 export const SKIN_TONE_NEUTRAL = 'neutral'

@@ -3,7 +3,7 @@ import {
     EMOJI_RESULT_KEY,
     EMOJI_UNICODE_KEY,
     EMOJI_VARIATIONS_KEY,
-} from '../constant'
+} from '../constants'
 
 
 /**

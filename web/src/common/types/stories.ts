@@ -1,4 +1,4 @@
-import type { PostMedia } from "./post"
+import type { PostMedia } from "./posts"
 
 /**
  * Type alias for the supported media elements for a story.
@@ -42,3 +42,4 @@ export interface StoryCarousel {
     /** The total number of media items in the story carouse */
     mediaCount: number
 }
+
