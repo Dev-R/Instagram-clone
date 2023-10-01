@@ -7,7 +7,12 @@
             <div
                 class="flex flex-wrap">
                 <PostCoverCard 
+                    v-if="posts"
                     :posts="posts" />
+
+                <LoadingSpinner 
+                    :is-loading="!posts" 
+                    :size="'md'" />
             </div>
         </div>
     </div>
@@ -28,7 +33,7 @@ import type {
 
 defineProps({
     posts: {
-        type: Array as PropType <PostCardType[]> ,
+        type: Array as PropType<PostCardType[] | undefined> ,
         required: true
     }
 })
