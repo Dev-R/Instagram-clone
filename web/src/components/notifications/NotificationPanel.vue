@@ -31,7 +31,7 @@ import type {
 
 defineProps({
     notifications: {
-        type: Array as PropType <NotificationResult[]> ,
+        type: Array as PropType <NotificationResult[] | undefined> ,
         required: true
     },
     isNotificationsLoading: Boolean,
