@@ -2,15 +2,20 @@ import {
     faker
 } from '@faker-js/faker'
 
+import media from './videos.json'
+
 import {
     SampleGenerator
 } from '@/data'
+
 
 import type {
     ChatDialog,
     User,
     Conversation,
     PostMedia,
+    ReelPost,
+    ReelMedia,
     PostCard as SocialPost,
     StoryCarousel,
     SuggestionCard as Suggestion,
@@ -29,8 +34,8 @@ export class UserSample implements User {
     userName = faker.internet.userName()
     profilePictureUrl = faker.image.avatar()
     email = faker.internet.email()
-    followerCount = faker.number.int({min: 2, max: 1000})
-    followingCount = faker.number.int({min: 2, max: 1000})
+    followerCount = faker.number.int({ min: 2, max: 1000 })
+    followingCount = faker.number.int({ min: 2, max: 1000 })
     gender = 'Other' as User['gender']
     friendShip = {
         muting: faker.datatype.boolean(),
@@ -82,13 +87,13 @@ export class ConversationSample implements Conversation {
  * @implements {PostMedia}
  */
 export class PostMediaSample implements PostMedia {
-    static index =  0; // TODO: Remove this, after updating MediaCarousel -> BAD PRACTICE
-    index = PostMediaSample.index 
+    static index = 0; // TODO: Remove this, after updating MediaCarousel -> BAD PRACTICE
+    index = PostMediaSample.index
     type = 'image' as PostMedia['type']
-    mediaUrl = faker.image.url({width: 1024, height: 1280})
+    mediaUrl = faker.image.url({ width: 1024, height: 1280 })
     width = 1024
     height = 1280
-    title = faker.lorem.sentence({min: 5, max: 10})
+    title = faker.lorem.sentence({ min: 5, max: 10 })
     constructor() {
         // TODO: Remove this, after updating MediaCarousel -> BAD PRACTICE
         const currentMediaIndex = PostMediaSample.index
@@ -110,10 +115,10 @@ export class SocialPostSample implements SocialPost {
     profilePictureUrl = faker.image.avatar()
     createdAt = faker.date.recent().toISOString()
     caption = faker.lorem.sentence()
-    likeCount = faker.number.int({min: 2, max: 1000})
+    likeCount = faker.number.int({ min: 2, max: 1000 })
     hasLiked = faker.datatype.boolean()
     isFollowed = faker.datatype.boolean()
-    commentCount = faker.number.int({min: 2, max: 1000})
+    commentCount = faker.number.int({ min: 2, max: 1000 })
     comments = []
     carouselMedia = SampleGenerator.generateRandomPostMedias(1, 5)
 }
@@ -173,4 +178,37 @@ export class SearchResultSample implements SearchResult {
     createdAt = faker.date.recent().toISOString()
     caption = faker.lorem.sentence()
     bio = faker.lorem.sentence()
+}
+
+/**
+ * Represents a fake reel media model.
+ * @implements {ReelMedia}
+ */
+
+export class ReelMediaSample implements ReelMedia {
+    type = 'video' as ReelMedia['type']
+    mediaUrl = faker.helpers.arrayElement(media.videos).sources[0] as ReelMedia['mediaUrl']
+    width = faker.number.int({ min: 2, max: 1000 })
+    height = faker.number.int({ min: 2, max: 1000 })
+    title = faker.lorem.sentence()
+    location = faker.location.city()
+}
+
+/**
+ * Represents a fake reel post model.
+ * @implements {ReelPost}
+ */
+export class ReelPostSample implements ReelPost {
+    id = faker.string.uuid()
+    userName = faker.internet.userName()
+    profilePictureUrl = faker.image.avatar()
+    createdAt = faker.date.recent().toISOString()
+    caption = faker.lorem.sentence()
+
+    likeCount = faker.number.int({ min: 2, max: 1000 })
+    hasLiked = faker.datatype.boolean()
+    isFollowed = faker.datatype.boolean()
+    commentCount = faker.number.int({ min: 2, max: 1000 })
+    comments = []
+    reelMedia = SampleGenerator.generateReelMedia()
 }

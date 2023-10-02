@@ -5,7 +5,9 @@ import {
     SuggestionSample,
     NotificationSample,
     PostMediaSample,
-    SearchResultSample
+    SearchResultSample,
+    ReelMediaSample,
+    ReelPostSample
 } from '@/data'
 
 import { randomIntFromInterval } from '@/common/helpers'
@@ -101,5 +103,26 @@ export class SampleGenerator {
         return Array.from({
             length: numberOfResults
         }, () => new SearchResultSample())
+    }
+
+    /**
+     * Generates a random reel media.
+     * @returns A randomly generated reel media.
+     */
+    public static generateReelMedia() {
+        return new ReelMediaSample()
+    }
+
+    /**
+     * Generates a random number of reel posts.
+     * @param min The minimum number of reel posts to generate.
+     * @param max The maximum number of reel posts to generate.
+     * @returns An array of randomly generated reel posts.
+     */
+    public static generateRandomReelPosts(min: number, max: number) {
+        const numberOfPosts = randomIntFromInterval(min, max)
+        return Array.from({
+            length: numberOfPosts
+        }, () => new ReelPostSample())
     }
 }

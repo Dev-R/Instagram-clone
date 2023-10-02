@@ -17,7 +17,7 @@
 							:centered-slides="true"
 							:space-between="15"
 							:slides-per-view="isMobileScreen ? 1.00 : 1.15"
-							:loop="reelItems.length > 3"
+							:loop="reels.length > 3"
 							:mousewheel="true"
 							:modules="modules"
 							:pagination="{
@@ -29,7 +29,7 @@
 							@afterInit="updateActiveSlideInstance"
 							@active-index-change="updateActiveSlideInstance">
 							<ReelSlide
-								v-for="reel of reelItems"
+								v-for="reel of reels"
                                 :key="reel.id"
 								:class="'flex flex-col relative max-w-lg sm:max-h-screen'">
 								<ReelCard 
@@ -88,47 +88,18 @@ import {
     ModalSize,
     ModalName,
     type PostComment,
-    type ReelMedia,
     type ReelPost,
 } from '@/common'
+
+import {
+    SampleGenerator
+} from '@/data'
 
 // Swiper modules
 const modules = [Mousewheel, Pagination]
 
 // Sample data
-const mediasArraySampleA: ReelMedia = {
-    type: 'video',
-    mediaUrl: 'https://assets.mixkit.co/videos/download/mixkit-little-girl-laying-in-the-grass-enjoying-a-chocolate-bunny-49069.mp4',
-    title: 'Legendary A',
-    location: 'LA'
-}
-
-const mediasArraySampleB: ReelMedia = {
-    type: 'video',
-    mediaUrl: 'https://assets.mixkit.co/videos/download/mixkit-eastern-egg-picnic-in-the-garden-48599.mp4',
-    title: 'Legendary A',
-    location: 'LA'
-}
-
-const commentsSample: PostComment[] = [{
-    id: 0,
-    userName: 'Sara',
-    profilePictureUrl: 'https://loremflickr.com/1024/1280/dog',
-    content: "\
-			Subhanallah x3 \
-			Alhamdulillah x3 \
-			La ilaha ilallah x3 \
-			Astagfirullah x3Astagfirullah x3 \
-			Allahu akbar x3",
-    createdAt: '2012-02-23'
-}]
-
-const commentModal = ref({
-    name: '',
-    title: 'Comments',
-    items: [] as PostComment[] | undefined,
-    isToggled: false
-})
+const reels = ref<ReelPost[]>(SampleGenerator.generateRandomReelPosts(2, 10))
 
 // Trackers
 const activeSwiperInstance = ref<SwiperInstance>()
@@ -136,7 +107,12 @@ const activeVideo = ref<HTMLVideoElement>()
 
 // Others
 const screenWidth = ref<number>(window.innerWidth) // Current window width
-
+const commentModal = ref({
+    name: '',
+    title: 'Comments',
+    items: [] as PostComment[] | undefined,
+    isToggled: false
+})
 
 /**
  * Update active swiper slide and video
@@ -203,33 +179,6 @@ const playVideo = () => {
 const isMobileScreen = computed(() => {
     return screenWidth.value <= ScreenBreakpoint.Medium
 })
-
-const reelItems = ref<ReelPost[]>([{
-        id: '0',
-        userName: 'Rabee',
-        createdAt: 'February 24',
-        likeCount: 253,
-        hasLiked: true,
-        caption: ' Sh. @abdullah_oduro and I getting that Saturday morning work in the gym and talking over @yaqeeninstitute Quran 30 ',
-        reelMedia: mediasArraySampleA,
-        commentCount: 3,
-        isFollowed: false,
-        profilePictureUrl: 'https://loremflickr.com/1024/1280/dog',
-        comments: commentsSample
-    },
-    {
-        id: '1',
-        userName: 'Sara',
-        createdAt: 'February 24',
-        likeCount: 1255,
-        hasLiked: false,
-        caption: 'Be like a tree. Stay grounded. Connect with your roots. Turn over a new leaf. Bend before you break. Enjoy your unique natural beauty. Keep growing.',
-        reelMedia: mediasArraySampleB,
-        commentCount: 5,
-        isFollowed: false,
-        profilePictureUrl: 'https://loremflickr.com/1024/1280/cat'
-    }
-])
 
 onMounted(() => {
     screenWidth.value = window.innerWidth // Set initial value to current screen size

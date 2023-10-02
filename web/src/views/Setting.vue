@@ -56,23 +56,14 @@ import {
     ScreenBreakpoint,
     ModalSize,
     ModalName,
-    type Gender,
     type User,
 } from '@/common'
 
-const user = ref<User>({
-    id: '0',
-    firstName: 'Alex',
-    lastName: 'Boo',
-    userName: 'Alex_boo',
-    profilePictureUrl: 'https://loremflickr.com/1024/1280/holiday',
-    dateJoined: '01-01-2012',
-    followerCount: 0,
-    followingCount: 0,
-    mediaCount: 50,
-    gender: 'Female',
-    mediaItems: [],
-})
+import {
+    SampleGenerator
+} from '@/data'
+
+const user = ref<User>(SampleGenerator.generateRandomUser())
 const genderModal = ref({
     name: '',
     title: 'Gender',
@@ -85,7 +76,7 @@ const genderModal = ref({
         {
             name: 'other'
         }
-    ] as Gender[] | undefined,
+    ],
     selectedGender: 'Female',
     isToggled: false
 })
