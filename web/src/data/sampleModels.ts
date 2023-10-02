@@ -14,7 +14,8 @@ import type {
     PostCard as SocialPost,
     StoryCarousel,
     SuggestionCard as Suggestion,
-    NotificationCard as Notification
+    NotificationCard as Notification,
+    SearchCard as SearchResult
 } from '@/common'
 
 /**
@@ -157,8 +158,19 @@ export class NotificationSample implements Notification {
     id = faker.string.uuid()
     userName = faker.internet.userName()
     profilePictureUrl = faker.image.avatar()
-    createdAt = faker.date.recent().toISOString()
-    caption = faker.lorem.sentence()
     type = faker.helpers.arrayElement(['like', 'comment', 'follow']) as Notification['type']
     isFollowing = faker.datatype.boolean()
+}
+
+/**
+ * Represents a fake search result model.
+ * @implements {SearchResult}
+ */
+export class SearchResultSample implements SearchResult {
+    id = faker.string.uuid()
+    userName = faker.internet.userName()
+    profilePictureUrl = faker.image.avatar()
+    createdAt = faker.date.recent().toISOString()
+    caption = faker.lorem.sentence()
+    bio = faker.lorem.sentence()
 }

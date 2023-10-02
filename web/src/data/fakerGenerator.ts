@@ -5,6 +5,7 @@ import {
     SuggestionSample,
     NotificationSample,
     PostMediaSample,
+    SearchResultSample
 } from '@/data'
 
 import { randomIntFromInterval } from '@/common/helpers'
@@ -87,5 +88,18 @@ export class SampleGenerator {
      */
     public static generateRandomUser() {
         return new UserSample()
+    }
+
+    /**
+     * Generates a random number of search results.
+     * @param min The minimum number of search results to generate.
+     * @param max The maximum number of search results to generate.
+     * @returns a random number of search results.
+     */
+    public static generateRandomSearchResults(min: number, max: number) {
+        const numberOfResults = randomIntFromInterval(min, max)
+        return Array.from({
+            length: numberOfResults
+        }, () => new SearchResultSample())
     }
 }

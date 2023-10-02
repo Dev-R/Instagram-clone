@@ -37,28 +37,15 @@ import type {
     SearchCard as SearchResult
 } from '@/common'
 
+import {
+    SampleGenerator
+} from '@/data'
+
+
 const searchForm = ref<string>('')
 const searchResults = ref<SearchResult[]>([])
 const isSearchLoading = ref<boolean>(false)
 const searchInput = ref<HTMLInputElement | null>(null)
-
-/**
- * Assigns demo search results.
- * For demo only.
- */
-const assignDemoSearchResults = () => {
-    searchResults.value = [{
-            userName: 'John Doe',
-            bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae nisi eget nunc aliquam aliquet. Sed vitae nisi eget nunc aliquam aliquet.',
-            profilePictureUrl: 'https://loremflickr.com/1024/1280/cat'
-        },
-        {
-            userName: 'Jane Doe',
-            bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae nisi eget nunc aliquam aliquet. Sed vitae nisi eget nunc aliquam aliquet.',
-            profilePictureUrl: 'https://loremflickr.com/1024/1280/dog'
-        }
-    ]
-}
 
 /**
  * Searches for a user based on the search query.
@@ -75,7 +62,7 @@ const searchForUser = (payload: Event) => {
         // searchResults.value = await searchForUser(searchInput.value) // TODO: Implement searchForUser
         // console.log('search results', searchResults.value)
         setTimeout(() => {
-            assignDemoSearchResults()
+            searchResults.value = SampleGenerator.generateRandomSearchResults(2, 5)
             isSearchLoading.value = false
         }, 1000)
     }
