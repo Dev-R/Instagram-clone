@@ -99,7 +99,7 @@ import {
 const modules = [Mousewheel, Pagination]
 
 // Sample data
-const reels = ref<ReelPost[]>(SampleGenerator.generateRandomReelPosts(2, 10))
+const reels = ref<ReelPost[]>(SampleGenerator.generateRandomReelPosts(5, 8))
 
 // Trackers
 const activeSwiperInstance = ref<SwiperInstance>()
