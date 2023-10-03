@@ -1,8 +1,9 @@
 <template>
-	<div class="sm:flex justify-center">
+	<div class="sm:flex justify-center relative">
 		<MobileSearchBar />
 
 		<ExplorePostRenderer 
+            v-if="posts"
 			:posts="posts" />
 	</div>
 </template>
