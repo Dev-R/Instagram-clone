@@ -2,7 +2,7 @@
 	<Transition>
 		<div 
 			v-if="isToggled"
-			class="bg-black rounded-lg shadow w-full md:pt-0 pt-5 z-50 md:5/6 md:bg-slate-1100 absolute 
+			class="bg-black rounded-lg shadow w-full md:pt-0 pt-5 z-50 md:bg-slate-1100 absolute 
 			top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2" 
 			:class="{
 					'max-w-xs': modalSize === ModalSize.SuperSmall,
@@ -26,7 +26,7 @@
 			</div>
 			<!-- Modal body -->
 			<div class="space-y-6">
-				<div class="flex flex-col space-y-5 lg:max-h-80 max-h-full overflow-y-scroll scrollbar">
+				<div class="flex flex-col space-y-5 max-h-96 overflow-y-scroll scrollbar">
 					<!-- Suggestion Card Modal -->
 					<div 
 						v-if="modalType === ModalName.FOLLOW"
