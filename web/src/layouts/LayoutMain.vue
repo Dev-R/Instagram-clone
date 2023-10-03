@@ -61,7 +61,7 @@ const routeName = computed(() => {
 
 
 const isModalToggledClass = computed(() => {
-    return modalStoreManager.isAnyModalOpen ? 'lights-off' : ''
+    return modalStoreManager.isAnyModalOpen && modalStoreManager.shouldBlur ? 'lights-off' : ''
 })
 
 const isNavBarCollapsed = computed(() => {
