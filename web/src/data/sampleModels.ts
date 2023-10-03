@@ -8,6 +8,9 @@ import {
     SampleGenerator
 } from '@/data'
 
+import {
+    formatDate
+} from '@/common'
 
 import type {
     ChatDialog,
@@ -92,7 +95,7 @@ export class PostCommentSample implements PostComment {
     userName = faker.internet.userName()
     profilePictureUrl = faker.image.avatar()
     content = faker.lorem.sentence()
-    createdAt = faker.date.recent().toISOString()
+    createdAt = formatDate(faker.date.recent().toISOString())
 }
 
 /**
@@ -126,7 +129,7 @@ export class SocialPostSample implements SocialPost {
     id = faker.string.uuid()
     userName = faker.internet.userName()
     profilePictureUrl = faker.image.avatar()
-    createdAt = faker.date.recent().toISOString()
+    createdAt = formatDate(faker.date.recent().toISOString())
     caption = faker.lorem.sentence()
     likeCount = faker.number.int({ min: 2, max: 1000 })
     hasLiked = faker.datatype.boolean()
@@ -159,7 +162,7 @@ export class SuggestionSample implements Suggestion {
     id = faker.string.uuid()
     userName = faker.internet.userName()
     profilePictureUrl = faker.image.avatar()
-    createdAt = faker.date.recent().toISOString()
+    createdAt = formatDate(faker.date.recent().toISOString())
     caption = faker.lorem.sentence()
     suggested = [{ // TOOD: Extract this to a separate model
         userName: faker.internet.userName(),
@@ -215,7 +218,7 @@ export class ReelPostSample implements ReelPost {
     id = faker.string.uuid()
     userName = faker.internet.userName()
     profilePictureUrl = faker.image.avatar()
-    createdAt = faker.date.recent().toISOString()
+    createdAt = formatDate(faker.date.recent().toISOString())
     caption = faker.lorem.sentence()
 
     likeCount = faker.number.int({ min: 2, max: 1000 })
