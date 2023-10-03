@@ -1,7 +1,7 @@
 <template>
 	<div 
 		class="relative bg-black lg:basis-10/12 
-        w-full h-screen border-l border-gray-800">
+        w-full h-dynamic-screen sm:h-screen border-l border-gray-800">
 		<ChatHeader
 			:viewer="activeConversation?.user"
 			@on-chat-back="$emit('onChatBack')" />
