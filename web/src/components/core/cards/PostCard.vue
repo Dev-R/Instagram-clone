@@ -27,7 +27,7 @@
 					</div>
 
 					<div class="font-sans text-sm font-light text-[#949494] self-center">
-						{{ formatDate(post.createdAt as string) }}
+						{{ post.createdAt }}
 					</div>
 				</div>
 			</div>
@@ -205,7 +205,8 @@ const onPostComment = () => {
  * @event on-post-like
  */
 const onPostLike = (post: PostCard) => {
-	post.hasLiked = !post.hasLiked //TODO: Remove this line
+	post.hasLiked = !post.hasLiked
+	post.likeCount += post.hasLiked ? -1 : 1
 	// emit('onPostLike', prop.post.id)
 }
 /**
@@ -220,12 +221,6 @@ const appendEmoji = (emoji: Emoji) => {
 * Return current screen size type
 */
 const screenSizeType = computed(() => (windowWidth.value < ScreenBreakpoint.Small ? 'xs' : false))
-
-const formatDate = (date: string) => {
-	const dateObj = new Date(date)
-	const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' } as Intl.DateTimeFormatOptions
-	return dateObj.toLocaleDateString('en-US', dateOptions)
-}
 
 const goToUserProfile = (userName: string) => {
 	router.push({ name: 'profile', params: { username: userName }, query: { isSelf: 0 } })

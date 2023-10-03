@@ -158,7 +158,7 @@
 									<div class="flex space-x-4">
 										<span
 											class="cursor-pointer hover:scale-90"
-											@click="onPostLike">
+											@click="onPostLike(activePost)">
 											<SVGLoader
 												v-if="activePost.hasLiked"
 												:icon="'like'" />
@@ -325,6 +325,14 @@ const resetCommentValue = () => {
 const onAddComment = () => {
     if (commentForm.value) {
         emit('onAddComment', commentForm.value)
+		if (!activePost.value) return 
+		activePost.value.comments?.push({
+        id: 0,
+        userName: 'Godwin Ekuma',
+        profilePictureUrl: 'https://loremflickr.com/1024/1280/cat',
+        content: commentForm.value,
+        createdAt: '2012-02-23'
+      }) //TODO: Remove this when the API is ready
         resetCommentValue()
     }
 }
@@ -367,8 +375,9 @@ const onCommentLiked = (commentId: PostCommentCard['id']) => {
 /**
  * Emit signal when a post is liked
  */
-const onPostLike = () => {
-    emit('onPostLiked')
+const onPostLike = (post: PostCard) => {
+	post.hasLiked = !post.hasLiked
+	post.likeCount += post.hasLiked ? -1 : 1
 }
 
 /**
