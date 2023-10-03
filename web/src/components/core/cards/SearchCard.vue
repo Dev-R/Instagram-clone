@@ -1,5 +1,7 @@
 <template>
-    <div class="rounded-lg flex items-center space-x-2 w-full p-2 h-12">
+    <div 
+        @click="goToUserProfile(searchResult.userName)"
+        class="rounded-lg flex items-center space-x-2 w-full p-2 h-12 cursor-pointer">
         <div class="flex-inital flex-none">
             <img 
                 :src="searchResult.profilePictureUrl"
@@ -29,10 +31,17 @@ import type {
     SearchCard
 } from '@/common'
 
+import router from '@/router'
+
 defineProps({
     searchResult: {
         type: Object as PropType<SearchCard>,
         required: true
     }
 })
+
+const goToUserProfile = (userName: string) => {
+	router.push({ name: 'profile', params: { username: userName }, query: { isSelf: 0 } })
+	console.log('goToUserProfile')
+}
 </script>
