@@ -23,7 +23,7 @@ export class SampleGenerator {
      * @param max The maximum number of posts to generate.
      * @returns An array of randomly generated posts.
      */
-    public static generateRandomPosts(min: number, max: number) {
+    public static generateRandomPosts(min: number = 25, max: number = 50) {
         const numbeOfPosts = randomIntFromInterval(min, max)
         return Array.from({
             length: numbeOfPosts
@@ -36,7 +36,7 @@ export class SampleGenerator {
      * @param max The maximum number of stories to generate.
      * @returns An array of randomly generated stories.
      */
-    public static generateRandomStories(min: number, max: number) {
+    public static generateRandomStories(min: number = 2, max: number = 5) {
         const numberOfStories = randomIntFromInterval(min, max)
         return Array.from({
             length: numberOfStories
@@ -49,7 +49,7 @@ export class SampleGenerator {
      * @param max The maximum number of suggestions to generate.
      * @returns An array of randomly generated suggestions.
      */
-    public static generateRandomSuggestions(min: number, max: number) {
+    public static generateRandomSuggestions(min: number = 1, max: number = 1) {
         if (max === 1) {
             return new SuggestionSample()
         }
@@ -65,7 +65,7 @@ export class SampleGenerator {
      * @param max The maximum number of notifications to generate.
      * @returns An array of randomly generated notifications.
      */
-    public static generateRandomNotifications(min: number, max: number) {
+    public static generateRandomNotifications(min: number = 5, max: number = 20) {
         const numberOfNotifications = randomIntFromInterval(min, max)
         return Array.from({
             length: numberOfNotifications
@@ -78,7 +78,7 @@ export class SampleGenerator {
      * @param max The maximum number of post comments to generate.
      * @returns An array of randomly generated post comments.
      */
-    public static generateRandomPostComments(min: number, max: number) {
+    public static generateRandomPostComments(min: number = 1, max: number = 10) {
         const numberOfComments = randomIntFromInterval(min, max)
         return Array.from({
             length: numberOfComments
@@ -91,7 +91,7 @@ export class SampleGenerator {
      * @param max The maximum number of post medias to generate.
      * @returns An array of randomly generated post medias.
      */
-    public static generateRandomPostMedias(min: number, max: number) {
+    public static generateRandomPostMedias(min: number = 1, max: number = 5) {
         const numbeOfPostMedias = randomIntFromInterval(min, max)
         return Array.from({
             length: numbeOfPostMedias
@@ -112,7 +112,7 @@ export class SampleGenerator {
      * @param max The maximum number of users to generate.
      * @returns An array of randomly generated users.
      */
-    public static generateRandomUsers(min: number, max: number) {
+    public static generateRandomUsers(min: number = 10, max: number = 100) {
         const numberOfUsers = randomIntFromInterval(min, max)
         return Array.from({
             length: numberOfUsers
@@ -125,7 +125,7 @@ export class SampleGenerator {
      * @param max The maximum number of search results to generate.
      * @returns a random number of search results.
      */
-    public static generateRandomSearchResults(min: number, max: number) {
+    public static generateRandomSearchResults(min: number = 2, max: number = 5) {
         const numberOfResults = randomIntFromInterval(min, max)
         return Array.from({
             length: numberOfResults
@@ -146,7 +146,7 @@ export class SampleGenerator {
      * @param max The maximum number of reel posts to generate.
      * @returns An array of randomly generated reel posts.
      */
-    public static generateRandomReelPosts(min: number, max: number) {
+    public static generateRandomReelPosts(min: number = 5, max: number = 8) {
         const numberOfPosts = randomIntFromInterval(min, max)
         return Array.from({
             length: numberOfPosts
