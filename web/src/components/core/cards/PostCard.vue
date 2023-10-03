@@ -221,7 +221,7 @@ const formatDate = (date: string) => {
 }
 
 const goToUserProfile = (userName: string) => {
-	router.push({ name: 'profile', params: { username: userName, isSelf: 0  } })
+	router.push({ name: 'profile', params: { username: userName }, query: { isSelf: 0 } })
 	console.log('goToUserProfile')
 }
 

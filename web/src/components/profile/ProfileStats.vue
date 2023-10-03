@@ -40,7 +40,7 @@
 
 
 			<!-- Logged-in user Options -->
-			<div>
+			<div v-if="!hideControls()">
 				<SVGLoader 
 					:icon="'profile-options'"
 					:class="'md:block hidden sm:hover:cursor-pointer'" 
@@ -84,7 +84,6 @@ import {
 
 import {
     ModalName,
-	type ModalType,
     type User,
 } from '@/common'
 import { fa } from '@faker-js/faker'
@@ -131,7 +130,7 @@ const goToSettingsRoute = () => {
 
 const toggleSettingModal = () => {
 	emit('openModal', {
-		modalType: ModalName.PROFILE_SETTING,
+		modalName: ModalName.PROFILE_SETTING,
 		modalTitle: ModalName.PROFILE_SETTING
 	})
 }
@@ -141,17 +140,18 @@ const toggleSettingModal = () => {
  * TODO: Remove this when the backend is ready
  */
 const hideControls = () => {
-	return route.params.isSelf ? true : false
+	console.log("Route query", route.query)
+	return Number(route.query.isSelf) === 1 ? false : true
 }
 
 /**
  *  Emits a modal event to open a modal
- * @param modalType The type of modal to open (Follow, Settings, etc.)
+ * @param modalName The type of modal to open (Follow, Settings, etc.)
  * @param modalTitle The title of the modal to open (Followers, Following, etc.)
  */
-const emitModal = (modalType: ModalType, modalTitle: string) => {
+const emitModal = (modalName: string, modalTitle: string) => {
     emit('openModal', {
-        modalType,
+        modalName,
         modalTitle
     })
 }

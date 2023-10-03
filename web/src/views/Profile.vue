@@ -7,6 +7,7 @@
             pt-2 md:pt-0 justify-self-end lg:mr-[64px]">
             
             <ProfileHeader 
+                v-if="profile"
                 @open-modal="toggleStatsModal"
                 :user="profile" />
 
@@ -51,7 +52,7 @@ watch,
 } from 'vue'
 
 import { 
-    useRoute 
+    useRoute, useRouter 
 } from 'vue-router'
 
 import {
@@ -82,12 +83,13 @@ import {
 } from '@/data'
 
 // Data
-const profile = ref<User>(SampleGenerator.generateRandomUser())
-const posts = ref<PostCardType[] | undefined>(profile.value.mediaItems)
+const profile = ref<User | undefined>(SampleGenerator.generateRandomUser())
+const posts = ref<PostCardType[] | undefined>(profile.value?.mediaItems)
 
 // Services
 const modalStoreManager = useModalManagerStore()
 const route = useRoute()
+const router = useRouter()
 
 const activeTab = ref<NavBarTabs>(ProfileTab.Posts) // Select profile-posts as default active tab
 const statsModal = ref({
@@ -134,12 +136,23 @@ const isToggledClass = computed(() => {
 
 const createRandomProfile = () => {
     profile.value = SampleGenerator.generateRandomUser()
+    posts.value = profile.value.mediaItems
 }
 
-watch(() => route.path, (path) => {
-    if (path === '/') {
-        createRandomProfile()
-        posts.value = profile.value.mediaItems
+
+const loadUserInfo = () => {
+    createRandomProfile()
+}
+
+const refreshProfile = () => {
+    profile.value = undefined
+    posts.value = undefined
+    loadUserInfo()
+}
+
+watch(() => route.query.isSelf, (query) => {
+    if (query === '1') {
+        refreshProfile()
     }
 })
 
@@ -147,6 +160,7 @@ onMounted(() => {
     createRandomProfile()
     // Only set username if it's available for DEMO
     if (route.params.username) {
+        if (!profile.value) return
         profile.value.userName = route.params.username as string
     }
     // posts.value = posts

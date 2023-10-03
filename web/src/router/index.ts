@@ -26,7 +26,7 @@ const router = createRouter({
           meta: { title: 'Explore' }
         },
         {
-          path: '/:username?:isSelf?',
+          path: '/:username?',
           name: 'profile', // TODO: Change to dynamic
           component: () => import('@/views/Profile.vue'),
           meta: { title: 'Profile' }
