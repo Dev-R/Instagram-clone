@@ -34,7 +34,7 @@
     <StatsModal 
         :modal-size="ModalSize.Medium"
         :title="statsModal.title"
-        :items="statsModal.stats" 
+        :items="profile?.followers" 
         :is-toggled="statsModal.type === ModalName.FOLLOW"
         @on-modal-closed="toggleStatsModal" />
 
@@ -115,12 +115,13 @@ const switchActiveTab = (currentTab: NavBarTabs) => {
  * @param title Modal title 
  */
  const toggleStatsModal = ({
-    modalTitle,
-    modalType
+    modalType,
+    modalTitle
 }: {
-    modalTitle ? : string,
-    modalType ? : string
+    modalType ? : string,
+    modalTitle ? : string
 } = {}) => {
+    console.log('toggleStatsModal', modalTitle, modalType)
     modalStoreManager.toggleModal(ModalName.FOLLOW)
     statsModal.value = {
         title: modalTitle ? modalTitle : '',
@@ -136,6 +137,8 @@ const isToggledClass = computed(() => {
 
 const createRandomProfile = () => {
     profile.value = SampleGenerator.generateRandomUser()
+    profile.value.followers = SampleGenerator.generateRandomUsers(1, 100)
+    profile.value.following = SampleGenerator.generateRandomUsers(1, 100)
     posts.value = profile.value.mediaItems
 }
 
@@ -156,6 +159,15 @@ watch(() => route.query.isSelf, (query) => {
     }
 })
 
+watch(() => route.params.username, (username) => {
+    if (username) {
+        refreshProfile()
+        toggleStatsModal()
+        if (!profile.value) return
+        profile.value.userName = username as string
+    }
+})
+
 onMounted(() => {
     createRandomProfile()
     // Only set username if it's available for DEMO
@@ -163,6 +175,7 @@ onMounted(() => {
         if (!profile.value) return
         profile.value.userName = route.params.username as string
     }
+    // router.go(0)
     // posts.value = posts
 })
 </script>
