@@ -147,11 +147,6 @@ const modalStoreManager = useModalManagerStore()
 let windowWidth = ref(window.innerWidth) // Current window width
 const activeNavBar = ref < NavBarItem['name'] > ()
 const isMoreModalOpen = ref(true)
-const photoModal = ref({
-    isToggled: false,
-    currentStep: '',
-    isFileValid: false
-})
 
 const menuItems: NavBarItem[] = [{
         title: 'Home',
@@ -234,12 +229,12 @@ const settings = [{
     {
         name: 'Saved',
         iconSvgName: 'fa-regular fa-bookmark',
-        action: () => 1
+        action: () => {}
     },
     {
         name: 'Switch Appreance',
         iconSvgName: 'fa-solid fa-moon',
-        action: () => 1
+        action: () => {}
     },
     {
         name: 'Report a problem',
@@ -249,7 +244,7 @@ const settings = [{
     {
         name: 'Switch accounts',
         iconSvgName: 'fa-solid fa-user-circle',
-        action: () => 1
+        action: () => {}
     },
     {
         name: 'Log Out',
@@ -298,36 +293,11 @@ const triggerPhotoModal = () => {
     // photoModal.value.isToggled = !photoModal.value.isToggled
 }
 
-/**
- * Get uploaded file data and redirect to image view
- */
-const uploadedFileData = () => {
-    // Go to image view only when screen size is extra small (i.e: Phone screen)
-    if (windowType.value === 'xs')
-        router.push({
-            name: 'style'
-        })
-    photoStore.isToggled = true // Trigger photoModal in mobile view 
-}
 
 const onOpenPhotoModal = () => {
 	modalStoreManager.toggleModal(ModalName.PHOTO)
 }
 
-/**
- * Get current screen width
- */
-const windowType = computed(() => {
-    if (windowWidth.value < 550) return 'xs'
-    return null
-})
-
-/**
- * Emit signal when the modal is closed
- */
-const onCreate = () => {
-    emit('onCreate')
-}
 
 const isToggledClass = computed(() => {
     return modalStoreManager.isAnyModalOpen ? 'lights-off' : ''

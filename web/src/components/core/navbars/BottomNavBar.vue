@@ -5,7 +5,7 @@
         z-50 bg-black">
         <div class="flex space-x-2 justify-around">
 
-            <div
+            <router-link
                 v-for="item in menuItems"
                 :key="item.title"
                 :to="item.path"
@@ -28,7 +28,7 @@
                     :icon="item.iconSvgName" 
                     :class="'group-hover:scale-110'" />
 
-            </div>
+            </router-link>
 
         </div>
     </div>
@@ -96,10 +96,13 @@ export default defineComponent({
                 iconSvgName: 'direct'
             },
             {
-                title: 'profile',
-                path: 'profile',
-                customClass: 'group-hover:scale-110',
-                img: 'https://i.ibb.co/JQVbxyH/img.jpg',
+                title: 'Profile',
+                path: '/BrainFuckUser?isSelf=1',//TODO: Remove, only for demo.
+                name: 'profile',
+                customClass: '',
+                iconSvgName: '',
+                img: 'https://avatars.githubusercontent.com/u/83784102?v=4',
+                onClick: () => {}
             }
         ]
 
