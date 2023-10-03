@@ -39,7 +39,6 @@ const modules = import.meta.glob('../../../assets/icons/**/*.svg', {
 
 // Compute the SVG content for the specified icon
 const svg = computed(() => {
-    console.log('Loaded.', `../../../assets/icons/${file}.svg`)
     return modules[`../../../assets/icons/${file}.svg`] ?? modules['../../../assets/icons/icon-logo-cone.svg']
 })
 </script>

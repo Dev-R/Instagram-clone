@@ -45,7 +45,6 @@ const searchForUser = (payload: Event) => {
     if (searchInput.value.trim() != '') {
         // Search for user  
         // searchResults.value = await searchForUser(searchInput.value) // TODO: Implement searchForUser
-        // console.log('search results', searchResults.value)
         setTimeout(() => {
             searchResults.value = SampleGenerator.generateRandomSearchResults()
             isSearchLoading.value = false
@@ -57,7 +56,6 @@ const searchForUser = (payload: Event) => {
  * Clears the search query.
  */
 const clearSearchQuery = () => {
-    console.log('clear search query', searchInput)
     // searchInput.value!.value = ''
     searchResults.value = []
 }

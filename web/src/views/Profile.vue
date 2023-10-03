@@ -121,7 +121,6 @@ const switchActiveTab = (currentTab: NavBarTabs) => {
     modalType ? : string,
     modalTitle ? : string
 } = {}) => {
-    console.log('toggleStatsModal', modalTitle, modalType)
     modalStoreManager.toggleModal(ModalName.FOLLOW)
     statsModal.value = {
         title: modalTitle ? modalTitle : '',

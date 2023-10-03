@@ -61,7 +61,6 @@ const isCommentModalOpen = computed(() => {
 })
 
 // const isProfileModalOpen = computed(() => {
-//     console.log("isProfileModalOpen", modalStoreManager.getOpenModal)
 //     return modalStoreManager.getOpenModal === ModalName.PROFILE
 // })
 

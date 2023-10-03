@@ -157,7 +157,6 @@ router.beforeEach(async (to, from, next) => {
 
   // User shouldn't be able to access create route without preview image
   if (to.path.startsWith('/create') && !photoStore.previewImage) {
-    console.log('Here')
     return next({ name: 'home' })
   }
 

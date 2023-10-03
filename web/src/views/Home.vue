@@ -85,7 +85,6 @@ const commentModal = ref({
  * @param id Post ID
  */
 const triggerCommentModal = (id: number | undefined) => {
-    // console.log('triggerCommentModal:', id)
     commentModal.value = {
         isToggled: !commentModal.value.isToggled,
         postId: id ? id : 0

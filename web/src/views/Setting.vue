@@ -82,7 +82,6 @@ const toggleGenderModal = () => {
 }
 
 const isMobileScreen = computed(() => {
-    console.log("Screen width: ", screenWidth.value)
     return screenWidth.value <= ScreenBreakpoint.Medium
 })
 

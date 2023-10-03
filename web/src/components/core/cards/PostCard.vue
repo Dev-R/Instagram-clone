@@ -224,7 +224,6 @@ const screenSizeType = computed(() => (windowWidth.value < ScreenBreakpoint.Smal
 
 const goToUserProfile = (userName: string) => {
 	router.push({ name: 'profile', params: { username: userName }, query: { isSelf: 0 } })
-	console.log('goToUserProfile')
 }
 
 /**

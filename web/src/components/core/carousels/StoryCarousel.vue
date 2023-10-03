@@ -50,7 +50,6 @@ export default defineComponent({
         }
         
         const loadStory = (id: string | number) => {
-            console.log("ID:", id)
             router.push({ name: 'stories', params: { reels_id: id } })
         }
         onMounted(() => {

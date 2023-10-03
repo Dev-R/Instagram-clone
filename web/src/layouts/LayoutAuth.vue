@@ -28,7 +28,6 @@ export default defineComponent({
     name: 'LayoutAuth',
     setup() {
         onMounted(() => {
-            // console.log('Mounted LayoutAuth')
         })
 
         return {}

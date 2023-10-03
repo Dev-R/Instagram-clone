@@ -139,7 +139,6 @@ const toggleSettingModal = () => {
  * TODO: Remove this when the backend is ready
  */
 const hideControls = () => {
-	console.log("Route query", route.query)
 	return Number(route.query.isSelf) === 1 ? false : true
 }
 

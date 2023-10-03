@@ -689,7 +689,6 @@ const onSuccessFileUpload = () => {
     isFileValid.value = true
     isFileUploaded.value = true
     updateModalStage(PhotoStage.EditPostAdjustments)
-    // console.log("File uploaded", file)
 }
 
 /**
@@ -716,7 +715,6 @@ const triggerFileUpload = () => {
 }
 
 const filterTabSwitcher = (currentTab: PhotoModalTab) => {
-    console.log("Current Tab:", currentTab)
     currentActiveFilterTab.value = currentTab
 }
 
@@ -743,7 +741,6 @@ const resetModalState = () => {
 // Watchers
 watch(currentModalStage, () => {
     if (currentModalStage.value === PhotoStage.SharingPost) {
-        console.log("updateSharingStatus ...")
         setTimeout(() => {
             currentModalStage.value = PhotoStage.PostShared
             setTimeout(() => {
@@ -753,7 +750,6 @@ watch(currentModalStage, () => {
                 onModalClosed()
                 // Refresh page
                 refreshPage()
-                // console.log("Done")
             }, 3000)
         }, 5000)
     }

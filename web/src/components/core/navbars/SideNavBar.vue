@@ -259,7 +259,6 @@ const collapsedHiddenRoutes = ['direct']
 // Methods
 const toggleMoreModal = () => {
     isMoreModalOpen.value = !isMoreModalOpen.value
-    console.log('Toggle More Modal')
 }
 
 const logout = () => {
@@ -304,7 +303,6 @@ const isToggledClass = computed(() => {
 })
 
 onMounted(() => {
-	console.log('Mounted SideNavBar')
 	updateActiveNavBar(routeName.value)
 })
 </script>
