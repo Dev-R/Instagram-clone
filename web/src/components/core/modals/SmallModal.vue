@@ -58,7 +58,11 @@
 								No comments yet.
 							</span>
 						</div>
-						<CommentCard v-for="item of <PostCommentCard[]>items" v-else :comment="item" />
+						
+						<CommentCard 
+							v-else 
+							:comment="item"
+							v-for="item of <PostCommentCard[]>items" />
 					</div>
 					
 					<!-- Gender Modal -->

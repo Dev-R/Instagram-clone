@@ -90,7 +90,7 @@
 				</p>
 				<p
 					v-if="post.commentCount > 0"
-					class="text-md text-left
+					class="text-md text-left hidden sm:block
                     text-gray-400 cursor-pointer"
 					@click="onOpenCommentModal(post)">
 					View all {{ post.commentCount }} comments
