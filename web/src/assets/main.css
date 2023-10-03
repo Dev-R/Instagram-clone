@@ -5,7 +5,7 @@
 @import './toastification.css';
 @import './nprogress.css';
 @import './emoji.css';
-/* @import './swiper.css'; */
+@import './swiper.css';
 
 @tailwind base;
 @tailwind components;
