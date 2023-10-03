@@ -35,7 +35,7 @@
         :modal-size="ModalSize.Medium"
         :title="statsModal.title"
         :items="profile?.followers" 
-        :is-toggled="statsModal.type === ModalName.FOLLOW"
+        :is-toggled="statsModal.type === ModalName.FOLLOW && statsModal.isToggled"
         @on-modal-closed="toggleStatsModal" />
 
     <ProfileSettingModal
@@ -150,6 +150,7 @@ const loadUserInfo = () => {
 const refreshProfile = () => {
     profile.value = undefined
     posts.value = undefined
+    statsModal.value.isToggled = false
     loadUserInfo()
 }
 
@@ -162,7 +163,7 @@ watch(() => route.query.isSelf, (query) => {
 watch(() => route.params.username, (username) => {
     if (username) {
         refreshProfile()
-        toggleStatsModal()
+        // toggleStatsModal()
         if (!profile.value) return
         profile.value.userName = username as string
     }
