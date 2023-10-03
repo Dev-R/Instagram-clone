@@ -1,3 +1,5 @@
+import router from "@/router"
+
 /**
  * Adds an 'index' property to objects in an array, starting from 0. 
  *
@@ -32,3 +34,13 @@ export function getCurrentTimestamp(): number {
 export function randomIntFromInterval(min: number, max: number) { // min and max included 
     return Math.floor(Math.random() * (max - min + 1) + min)
   }
+
+
+
+/**
+ * Navigates to the user profile page with the given username and query parameter.
+ * @param userName - The username of the user whose profile page to navigate to.
+ */
+export function goToUserProfile(userName: string) {
+  router.push({ name: 'profile', params: { username: userName }, query: { isSelf: 0 } })
+}
