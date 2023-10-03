@@ -86,7 +86,6 @@ import {
     ModalName,
     type User,
 } from '@/common'
-import { fa } from '@faker-js/faker'
 
 const prop = defineProps({
     user: {
@@ -130,7 +129,7 @@ const goToSettingsRoute = () => {
 
 const toggleSettingModal = () => {
 	emit('openModal', {
-		modalName: ModalName.PROFILE_SETTING,
+		modalType: ModalName.PROFILE_SETTING,
 		modalTitle: ModalName.PROFILE_SETTING
 	})
 }
@@ -146,12 +145,12 @@ const hideControls = () => {
 
 /**
  *  Emits a modal event to open a modal
- * @param modalName The type of modal to open (Follow, Settings, etc.)
+ * @param modalType The type of modal to open (Follow, Settings, etc.)
  * @param modalTitle The title of the modal to open (Followers, Following, etc.)
  */
-const emitModal = (modalName: string, modalTitle: string) => {
+const emitModal = (modalType: string, modalTitle: string) => {
     emit('openModal', {
-        modalName,
+        modalType,
         modalTitle
     })
 }
