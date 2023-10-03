@@ -36,6 +36,10 @@ export interface BaseUser {
 
   /** Relationship with other users */
   friendShip?: FriendShipStatus
+
+  followers?: BaseUser[]
+
+  following?: BaseUser[]
 }
 
 /**
