@@ -14,14 +14,14 @@
                     :class="{ 'animate-pulse': isRotating && index === activeIndex }"
                     @click="rotateAvatar(index)"
                     class="story-avatar">
-                    <a href="#" class="block bg-white rounded-full relative">
+                    <div class="block bg-white rounded-full relative">
                         <img 
                             class="md:w-16 md:h-16 h-14 w-14 rounded-full object-cover p-0.5 bg-black"
                             :src="reel.profilePictureUrl"/>
-                    </a>
+                    </div>
 
                 </div>
-                <a href="#" class="text-xs text-white font-semibold">{{ reel.userName }}</a>
+                <div class="text-xs text-white font-semibold">{{ reel.userName }}</div>
             </li>
         </div>
     </div>
