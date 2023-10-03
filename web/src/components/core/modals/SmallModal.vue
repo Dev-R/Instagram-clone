@@ -26,25 +26,33 @@
 			</div>
 			<!-- Modal body -->
 			<div class="space-y-6">
-				<div class="flex flex-col space-y-5 lg:max-h-80 
-						max-h-full overflow-y-scroll scrollbar">
+				<div class="flex flex-col space-y-5 lg:max-h-80 max-h-full overflow-y-scroll scrollbar">
 					<!-- Suggestion Card Modal -->
-					<div v-for="item of <SuggestionCard[]>items" v-if="modalType === ModalName.FOLLOW"
+					<div 
+						v-if="modalType === ModalName.FOLLOW"
+						v-for="item of <SuggestionCard[]>items" 
+						:key="item.userName"
+						@click="goToUserProfile(item.userName)"
 						class="rounded-lg flex justify-between space-x-2 py-2 px-4">
-						<FollowCard :show-button="true" :profile-image="item.profilePictureUrl">
+						<FollowCard 
+							:show-button="true" 
+							:profile-image="item.profilePictureUrl">
 							<template #user-name>
 								{{ item.userName }}
 							</template>
-							<template #action-name>
+							<!-- <template #action-name>
 								Follow
-							</template>
+							</template> -->
 							<template #button-name>
 								Remove
 							</template>
 						</FollowCard>
 					</div>
+
 					<!-- Comment Modal -->
-					<div v-else-if="modalType === ModalName.COMMENT" class="p-5">
+					<div 
+						v-else-if="modalType === ModalName.COMMENT" 
+						class="p-5">
 						<div v-if="shouldDisplayNoComments" class="flex flex-col place-self-center space-y-2">
 							<span class="font-sans text-2xl text-white font-bold mx-auto">
 								No comments yet.
@@ -52,12 +60,13 @@
 						</div>
 						<CommentCard v-for="item of <PostCommentCard[]>items" v-else :comment="item" />
 					</div>
+					
 					<!-- Gender Modal -->
 					<div
 						v-else-if="modalType === ModalName.GENDER"
 						class="flex flex-col p-5">
 						<div
-							v-for="item of <Gender[]>items"
+							v-for="item of items"
 							:key="item.name"
 							class="flex items-center mb-4 mx-2">
 							<!-- TODO: Replace with TheInput -->
@@ -102,15 +111,15 @@ import {
     TheButton,
 } from '@/components'
 
+import {
+    ModalName,
+    ModalSize,
+	goToUserProfile
+} from '@/common'
+
 import type {
     SuggestionCard,
     PostCommentCard,
-    Gender
-} from '@/common'
-
-import {
-    ModalName,
-    ModalSize
 } from '@/common'
 
 // TODO: Check why the above import is not working
@@ -120,7 +129,7 @@ const prop = defineProps({
         required: true
     },
     items: {
-        type: Object as() => SuggestionCard[] | PostCommentCard[] | Gender[] | undefined,
+        type: Object as() => SuggestionCard[] | PostCommentCard[] | any[] | undefined,
         required: false
     },
     isToggled: {
