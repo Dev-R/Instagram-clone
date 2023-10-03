@@ -1,5 +1,7 @@
 <template>
-    <div class="flex flex-col space-y-4 flex-nowrap top-0 max-w-sm">
+    <div 
+        @click="goToUserProfile(cardItem.userName)"
+        class="flex flex-col space-y-4 flex-nowrap top-0 max-w-sm">
 
         <!-- A: Current User Data -->
         <div class="rounded-lg flex items-center space-x-2 cursor-pointer">
@@ -44,6 +46,7 @@
         <div 
             v-for="(suggest, index) of cardItem.suggested"
             :key="index"
+            @click="goToUserProfile(suggest.userName)"
             class="flex flex-col">
 
             <!-- TODO: Refactor into Suggested Card -->
@@ -97,23 +100,16 @@
     </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, onMounted } from 'vue'
-import type { SuggestionCard } from '@/common'
+<script setup lang="ts">
+import { 
+    goToUserProfile, 
+    type SuggestionCard 
+} from '@/common'
 
-export default defineComponent({
-    name: 'SuggestionCard',
-    setup(cardItem) {
-        onMounted(() => {
-        })
-
-        return {}
-    },
-    props: {
-        cardItem: {
-            type: Object as () => SuggestionCard,
-            required: true
-        }
+defineProps({
+    cardItem: {
+        type: Object as () => SuggestionCard,
+        required: true
     }
 })
 </script>

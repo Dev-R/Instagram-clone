@@ -51,7 +51,7 @@
 				<div class="flex space-x-4">
 					<span
 						class="cursor-pointer hover:scale-90"
-						@click="$emit('onPostLike', post.id)">
+						@click="onPostLike(post)">
 						<SVGLoader
 							v-if="post.hasLiked"
 							:icon="'like'" />
@@ -197,16 +197,23 @@ const onOpenCommentModal = (post: PostCard) => {
  */
 const onPostComment = () => {
     comment.value = ''
-    console.log("Emitting signal:", comment.value)
     emit('onPostComment', comment, prop.post.id)
 }
 
+/**
+ * Emit signal when like button is clicked
+ * @event on-post-like
+ */
+const onPostLike = (post: PostCard) => {
+	post.hasLiked = !post.hasLiked //TODO: Remove this line
+	// emit('onPostLike', prop.post.id)
+}
 /**
  * Append emoji to comment
  * @param emoji - The emoji object
  */
 const appendEmoji = (emoji: Emoji) => {
-    comment.value += emoji.i
+    comment.value += emoji.i //TODO: Improve this
 }
 
 /** 

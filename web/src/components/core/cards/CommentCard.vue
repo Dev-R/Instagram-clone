@@ -6,7 +6,9 @@
 				class="w-8 h-8 rounded-full" />  
                 
 			<div class="flex flex-col">
-				<div class="flex">
+				<div 
+					@click="goToUserProfile(comment.userName)"
+					class="flex">
 					<p 
 						class="text-ellipsis overflow-hidden font-sans 
                         text-sm text-white">
@@ -57,8 +59,9 @@ import {
     SVGLoader
 } from '@/components'
 
-import type {
-    PostCommentCard
+import {
+	goToUserProfile,
+    type PostCommentCard
 } from '@/common'
 
 
