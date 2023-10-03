@@ -34,8 +34,7 @@ export function getCurrentTimestamp(): number {
 export function randomIntFromInterval(min: number, max: number) { // min and max included 
     return Math.floor(Math.random() * (max - min + 1) + min)
   }
-
-
+  
 
 /**
  * Navigates to the user profile page with the given username and query parameter.
@@ -43,4 +42,15 @@ export function randomIntFromInterval(min: number, max: number) { // min and max
  */
 export function goToUserProfile(userName: string) {
   router.push({ name: 'profile', params: { username: userName }, query: { isSelf: 0 } })
+}
+
+/**
+ * Formats a date string into a human-readable format.
+ * @param date - The date string to format.
+ * @returns A formatted date string in the format "Month Day, Year".
+ */
+export function formatDate(date: string) {
+  const dateObj = new Date(date)
+  const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' } as Intl.DateTimeFormatOptions
+  return dateObj.toLocaleDateString('en-US', dateOptions)
 }
