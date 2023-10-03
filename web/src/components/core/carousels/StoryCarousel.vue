@@ -5,7 +5,7 @@
             scrollbar-thin scrollbar-thumb-gray-900 
             scrollbar-track-gray-100">
             <li 
-                class="flex flex-none flex-col items-center space-y-1 active:scale-95 cursor-pointer"
+                class="flex flex-none flex-col items-center space-y-1 active:scale-95 cursor-pointer pb-2"
                 v-for="(reel, index) of reels" 
                 @click="loadStory(reel.id)"
                 :key="index">
@@ -14,14 +14,14 @@
                     :class="{ 'animate-pulse': isRotating && index === activeIndex }"
                     @click="rotateAvatar(index)"
                     class="story-avatar">
-                    <div class="block bg-white rounded-full relative">
+                    <a href="#" class="block bg-white rounded-full relative">
                         <img 
                             class="md:w-16 md:h-16 h-14 w-14 rounded-full object-cover p-0.5 bg-black"
                             :src="reel.profilePictureUrl"/>
-                    </div>
+                    </a>
 
                 </div>
-                <div class="text-xs text-white font-semibold">{{ reel.userName }}</div>
+                <a href="#" class="text-xs text-white font-semibold">{{ reel.userName }}</a>
             </li>
         </div>
     </div>
