@@ -1,5 +1,11 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import { usePhotoStore } from '@/stores'
+import {
+  createRouter,
+  createWebHistory
+} from 'vue-router'
+import {
+  useModalManagerStore,
+  usePhotoStore
+} from '@/stores'
 import NProgress from 'nprogress'
 
 const ROOT_ROUTE = '/home'
@@ -141,6 +147,7 @@ const router = createRouter({
  */
 router.beforeEach(async (to, from, next) => {
   const photoStore = usePhotoStore()
+  const modalStoreManager = useModalManagerStore()
 
   // If this isn't an initial page load.
   if (to.name) {
@@ -152,6 +159,11 @@ router.beforeEach(async (to, from, next) => {
   if (to.path.startsWith('/create') && !photoStore.previewImage) {
     console.log('Here')
     return next({ name: 'home' })
+  }
+
+  // Close any open modals
+  if (modalStoreManager.isAnyModalOpen) {
+    modalStoreManager.closeModal()
   }
 
   return next()
