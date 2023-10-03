@@ -107,6 +107,19 @@ export class SampleGenerator {
     }
 
     /**
+     * Generates a random number of users.
+     * @param min The minimum number of users to generate.
+     * @param max The maximum number of users to generate.
+     * @returns An array of randomly generated users.
+     */
+    public static generateRandomUsers(min: number, max: number) {
+        const numberOfUsers = randomIntFromInterval(min, max)
+        return Array.from({
+            length: numberOfUsers
+        }, () => new UserSample())
+    }
+
+    /**
      * Generates a random number of search results.
      * @param min The minimum number of search results to generate.
      * @param max The maximum number of search results to generate.
