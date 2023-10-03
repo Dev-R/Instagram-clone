@@ -133,8 +133,9 @@
 								sm:p-1 space-y-7 overflow-y-auto scrollbar
 								scrollbar-none">
 								<CommentCard
-									v-for="comment of activePost.comments"
+									v-for="(comment, index) of activePost.comments"
 									:key="comment.id"
+									:id="index === activePost.comments.length - 1 ? 'last-comment' : ''"
 									v-if="activePost.comments && activePost.comments.length >= 1"
 									:comment="comment"
 									@on-comment-like="onCommentLiked" />
@@ -334,6 +335,7 @@ const onAddComment = () => {
         createdAt: '2012-02-23'
       }) //TODO: Remove this when the API is ready
         resetCommentValue()
+		scrollToTheLatestComment()
     }
 }
 
@@ -399,6 +401,18 @@ const clearActivePost = () => {
  */
 const getActivePost = () => {
 	activePost.value = modalManagerStore.getActivePost
+}
+
+/**
+ * Scroll to latest comment in the conversation
+ */
+ const scrollToTheLatestComment = () => {
+    const target = document.querySelector('#last-comment')
+    if (target) {
+        target.scrollIntoView({
+            behavior: 'smooth'
+        })
+    }
 }
 
 /**
