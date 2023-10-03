@@ -66,7 +66,6 @@ const isCommentModalOpen = computed(() => {
 // })
 
 const isPhotoModalOpen = computed(() => {
-    console.log("isPhotoModalOpen", modalStoreManager.getOpenModal)
     return modalStoreManager.getOpenModal === ModalName.PHOTO
 })
 </script>

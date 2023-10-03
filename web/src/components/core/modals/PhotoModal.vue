@@ -543,7 +543,8 @@ import {
 } from '@/components'
 
 import {
-    usePhotoStore
+    usePhotoStore,
+    useModalManagerStore
 } from '@/stores'
 
 /**
@@ -557,7 +558,7 @@ import {
  *      - SmallPhotoModal
  */
 
- const props = defineProps({
+const props = defineProps({
     isToggled: {
         type: Boolean,
         required: false,
@@ -651,6 +652,7 @@ const filters: PhotoModalImageFilter[] = [
 // Services
 const router = useRouter()
 const photoStore = usePhotoStore()
+const modalStoreManagerStore = useModalManagerStore()
 
 
 // Methods
@@ -731,7 +733,8 @@ const resetModalStage = () => {
 } 
 
 const resetModalState = () => {
-    // Reset Store
+    modalStoreManagerStore.$reset()
+    // Reset Stores
     photoStore.$reset()
     // Reset Stage
     resetModalStage()
