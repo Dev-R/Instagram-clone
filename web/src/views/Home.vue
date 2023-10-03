@@ -93,8 +93,8 @@ const triggerCommentModal = (id: number | undefined) => {
 }
 
 onMounted(() => {
-    posts.value = SampleGenerator.generateRandomPosts(5, 15)
-    stories.value = SampleGenerator.generateRandomStories(2, 5)
-    suggested.value = SampleGenerator.generateRandomSuggestions(1, 1) as SuggestionCardType
+    posts.value = SampleGenerator.generateRandomPosts()
+    stories.value = SampleGenerator.generateRandomStories()
+    suggested.value = SampleGenerator.generateRandomSuggestions() as SuggestionCardType
 })
 </script>

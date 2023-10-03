@@ -34,7 +34,7 @@ const post = ref<PostCardType | undefined>(undefined)
 
 onMounted(() => {
     // const postId = route.params.id // TODO: Remove this when the API is ready
-    // const posts = SampleGenerator.generateRandomPosts(2, 3)
+    // const posts = SampleGenerator.generateRandomPosts()
     // post.value = posts[0]
     post.value = modalStoreManager.getActivePost
     if (!post.value) {

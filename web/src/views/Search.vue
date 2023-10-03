@@ -47,7 +47,7 @@ const searchForUser = (payload: Event) => {
         // searchResults.value = await searchForUser(searchInput.value) // TODO: Implement searchForUser
         // console.log('search results', searchResults.value)
         setTimeout(() => {
-            searchResults.value = SampleGenerator.generateRandomSearchResults(2, 5)
+            searchResults.value = SampleGenerator.generateRandomSearchResults()
             isSearchLoading.value = false
         }, 1000)
     }
