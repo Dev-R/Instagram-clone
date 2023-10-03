@@ -1,41 +1,29 @@
 <template>
-	<div class="bg-black h-screen">
-		<section 
-			class="container md:max-w-full mx-auto h-screen
-			scrollbar scrollbar-thumb-gray-900"
-			:class="{ 'brightness-50 pointer-events-none': isModalToggled }">
-			<div class="flex">
-				<div 
-					class="basis-1/6 md:block hidden space-y-12
-                    sticky top-0 border-r border-gray-900">
-					<NavBarMain />
-				</div>
-
-				<div 
-					class="md:flex md:flex-row md:p-0 md:place-self-center md:max-w-4xl mx-auto 
-                    sm:p-2 border-[#363636] border-2 w-full h-4/5">
-					<SettingNavigator 
-						:active-setting-tab="activeSettingTab"
-						:is-mobile-screen="isMobileScreen"
-						@edit-profile="activeSettingTab = 'edit-profile'" />
+    <div    
+        :class="isToggledClass"
+        class="flex sm:h-screen">
+        <div class="md:flex md:flex-row md:p-0 md:place-self-center md:max-w-4xl m-auto items-center
+            sm:p-2 border-[#363636] border-2 w-full h-4/5">
+            <SettingNavigator 
+                :active-setting-tab="activeSettingTab"
+                :is-mobile-screen="isMobileScreen"
+                @edit-profile="activeSettingTab = 'edit-profile'" />
 
 
-					<SettingForm 
-						:user="user"
-						:is-mobile-screen="isMobileScreen"
-						:active-setting-tab="activeSettingTab"
-						@gender-modal="toggleGenderModal" />
-				</div>
-			</div>
-		</section>
-		<GenderModal 
-			:title="genderModal.title"
-			:is-toggled="genderModal.isToggled" 
-			:items="genderModal.items"
-			:modal-type="ModalName.GENDER" 
-			:modal-size="ModalSize.Medium"
-			@on-modal-closed="toggleGenderModal" />
-	</div>
+            <SettingForm 
+                :user="user"
+                :is-mobile-screen="isMobileScreen"
+                :active-setting-tab="activeSettingTab"
+                @gender-modal="toggleGenderModal" />
+        </div>
+    </div>
+    <GenderModal 
+        :title="genderModal.title"
+        :is-toggled="genderModal.isToggled" 
+        :items="genderModal.items"
+        :modal-type="ModalName.GENDER" 
+        :modal-size="ModalSize.Medium"
+        @on-modal-closed="toggleGenderModal" />
 </template>
 
 <script setup lang="ts">
@@ -46,7 +34,6 @@ import {
 } from 'vue'
 
 import {
-    NavBarMain,
     SmallModal as GenderModal,
     SettingNavigator,
     SettingForm
@@ -58,6 +45,10 @@ import {
     ModalName,
     type User,
 } from '@/common'
+
+import { 
+    useModalManagerStore 
+} from '@/stores'
 
 import {
     SampleGenerator
@@ -83,18 +74,20 @@ const genderModal = ref({
 
 const activeSettingTab = ref<null| string>(null)
 const screenWidth = ref<number>(window.innerWidth) // Current window width
+const modalStoreManager = useModalManagerStore()
 
 const toggleGenderModal = () => {
     genderModal.value.isToggled = !genderModal.value.isToggled
+    modalStoreManager.toggleModal(ModalName.GENDER)
 }
-
-const isModalToggled = computed(() => {
-    return genderModal.value.isToggled
-})
 
 const isMobileScreen = computed(() => {
     console.log("Screen width: ", screenWidth.value)
     return screenWidth.value <= ScreenBreakpoint.Medium
+})
+
+const isToggledClass = computed(() => {
+    return genderModal.value.isToggled ? "lights-off" : ""
 })
 
 onMounted(() => {

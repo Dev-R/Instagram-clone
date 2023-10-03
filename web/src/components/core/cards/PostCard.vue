@@ -3,20 +3,22 @@
 		<!-- Header-->
 		<div class="flex rounded-lg space-x--1 justify-between">
 			<!-- 1: username | daysSinceUpload | options -->
-			<div class="flex space-x-2">
+			<div 
+				@click="goToUserProfile(post.userName)"
+				class="flex space-x-2">
 				<div class="story-avatar">
 					<a
 						href="#"
 						class="block bg-white rounded-full relative">
 						<img 
 							class="w-8 h-8 rounded-full object-cover p-0.5 bg-black"
-							:src="postItem.profilePictureUrl" />
+							:src="post.profilePictureUrl" />
 					</a>
 				</div>
                     
 				<div class="flex pt-1">
 					<div class="cursor-pointer font-sans text-sm font-semibold text-white self-center">
-						{{ postItem.userName }}
+						{{ post.userName }}
 					<!-- <i class="fa-solid fa-circle-check"></i> -->
 					</div>
 
@@ -25,7 +27,7 @@
 					</div>
 
 					<div class="font-sans text-sm font-light text-[#949494] self-center">
-						{{ formatDate(postItem.createdAt as string) }}
+						{{ formatDate(post.createdAt as string) }}
 					</div>
 				</div>
 			</div>
@@ -39,10 +41,9 @@
 		<div class="flex flex-col space-y-3">
 			<!-- 2: Medias -->
 			<div class="md:max-h-[585px] px-0.5">
-				<!-- <img src="https://loremflickr.com/1024/1280" class="rounded"> -->
 				<MediaCarousel
-					v-if="postItem.carouselMedia"
-					:medias="postItem.carouselMedia" />
+					v-if="post.carouselMedia"
+					:medias="post.carouselMedia" />
 			</div>
 
 			<!-- 3: Actions -->
@@ -50,9 +51,9 @@
 				<div class="flex space-x-4">
 					<span
 						class="cursor-pointer hover:scale-90"
-						@click="$emit('onPostLike', postItem.id)">
+						@click="$emit('onPostLike', post.id)">
 						<SVGLoader
-							v-if="postItem.hasLiked"
+							v-if="post.hasLiked"
 							:icon="'like'" />
             
 						<SVGLoader
@@ -61,7 +62,7 @@
 					</span>
 					<span
 						class="cursor-pointer hover:scale-90"
-						@click="onOpenCommentModal(postItem)">
+						@click="onOpenCommentModal(post)">
 						<SVGLoader
 							:icon="'comment'" />
 					</span>
@@ -85,19 +86,21 @@
 			<div class="font-sans text-sm text-white flex-col">
 				<!-- <span class="font-semibold">imamomarsuleiman</span> -->
 				<p class="text-sm text-left indent-8 break-all ">
-					{{ postItem.caption }}
+					{{ post.caption }}
 				</p>
 				<p
-					v-if="postItem.commentCount > 0"
+					v-if="post.commentCount > 0"
 					class="text-md text-left
                     text-gray-400 cursor-pointer"
-					@click="onOpenCommentModal(postItem)">
-					View all {{ postItem.commentCount }} comments
+					@click="onOpenCommentModal(post)">
+					View all {{ post.commentCount }} comments
 				</p>
 			</div>
             
 			<!-- 6: Comment Form -->
-			<div class="flex border-b border-slate-800 justify-between  ">
+			<div 
+				v-if="isCommentAreaVisible"
+				class="flex border-b border-slate-800 justify-between  ">
 				<span class="basis-4/5">
 					<textarea
 						v-model="comment"
@@ -142,19 +145,23 @@ import {
     type PostCard,
     type Emoji,
     ModalName,
-	type PostCard as PostCardType,
     ScreenBreakpoint
 } from '@/common'
 
 import {
     useModalManagerStore
 } from '@/stores'
+import router from '@/router'
 
 const prop = defineProps({
-    postItem: {
+    post: {
         type: Object as () => PostCard,
         required: true,
     },
+	isCommentAreaVisible: {
+		type: Boolean,
+		default: true,
+	}
 })
 
 const emit = defineEmits([
@@ -171,7 +178,7 @@ const modalStoreManager = useModalManagerStore()
 
 // Computed
 const findNumberOfLikes = computed(() => {
-    return prop.postItem.likeCount >= 1 ? `${prop.postItem.likeCount} Likes` : 'Be the first to like this'
+    return prop.post.likeCount >= 1 ? `${prop.post.likeCount} Likes` : 'Be the first to like this'
 })
 
 /**
@@ -191,7 +198,7 @@ const onOpenCommentModal = (post: PostCard) => {
 const onPostComment = () => {
     comment.value = ''
     console.log("Emitting signal:", comment.value)
-    emit('onPostComment', comment, prop.postItem.id)
+    emit('onPostComment', comment, prop.post.id)
 }
 
 /**
@@ -211,6 +218,11 @@ const formatDate = (date: string) => {
 	const dateObj = new Date(date)
 	const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' } as Intl.DateTimeFormatOptions
 	return dateObj.toLocaleDateString('en-US', dateOptions)
+}
+
+const goToUserProfile = (userName: string) => {
+	router.push({ name: 'profile', params: { username: userName, isSelf: 0  } })
+	console.log('goToUserProfile')
 }
 
 /**

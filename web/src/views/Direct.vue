@@ -1,55 +1,38 @@
 <template>
-	<div class="bg-slate-1000">
-		<section 
-			class="container max-w-full mx-auto
-			scrollbar scrollbar-thumb-gray-900">
-			<div class="flex">
-				<div 
-					class="bg-black sm:w-20 md:block hidden space-y-12
-					h-screen sticky top-0 border-r border-gray-900">
-					<NavBarMain />
-				</div>
+    <div class="flex md:flex-row flex-col h-screen">
+        <!-- Navigation and Messages overview -->
+        <InboxPanel 
+            :active-conversation="activeConversation"
+            :conversations="conversations"
+            :current-user="currentUser"
+            @on-select-conversation="selectConversation" />
 
-				<div 
-					class="lg:grid bg-black basis-full md:border-l border-slate-800">
-					<div class="flex md:flex-row flex-col h-screen">
-
-                        <!-- Navigation and Messages overview -->
-						<InboxPanel 
-							:active-conversation="activeConversation"
-							:conversations="conversations"
-							:current-user="currentUser"
-							@on-select-conversation="selectConversation" />
-
-                        <!-- Chat input and Dialogs -->
-						<ActiveChat 
-							v-if="activeConversation"
-							:active-conversation="activeConversation"
-							v-model="chatMessageInput"
-							:current-user="currentUser"
-							:is-chat-loading="isChatLoading"
-							:is-chat-empty="true"
-							@on-chat-back="leaveChat"
-							@on-file-upload="triggerFileUpload"
-							@on-send-message="sendMessage"
-							@on-like-icon="sendHeartEmoji" />
-                            
-                        <!-- Chat intro -->
-						<ChatIntroMessage 
-							v-else
-							@on-send-message-modal="openSendMessageModal" />
-					</div>
-				</div>
-			</div>
-		</section>
-		<!-- File Uploading -->
-		<input
-			ref="fileUpload"
-			accept="image/*"
-			type="file"
-			hidden
-			@change="onFileUpload" /> 
-	</div>
+        <!-- Chat input and Dialogs -->
+        <ActiveChat 
+            v-if="activeConversation"
+            :active-conversation="activeConversation"
+            v-model="chatMessageInput"
+            :current-user="currentUser"
+            :is-chat-loading="isChatLoading"
+            :is-chat-empty="true"
+            @on-chat-back="leaveChat"
+            @on-file-upload="triggerFileUpload"
+            @on-send-message="sendMessage"
+            @on-like-icon="sendHeartEmoji" />
+            
+        <!-- Chat intro -->
+        <ChatIntroMessage 
+            v-else
+            @on-send-message-modal="openSendMessageModal" />
+    </div>
+    
+    <!-- File Uploading -->
+    <input
+        ref="fileUpload"
+        accept="image/*"
+        type="file"
+        hidden
+        @change="onFileUpload" /> 
 </template>
 
 <script setup lang="ts">
@@ -66,11 +49,9 @@ import {
     ChatIntroMessage,
 	ActiveChat,
 	InboxPanel,
-    NavBarMain
 } from '@/components'
 
 import type {
-    Viewer,
     Sender,
     ChatDialog,
     HTMLInputElementRef,

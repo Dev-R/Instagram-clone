@@ -1,50 +1,38 @@
 <template>
-	<div class="bg-black">
-		<section 
-			class="container text-center md:max-w-full mx-auto sm:h-screen scrollbar scrollbar-thumb-gray-900"
-			:class="{ 'brightness-50 pointer-events-none': commentModal.isToggled }">
-			<div class="flex">
-				<div 
-					class="basis-1/6 md:block hidden space-y-12
-                    sticky top-0 border-r border-gray-900">
-					<NavBarMain />
-				</div>
-
-				<div class="sm:max-w-lg self-center mx-auto overflow-auto scrollbar scrollbar-none">
-					<div class="swiper-container-wrapper">
-						<ReelContainer
-							:direction="'vertical'"
-							:centered-slides="true"
-							:space-between="15"
-							:slides-per-view="isMobileScreen ? 1.00 : 1.15"
-							:loop="reels.length > 3"
-							:mousewheel="true"
-							:modules="modules"
-							:pagination="{
-								clickable: false,
-								bulletClass: 'hidden'   
-							}"
-							:class="'max-h-screen h-dynamic-screen sm:h-auto \
-                            sm:rounded-lg self-center swiper-container'"
-							@afterInit="updateActiveSlideInstance"
-							@active-index-change="updateActiveSlideInstance">
-							<ReelSlide
-								v-for="reel of reels"
-                                :key="reel.id"
-								:class="'flex flex-col relative max-w-lg sm:max-h-screen'">
-								<ReelCard 
-									:reel="reel"
-									:active-video="activeVideo"
-									@on-comments="toggleCommentModal(reel.comments)"
-									@on-follow-request="handleFollowRequest"
-									@on-like-state-change="handleLikeStateChange" />
-							</ReelSlide>
-						</ReelContainer>
-					</div>
-				</div>
-			</div>
-		</section>
-	</div>
+    <div 
+        :class="isToggledClass"
+        class="sm:max-w-lg self-center mx-auto overflow-auto scrollbar scrollbar-none">
+        <div class="swiper-container-wrapper">
+            <ReelContainer
+                :direction="'vertical'"
+                :centered-slides="true"
+                :space-between="15"
+                :slides-per-view="isMobileScreen ? 1.00 : 1.15"
+                :loop="reels.length > 3"
+                :mousewheel="true"
+                :modules="modules"
+                :pagination="{
+                    clickable: false,
+                    bulletClass: 'hidden'   
+                }"
+                :class="'max-h-screen h-dynamic-screen sm:h-auto \
+                sm:rounded-lg self-center swiper-container'"
+                @afterInit="updateActiveSlideInstance"
+                @active-index-change="updateActiveSlideInstance">
+                <ReelSlide
+                    v-for="reel of reels"
+                    :key="reel.id"
+                    :class="'flex flex-col relative max-w-lg sm:max-h-screen'">
+                    <ReelCard 
+                        :reel="reel"
+                        :active-video="activeVideo"
+                        @on-comments="toggleCommentModal(reel.comments)"
+                        @on-follow-request="handleFollowRequest"
+                        @on-like-state-change="handleLikeStateChange" />
+                </ReelSlide>
+            </ReelContainer>
+        </div>
+    </div>
 	
 	<SmallModal 
 		:title="commentModal.title"
@@ -78,7 +66,6 @@ import {
 } from 'swiper/vue'
 
 import {
-    NavBarMain,
     ReelCard,
     SmallModal,
 } from '@/components'
@@ -90,6 +77,10 @@ import {
     type PostComment,
     type ReelPost,
 } from '@/common'
+
+import { 
+    useModalManagerStore 
+} from '@/stores'
 
 import {
     SampleGenerator
@@ -104,6 +95,7 @@ const reels = ref<ReelPost[]>(SampleGenerator.generateRandomReelPosts(5, 8))
 // Trackers
 const activeSwiperInstance = ref<SwiperInstance>()
 const activeVideo = ref<HTMLVideoElement>()
+const modalStoreManager = useModalManagerStore()
 
 // Others
 const screenWidth = ref<number>(window.innerWidth) // Current window width
@@ -166,6 +158,7 @@ const initializeSlideInstance = (swiper: SwiperInstance) => {
 const toggleCommentModal = (comments: PostComment[] | undefined) => {
     commentModal.value.items = comments
     commentModal.value.isToggled = !commentModal.value.isToggled
+    modalStoreManager.toggleModal(ModalName.REEL)
 }
 
 const pauseVideo = () => {
@@ -186,6 +179,10 @@ onMounted(() => {
     window.onresize = () => {
         screenWidth.value = window.innerWidth
     }
+})
+
+const isToggledClass = computed(() => {
+    return commentModal.value.isToggled ? "lights-off" : ""
 })
 </script>
 

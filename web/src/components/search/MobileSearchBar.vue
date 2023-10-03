@@ -4,7 +4,7 @@
 			class="w-full bg-black text-white border-1 border-gray-400 rounded-lg h-8
             text-sm focus:outline-none placeholder-gray-400"
 			placeholder="Search"
-			@focus="navigateToSearch" />
+			@focus.prevent="navigateToSearch" />
 
 		<div class="text-sm text-white font-sans font-semibold">
 			Cancel

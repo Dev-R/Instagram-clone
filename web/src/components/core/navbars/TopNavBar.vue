@@ -141,28 +141,6 @@ export default defineComponent({
         const photoStore = usePhotoStore()
         const toast = useToast()
 
-        // TODO: Make this dynamic
-        // const menuItems: NavBarItem[] = [
-        //     {
-		// 		title: 'Home',
-		// 		path: '/home',
-		// 		name: 'home',
-		// 		customClass: '',
-		// 		iconName: 'home',
-		// 		onClick: () => {}
-		// 	},
-        //     {
-        //         name: 'Post',
-        //         iconName: 'create-small',
-        //         path: 'create/post'
-        //     },
-        //     {
-        //         name: 'Story',
-        //         iconName: 'new-story-small',
-        //         route: 'create/story'
-        //     }
-        // ]
-
         /**
          * Change store state to open file upload dialog
          */
@@ -196,7 +174,12 @@ export default defineComponent({
 
         // Computed
         const routeName = computed(()=> {
-            return route.name ? route.name.toString() : ''
+            switch (route.name) {
+                case 'profile':
+                    return route.params.username ? route.params.username : route.name.toString()
+                default:
+                    return route.name ? route.name.toString() : ''
+            }
         })
 
         onMounted(() => {

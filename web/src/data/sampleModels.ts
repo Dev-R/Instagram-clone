@@ -17,6 +17,7 @@ import type {
     ReelPost,
     ReelMedia,
     PostCard as SocialPost,
+    PostComment,
     StoryCarousel,
     SuggestionCard as Suggestion,
     NotificationCard as Notification,
@@ -83,6 +84,18 @@ export class ConversationSample implements Conversation {
 }
 
 /**
+ * Represents a fake post comment model.
+ * @implements {PostComment}
+ */
+export class PostCommentSample implements PostComment {
+    id = faker.number.int()
+    userName = faker.internet.userName()
+    profilePictureUrl = faker.image.avatar()
+    content = faker.lorem.sentence()
+    createdAt = faker.date.recent().toISOString()
+}
+
+/**
  * Represents a fake post media model.
  * @implements {PostMedia}
  */
@@ -119,7 +132,7 @@ export class SocialPostSample implements SocialPost {
     hasLiked = faker.datatype.boolean()
     isFollowed = faker.datatype.boolean()
     commentCount = faker.number.int({ min: 2, max: 1000 })
-    comments = []
+    comments = SampleGenerator.generateRandomPostComments(1, 10)
     carouselMedia = SampleGenerator.generateRandomPostMedias(1, 5)
 }
 

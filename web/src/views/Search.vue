@@ -1,25 +1,11 @@
 <template>
-	<div class="bg-black h-screen">
-		<section 
-			class="container md:max-w-full mx-auto h-screen
-			scrollbar scrollbar-thumb-gray-900"
-			:class="{ 'brightness-50 pointer-events-none': false }">
-			<div class="flex">
-				<div 
-					class="basis-1/6 bg-black md:block hidden space-y-12 h-screen
-                    sticky top-0 border-r border-gray-900">
-					<NavBarMain />
-				</div>
-				<SearchWrapper 
-					:title="searchTitle"
-					:results="searchResults"
-					:is-result-empty="isSearchResultsEmpty"
-					:is-search-loading="isSearchLoading"
-					@onSearchQuery="searchForUser"
-					@onClearSearchQuery="clearSearchQuery" />
-			</div>
-		</section>
-	</div>
+    <SearchWrapper 
+        :title="searchTitle"
+        :results="searchResults"
+        :is-result-empty="isSearchResultsEmpty"
+        :is-search-loading="isSearchLoading"
+        @onSearchQuery="searchForUser"
+        @onClearSearchQuery="clearSearchQuery" />
 </template>
  
 <script setup lang="ts">
@@ -29,7 +15,6 @@ import {
 } from 'vue'
 
 import {
-    NavBarMain,
     SearchWrapper
 } from '@/components'
 

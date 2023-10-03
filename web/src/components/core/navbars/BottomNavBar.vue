@@ -5,11 +5,11 @@
         z-50 bg-black">
         <div class="flex space-x-2 justify-around">
 
-            <router-link
+            <div
                 v-for="item in menuItems"
                 :key="item.title"
                 :to="item.path"
-                @click="updateActiveNavBar(item.path)"
+                @click="updateActiveNavBar(item.path, item.title)"
                 :class="{ 
                     'bg-slate-1000 animate-pulse': item.path === activeNavBar
                 }"
@@ -28,7 +28,7 @@
                     :icon="item.iconSvgName" 
                     :class="'group-hover:scale-110'" />
 
-            </router-link>
+            </div>
 
         </div>
     </div>
@@ -43,7 +43,8 @@ import {
 } from 'vue'
 
 import { 
-    useRoute 
+    useRoute, 
+    useRouter 
 } from 'vue-router'
 
 import {
@@ -60,38 +61,42 @@ export default defineComponent({
 
         const activeNavBar = ref<NavBarItem['path']>()
         const route = useRoute()
+        const router = useRouter()
 
-        const updateActiveNavBar = (navBarTab: NavBarItem['path']) => {
+        const updateActiveNavBar = (navBarTab: NavBarItem['path'], routeName: string | undefined) => {
 			activeNavBar.value = navBarTab
+            // Check if routeName is undefined or null and return if it is
+            if (!routeName) return
+            router.push({ name: routeName })
 		}
 
         const menuItems: NavBarItem[] = [
             {
-                title: 'Home',
+                title: 'home',
                 path: 'home',
                 customClass: 'group-hover:scale-110',
                 iconSvgName: 'home'
             },
             {
-                title: 'Explore',
+                title: 'explore',
                 path: 'explore',
                 customClass: 'group-hover:scale-110',
                 iconSvgName: 'mobile-explore'
             },
             {
-                title: 'Reels',
+                title: 'reels',
                 path: 'reels',
                 customClass: 'group-hover:scale-110',
                 iconSvgName: 'reels'
             },
             {
-                title: 'Direct',
+                title: 'direct',
                 path: 'direct',
                 customClass: 'group-hover:scale-110',
                 iconSvgName: 'direct'
             },
             {
-                title: 'Profile',
+                title: 'profile',
                 path: 'profile',
                 customClass: 'group-hover:scale-110',
                 img: 'https://i.ibb.co/JQVbxyH/img.jpg',
@@ -103,7 +108,7 @@ export default defineComponent({
 		})
 
         onMounted(() => {
-			updateActiveNavBar(routeName.value)
+			updateActiveNavBar(routeName.value, undefined)
 		})
 
         return {

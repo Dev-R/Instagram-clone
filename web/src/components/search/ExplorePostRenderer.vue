@@ -25,6 +25,7 @@ import type {
 
 import {
     PostCoverCard,
+    LoadingSpinner
 } from '@/components'
 
 import type {

@@ -3,7 +3,7 @@
 		class="flex lg:h-16 w-full space-x-2 md:justify-between p-3
         items-center border-slate-700 border-b">
 		<div 
-			class="rotate-[270deg] md:hidden hover:cursor-pointer"
+			class="rotate-[270deg] hover:cursor-pointer"
 			@click="emitChatBack">
 			<SVGLoader 
 				:icon="'back-arrow'" 

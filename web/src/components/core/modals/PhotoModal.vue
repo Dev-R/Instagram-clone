@@ -126,7 +126,7 @@
                             <div 
                                 v-else-if="currentModalStage === PhotoStage.SharingPost">
                                 <img
-                                    src="https://static.cdninstagram.com/rsrc.php/v3/yY/r/uCPMn4bWLAh.gif"
+                                    src="@/assets/gifs/loading.gif"
                                     class="absolute block md:h-24 md:w-24 w-full 
                                     -translate-x-1/2 md:-translate-y-1/2 top-1/2 left-1/2"/>
                             </div>
@@ -139,7 +139,7 @@
 
                                 <img
                                     id="theImage"
-                                    src="https://static.cdninstagram.com/rsrc.php/v3/yD/r/ywSe_I8p9lm.gif"
+                                    src="@/assets/gifs/loaded.gif"
                                     class="block md:h-24 md:w-24 self-center"/>
 
                                 <span 
@@ -203,7 +203,7 @@
                                         }">
 
                                         <img
-                                            src="https://i.ibb.co/m5p6wKJ/Normal.jpg"
+                                            src="@/assets/images/filter.jpg"
                                             class="w-fit rounded"
                                             :class="filter.filterClass"/>
 
@@ -269,7 +269,7 @@
                             <div class="flex flex-inital flex-row text-center space-x-1">
 
                                 <img 
-                                    src="https://i.ibb.co/m5p6wKJ/Normal.jpg" 
+                                    src="@/assets/images/filter.jpg"
                                     class="w-8 h-8 rounded-full"/>
                                 
                                 <div class="flex pl-1.5 pt-2 space-x-2">
@@ -353,14 +353,15 @@
             border-t border-gray-700 sticky top-0 md:hidden 
             z-50 bg-black border-b">
 
-            <div 
-                class="flex space-x-2 justify-between relative">
+            <div class="flex space-x-2 justify-between relative">
 
+                <!-- Left Side -->
                 <div 
                     class="group cursor-pointer rounded-full 
                     flex space-x-4 sm:hover:bg-slate-1000
                     sm:hover:delay-100 p-3 xl:justify-start justify-center">
 
+                    <!-- Exit Button -->
                     <div
                         class="rotate-[270deg]"
                         :class="{'hidden': currentModalStage != PhotoStage.CreatePost}">
@@ -370,6 +371,7 @@
                             :class="'group-hover:scale-110'"/>
                     </div>
 
+                    <!-- Return Button -->
                     <span 
                         @click="updateModalStage(PhotoStage.CreatePost)"
                         class="rotate-[270deg]"
@@ -383,9 +385,10 @@
 
                 </div>
 
-                <div 
-                    class="flex px-2">
+                <!-- Right Side -->
+                <div class="flex px-2">
 
+                    <!-- Button/Stage: Next, Share and Shared -->
                     <span 
                         @click="updateModalStage(currentModalStage === PhotoStage.CreatePost ? PhotoStage.EditPostForm : PhotoStage.SharingPost)"
                         class="font-sans text-md font-semibold text-sky-500 
@@ -399,6 +402,7 @@
                     
                 </div>
 
+                    <!-- Current Stage name: New post, Sharing etc -->
                 <div    
                     class="font-sans text-md font-semibold 
                     absolute top-1/2 left-1/2 transform 
@@ -444,7 +448,7 @@
                     
                     <div>
                         <img 
-                            src="https://i.ibb.co/m5p6wKJ/Normal.jpg" 
+                            src="@/assets/images/filter.jpg"
                             :class="filter.filterClass"
                             class="w-24 h-24 rounded"/>
                     </div>
@@ -457,14 +461,15 @@
 
         <!-- Post Form -->
         <div
+            v-if="currentModalStage != PhotoStage.CreatePost"
             :class="{
-                'hidden' : currentModalStage === PhotoStage.CreatePost,
                 'brightness-50' : currentModalStage === PhotoStage.SharingPost
             }"
             class="flex flex-col h-5/6 bg-slate-1000 space-y-4">
 
             <div class="flex space-x-2 py-5 px-2 bg-black">
 
+                <!-- TODO: Change to active user img based on user store -->
                 <img 
                     :src="'https://loremflickr.com/1024/1080/dog'"
                     class="rounded-full h-8 w-8"/>
@@ -473,6 +478,7 @@
                     v-model="Imageform.caption"
                     :disabled="currentModalStage === PhotoStage.SharingPost"
                     rows="2"
+                    placeholder="fuck this bug"
                     maxlength="2200"
                     class="focus:outline-none resize-none 
                     placeholder:text-gray-1100

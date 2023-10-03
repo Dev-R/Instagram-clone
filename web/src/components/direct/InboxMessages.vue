@@ -16,7 +16,7 @@
 
 			<!-- Username / Chat / Date -->
 			<div class="flex flex-col self-center space-y-2 pb-3">
-				<span class="font-sans text-sm font-semibold text-white self-start">
+				<span class="font-sans text-xs sm:text-sm font-semibold text-white self-start">
 					{{ convo.user.userName }}
 				</span>
 

@@ -10,7 +10,9 @@
 				{{ user.userName }}
 			</div>
 
-			<div class="flex flex-row space-x-6">
+			<div 
+				v-if="!hideControls()"
+				class="flex flex-row space-x-6">
 				<!-- Personal logged-in user Options -->
 				<div class="md:pl-0">
 					<TheButton 
@@ -18,7 +20,7 @@
 						:size="'sm'" 
 						:is-full="true">
 						<span 
-							class="sm:text-md text-sm font-semibold"
+							class="lg:text-md text-sm font-semibold"
 							@click="goToSettingsRoute">
 							Edit Profile
 						</span>
@@ -71,6 +73,7 @@ import type{
 } from 'vue'
 
 import {
+	useRoute,
     useRouter
 } from 'vue-router'
 
@@ -84,6 +87,7 @@ import {
 	type ModalType,
     type User,
 } from '@/common'
+import { fa } from '@faker-js/faker'
 
 const prop = defineProps({
     user: {
@@ -113,6 +117,7 @@ const userProfileStats = [{
 
 // Services
 const router = useRouter()
+const route = useRoute()
 
 // Methods
 /**
@@ -129,6 +134,14 @@ const toggleSettingModal = () => {
 		modalType: ModalName.PROFILE_SETTING,
 		modalTitle: ModalName.PROFILE_SETTING
 	})
+}
+
+/**
+ * Cheap way to hide the controls if the user is not the owner of the profile
+ * TODO: Remove this when the backend is ready
+ */
+const hideControls = () => {
+	return route.params.isSelf ? true : false
 }
 
 /**

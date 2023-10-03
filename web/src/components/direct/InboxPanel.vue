@@ -1,7 +1,7 @@
 <template>
 	<div 
 		:class="{ 'hidden': activeConversation }"
-		class="bg-black basis-1/5 md:block">
+		class="bg-black sm:basis-1/2 lg:basis-1/5 md:block">
 		<!-- Inbox Deader  -->
 		<InboxHeader 
 			:current-user="currentUser" />

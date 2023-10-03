@@ -47,6 +47,8 @@ import {
     type PropType
 } from 'vue'
 
+import router from '@/router'
+
 import {
     type PostCard as PostCardType,
     ScreenBreakpoint,
@@ -79,9 +81,18 @@ const modalStoreManager = useModalManagerStore()
  * Open comment modal and set active post
  */
 const openCommentModal = () => {
-    const modalName = screenSizeType.value === 'xs' ? ModalName.PROFILE : ModalName.COMMENT
-    modalStoreManager.openModal(modalName)
+    const modalName = screenSizeType.value === 'xs' ? ModalName.POST : ModalName.COMMENT
     modalStoreManager.setActivePost(activePost.value)
+    /**
+     * If modalName is post, then push to post route 
+     * ** Only for mobile devices
+     */
+    if (modalName === ModalName.POST) {
+        const params = { id: activePost.value?.id }
+        router.push({ name: 'post', params: params }) //TODO: Fix this
+    } else {
+        modalStoreManager.openModal(modalName)
+    }
 }
 
 /**

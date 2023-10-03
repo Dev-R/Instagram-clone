@@ -2,7 +2,7 @@
 	<div class="flex flex-col">
 		<div class="flex bg-black px-2 py-5 lg:h-16 w-full space-x-2 justify-between">
 			<SVGLoader 
-				:class="'rotate-[270deg] cursor-pointer sm:hidden'"
+				:class="'rotate-[270deg] cursor-pointer md:hidden'"
 				:icon="'back-arrow'"
 				@click="onPageBack" />
 

@@ -7,7 +7,8 @@ import {
     PostMediaSample,
     SearchResultSample,
     ReelMediaSample,
-    ReelPostSample
+    ReelPostSample,
+    PostCommentSample
 } from '@/data'
 
 import { randomIntFromInterval } from '@/common/helpers'
@@ -71,6 +72,19 @@ export class SampleGenerator {
         }, () => new NotificationSample())
     }
 
+    /**
+     * Generates a random number of post comments.
+     * @param min The minimum number of post comments to generate.
+     * @param max The maximum number of post comments to generate.
+     * @returns An array of randomly generated post comments.
+     */
+    public static generateRandomPostComments(min: number, max: number) {
+        const numberOfComments = randomIntFromInterval(min, max)
+        return Array.from({
+            length: numberOfComments
+        }, () => new PostCommentSample())
+    }
+    
     /**
      * Generates a random number of post medias.
      * @param min The minimum number of post medias to generate.

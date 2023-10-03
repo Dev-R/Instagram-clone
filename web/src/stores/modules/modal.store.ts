@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 
 import type { 
-  ModalType,
+  ModalName,
   PostCard
 } from '@/common'
 
@@ -10,15 +10,16 @@ import type {
  */
 export const useModalManagerStore = defineStore('modal', {
     state: () => ({
-      modalName: null as ModalType | null, // Holds the currently open modal name or null if no modal is open
+      modalName: null as ModalName | null, // Holds the currently open modal name or null if no modal is open
       post: null as any,
     }),
     getters: {
       isAnyModalOpen: (state) => !!state.modalName,
       getOpenModal: (state) => state.modalName,
+      getActivePost: (state) => state.post,
     },
     actions: {
-      openModal(modalName: ModalType) {
+      openModal(modalName: ModalName) {
         this.modalName = modalName
       },
       closeModal() {
@@ -27,7 +28,10 @@ export const useModalManagerStore = defineStore('modal', {
       setActivePost(post: any) {
         this.post = post
       },
-      toggleModal(modalName: ModalType ) {
+      clearActivePost() {
+        this.post = null
+      },
+      toggleModal(modalName: ModalName ) {
         if (this.modalName === modalName) {
           this.modalName = null // Close the currently open modal
         } else {
