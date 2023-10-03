@@ -5,7 +5,7 @@
             scrollbar-thin scrollbar-thumb-gray-900 
             scrollbar-track-gray-100">
             <li 
-                class="flex flex-none flex-col items-center space-y-1 active:scale-95"
+                class="flex flex-none flex-col items-center space-y-1 active:scale-95 cursor-pointer"
                 v-for="(reel, index) of reels" 
                 @click="loadStory(reel.id)"
                 :key="index">
