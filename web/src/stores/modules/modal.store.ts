@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia'
 
-import type { 
+import { 
   ModalName,
-  PostCard
+  type PostCard
 } from '@/common'
 
 /**
@@ -15,6 +15,7 @@ export const useModalManagerStore = defineStore('modal', {
     }),
     getters: {
       isAnyModalOpen: (state) => !!state.modalName,
+      shouldBlur: (state) => (state.modalName != ModalName.FOLLOW),
       getOpenModal: (state) => state.modalName,
       getActivePost: (state) => state.post,
     },
