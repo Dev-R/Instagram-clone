@@ -29,6 +29,6 @@ import type {
 const posts = ref<PostCardType[] | undefined>(undefined)
 
 onMounted(() => {
-    posts.value = SampleGenerator.generateRandomPosts(5, 20)
+    posts.value = SampleGenerator.generateRandomPosts()
 })
 </script>

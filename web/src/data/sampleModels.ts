@@ -48,7 +48,7 @@ export class UserSample implements User {
         outgoingRequest: faker.datatype.boolean()
     }
     dateJoined = faker.date.past().toISOString()
-    mediaItems = SampleGenerator.generateRandomPosts(2, 10)
+    mediaItems = SampleGenerator.generateRandomPosts()
 }
 
 /**
@@ -136,7 +136,7 @@ export class SocialPostSample implements SocialPost {
     isFollowed = faker.datatype.boolean()
     commentCount = faker.number.int({ min: 2, max: 1000 })
     comments = SampleGenerator.generateRandomPostComments(1, 10)
-    carouselMedia = SampleGenerator.generateRandomPostMedias(1, 5)
+    carouselMedia = SampleGenerator.generateRandomPostMedias()
 }
 
 /**
@@ -151,7 +151,7 @@ export class StoryCarouselSample implements StoryCarousel {
     seen = faker.datatype.boolean()
     hasLiked = faker.datatype.boolean()
     mediaCount = 1
-    items = SampleGenerator.generateRandomPostMedias(1, 5)
+    items = SampleGenerator.generateRandomPostMedias()
 }
 
 /**

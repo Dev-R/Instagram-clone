@@ -262,7 +262,7 @@ provide(
 
 onMounted(() => {
     validateStoryLength()
-    stories.value = SampleGenerator.generateRandomStories(2, 5)
+    stories.value = SampleGenerator.generateRandomStories()
 })
 </script>
 

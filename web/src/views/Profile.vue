@@ -137,8 +137,8 @@ const isToggledClass = computed(() => {
 
 const createRandomProfile = () => {
     profile.value = SampleGenerator.generateRandomUser()
-    profile.value.followers = SampleGenerator.generateRandomUsers(1, 100)
-    profile.value.following = SampleGenerator.generateRandomUsers(1, 100)
+    profile.value.followers = SampleGenerator.generateRandomUsers()
+    profile.value.following = SampleGenerator.generateRandomUsers()
     posts.value = profile.value.mediaItems
 }
 
