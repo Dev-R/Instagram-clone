@@ -2,10 +2,9 @@
     <div class="sm:max-w-md w-screen mx-auto bg-transparent shadow-xl min-w-0 p-1.5 sm:p-0">
         <div 
             class="overflow-x-auto flex space-x-6 
-            scrollbar-thin scrollbar-thumb-gray-900 
-            scrollbar-track-gray-100">
+            scrollbar-thin scrollbar-thumb-gray-900">
             <li 
-                class="flex flex-none flex-col items-center space-y-1 active:scale-95 cursor-pointer pb-2"
+                class="flex flex-none flex-col items-center space-y-1 active:scale-95 cursor-pointer pb-2 scrollbar"
                 v-for="(reel, index) of reels" 
                 @click="loadStory(reel.id)"
                 :key="index">
