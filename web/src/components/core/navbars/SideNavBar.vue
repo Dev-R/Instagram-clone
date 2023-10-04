@@ -14,8 +14,7 @@
 					class="xl:block hidden p-2 pt-7">
                     <img 
                         class="w-32 h-7"
-                        src="@/assets/images/icon.png"
-                        />
+                        src="@/assets/images/icon-dark.png" />
 				</div>
 				<div 
 					:class="isNavBarCollapsed ? 'block pt-5' : 'xl:hidden block'">

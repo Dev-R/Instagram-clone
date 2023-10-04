@@ -16,13 +16,13 @@
                     <SVGLoader 
                         @click="onPageBack"
                         :icon="'back-arrow'" 
-                        :class="'group-hover:scale-110'"/>
+                        :class="'group-hover:scale-110' "/>
                 </span>
     
                 <span v-else>
                 <img 
-                    class="w-40 h-12"
-                    src="@/assets/images/icon-light.png" />
+                    class="w-32 h-7"
+                    src="@/assets/images/icon-dark.png" />
                         
                 </span>
 
