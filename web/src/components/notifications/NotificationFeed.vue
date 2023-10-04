@@ -11,6 +11,7 @@
         
 
 		<NotificationCard 
+			v-if="notifications"
 			v-for="notification in notifications"
 			:key="notification.userName"
 			:notification="notification" />
@@ -35,7 +36,7 @@ import type {
 
 const prop = defineProps({
     notifications: {
-        type: Array as PropType <NotificationResult[]> ,
+        type: Array as PropType <NotificationResult[] | undefined> ,
         required: true
     },
     isLoading: Boolean,

@@ -52,8 +52,8 @@
 
 <script setup lang="ts">
 // Swiper styles
-import 'swiper/css/bundle'
-import 'swiper/css'
+// import 'swiper/css/bundle'
+// import 'swiper/css'
 import 'swiper/css/pagination'
 import 'swiper/css/navigation'
 
@@ -95,6 +95,10 @@ import {
     ONE_HUNDRED_PERCENTAGE
 } from '@/common'
 
+import {
+    SampleGenerator
+} from '@/data'
+
 // Swiper modules
 const modules = [
     Mousewheel,
@@ -107,62 +111,7 @@ const modules = [
 
 // Data
 const progressPercentage = ref(ZERO_PERCENTAGE)
-const stories = ref<StoryCarousel[]>([
-    {
-        id: 0,
-        userName: '3_st',
-        profilePictureUrl: 'https://loremflickr.com/1024/1080/dog',
-        expiringAt: '',
-        seen: false,
-        items: [
-            {
-                index: 0,
-                type: 'image',
-                mediaUrl:
-                    "https://i.ibb.co/H2jnhww/story-Demo.jpg",
-                title: "Legendary A"
-            }
-        ],
-        hasLiked: false,
-        mediaCount: 1
-    },
-    {
-        id: 1,
-        userName: 'Noura',
-        profilePictureUrl: 'https://loremflickr.com/32/32/woman',
-        expiringAt: '',
-        seen: false,
-        items: [
-            {
-                index: 0,
-                type: 'video',
-                mediaUrl:
-                    "https://assets.mixkit.co/videos/download/mixkit-eastern-egg-picnic-in-the-garden-48599.mp4",
-                title: "Legendary A"
-            }
-        ],
-        hasLiked: false,
-        mediaCount: 1
-    },
-    {
-        id: 3,
-        userName: 'Noura',
-        profilePictureUrl: 'https://loremflickr.com/32/32/woman',
-        expiringAt: '',
-        seen: false,
-        items: [
-            {
-                index: 0,
-                type: 'image',
-                mediaUrl:
-                    "https://loremflickr.com/490/870/love",
-                title: "Legendary A"
-            }
-        ],
-        hasLiked: false,
-        mediaCount: 1
-    },
-])
+const stories = ref<StoryCarousel[] | undefined>(undefined)
 
 // Trackers
 const activeSwiperInstance = ref<SwiperInstance>()
@@ -269,7 +218,7 @@ const updateActiveSlideInstance = (swiper: SwiperInstance) => {
  * Validate the length of the stories array and redirect to home if empty
  */
 const validateStoryLength = () => {
-    if (stories.value.length === 0) {
+    if (stories.value?.length === 0) {
         router.push({
             path: '/'
         })
@@ -313,6 +262,7 @@ provide(
 
 onMounted(() => {
     validateStoryLength()
+    stories.value = SampleGenerator.generateRandomStories()
 })
 </script>
 

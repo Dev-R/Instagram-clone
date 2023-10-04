@@ -1,5 +1,6 @@
 <template>
-	<div 
+	<div
+		v-if="activeConversation && !isChatLoading"
 		v-for="(dialog, index) of activeConversation?.dialogs"
 		:key="index"
 		class="flex pt-5 space-x-2 m-2"
@@ -10,6 +11,7 @@
 			v-if="!dialog.isSentByViewer"
 			src="https://loremflickr.com/1024/1080/car"
 			class="cursor-pointer h-6 w-6 rounded-full shadow-lg self-end" />
+			<!-- TODO: Change to active user img based on user store -->
 
 		<p 
 			v-if="dialog.text"
@@ -42,6 +44,10 @@ defineProps({
     activeConversation: {
         type: Object as() => Conversation,
         required: true
-    }
+    },
+	isChatLoading: {
+		type: Boolean,
+		required: true
+	},
 })
 </script>

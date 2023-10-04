@@ -1,4 +1,4 @@
-import type { BaseUser } from "./user.model"
+import type { BaseUser, User } from "./user.model"
 
 /**
  * Represents an emoji reaction.
@@ -102,13 +102,13 @@ export interface Inbox {
 /**
  * Represents the viewer (current user) of the application.
  */
-export interface Viewer extends BaseUser {
+export interface Viewer extends User {
 
 }
 
 /**
  * Represents the Sender (chatting to) of the application.
  */
-export interface Sender extends BaseUser {
+export interface Sender extends User {
 
 }

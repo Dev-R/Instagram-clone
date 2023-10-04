@@ -44,7 +44,7 @@ const emit = defineEmits(['openModal'])
 // Data
 const userProfileStats = [{
         title: 'posts',
-        count: prop.user.mediaCount, // TODO: Change mediaCount to postCount
+        count: prop.user.mediaItems.length, // TODO: Change mediaCount to postCount
         action: () => {},
     },
     {

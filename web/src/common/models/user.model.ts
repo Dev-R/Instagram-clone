@@ -1,3 +1,4 @@
+import type { PostCard } from "../types"
 
 /**
  * Base Interface for User model
@@ -35,6 +36,10 @@ export interface BaseUser {
 
   /** Relationship with other users */
   friendShip?: FriendShipStatus
+
+  followers?: BaseUser[]
+
+  following?: BaseUser[]
 }
 
 /**
@@ -67,7 +72,7 @@ export interface User extends BaseUser {
     biography?: string
   
     /** Posts made by the user's */
-    mediaItems: []
+    mediaItems: PostCard[]
   }
   
 

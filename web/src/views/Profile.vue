@@ -1,72 +1,66 @@
 <template>
-	<div class="bg-black">
-		<section 
-			class="container text-center md:max-w-full mx-auto sm:h-screen scrollbar scrollbar-thumb-gray-900 z-0"
-			:class="{ 'brightness-50 pointer-events-none': isModalToggled }">
-			<div class="flex">
-				<div 
-					class="basis-1/6 md:block hidden space-y-12
-                    sticky top-0 border-r border-gray-900">
-					<NavBarMain />
-				</div>
-                
-				<div class="lg:max-w-4xl h-screen sm:h-auto w-full mx-auto sm:mt-10">
-					<div 
-						class="flex flex-col md:w-[935px] flex-nowrap space-y-4 
-                        pt-2 md:pt-0 justify-self-end lg:mr-[64px]">
-                        
-						<ProfileHeader 
-                            @open-modal="toggleStatsModal"
-							:user="profile" />
+    <div   
+        :class="isToggledClass"
+        class="lg:max-w-4xl h-screen sm:h-auto w-full mx-auto sm:mt-10 text-center">
+        <div 
+            class="flex flex-col w-full max-w-4xl flex-nowrap space-y-4 
+            pt-2 md:pt-0 justify-self-end lg:mr-[64px]">
+            
+            <ProfileHeader 
+                v-if="profile"
+                @open-modal="toggleStatsModal"
+                :user="profile" />
 
-						<ProfileTabBar 
-                            :current-tab="activeTab"
-							@switch-tab="switchActiveTab" />
+            <ProfileTabBar 
+                :current-tab="activeTab"
+                @switch-tab="switchActiveTab" />
 
-						<!-- TODO: Remove hard codded boolean -->
-						<ProfileEmptyTabMessage 
-							:current-active-tab="activeTab"
-                            :is-post-tab-empty="false"
-							:is-saved-tab-empty="true"
-                            :is-peed-tab-empty="true"
-							:is-tagged-tab-empty="true" />
-                        
-						<PostCoverCard
-							v-if="activeTab === ProfileTab.Posts"
-							:posts="posts" />
+            <!-- TODO: Remove hard codded boolean -->
+            <ProfileEmptyTabMessage 
+                :current-active-tab="activeTab"
+                :is-post-tab-empty="false"
+                :is-saved-tab-empty="true"
+                :is-peed-tab-empty="true"
+                :is-tagged-tab-empty="true" />
+            
+            <PostCoverCardRenderer
+                v-if="activeTab === ProfileTab.Posts && posts"
+                :posts="posts" />
 
-						<ProfileFooter />
-					</div>
-				</div>
-			</div>
-		</section>
+            <ProfileFooter />
+        </div>
+    </div>
 
-		<StatsModal 
-			:modal-size="ModalSize.Medium"
-			:title="statsModal.title"
-			:items="statsModal.stats" 
-			:is-toggled="statsModal.type === ModalName.FOLLOW"
-			@on-modal-closed="toggleStatsModal" />
+    <StatsModal 
+        :modal-size="ModalSize.Medium"
+        :title="statsModal.title"
+        :items="profile?.followers" 
+        :is-toggled="statsModal.type === ModalName.FOLLOW && statsModal.isToggled"
+        @on-modal-closed="toggleStatsModal" />
 
-        <ProfileSettingModal
-            v-show="statsModal.type === ModalName.PROFILE_SETTING"
-            @on-modal-closed="toggleStatsModal" />
-	</div>
+    <ProfileSettingModal
+        v-show="statsModal.type === ModalName.PROFILE_SETTING"
+        @on-modal-closed="toggleStatsModal" />  
 </template>
 
 <script setup lang="ts">
 import {
     ref,
-    computed
+    computed,
+    onMounted,
+watch,
 } from 'vue'
 
+import { 
+    useRoute, useRouter 
+} from 'vue-router'
+
 import {
-    NavBarMain,
     SmallModal as StatsModal,
 	ProfileHeader,
     ProfileTabBar,
     ProfileEmptyTabMessage,
-    PostCoverCard,
+    PostCoverCardRenderer,
     ProfileFooter,
     ProfileSettingModal
 } from '@/components'
@@ -77,28 +71,27 @@ import {
     ModalName,
     type NavBarTabs,
     type User,
-    type PostMedia,
     type PostCard as PostCardType
 } from '@/common'
 
-// TODO: Remove this sample data
-const mediasArraySampleA: PostMedia[] = [{
-        index: 0,
-        type: 'image',
-        mediaUrl: "https://loremflickr.com/1024/1280/cat",
-        title: "Legendary A"
-    },
-    {
-        index: 1,
-        type: 'image',
-        mediaUrl: "https://loremflickr.com/1024/1280/nature",
-        title: "Legendary A"
-    }
-]
+import { 
+    useModalManagerStore 
+} from '@/stores'
+
+import {
+    SampleGenerator
+} from '@/data'
 
 // Data
-const activeTab = ref<NavBarTabs>(ProfileTab.Posts) // Select profile-posts as default active tab
+const profile = ref<User | undefined>(SampleGenerator.generateRandomUser())
+const posts = ref<PostCardType[] | undefined>(profile.value?.mediaItems)
 
+// Services
+const modalStoreManager = useModalManagerStore()
+const route = useRoute()
+const router = useRouter()
+
+const activeTab = ref<NavBarTabs>(ProfileTab.Posts) // Select profile-posts as default active tab
 const statsModal = ref({
     title: '',
     type: '',
@@ -106,32 +99,6 @@ const statsModal = ref({
     isToggled: false
 })
 
-const profile = ref<User>({
-    id: '0',
-    firstName: 'Alex',
-    lastName: 'Boo',
-    userName: 'Alex_boo',
-    profilePictureUrl: 'https://loremflickr.com/1024/1280/holiday',
-    dateJoined: '01-01-2012',
-    followerCount: 0,
-    followingCount: 0,
-    mediaCount: 50,
-    gender: 'Female',
-    mediaItems: [],
-})
-
-const posts = ref<PostCardType[]>([{
-    id: '0',
-    userName: 'Rabee',
-    createdAt: 'February 24',
-    likeCount: 2456,
-    hasLiked: true,
-    caption: ' Sh. @abdullah_oduro and I getting that Saturday morning work in the gym and talking over @yaqeeninstitute Quran 30 ',
-    carouselMedia: mediasArraySampleA,
-    commentCount: 2456,
-    profilePictureUrl: 'https://loremflickr.com/32/32/bird',
-    isFollowed: false
-}])
 
 // Methods
 /**
@@ -148,12 +115,13 @@ const switchActiveTab = (currentTab: NavBarTabs) => {
  * @param title Modal title 
  */
  const toggleStatsModal = ({
-    modalTitle,
-    modalType
+    modalType,
+    modalTitle
 }: {
-    modalTitle ? : string,
-    modalType ? : string
+    modalType ? : string,
+    modalTitle ? : string
 } = {}) => {
+    modalStoreManager.toggleModal(ModalName.FOLLOW)
     statsModal.value = {
         title: modalTitle ? modalTitle : '',
         type: modalType ? modalType : '',
@@ -162,10 +130,52 @@ const switchActiveTab = (currentTab: NavBarTabs) => {
     }
 }
 
-/**
- * Return true if any modal is toggled
- */
-const isModalToggled = computed(() => {
-    return statsModal.value.isToggled
+const isToggledClass = computed(() => {
+    return statsModal.value.isToggled ? "lights-off" : ""
+})
+
+const createRandomProfile = () => {
+    profile.value = SampleGenerator.generateRandomUser()
+    profile.value.followers = SampleGenerator.generateRandomUsers()
+    profile.value.following = SampleGenerator.generateRandomUsers()
+    posts.value = profile.value.mediaItems
+}
+
+
+const loadUserInfo = () => {
+    createRandomProfile()
+}
+
+const refreshProfile = () => {
+    profile.value = undefined
+    posts.value = undefined
+    statsModal.value.isToggled = false
+    loadUserInfo()
+}
+
+watch(() => route.query.isSelf, (query) => {
+    if (query === '1') {
+        refreshProfile()
+    }
+})
+
+watch(() => route.params.username, (username) => {
+    if (username) {
+        refreshProfile()
+        // toggleStatsModal()
+        if (!profile.value) return
+        profile.value.userName = username as string
+    }
+})
+
+onMounted(() => {
+    createRandomProfile()
+    // Only set username if it's available for DEMO
+    if (route.params.username) {
+        if (!profile.value) return
+        profile.value.userName = route.params.username as string
+    }
+    // router.go(0)
+    // posts.value = posts
 })
 </script>

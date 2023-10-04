@@ -10,7 +10,9 @@
 				{{ user.userName }}
 			</div>
 
-			<div class="flex flex-row space-x-6">
+			<div 
+				v-if="!hideControls()"
+				class="flex flex-row space-x-6">
 				<!-- Personal logged-in user Options -->
 				<div class="md:pl-0">
 					<TheButton 
@@ -18,7 +20,7 @@
 						:size="'sm'" 
 						:is-full="true">
 						<span 
-							class="sm:text-md text-sm font-semibold"
+							class="lg:text-md text-sm font-semibold"
 							@click="goToSettingsRoute">
 							Edit Profile
 						</span>
@@ -38,7 +40,7 @@
 
 
 			<!-- Logged-in user Options -->
-			<div>
+			<div v-if="!hideControls()">
 				<SVGLoader 
 					:icon="'profile-options'"
 					:class="'md:block hidden sm:hover:cursor-pointer'" 
@@ -71,6 +73,7 @@ import type{
 } from 'vue'
 
 import {
+	useRoute,
     useRouter
 } from 'vue-router'
 
@@ -81,7 +84,6 @@ import {
 
 import {
     ModalName,
-	type ModalType,
     type User,
 } from '@/common'
 
@@ -96,7 +98,7 @@ const emit = defineEmits(['openModal'])
 // Data
 const userProfileStats = [{
         title: 'posts',
-        count: prop.user.mediaCount, // TODO: Change mediaCount to postCount
+        count: prop.user.mediaItems.length, // TODO: Change mediaCount to postCount
         action: () => {},
     },
     {
@@ -113,6 +115,7 @@ const userProfileStats = [{
 
 // Services
 const router = useRouter()
+const route = useRoute()
 
 // Methods
 /**
@@ -132,11 +135,19 @@ const toggleSettingModal = () => {
 }
 
 /**
+ * Cheap way to hide the controls if the user is not the owner of the profile
+ * TODO: Remove this when the backend is ready
+ */
+const hideControls = () => {
+	return Number(route.query.isSelf) === 1 ? false : true
+}
+
+/**
  *  Emits a modal event to open a modal
  * @param modalType The type of modal to open (Follow, Settings, etc.)
  * @param modalTitle The title of the modal to open (Followers, Following, etc.)
  */
-const emitModal = (modalType: ModalType, modalTitle: string) => {
+const emitModal = (modalType: string, modalTitle: string) => {
     emit('openModal', {
         modalType,
         modalTitle

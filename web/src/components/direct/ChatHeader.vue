@@ -3,7 +3,7 @@
 		class="flex lg:h-16 w-full space-x-2 md:justify-between p-3
         items-center border-slate-700 border-b">
 		<div 
-			class="rotate-[270deg] md:hidden hover:cursor-pointer"
+			class="rotate-[270deg] hover:cursor-pointe sm:hidden"
 			@click="emitChatBack">
 			<SVGLoader 
 				:icon="'back-arrow'" 
@@ -12,11 +12,11 @@
 
 		<div class="flex space-x-2 items-center">
 			<img 
-				src="https://loremflickr.com/1024/1080/car"
+				:src="viewer?.profilePictureUrl"
 				class="cursor-pointer h-10 w-10 rounded-full shadow-lg" />
 
 			<div class="cursor-pointer font-sans text-sm font-bold text-white pt-1">
-				{{ currentUserName }}
+				{{ viewer?.userName }}
 			</div>
 		</div>
 
@@ -41,45 +41,45 @@ import {
 } from '@/components'
 
 import type {
-    Conversation
+    Viewer
 } from '@/common'
 
 defineProps({
-    currentUserName: {
-        type: Object as() => Conversation["user"]["firstName"],
+    viewer: {
+        type: Object as() => Viewer | undefined,
         required: true
     }
-});
+})
 
 const emit = defineEmits([
     "onAudioCall",
     "onVideoCall",
     "onChatInfo",
     "onChatBack"
-]);
+])
 
 /**
  * Emit Audio Call
  */
 const emitAudioCall = () => {
-    emit("onAudioCall");
-};
+    emit("onAudioCall")
+}
 /**
  * Emit Video Call
  */
 const emitVideoCall = () => {
-    emit("onVideoCall");
-};
+    emit("onVideoCall")
+}
 /**
  * Emit Chat Info
  */
 const emitChatInfo = () => {
-    emit("onChatInfo");
-};
+    emit("onChatInfo")
+}
 /**
  * Emit Chat Info
  */
 const emitChatBack = () => {
-    emit("onChatBack");
-};
+    emit("onChatBack")
+}
 </script>

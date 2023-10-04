@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-black scrollbar scrollbar-thumb-gray-900 md:p-0 w-full max-w-4xl mx-auto">
+    <div class="bg-black scrollbar scrollbar-thumb-gray-900 md:p-0 w-full max-w-4xl mx-auto h-screen">
         <div 
             class="flex flex-col sm:border-r-2 border-gray-900 rounded-xl
             flex-nowrap sm:space-y-4 sm:pt-2 md:pt-5 justify-self-end h-full

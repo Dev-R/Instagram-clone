@@ -19,11 +19,12 @@
 			maxlength="100"
 			type="text"
 			class="bg-black border border-[#262626] text-white 
-                rounded-full text-sm focus:outline-none
+                rounded-full text-sm focus:outline-none disabled:cursor-not-allowed
                 block w-full p-2.5 resize-none"
 			placeholder="Message..."
 			:class="{ 'rounded-lg ': !isChatEmpty }"
 			:value="modalValue" 
+			:disabled="isChatLoading"
 			@keyup.enter="emitSendMessage"></textarea>
             
 		<!-- Gallery -->
@@ -72,41 +73,45 @@ defineProps({
     isChatEmpty: {
         type: Boolean,
         required: true
-    }
-});
+    },
+	isChatLoading: {
+		type: Boolean,
+		required: true
+	}
+})
 
 const emit = defineEmits([
     "onLikeIcon",
     "onSendMessage",
     "onFileUpload"
-]);
+])
 // DOM Refs
 const textArea = ref<HTMLInputElement | null>()
 /**
  * Emit new message
  */
 const emitSendMessage = (payload: KeyboardEvent) => {
-    emit("onSendMessage", payload);
-};
+    emit("onSendMessage", payload)
+}
 /**
  * Emit like icon
  */
 const emitLikeIcon = () => {
-    emit("onLikeIcon");
-};
+    emit("onLikeIcon")
+}
 /**
  * Emit file upload
  */
 const emitFileUpload = () => {
-    emit("onFileUpload");
-};
+    emit("onFileUpload")
+}
 /**
  * Append emoji to textarea
  */
 const appendEmoji = (emoji: Emoji) => {
     if (textArea.value) {
-        textArea.value.focus();
-        textArea.value.value += emoji.i;
+        textArea.value.focus()
+        textArea.value.value += emoji.i
     }
-};
+}
 </script>

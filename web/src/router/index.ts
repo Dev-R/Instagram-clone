@@ -1,5 +1,11 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import { usePhotoStore } from '@/stores'
+import {
+  createRouter,
+  createWebHistory
+} from 'vue-router'
+import {
+  useModalManagerStore,
+  usePhotoStore
+} from '@/stores'
 import NProgress from 'nprogress'
 
 const ROOT_ROUTE = '/home'
@@ -26,8 +32,8 @@ const router = createRouter({
           meta: { title: 'Explore' }
         },
         {
-          path: '/profile',
-          name: 'Alex_boo', // TODO: Change to dynamic
+          path: '/:username?',
+          name: 'profile', // TODO: Change to dynamic
           component: () => import('@/views/Profile.vue'),
           meta: { title: 'Profile' }
         },
@@ -68,13 +74,19 @@ const router = createRouter({
           meta: { title: 'Setting' }
         },
         {
+          path: '/p/:id?',
+          name: 'post',
+          component: () => import('@/views/Post.vue'),
+          meta: { title: 'Post' }
+        },
+        {
           path: '/create',
           name: 'create',
           children: [
             {
               path: 'style',
               name: 'style',
-              component: () => import('@/components/modals/PhotoModal.vue'),
+              component: () => import('@/components/core/modals/PhotoModal.vue'),
               meta: { title: 'Create Image' }
             },
             {
@@ -135,6 +147,7 @@ const router = createRouter({
  */
 router.beforeEach(async (to, from, next) => {
   const photoStore = usePhotoStore()
+  const modalStoreManager = useModalManagerStore()
 
   // If this isn't an initial page load.
   if (to.name) {
@@ -144,8 +157,12 @@ router.beforeEach(async (to, from, next) => {
 
   // User shouldn't be able to access create route without preview image
   if (to.path.startsWith('/create') && !photoStore.previewImage) {
-    console.log('Here')
     return next({ name: 'home' })
+  }
+
+  // Close any open modals
+  if (modalStoreManager.isAnyModalOpen) {
+    modalStoreManager.closeModal()
   }
 
   return next()

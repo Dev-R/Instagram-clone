@@ -1,88 +1,54 @@
 <template>
-    <div class="sm:min-h-screen h-screen min-w-screen bg-black">
+    <div class="sm:min-h-screen h-screen min-w-screen bg-black md:max-w-full mx-auto sm:h-screen scrollbar scrollbar-thumb-gray-900">
         <TopNavBar 
-            v-if="!topNavBarHiddenRoutes.includes(routeName)" />
+            v-if="!isTopNavBarHidden" />
 
-        <RouterView  />
+        <div class="flex" :class=isModalToggledClass>
+            <div    
+                v-if="!isSideNavBarHidden"
+                class="md:block hidden space-y-12 sticky top-0 border-r border-gray-900"
+                :class="isNavBarCollapsed">
+                <SideNavBar />
+            </div>
 
-        <!-- Mobile Navbar -->
-        <BottomNavBar 
-            v-if="!bottomNavBarHiddenRoutes.includes(routeName)" />
-
-        <CommentModal
-            v-if="isCommentModalOpen"
-            :post-comment="{
-                isToggled: true,
-                post: post,
-            }" />
-
-        <!-- TODO: Figure this piece of shit    
-             Should open comment modal when clicking comment icon in mobile screen
-             should open postCard only when clicking post cover in mobile screen && expolore
-        -->
-        <!-- <div 
-            v-if="isProfileModalOpen"
-			class="md:max-w-md] justify-self-end p-2">
-			<PostCard
-				:post-item="post" />
-		</div> -->
+            <div class="basis-full">
+                <RouterView  />
+            </div>
+        </div>
     </div>
+    
+    <BottomNavBar 
+        v-if="!isBottomNavBarHidden" />
+
+    <Modals />
 </template>
 
 <script setup lang="ts">
 import {
     computed,
-} from 'vue';
+} from 'vue'
 
 import {
     useRoute
-} from 'vue-router';
+} from 'vue-router'
 
 import {
     TopNavBar,
     BottomNavBar,
-    CommentModal,
-    PostCard,
+    SideNavBar,
+    Modals
 } from '@/components'
 
-import {
-    ModalName,
-    type PostMedia
-} from '@/common'
 
 import { 
     useModalManagerStore
 } from '@/stores'
 
-const mediasArraySampleB: PostMedia[] = [{
-        index: 0,
-        type: 'video',
-        mediaUrl: "https://into-the-program.com/uploads/sample_video02.mp4",
-        title: "Legendary A"
-    },
-    {
-        index: 1,
-        type: 'image',
-        mediaUrl: "https://loremflickr.com/1024/1280/love",
-        title: "Legendary A"
-    }
-]
-const post = {
-    id: '1',
-    userName: 'Sara',
-    createdAt: 'February 24',
-    likeCount: 10,
-    hasLiked: false,
-    caption: 'Be like a tree. Stay grounded. Connect with your roots. Turn over a new leaf. Bend before you break. Enjoy your unique natural beauty. Keep growing.',
-    carouselMedia: mediasArraySampleB,
-    commentCount: 5,
-    profilePictureUrl: 'https://loremflickr.com/1024/1280/girl',
-    isFollowed: false
-}
-
 // Routes without no top/bottom navbars
 const topNavBarHiddenRoutes = ['style', 'stories', 'direct', 'reels', 'explore']
 const bottomNavBarHiddenRoutes = ['stories', 'style', 'direct']
+const sideNavBarHiddenRoutes = ['stories']
+const collapsedHiddenRoutes = ['direct']
 
 // Services
 const route = useRoute()
@@ -93,12 +59,24 @@ const routeName = computed(() => {
     return route.name ? route.name.toString() : ''
 })
 
-const isCommentModalOpen = computed(() => {
-    return modalStoreManager.getOpenModal === ModalName.COMMENT
+
+const isModalToggledClass = computed(() => {
+    return modalStoreManager.isAnyModalOpen && modalStoreManager.shouldBlur ? 'lights-off' : ''
 })
 
-const isProfileModalOpen = computed(() => {
-    console.log("isProfileModalOpen", modalStoreManager.getOpenModal)
-    return modalStoreManager.getOpenModal === ModalName.PROFILE
+const isNavBarCollapsed = computed(() => {
+    return collapsedHiddenRoutes.includes(routeName.value)  ? 'sm:w-20' : 'basis-1/6'
+})
+
+const isSideNavBarHidden = computed(() => {
+    return sideNavBarHiddenRoutes.includes(routeName.value)
+})
+
+const isBottomNavBarHidden = computed(() => {
+    return bottomNavBarHiddenRoutes.includes(routeName.value)
+})
+
+const isTopNavBarHidden = computed(() => {
+    return topNavBarHiddenRoutes.includes(routeName.value)
 })
 </script>
