@@ -23,7 +23,7 @@
                 :is-peed-tab-empty="true"
                 :is-tagged-tab-empty="true" />
             
-            <PostCoverCard
+            <PostCoverCardRenderer
                 v-if="activeTab === ProfileTab.Posts && posts"
                 :posts="posts" />
 
@@ -60,7 +60,7 @@ import {
 	ProfileHeader,
     ProfileTabBar,
     ProfileEmptyTabMessage,
-    PostCoverCard,
+    PostCoverCardRenderer,
     ProfileFooter,
     ProfileSettingModal
 } from '@/components'

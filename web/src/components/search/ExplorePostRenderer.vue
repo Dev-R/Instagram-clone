@@ -6,7 +6,7 @@
             md:ml-5 lg:ml-0">
             <div
                 class="flex flex-wrap">
-                <PostCoverCard 
+                <PostCoverCardRenderer 
                     v-if="posts"
                     :posts="posts" />
 
@@ -24,7 +24,7 @@ import type {
 } from 'vue'
 
 import {
-    PostCoverCard,
+    PostCoverCardRenderer,
     LoadingSpinner
 } from '@/components'
 
