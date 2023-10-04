@@ -14,7 +14,9 @@
 				@submit.prevent>
 				<!-- Icon -->
 				<div class="self-center mb-2">
-					<img src="@/assets/images/mobile-small-icon.png" />
+				<img 
+					class="w-38 h-10"
+					src="@/assets/images/icon-light.png" />
 				</div>
 
 				<!-- Input: Email -->

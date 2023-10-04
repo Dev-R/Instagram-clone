@@ -12,12 +12,16 @@
 				<div
 					v-if="!isNavBarCollapsed"
 					class="xl:block hidden p-2 pt-7">
-					<SVGLoader :icon="'instagram-large'" />
+                    <img 
+                        class="w-32 h-7"
+                        src="@/assets/images/icon.png"
+                        />
 				</div>
 				<div 
 					:class="isNavBarCollapsed ? 'block pt-5' : 'xl:hidden block'">
 					<!-- Small Icon -->
-					<SVGLoader :icon="'instagram-small'" />
+					<SVGLoader 
+                        :icon="'instagram-small'" />
 				</div>
 			</div>
 

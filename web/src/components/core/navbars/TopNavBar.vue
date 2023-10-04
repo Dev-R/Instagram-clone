@@ -20,9 +20,10 @@
                 </span>
     
                 <span v-else>
-                    <SVGLoader 
-                        :icon="'instagram-large'" 
-                        :class="'group-hover:scale-110'"/>
+                <img 
+                    class="w-40 h-12"
+                    src="@/assets/images/icon-light.png" />
+                        
                 </span>
 
             </div>
