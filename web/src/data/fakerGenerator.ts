@@ -90,12 +90,19 @@ export class SampleGenerator {
      * @param min The minimum number of post medias to generate.
      * @param max The maximum number of post medias to generate.
      * @returns An array of randomly generated post medias.
+     * Remove this, after updating MediaCarousel -> BAD PRACTICE
      */
     public static generateRandomPostMedias(min: number = 1, max: number = 5) {
-        const numbeOfPostMedias = randomIntFromInterval(min, max)
+        const numberOfPostMedias = randomIntFromInterval(min, max);
+        let currentIndex = 0; // Initialize the currentIndex
+
         return Array.from({
-            length: numbeOfPostMedias
-        }, () => new PostMediaSample())
+            length: numberOfPostMedias
+        }, () => {
+            const media = new PostMediaSample(currentIndex);
+            currentIndex = (currentIndex + 1) % numberOfPostMedias; // Update currentIndex
+            return media;
+        })
     }
 
     /**

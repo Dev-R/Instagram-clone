@@ -103,21 +103,15 @@ export class PostCommentSample implements PostComment {
  * @implements {PostMedia}
  */
 export class PostMediaSample implements PostMedia {
-    static index = 0; // TODO: Remove this, after updating MediaCarousel -> BAD PRACTICE
-    index = PostMediaSample.index
+    index: number; // Remove the static index property
     type = 'image' as PostMedia['type']
     mediaUrl = faker.image.url({ width: 1024, height: 1280 })
     width = 1024
     height = 1280
     title = faker.lorem.sentence({ min: 5, max: 10 })
-    constructor() {
-        // TODO: Remove this, after updating MediaCarousel -> BAD PRACTICE
-        const currentMediaIndex = PostMediaSample.index
-        if (currentMediaIndex === 2) {
-            PostMediaSample.index = 0
-        } else {
-            PostMediaSample.index++
-        }
+    constructor(index: number) {
+        this.index = index;
+        // ... initialize other properties ...
     }
 }
 
