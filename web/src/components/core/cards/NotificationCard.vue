@@ -1,5 +1,7 @@
 <template>
-    <div class="flex rounded-lg items-center space-x-2 w-full p-2 h-12 cursor-pointer
+    <div 
+        @click="goToUserProfile(notification.userName)"
+        class="flex rounded-lg items-center space-x-2 w-full p-2 h-12 cursor-pointer
          justify-between sm:max-w-sm md:max-w-md sm:hover:bg-slate-1000">
         <div class="flex-inital flex-none">
             <img 
@@ -36,8 +38,9 @@ import {
     computed
 } from 'vue'
 
-import type {
-    NotificationCard
+import {
+    type NotificationCard,
+    goToUserProfile
 } from '@/common'
 
 import {
