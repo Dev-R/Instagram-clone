@@ -175,6 +175,7 @@ export class NotificationSample implements Notification {
     profilePictureUrl = faker.image.avatar()
     type = faker.helpers.arrayElement(['like', 'comment', 'follow']) as Notification['type']
     isFollowing = faker.datatype.boolean()
+    caption = "started following you." //TODO: Add more types
 }
 
 /**
