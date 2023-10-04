@@ -1,8 +1,9 @@
-import { defineStore } from 'pinia'
+import {
+  defineStore
+} from 'pinia'
 
-import { 
+import {
   ModalName,
-  type PostCard
 } from '@/common'
 
 /**

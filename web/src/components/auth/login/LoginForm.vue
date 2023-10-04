@@ -97,6 +97,10 @@ import {
     computed
 } from 'vue'
 
+import { 
+	useRouter 
+} from 'vue-router'
+
 import {
     useToast
 } from 'vue-toastification'
@@ -154,6 +158,7 @@ const validation = computed(() => ({
 
 // Services
 const toast = useToast()
+const router = useRouter()
 const v$ = useVuelidate(validation, loginForm.value)
 
 
@@ -165,6 +170,7 @@ const login = () => {
         // Success toastr
         toast.success('Success. Redirecting...')
         isLoading.value = false
+		router.push('/')
     }, 1000)
 }
 

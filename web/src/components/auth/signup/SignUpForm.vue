@@ -23,18 +23,36 @@
 			</p>
 		</div>
 
-		<!-- Input: Full Name -->
+		<!-- Input:First Name -->
 		<div class="mb-2">
 			<TheInput
-				v-model="signupForm.fullName" 
-				placeholder="Full Name" 
+				v-model="signupForm.firstName" 
+				placeholder="First name" 
 				:class="{
-					'border-red-400': v$.fullName.$dirty && v$.fullName.$invalid 
+					'border-red-400': v$.firstName.$dirty && v$.firstName.$invalid 
                 }"
-				@blur="v$.fullName.$touch" />
+				@blur="v$.firstName.$touch" />
 
 			<p
-				v-for="error of v$.fullName.$errors"
+				v-for="error of v$.firstName.$errors"
+				:key="error.$uid"
+				class="mt-2 text-xs text-red-600 dark:text-red-500">
+				{{ error.$message }}
+			</p>
+		</div>
+
+		<!-- Input:Last Name -->
+		<div class="mb-2">
+			<TheInput
+				v-model="signupForm.lastName" 
+				placeholder="Last name" 
+				:class="{
+					'border-red-400': v$.lastName.$dirty && v$.lastName.$invalid 
+				}"
+				@blur="v$.lastName.$touch" />
+
+			<p
+				v-for="error of v$.lastName.$errors"
 				:key="error.$uid"
 				class="mt-2 text-xs text-red-600 dark:text-red-500">
 				{{ error.$message }}
@@ -106,6 +124,10 @@ import {
     computed
 } from 'vue'
 
+import { 
+	useRouter 
+} from 'vue-router'
+
 import useVuelidate from '@vuelidate/core'
 import {
     email,
@@ -121,13 +143,15 @@ import {
 import {
     TheInput,
     TheButton,
-    SignUpFooter
+    SignUpFooter,
+	SignUpHeader
 } from '@/components'
 
 // Form
 const signupForm = ref({
     email: null,
-    fullName: null,
+    firstName: null,
+	lastName: null,
     username: null,
     password: null
 })
@@ -146,9 +170,15 @@ const validation = computed(() => ({
             email
         )
     },
-    fullName: {
+    firstName: {
         required: helpers.withMessage(
-            'Please enter your full name',
+            'Please enter your first name',
+            required
+        )
+    },
+	lastName: {
+        required: helpers.withMessage(
+            'Please enter your last name',
             required
         )
     },
@@ -172,6 +202,7 @@ const validation = computed(() => ({
 
 // Services
 const toast = useToast()
+const router = useRouter()
 const v$ = useVuelidate(validation, signupForm.value)
 
 // Methods
@@ -181,6 +212,7 @@ const signup = () => {
         // Success toastr
         // TODO: Replace with actual signup logic
         toast.success('Success. Redirecting...')
+		router.push({ name: 'home' })
         isLoading.value = false
     }, 1000)
 }

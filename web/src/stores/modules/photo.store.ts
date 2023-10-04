@@ -1,5 +1,10 @@
-import type { PhotoModalImage } from '@/common'
-import { defineStore } from 'pinia'
+import {
+    defineStore
+} from 'pinia'
+
+import type {
+    PhotoModalImage
+} from '@/common'
 
 /**
  * Photo store
