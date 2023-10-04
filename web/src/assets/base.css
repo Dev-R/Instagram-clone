@@ -1,4 +1,8 @@
 /* Global styles */
+* {
+  /* CSS to disable double-tap zoom globally (on any element) */
+  touch-action: manipulation;
+}
 
 /* Vue Trasnsition Component */
 .v-enter-active,
@@ -9,4 +13,11 @@
 .v-enter-from,
 .v-leave-to {
   opacity: 0;
+}
+
+.story-avatar {
+  position: relative;
+  border-radius: 50%;
+  padding: 2.0px;
+  background-image: linear-gradient(to right top, #ffc600 20%, #ff0040, #e600cc 80%);
 }

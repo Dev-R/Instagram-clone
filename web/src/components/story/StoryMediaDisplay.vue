@@ -3,7 +3,7 @@
     <!-- TODO: Improve array accessing -->
     <img
         v-if="story.items[0]?.type === 'image'" 
-        class="rounded-lg sm:w-full sm:h-full w-screen" 
+        class="sm:rounded-lg sm:w-full w-screen h-dynamic-screen sm:h-dynamic-screen-desktop object-cover" 
         :class="commentFocused"
         :src="story.items[0]?.mediaUrl" 
         :alt="story.items[0]?.title" />

@@ -4,6 +4,8 @@
   "compilerOptions": {
     "composite": true,
     "lib": [],
-    "types": ["node", "jsdom"]
+    "types": ["node", "jsdom"],
+    "esModuleInterop": true,
+    "moduleResolution": "Node"
   }
 }

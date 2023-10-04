@@ -5,7 +5,7 @@
 @import './toastification.css';
 @import './nprogress.css';
 @import './emoji.css';
-/* @import './swiper.css'; */
+@import './swiper.css';
 
 @tailwind base;
 @tailwind components;
@@ -22,4 +22,18 @@
       height: 100vh; /* fallback for Opera, IE and etc. */
       height: 100dvh;
     }
+
+    .h-dynamic-screen-desktop {
+      height: 95vh;
+      height: 95dvh;
+    }
+};
+@layer components {
+  /**
+  * Adding custom classes to tailwind
+  * https://tailwindcss.com/docs/adding-new-utilities#using-css
+  */
+  .lights-off {
+    @apply brightness-50 pointer-events-none overflow-y-hidden h-screen z-0;
+  }
 };
