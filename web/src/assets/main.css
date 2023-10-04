@@ -22,6 +22,11 @@
       height: 100vh; /* fallback for Opera, IE and etc. */
       height: 100dvh;
     }
+
+    .h-dynamic-screen-desktop {
+      height: 95vh;
+      height: 95dvh;
+    }
 };
 @layer components {
   /**

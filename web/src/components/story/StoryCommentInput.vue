@@ -6,9 +6,10 @@
             @focusout="onCommentFocus"
             @keyup.enter="onSendMessage"
             tabindex="1"
+            v-model="commentMessageInput"
             type="text" 
-            class="z-50 bg-transparent border border-gray-300 text-white focus:outline-none text-sm rounded-full
-            block w-full p-2.5" 
+            class="z-50 bg-transparent border border-gray-300 text-white 
+            focus:outline-none text-sm rounded-full block w-full p-2.5 placeholder:text-white placeholder:font-semibold" 
             :placeholder="placeHolder" />
         <span 
             @click="onLikeStatus(story)"
