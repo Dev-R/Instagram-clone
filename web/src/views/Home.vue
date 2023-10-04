@@ -7,7 +7,7 @@
             justify-self-end lg:mr-[64px]">
             <!-- Stories -->
             <div 
-                class="mb-6 relative md:rounded-xl md:bg-current 
+                class="sm:mb-6 relative md:rounded-xl md:bg-current 
                 overflow-auto md:border-current border-gray-800 
                 bg-slate-1000 border-t border-b">
                 <StoryCarousel 
@@ -93,7 +93,7 @@ const triggerCommentModal = (id: number | undefined) => {
 
 onMounted(() => {
     posts.value = SampleGenerator.generateRandomPosts()
-    stories.value = SampleGenerator.generateRandomStories()
+    stories.value = SampleGenerator.generateRandomStories(10, 25)
     suggested.value = SampleGenerator.generateRandomSuggestions() as SuggestionCardType
 })
 </script>
