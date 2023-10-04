@@ -141,7 +141,7 @@ export class StoryCarouselSample implements StoryCarousel {
     id = faker.number.int()
     userName = faker.internet.userName()
     profilePictureUrl = faker.image.avatar()
-    expiringAt = faker.date.recent().toISOString()
+    expiringAt = formatDate(faker.date.recent().toISOString())
     seen = faker.datatype.boolean()
     hasLiked = faker.datatype.boolean()
     mediaCount = 1

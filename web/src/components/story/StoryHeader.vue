@@ -9,7 +9,7 @@
 
 			<!-- Username -->
 			<div class="text-sm text-white self-center space-x-1">
-				<span>
+				<span class="font-bold">
 					{{ story.userName }}
 				</span>
                 
