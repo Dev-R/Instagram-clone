@@ -11,7 +11,7 @@ import {
  */
 export const useModalManagerStore = defineStore('modal', {
     state: () => ({
-      modalName: null as ModalName | null, // Holds the currently open modal name or null if no modal is open
+      modalName: null as string | null, // Holds the currently open modal name or null if no modal is open
       post: null as any,
     }),
     getters: {
@@ -21,7 +21,7 @@ export const useModalManagerStore = defineStore('modal', {
       getActivePost: (state) => state.post,
     },
     actions: {
-      openModal(modalName: ModalName) {
+      openModal(modalName: string) {
         this.modalName = modalName
       },
       closeModal() {
@@ -33,7 +33,7 @@ export const useModalManagerStore = defineStore('modal', {
       clearActivePost() {
         this.post = null
       },
-      toggleModal(modalName: ModalName ) {
+      toggleModal(modalName: string ) {
         if (this.modalName === modalName) {
           this.modalName = null // Close the currently open modal
         } else {

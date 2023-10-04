@@ -23,61 +23,61 @@ const router = createRouter({
           alias: '/home',
           name: 'home',
           component: () => import('@/views/Home.vue'),
-          meta: { title: 'Home' }
+          meta: {}
         },
         {
           path: '/explore',
           name: 'explore',
           component: () => import('@/views/Explore.vue'),
-          meta: { title: 'Explore' }
+          meta: {}
         },
         {
           path: '/:username?',
           name: 'profile', // TODO: Change to dynamic
           component: () => import('@/views/Profile.vue'),
-          meta: { title: 'Profile' }
+          meta: {}
         },
         {
           path: '/stories',
           name: 'stories',
           component: () => import('@/views/Story.vue'),
-          meta: { title: 'Reels' }
+          meta: {}
         },
         {
           path: '/direct',
           name: 'direct',
           component: () => import('@/views/Direct.vue'),
-          meta: { title: 'Direct' }
+          meta: {}
         },
         {
           path: '/reels',
           name: 'reels',
           component: () => import('@/views/Reels.vue'),
-          meta: { title: 'Reels' }
+          meta: {}
         },
         {
           path: '/search',
           name: 'search',
           component: () => import('@/views/Search.vue'),
-          meta: { title: 'Search' }
+          meta: {}
         },
         {
           path: '/notifications',
           name: 'notifications',
           component: () => import('@/views/Notification.vue'),
-          meta: { title: 'Notifications' }
+          meta: {}
         },
         {
           path: '/settings',
           name: 'settings',
           component: () => import('@/views/Setting.vue'),
-          meta: { title: 'Setting' }
+          meta: {}
         },
         {
           path: '/p/:id?',
           name: 'post',
           component: () => import('@/views/Post.vue'),
-          meta: { title: 'Post' }
+          meta: {}
         },
         {
           path: '/create',

@@ -29,7 +29,6 @@ import type {
 
 import {
     ModalName,
-    type ModalType,
     type User,
 } from '@/common'
 
@@ -64,7 +63,7 @@ const userProfileStats = [{
  * @param modalType The type of modal to open (Follow, Settings, etc.)
  * @param modalTitle The title of the modal to open (Followers, Following, etc.)
  */
-const emitModal = (modalType: ModalType, modalTitle: string) => {
+const emitModal = (modalType: string, modalTitle: string) => {
     emit('openModal', {
         modalType,
         modalTitle
