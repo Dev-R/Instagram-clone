@@ -377,7 +377,8 @@ const onCommentLiked = (commentId: PostCommentCard['id']) => {
 /**
  * Emit signal when a post is liked
  */
-const onPostLike = (post: PostCard) => {
+const onPostLike = (post: PostCard | undefined) => {
+	if (!post) return
 	post.hasLiked = !post.hasLiked
 	post.likeCount += post.hasLiked ? -1 : 1
 }
