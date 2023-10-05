@@ -1,52 +1,100 @@
-# PhotoFlow 🖼
+# PhotoFlow 🖼️ - Instagram Clone with Dynamic Data
 
-This template should help get you started developing with Vue 3 in Vite.
+PhotoFlow is a frontend Instagram clone that replicates Instagram's frontend design for most features available as of the project's creation date. It also uses Faker.js to generate dynamic data.
 
-## Recommended IDE Setup
+## Features ✨
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+- **Dynamic Fake Data 🎭:** Enjoy ever-changing posts and users powered by Faker.js.
+- **Home 🏠:** Engage with posts and comments.
+- **Create 📸:** Craft and personalize images.
+- **Stories 📺:** Watch and comment on stories.
+- **Reels 🎞️:** View and comment on videos.
+- **Messages 📤:** Send and receive messages.
+- **Notifications 🔔:** Stay informed about followers and activity.
+- **Search 🔎:** Discover and find other users.
+- **Explore 👀:** Uncover user-uploaded content.
+- **Emojis 😳:** Express yourself with emojis using the Emoji modal!
+- **Responsivity 💙:** Experience an Instagram-like design on various devices.
 
-## Type Support for `.vue` Imports in TS
+## Preview 📺
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+### Home
+![Home](/src/assets/images/demo/demo-home.png)
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
+### Comment
+![Comment](/src/assets/images/demo/demo-comment.png)
 
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+### Create Modal
+![Create Modal](/src/assets/images/demo/demo-create.png)
 
-## Customize configuration
+### Profile
+![Profile](/src/assets/images/demo/demo-profile.png)
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+### Reels
+![Reels](/src/assets/images/demo/demo-reels.png)
 
-## Project Setup
+### Messages
+![Messages 1](/src/assets/images/demo/demo-messages-1.png)
+![Messages 2](/src/assets/images/demo/demo-messages-2.png)
 
-```sh
-npm install
+### Notification
+![Notification](/src/assets/images/demo/demo-notification.png)
+
+### Explore
+![Explore View](/src/assets/images/demo/demo-explore.png)
+
+### Mobile
+![Mobile View](/src/assets/images/demo/demo-mobile.png)
+
+### Stories
+![Stories View](/src/assets/images/demo/demo-stories.png)
+
+## Run Locally
+
+To run this project locally, follow these steps:
+
+Clone the project:
+
+```bash
+  git clone https://github.com/Dev-R/PhotoFlow.git
 ```
 
-### Compile and Hot-Reload for Development
+Go to the project directory
 
-```sh
-npm run dev
+```bash
+  cd PhotoFlow
 ```
 
-### Type-Check, Compile and Minify for Production
+Install dependencies
 
-```sh
-npm run build
+```bash
+  yarn install
 ```
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
+Start the server
 
-```sh
-npm run test:unit
+```bash
+  yarn run dev
 ```
 
-### Lint with [ESLint](https://eslint.org/)
 
-```sh
-npm run lint
+## Personalize Data Generation 🧬
+Since this project uses Faker.js, you have control over the number of posts, stories, and comments rendered. To customize this data, navigate to the SampleGenerator class:
+
+``` bash
+cd src\data
 ```
+``` bash
+code fakerGenerator.ts
+```
+## Dynamic Data Disclaimer ⚠️
+The data generated is intentionally inconsistent and ever-changing using Faker.js. Each refresh may provide new usernames and content. As such, this project serves more as a template and design showcase.
+
+### Acknowledgements
+
+- Frontend framework used - [Vue + Vite](https://vuejs.org/)
+- Fake API Data/ Data generation used - [Faker.js](https://github.com/faker-js/faker)
+- CSS framework used - [Tailwind](https://tailwindcss.com/)
+- Story Carousel - [Swiper](https://github.com/nolimits4web/swiper)
+- Emojis - [vue3-emoji-picker](https://github.com/delowardev/vue3-emoji-picker)
+- Deployed at [Vercel](https://vercel.com/)
