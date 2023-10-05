@@ -17,6 +17,8 @@ PhotoFlow is a frontend Instagram clone that replicates Instagram's frontend des
 - **Responsivity 💙:** Experience an Instagram-like design on various devices.
 
 ## Preview 📺
+### Login
+![Login](/src/assets/images/demo/demo-login.png)
 
 ### Home
 ![Home](/src/assets/images/demo/demo-home.png)
@@ -48,6 +50,10 @@ PhotoFlow is a frontend Instagram clone that replicates Instagram's frontend des
 
 ### Stories
 ![Stories View](/src/assets/images/demo/demo-stories.png)
+
+### Dynamic Images 
+![Login](/src/assets/images/demo/demo-login.gif)
+
 
 ## Run Locally
 
