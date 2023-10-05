@@ -18,41 +18,41 @@ PhotoFlow is a frontend Instagram clone that replicates Instagram's frontend des
 
 ## Preview 📺
 ### Login
-![Login](/src/assets/images/demo/demo-login.png)
+![Login](./src/assets/images/Demo/demo-login.png)
 
 ### Home
-![Home](/src/assets/images/demo/demo-home.png)
+![Home](./src/assets/images/Demo/demo-home.png)
 
 ### Comment
-![Comment](/src/assets/images/demo/demo-comment.png)
+![Comment](/src/assets/images/Demo/demo-comment.png)
 
 ### Create Modal
-![Create Modal](/src/assets/images/demo/demo-create.png)
+![Create Modal](/src/assets/images/Demo/demo-create.png)
 
 ### Profile
-![Profile](/src/assets/images/demo/demo-profile.png)
+![Profile](/src/assets/images/Demo/demo-profile.png)
 
 ### Reels
-![Reels](/src/assets/images/demo/demo-reels.png)
+![Reels](/src/assets/images/Demo/demo-reels.png)
 
 ### Messages
-![Messages 1](/src/assets/images/demo/demo-messages-1.png)
-![Messages 2](/src/assets/images/demo/demo-messages-2.png)
+![Messages 1](/src/assets/images/Demo/demo-messages-1.png)
+![Messages 2](/src/assets/images/Demo/demo-messages-2.png)
 
 ### Notification
-![Notification](/src/assets/images/demo/demo-notification.png)
+![Notification](/src/assets/images/Demo/demo-notification.png)
 
 ### Explore
-![Explore View](/src/assets/images/demo/demo-explore.png)
+![Explore View](/src/assets/images/Demo/demo-explore.png)
 
 ### Mobile
-![Mobile View](/src/assets/images/demo/demo-mobile.png)
+![Mobile View](/src/assets/images/Demo/demo-mobile.png)
 
 ### Stories
-![Stories View](/src/assets/images/demo/demo-stories.png)
+![Stories View](/src/assets/images/Demo/demo-stories.png)
 
 ### Dynamic Images 
-![Login](/src/assets/images/demo/demo-login.gif)
+![Login](/src/assets/images/Demo/demo-login.gif)
 
 
 ## Run Locally
