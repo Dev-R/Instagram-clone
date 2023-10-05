@@ -1,2 +1,2 @@
-export * from './SampleModels'
+export * from './sampleModels'
 export * from './fakerGenerator'
