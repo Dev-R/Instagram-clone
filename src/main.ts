@@ -1,12 +1,15 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
+import { inject } from '@vercel/analytics'
+ 
 import Toast from 'vue-toastification'
 import { POSITION } from 'vue-toastification'
 import type { PluginOptions } from 'vue-toastification'
 
 import App from './App.vue'
 import router from './router'
+
 
 // Assets
 import './assets/main.css'
@@ -36,3 +39,4 @@ app.use(router)
 app.use(Toast, options)
 
 app.mount('#app')
+inject(); // Vercel Analytics
