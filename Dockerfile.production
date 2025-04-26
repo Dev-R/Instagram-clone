@@ -1,0 +1,20 @@
+FROM node:20-alpine
+
+WORKDIR /app
+
+COPY package.json yarn.lock ./
+
+RUN yarn install --frozen-lockfile
+
+RUN yarn global add serve
+
+COPY . .
+
+RUN yarn build
+
+ENV PORT=5173
+ENV HOST=0.0.0.0
+
+EXPOSE 5173 
+
+CMD ["serve", "-s", "dist", "-l", "5173"]

@@ -83,6 +83,43 @@ Start the server
   yarn run dev
 ```
 
+### Using Docker
+
+You can run PhotoFlow using Docker in either development or production mode:
+
+#### Development Mode
+
+Build the development Docker image:
+
+```bash
+  docker build -f Dockerfile.development -t photoflow:dev .
+```
+
+Run the development container:
+
+```bash
+  docker run -p 5173:5173 photoflow:dev
+```
+
+This will start the development server with hot-reload enabled.
+
+#### Production Mode
+
+Build the production Docker image:
+
+```bash
+  docker build -f Dockerfile.production -t photoflow:prod .
+```
+
+Run the production container:
+
+```bash
+  docker run -p 5173:5173 photoflow:prod
+```
+
+This will serve the optimized production build using the serve package.
+
+You can access the application at `http://localhost:5173` in both modes.
 
 ## Personalize Data Generation 🧬
 Since this project uses Faker.js, you have control over the number of posts, stories, and comments rendered. To customize this data, navigate to the SampleGenerator class:
