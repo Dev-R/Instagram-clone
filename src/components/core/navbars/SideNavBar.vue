@@ -209,7 +209,7 @@ const menuItems: NavBarItem[] = [{
     },
     {
         title: 'Profile',
-        path: '/BrainFuckUser?isSelf=1',//TODO: Remove, only for demo.
+        path: '/Dev-R?isSelf=1',//TODO: Remove, only for demo.
         name: 'profile',
         customClass: '',
         iconSvgName: '',
